@@ -1,0 +1,97 @@
+@charset "shift_jis";
+@import url("common.css");
+
+/*==========================================================
+
+  Login Views Settings
+
+===========================================================*/
+input {
+  height: 27pt;
+  font-size: 18pt;
+  line-height: 19pt;
+}
+#info_area,
+#entry_area {
+ margin-left: 30px;
+ margin-bottom:5px;
+ width:450px;
+ font-size:18pt;
+ text-align:left;
+ position:relative;
+ float:left;
+}
+
+#info_area a{
+  text-decoration: none;
+}
+
+#info_scr {
+ margin: 0px 5px;
+ max-height:400px;
+ overflow:auto;
+}
+
+#info_scr div {
+ padding:1px 1px 1px 5px;
+}
+
+#info_scr .info_panel {
+ border-top:dotted 2px #e6e6e6;
+}
+
+#info_scr .info_title {
+ padding:1px 1px 1px 2px;
+}
+
+#info_scr .info_content {
+ padding-left:15px;
+}
+
+#login h3 {
+ margin-bottom:10px;
+ border:3px double #cccccc;
+ padding-left:10px;
+ text-align:left;
+ vertical-align:middle;
+ background-color: #eeeeee;
+ color:#000;
+}
+
+/* For IE 6.x,7.0 Only */
+* html body #login h3{ font-size: 115%; }
+
+#login fieldset{
+ margin-left:30px;
+ border-width:0px;
+ width:420px;
+ text-align:right;
+}
+
+#login input {
+ color:#666666;
+ margin-bottom:10px;
+ padding:2px 5px;
+}
+
+#login legend {
+ display:none;
+}
+
+#login h2{
+	margin-bottom:20px;
+}
+
+#login .tbl label {
+ /* width:80px; */
+ float:left;
+ margin-bottom: 5px;
+}
+
+#login .tbl br{
+ clear: left;
+}
+
+#login .tbl p{
+ text-align:right;
+}

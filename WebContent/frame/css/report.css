@@ -1,0 +1,70 @@
+@charset "shift_jis";
+
+/*==========================================================
+
+  Report Views Settings
+
+===========================================================*/
+html,body{
+	height:100%;
+	overflow-y:hidden;	// IE限定スクロールバー非表示（必須）
+}
+
+/*==========================================================
+
+  Report TabArea
+
+===========================================================*/
+#report_tab {
+ margin-top: 0;
+ margin-bottom: 0;
+ border-top:1px solid #ccc;
+ border-bottom:1px solid #88cccc;
+ background-image: url("../img/bg_report_tabarea.gif");
+ background-position: bottom;
+ background-repeat: repeat-x;
+ font-size: 80%;
+}
+
+#report_tab a{
+  text-decoration: none;
+  display:block;
+}
+
+#report_tab ul {
+ list-style:none;
+ padding:0;
+ margin:3px 0 0 0;
+}
+
+#report_tab ul li {
+ text-align:center;
+ margin:0 0 0 5px;
+ float:left;
+ width: 118px;
+ color:#f0f0f0;
+ background-image: url("../img/bg_report_tab.gif");
+ background-position: 0 -25px;
+ background-repeat: no-repeat;
+}
+
+#report_tab .hide {
+ display: none;
+}
+
+#report_tab ul li a {
+ text-align:center;
+ width: 118px;
+ background-image: url("../img/bg_report_tab.gif");
+ background-position: 0 0;
+ background-repeat: no-repeat;
+}
+
+#report_tab ul li a:hover {
+ color:#636669;
+ background-image: url("../img/bg_report_tab.gif");
+ background-position: 0 -50px;
+ background-repeat: no-repeat;
+}
+
+

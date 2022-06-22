@@ -1,0 +1,20 @@
+.tree {
+  margin: 0;
+  padding: 0 0 24px 0;
+  list-style-type: none;
+}
+.tree-node {
+  height: 26px; /* custom 18px */
+  white-space: nowrap;
+  cursor: pointer;
+}
+.tree-title {
+  font-size:18px; /* custom 12px */
+  display: inline-block;
+  text-decoration: none;
+  vertical-align: top;
+  white-space: nowrap;
+  padding: 0 2px;
+  height: 18px;
+  line-height: 24px; /* custom 18px */
+}

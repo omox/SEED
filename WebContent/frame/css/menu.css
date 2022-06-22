@@ -1,0 +1,155 @@
+@charset "Shift_JIS";
+
+/*==========================================================
+
+  Menu Views Settings
+
+===========================================================*/
+
+#menu {
+ margin-top: 0;
+ margin-bottom: 0;
+ margin-left:auto;
+ margin-right:auto;
+ padding-left:10px;
+ padding-right:10px;
+ font-size:80%;
+ font-family:'HGP∫ﬁºØ∏M','ÉÅÉCÉäÉI',Meiryo,'ÇlÇr ÇoÉSÉVÉbÉN',sans-serif;
+}
+
+#menu a{
+  text-decoration: none;
+}
+#menu .hide {
+ display: none;
+}
+#menu .m_child {
+ margin-left:0px;
+ margin-top:0px;
+ margin-bottom:0px;
+ float:left;
+ width:22%;
+ overflow:hidden;
+}
+
+
+#menu .m_child_max {
+ margin-left:0px;
+ margin-top:5px;
+ margin-bottom:0px;
+ float:left;
+ width:100%;
+ overflow:hidden;
+}
+
+
+#menu_report {
+ padding-right:10px;
+
+}
+
+#menu h3 {
+ border:3px double #cccccc;
+ padding-left:10px;
+ text-align:left;
+ vertical-align:middle;
+ background-color: #eeeeee;
+ color:#000;
+}
+
+/* For IE 6.x,7.0 Only */
+* html body #menu h3{ font-size: 115%; }
+
+
+#menu p {
+ margin: 10px 5px;
+ margin-bottom:0px;
+}
+
+#menu ol {
+ color:#00B300;
+}
+#menu ul {
+ list-style:none;
+}
+
+#menu_report a,
+#menu_system a {
+ display:block;
+}
+
+#menu h4 {
+ margin-top: 5px;
+ text-align:left;
+}
+
+/* For IE 6.x,7.0 Only */
+* html body #menu h4{ font-size: 100%; }
+
+
+#menu ul li ol li {
+ border-bottom:1px dotted #cccccc;
+ display:block;
+}
+
+#menu ul li ol li a {
+ border-left:5px solid #cccccc;
+ padding-left:5px;
+}
+
+#menu ul li ol li a:hover {
+ border-left:5px solid #FFD384;
+ padding-left:5px;
+}
+
+#menu_info {
+ text-align:left;
+ position:relative;
+}
+
+#menu_info #btn_info {
+ position:absolute;
+ top:3px;
+ right:3px;
+ margin:2px;
+}
+
+#menu_info textarea {
+ width:100%;
+ height:200px;
+ color:#666666;
+ margin-bottom:10px;
+ padding:2px 5px;
+ font-size:100%;
+}
+
+#info_scr {
+ margin: 0px 5px;
+ overflow:auto;
+}
+
+#info_scr div {
+ padding:1px 1px 1px 5px;
+}
+
+#info_scr .info_panel {
+ border-top:dotted 2px #e6e6e6;
+}
+
+#info_scr .info_title {
+ padding:1px 1px 1px 2px;
+}
+
+#info_scr .info_content {
+ padding-left:15px;
+}
+
+#menu * ol {
+}
+
+.disableMenu{
+	color: #cccccc;
+}
+.enableMenu {
+	color: #0041ff;
+}

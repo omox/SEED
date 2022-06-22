@@ -1,0 +1,254 @@
+@charset "shift_jis";
+
+/*==========================================================
+
+  MaintenanceUserReport Views Settings
+
+===========================================================*/
+select {
+ width:250px;	
+}
+
+#entry {
+ margin:10px;
+ width	:900px;
+ text-align:left;
+ background-color: #fff;
+ position:relative;
+
+}
+
+#entry fieldset{
+ border:none;
+}
+
+#entry input {
+ margin-top:5px;
+ margin-bottom:5px;
+}
+
+#entry select {
+ color:#666666;
+ margin-top:5px;
+ margin-bottom:5px;
+}
+
+#entry legend {
+ display:none; 
+}
+
+#entry h3{
+ border:3px double #aaaaaa;
+ padding-left:10px;
+ text-align:left;
+ background-color: #ffffff;
+ font-size:107%;
+}
+
+#entry .memo {
+ position:absolute;
+ top:3px;
+ right:3px;
+ margin:2px;
+ color: #FF0080;
+ font-size:77%;
+}
+
+.tbl {
+ font-size:80%;
+}
+
+.tbl label {
+ width:100px;
+ float:left;
+ margin-bottom: 5px;
+ margin-left: 10px;
+ margin-right: 40px;
+ border-bottom:3px double #C0C0C0;
+}
+
+.tbl label.required{
+ border-bottom:3px double #FF0080;
+}
+
+.tbl label .nonrequired{
+ border-bottom:3px double #C0C0C0;
+}
+
+.tbl .inpsection{
+ background-color: #e4e7ff;
+ border-top:1px solid #cccccc;
+ border-left:1px solid #cccccc;
+ border-bottom:1px solid #cccccc;
+ border-right:1px solid #cccccc;
+ width:47%;
+ margin:5px 10px;
+ float:left;
+}
+
+.tbl .inpsection label{
+ color:#000f99;
+ font-weight:bold;
+}
+
+.tbl .inpsection input{
+ padding:2px 5px;
+}
+
+.tbl .inpsection_hidden *{
+ position:absolute;
+ top:0;
+ left:0;
+ z-index:-1;
+}
+.tbl .inpsection_hidden select{
+ position:absolute;
+ top:0;
+ left:0;
+ z-index:-1;
+}
+.commands {
+ float:left;
+ text-align:center;
+ background-color: #ffffff;
+}
+
+.commands input {
+ width:100px;
+ line-height:1.0;
+ margin:12px;
+ text-align:center;
+ padding:1px;
+}
+
+.save {
+ float:right;
+ text-align:center;
+ background-color: #ffffff;
+}
+
+.save input {
+ width:100px;
+ line-height:1.0;
+ margin:12px;
+ text-align:center;
+ padding:1px;
+}
+
+#entry hr{
+ visibility: hidden;
+ height:0;
+ clear:both;
+}
+
+#view {
+ clear:both;
+ margin:10px;
+ width	:900px;
+ text-align:left;
+}
+
+#view input {
+ text-align:center;
+ line-height: 1.0;
+}
+
+#view h3{
+ border:3px double #aaaaaa;
+ padding-left:10px;
+ text-align:left;
+ background-color: #ffffff;
+ display:none;
+}
+
+/* define height and width of scrollable area. Add 16px to width for scrollbar          */
+#view div.tableContainer {
+	clear: both;
+	height: 300px;
+	overflow: auto;
+}
+
+/* Reset overflow value to hidden for all non-IE browsers. */
+html>/**/body #view div.tableContainer {
+	overflow: hidden;
+}
+
+#view table {
+ font-size:76%;
+}
+
+#view thead th {
+ border-left: 1px solid #99b8e4;
+ border-right: 1px solid #3d66a0;
+ border-top: 1px solid #99b8e4;
+ padding: 3px 3px;
+ text-align:center;
+ background: #79a2db;
+}
+
+#view div.tableContainer table {
+	float: left;
+}
+
+/* set table header to a fixed position. WinIE 6.x only And WinIE 7.0 only                    */
+/* In WinIE 6.x, any element with a position property set to relative and is a child of       */
+/* an element that has an overflow property set, the relative value translates into fixed.    */
+/* Ex: parent element DIV with a class of tableContainer has an overflow property set to auto */
+#view thead tr {
+	position: relative;
+}
+
+/* set THEAD element to have block level attributes. All other non-IE browsers            */
+/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
+html>/**/body #view thead tr {
+	display: block;
+}
+
+/* define the table content to be scrollable                                              */
+/* set TBODY element to have block level attributes. All other non-IE browsers            */
+/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
+/* induced side effect is that child TDs no longer accept width: auto                     */
+html>/**/body #view tbody {
+ display: block;
+ height: 230px;
+ overflow: auto;
+}
+
+/* For IE7 only */
+*+html body #view div.tableContainer {
+  overflow: auto;
+}
+
+#view tbody td {
+ border-bottom:1px solid #CCC;
+ border-left: none;
+ border-right: 1px solid #CCC;
+ border-top: 1px solid #eee;
+ padding: 1px 3px 1px 4px
+}
+
+#view tbody tr.normalRow td {
+ background: #FFF;
+}
+
+#view tbody tr.alternateRow td {
+ background: #eee;
+}
+
+#view tbody tr.updatedRow td {
+ background:#c1e4e9;
+}
+
+#view tbody tr.selectedRow td ,
+#view tbody tr.selectedRow input {
+ color:#FF0000;
+}
+
+.col_select  { width:35px;  }
+.col_no      { width:30px;  }
+.col_group   { width:275px;  }
+.col_pos     { width:295px; }
+.col_reponame{ width:300px; }
+.col_space   { width:16px;  }
+.col_enable  { width:55px;  }
+

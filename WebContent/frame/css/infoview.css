@@ -1,0 +1,29 @@
+@charset "Shift_JIS";
+
+/*==========================================================
+
+  InfoView Views Settings
+
+===========================================================*/
+
+#info_area {
+ margin:5px;
+ font-size:80%;
+ text-align:left;
+ position:relative;
+ float:left;
+}
+
+#info_area div {
+ padding:5px;
+ margin:10px; 
+}
+
+#view_title {
+ vertical-align:middle;
+ background-color: #e5ffe5; 
+}
+
+#view_info {
+ margin-top:30px; 
+}

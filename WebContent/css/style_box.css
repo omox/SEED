@@ -1,0 +1,83 @@
+@CHARSET "UTF-8";
+
+@media (min-width: 1px) {
+/*
+  IE8 nosupport
+
+  sample
+  <p><input type="radio" class="outline" name="radio" id="radio1" checked=""><label for="radio1">ラジオボタン</label></p>
+  <p class="large"><input type="radio" class="boxshadow" name="radio" id="radio2"><label for="radio2">大きなラジオボタン</label></p>
+
+  <p><input type="checkbox" class="boxshadow border" id="checkbox1"><label for="checkbox1">チェックボックス・タイプ 1</label></p>
+  <p><input type="checkbox" class="outline check" id="checkbox2"><label for="checkbox2">チェックボックス・タイプ 2</label></p>
+
+  <p class="large"><input type="checkbox" class="outline border" id="checkbox3"><label for="checkbox3">大きなチェックボックス・タイプ 1</label></p>
+  <p class="large"><input type="checkbox" class="outline border error" id="checkbox4"><label for="checkbox4">大きなチェックボックス・タイプ 1（ERROR）</label></p>
+
+  <p class="large"><input type="checkbox" class="boxshadow check" id="checkbox5"><label for="checkbox5">大きなチェックボックス・タイプ 2</label></p>
+  <p class="large"><input type="checkbox" class="boxshadow check error" id="checkbox6"><label for="checkbox6">大きなチェックボックス・タイプ 2（ERROR）</label></p>
+ */
+p.large{
+  font-size: 120%;
+}
+input[type="radio"],
+input[type="checkbox"]{
+  font-size: 100%;
+  width: 1em;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+}
+input[type="radio"]+label:before,
+input[type="checkbox"]+label:before{
+  display: inline-block;
+  content: "";
+  vertical-align: top;
+  background-color: white;
+  color: #79C0F1;
+  border-style: solid;
+  border-width: 0.1em;
+  width: 0.625em;
+  height: 0.625em;
+  margin-left: -1em;
+  margin-top: 0.25em;
+  margin-right: 0.25em;
+}
+input[type="radio"]+label:before{
+  border-radius: 0.5em;
+}
+input[type="checkbox"]+label:before{
+  border-radius: 0.1em;
+}
+input[type="radio"]:checked+label,
+input[type="checkbox"].border:checked+label{
+  background-color: #CCFFCC;
+  border-style: none none solid;
+  border-width: 0.1em;
+}
+input[type="radio"]:checked+label:before,
+input[type="checkbox"].border:checked+label:before{
+  border-style: double;
+  border-width: 0.4em;
+  width: 0;
+  height: 0;
+}
+input[type="checkbox"].check:checked+label:before{
+  content: "\2714";
+  line-height: 0.625;
+}
+input[type="radio"].outline:focus+label:before,
+input[type="checkbox"].outline:focus+label:before{
+  outline: 1px dotted;
+}
+input[type="radio"].boxshadow:focus+label:before,
+input[type="checkbox"].boxshadow:focus+label:before{
+  box-shadow: 0 0 1px 2px orange;
+}
+
+input[type="checkbox"].error+label:before,
+input[type="checkbox"].error:checked+label:before{
+  background-color: red;
+}
+
+}
