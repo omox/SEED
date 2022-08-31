@@ -2,9 +2,7 @@ package dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-
 import authentication.bean.User;
 import common.DefineReport;
 import common.JsonArrayData;
@@ -110,8 +108,8 @@ public class ReportBT004Dao extends ItemDao {
 		sbSQL.append(") T1");
 		sbSQL.append(" left outer join WEEK W1 on T1.HBSTDT_K_WNUM = W1.CWEEK");
 		sbSQL.append(" left outer join WEEK W2 on T1.HBEDDT_K_WNUM = W2.CWEEK");
-		sbSQL.append(" left outer join WEEK W3 on T1.HBSTDT_K_WNUM = W3.CWEEK");
-		sbSQL.append(" left outer join WEEK W4 on T1.HBEDDT_K_WNUM = W4.CWEEK");
+		sbSQL.append(" left outer join WEEK W3 on T1.HBSTDT_M_WNUM = W3.CWEEK");// 2022-09-01 外部結合キー修正
+		sbSQL.append(" left outer join WEEK W4 on T1.HBEDDT_M_WNUM = W4.CWEEK");// 2022-09-01 外部結合キー修正
 		sbSQL.append(" order by T1.KKKNO");
 
 		// オプション情報（タイトル）設定
