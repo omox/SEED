@@ -201,17 +201,19 @@
 	<div class="ref_editor" style="display: none;">
 	 	<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SHNCD.getObj()%>"  check='<%=DefineReport.InpText.SHNCD.getMaxlenTag()%>'>
 	 	<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.BINKBN.getObj()%>" check='<%=DefineReport.InpText.BINKBN.getMaxlenTag()%>'>
-	 	<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>1"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>2"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>3"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>4"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>5"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>6"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>7"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>8"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>9"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>10"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
-		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>10"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
+	 	<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>1"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>2"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>3"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>4"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>5"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>6"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>7"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>8"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>9"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>10" check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>' data-options="min:0">
+<!-- 
+    <input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.HTSU.getObj()%>10"  check='<%=DefineReport.InpText.HTSU.getMaxlenTag()%>'>
+ -->
 	</div>
 </div>
 </form>

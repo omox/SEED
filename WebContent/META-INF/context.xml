@@ -37,7 +37,7 @@
            auth="Container"
            type="javax.sql.DataSource"
            driverClassName="com.ibm.db2.jcc.DB2Driver"
-           url="jdbc:db2://172.16.2.145:50000/MDMDB:defaultIsolationLevel=1;useJDBC4ColumnNameAndLabelSemantics=2;"
+           url="jdbc:db2://172.28.1.210:50000/MDMDB:defaultIsolationLevel=1;useJDBC4ColumnNameAndLabelSemantics=2;"
            username="db2admin"
            password="Passw0rd"
            maxTotal="150"
