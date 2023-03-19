@@ -106,13 +106,13 @@
 			<div class="easyui-datagrid" tabindex="8" id="gridholder" data-options="singleSelect:true,rownumbers:true, fit:true"></div>
 			<div class="ref_editor" style="display: none;">
 				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SHNCD.getObj()%>" check='<%=DefineReport.InpText.SHNCD.getMaxlenTag()%>' data-options="prompt:'____-____'" style="width:80px;"/>
-				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_MON.getObj()%>" check='<%=DefineReport.InpText.SURYO_MON.getMaxlenTag()%>' />
-				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_TUE.getObj()%>" check='<%=DefineReport.InpText.SURYO_TUE.getMaxlenTag()%>' />
-				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_WED.getObj()%>" check='<%=DefineReport.InpText.SURYO_WED.getMaxlenTag()%>' />
-				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_THU.getObj()%>" check='<%=DefineReport.InpText.SURYO_THU.getMaxlenTag()%>' />
-				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_FRI.getObj()%>" check='<%=DefineReport.InpText.SURYO_FRI.getMaxlenTag()%>' />
-				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_SAT.getObj()%>" check='<%=DefineReport.InpText.SURYO_SAT.getMaxlenTag()%>' />
-				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_SUN.getObj()%>" check='<%=DefineReport.InpText.SURYO_SUN.getMaxlenTag()%>' />
+				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_MON.getObj()%>" check='<%=DefineReport.InpText.SURYO_MON.getMaxlenTag()%>' data-options="min:0"/>
+				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_TUE.getObj()%>" check='<%=DefineReport.InpText.SURYO_TUE.getMaxlenTag()%>' data-options="min:0"/>
+				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_WED.getObj()%>" check='<%=DefineReport.InpText.SURYO_WED.getMaxlenTag()%>' data-options="min:0"/>
+				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_THU.getObj()%>" check='<%=DefineReport.InpText.SURYO_THU.getMaxlenTag()%>' data-options="min:0"/>
+				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_FRI.getObj()%>" check='<%=DefineReport.InpText.SURYO_FRI.getMaxlenTag()%>' data-options="min:0"/>
+				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_SAT.getObj()%>" check='<%=DefineReport.InpText.SURYO_SAT.getMaxlenTag()%>' data-options="min:0"/>
+				<input  class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.SURYO_SUN.getObj()%>" check='<%=DefineReport.InpText.SURYO_SUN.getMaxlenTag()%>' data-options="min:0"/>
 			<!--一部の入力項目については配送パターンにて定義済み  -->
 			<!--名称マスタ項目については他の項目にて定義済み  -->
 			<!--[実仕入先名称]項目については他の項目にて定義済み  -->
