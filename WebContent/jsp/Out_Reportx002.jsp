@@ -539,7 +539,7 @@
 			<tr><th style="max-width:210px;"></th><th style="max-width:360px;"></th></tr>
 			<tr>
 			<td>
-				<input class="easyui-numberbox_" tabindex="232" col="F31" id="<%=DefineReport.InpText.SSIRCD.getObj()%>" check='<%=DefineReport.InpText.SSIRCD.getMaxlenTag()%>' for_btn="<%=DefineReport.Button.SIR.getObj()%>_F1" data-options="label:'標準仕入先コード',labelWidth:130" style="width:200px;">
+				<input class="easyui-numberbox_" tabindex="232" col="F31" id="<%=DefineReport.InpText.SSIRCD.getObj()%>" check='<%=DefineReport.InpText.SSIRCD.getMaxlenTag()%>' for_btn="<%=DefineReport.Button.SIR.getObj()%>_F1" data-options="label:'標準仕入先コード',labelWidth:130,required:true" style="width:200px;">
 			</td>
 			<td class="lbl_box">
 				<input class="easyui-textbox_" tabindex="-1" id="<%=DefineReport.InpText.SIRKN.getObj()%>" for_inp="<%=DefineReport.InpText.SSIRCD.getObj()%>_F3" for_btn="<%=DefineReport.Button.SIR.getObj()%>_F3" readonly="readonly" data-options="readonly:true,editable:false"  style="width:370px;">
