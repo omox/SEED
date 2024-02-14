@@ -29,15 +29,41 @@
          on session expiration as well as webapp lifecycle) -->
     <!--
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
+    -->
+
+    <!-- url
     MDMINA8    :172.16.2.145:50000/MDMDB syanai
     MDMINA     :172.28.1.220:50000/MDMDB test
     MDMINA     :172.28.1.210:50000/MDMDB honban
+
+   url="jdbc:mysql://rds-sum-db01.cluster-cuuukq9af8ir.ap-northeast-1.rds.amazonaws.com:3306/SUMDB"
     -->
+ <Resource name="jdbc/bmana"
+   auth="Container"
+   type="javax.sql.DataSource"
+   driverClassName="com.mysql.cj.jdbc.Driver"
+   url="jdbc:mysql://rds-sum-db01.cluster-cuuukq9af8ir.ap-northeast-1.rds.amazonaws.com:3306/SUMDB"
+   connectionProperties="useOldAliasMetadataBehavior=true;zeroDateTimeBehavior=convertToNull;enabledTLSProtocols=TLSv1.2"
+   defaultAutoCommit="false"
+   username="mysqladmin"
+   password="Passw0rd"
+   maxTotal="150"
+   maxIdle="20"
+   maxWaitMillis="5000"
+   logAbandoned="true"
+   removeAbandonedOnMaintenance="true"
+   removeAbandonedOnBorrow="true"
+   removeAbandonedTimeout="300"
+   testOnBorrow="true"
+   validationQuery="select 1 from dual"
+ />
+ <JarScanner scanClassPath="false" />
+<!-- 
  <Resource name="jdbc/bmana"
            auth="Container"
            type="javax.sql.DataSource"
            driverClassName="com.ibm.db2.jcc.DB2Driver"
-           url="jdbc:db2://172.28.1.210:50000/MDMDB:defaultIsolationLevel=1;useJDBC4ColumnNameAndLabelSemantics=2;"
+           url="jdbc:db2://172.16.2.145:50000/MDMDB:defaultIsolationLevel=1;useJDBC4ColumnNameAndLabelSemantics=2;"
            username="db2admin"
            password="Passw0rd"
            maxTotal="150"
@@ -50,4 +76,5 @@
            testOnBorrow="true"
            validationQuery="select 1 from SYSIBM.SYSDUMMY1"
  />
+ -->
 </Context>
