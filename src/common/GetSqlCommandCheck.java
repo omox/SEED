@@ -79,25 +79,25 @@ public class GetSqlCommandCheck {
       if (outobj.equals(DefineReport.InpText.SHNCD.getObj())) {
         tbl = "INAMS.MSTSHN";
         col = "SHNCD";
-        szWhere = " and nvl(UPDKBN, 0) = 0";
+        szWhere = " and COALESCE(UPDKBN, 0) = 0";
       }
       // 部門コード
       if (outobj.equals(DefineReport.InpText.BMNCD.getObj())) {
         tbl = "INAMS.MSTBMN";
         col = "BMNCD";
-        szWhere = " and nvl(UPDKBN, 0) = 0";
+        szWhere = " and COALESCE(UPDKBN, 0) = 0";
       }
       // 仕入先コード
       if (outobj.equals(DefineReport.InpText.SIRCD.getObj())) {
         tbl = "INAMS.MSTSIR";
         col = "SIRCD";
-        szWhere = " and nvl(UPDKBN, 0) = 0";
+        szWhere = " and COALESCE(UPDKBN, 0) = 0";
       }
       // 実仕入先コード
       if (outobj.equals(DefineReport.InpText.RSIRCD.getObj())) {
         tbl = "INAMS.MSTFUKUSUSIR_R";
         col = "SIRCD";
-        szWhere = " and nvl(UPDKBN, 0) = 0";
+        szWhere = " and COALESCE(UPDKBN, 0) = 0";
       }
       // メーカーコード
       if (outobj.equals(DefineReport.InpText.MAKERCD.getObj())) {
@@ -143,7 +143,8 @@ public class GetSqlCommandCheck {
       if (outobj.equals(DefineReport.InpText.TENCD.getObj())) {
         tbl = "INAMS.MSTTEN";
         col = "TENCD";
-        if (DefineReport.ID_PAGE_RP007.equals(outpage) || DefineReport.ID_PAGE_SK003.equals(outpage) || DefineReport.ID_PAGE_SK006.equals(outpage) || "Out_ReportwinST008".equals(outpage) || DefineReport.ID_PAGE_TG003.equals(outpage)) { // ランクパターンマスタ：店コピー
+        if (DefineReport.ID_PAGE_RP007.equals(outpage) || DefineReport.ID_PAGE_SK003.equals(outpage) || DefineReport.ID_PAGE_SK006.equals(outpage) || "Out_ReportwinST008".equals(outpage)
+            || DefineReport.ID_PAGE_TG003.equals(outpage)) { // ランクパターンマスタ：店コピー
           szWhere += " and MISEUNYOKBN <> 9";
         }
 
@@ -153,7 +154,7 @@ public class GetSqlCommandCheck {
         ) {
           szWhere += " and MISEUNYOKBN = 9";
         }
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
       }
 
       // 支払先マスタ
@@ -172,7 +173,7 @@ public class GetSqlCommandCheck {
           String bmncd = value.split(",")[1];
           rep += areacd;
           szWhere += " and BMNCD = ?";
-          szWhere += " and nvl(UPDKBN, 0) = 0";
+          szWhere += " and COALESCE(UPDKBN, 0) = 0";
           paramData.add(bmncd);
 
         } else if (DefineReport.ID_PAGE_SK003.equals(outpage)) {
@@ -181,7 +182,7 @@ public class GetSqlCommandCheck {
           String bmncd = value.split(",")[1];
           rep += tencd;
           szWhere += " and BMNCD = ?";
-          szWhere += " and nvl(UPDKBN, 0) = 0";
+          szWhere += " and COALESCE(UPDKBN, 0) = 0";
           paramData.add(bmncd);
         } else {
           col = "BMNCD";
@@ -195,7 +196,7 @@ public class GetSqlCommandCheck {
         col = "BMNCD";
         rep += bmncd;
         szWhere += " and CALLCD = ?";
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
         paramData.add(callcd);
 
       }
@@ -256,7 +257,7 @@ public class GetSqlCommandCheck {
         String areakbn = value.split(",")[1];
         rep += hsgpcd;
         szWhere += " and AREAKBN = ?";
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
         paramData.add(areakbn);
 
       }
@@ -266,7 +267,7 @@ public class GetSqlCommandCheck {
         col = "BMNCD";
         String bmncd = value.split(",")[0];
         String adicd = value.split(",")[1];
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
         rep += bmncd;
         szWhere += " and DAICD = ?";
         paramData.add(adicd);
@@ -289,7 +290,7 @@ public class GetSqlCommandCheck {
           }
 
           szWhere += " and DAICD = ?";
-          szWhere += " and nvl(UPDKBN, 0) = 0";
+          szWhere += " and COALESCE(UPDKBN, 0) = 0";
           paramData.add(adicd);
 
         } else {
@@ -299,7 +300,7 @@ public class GetSqlCommandCheck {
           rep += bmncd;
           szWhere += " and DAICD = ?";
           szWhere += " and CHUCD = ?";
-          szWhere += " and nvl(UPDKBN, 0) = 0";
+          szWhere += " and COALESCE(UPDKBN, 0) = 0";
           paramData.add(adicd);
           paramData.add(chucd);
         }
@@ -312,7 +313,7 @@ public class GetSqlCommandCheck {
         String rankno = value.split(",")[1];
         rep += bmncd;
         szWhere += " and RANKNO = ?";
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
         paramData.add(rankno);
       }
 
@@ -326,7 +327,7 @@ public class GetSqlCommandCheck {
 
         rep += bmncd;
         szWhere += " and RANKNO = ? and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
 
         paramData.add(rankno);
         paramData.add(StringUtils.substring(moyscd, 0, 1));
@@ -357,7 +358,7 @@ public class GetSqlCommandCheck {
         }
 
         szWhere += " and SRYPTNNO = ?";
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
         paramData.add(sryptnno);
       }
       // 通常率パターンNo.
@@ -368,7 +369,7 @@ public class GetSqlCommandCheck {
         String rtptnno = value.split(",")[1];
         rep += bmncd;
         szWhere += " and RTPTNNO = ?";
-        szWhere += " and nvl(UPDKBN, 0) = 0";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
         paramData.add(rtptnno);
       }
       // 実績率パターンNo.
@@ -461,7 +462,7 @@ public class GetSqlCommandCheck {
           tbl = "INAAD.SYSSHUNO";
         } else {
           tbl = "INATK.TOKMOYSYU";
-          szWhere = " and nvl(UPDKBN, 0) = 0";
+          szWhere = " and COALESCE(UPDKBN, 0) = 0";
         }
         col = "SHUNO";
       }
@@ -540,7 +541,7 @@ public class GetSqlCommandCheck {
       // 商品コード
       paramData.add(obj.optString("value"));
       sqlcommand = DefineReport.ID_SQL_CHK_TBL_MULTI.replace("@T", tbl);
-      sqlcommand += " SHNCD = ? and nvl(UPDKBN, 0) = 0 and SHNKBN <> 5 ";
+      sqlcommand += " SHNCD = ? and COALESCE(UPDKBN, 0) = 0 and SHNKBN <> 5 ";
     }
     if (StringUtils.equals(key, "MST_CNT") && outobj.equals(DefineReport.InpText.SRCCD.getObj())) {
       String tbl = "INAMS.MSTSRCCD";
@@ -788,7 +789,7 @@ public class GetSqlCommandCheck {
       paramData.add(obj.optString("TENCD"));
       paramData.add(obj.optString("TENKYUDT"));
       sqlcommand += " TENCD = ? and TENKYUDT = ? ";
-      sqlcommand += " and nvl(UPDKBN, 0) = 0";
+      sqlcommand += " and COALESCE(UPDKBN, 0) = 0";
     }
     // 店舗部門マスタ用
     if (outobj.equals("MSTTENBMN") && DefineReport.ID_PAGE_X122.equals(outpage)) {
@@ -799,7 +800,7 @@ public class GetSqlCommandCheck {
       paramData.add(obj.optString("TENCD"));
       paramData.add(obj.optString("BMNCD"));
       sqlcommand += " TENCD = ? and BMNCD = ?";
-      sqlcommand += " and nvl(UPDKBN, 0) = 0";
+      sqlcommand += " and COALESCE(UPDKBN, 0) = 0";
     }
 
     // 事前発注_発注明細wk管理
@@ -843,12 +844,12 @@ public class GetSqlCommandCheck {
           paramData.add(moyskbn);
           paramData.add(moysstdt);
           paramData.add(moysrban);
-          sqlcommand += DefineReport.ID_SQL_RANKEX_WHERE + " and nvl(UPDKBN, 0) = 0";
+          sqlcommand += DefineReport.ID_SQL_RANKEX_WHERE + " and COALESCE(UPDKBN, 0) = 0";
         } else {
           sqlcommand += DefineReport.ID_SQL_RANK_FROM;
           paramData.add(bmncd);
           paramData.add(rankno);
-          sqlcommand += DefineReport.ID_SQL_RANK_WHERE + " and nvl(UPDKBN, 0) = 0";
+          sqlcommand += DefineReport.ID_SQL_RANK_WHERE + " and COALESCE(UPDKBN, 0) = 0";
         }
       } else {
         // アン有 or 無
@@ -888,7 +889,8 @@ public class GetSqlCommandCheck {
       }
     }
 
-    if (outobj.equals("MOYOKBN") || outobj.equals("MOYOKBN2") || outobj.equals("MOYOKBN3") || outobj.equals("MOYOKBN5") || outobj.equals("MOYOKBN7") || outobj.equals("MOYOKBN8") || outobj.equals("MOYOKBN9")) {
+    if (outobj.equals("MOYOKBN") || outobj.equals("MOYOKBN2") || outobj.equals("MOYOKBN3") || outobj.equals("MOYOKBN5") || outobj.equals("MOYOKBN7") || outobj.equals("MOYOKBN8")
+        || outobj.equals("MOYOKBN9")) {
       paramData.add(obj.optString("MOYSKBN"));
       paramData.add(obj.optString("MOYSSTDT"));
       paramData.add(obj.optString("MOYSRBAN"));
@@ -897,7 +899,8 @@ public class GetSqlCommandCheck {
     }
 
     // 事前打ち出し_商品納入日検索
-    if (outobj.equals(DefineReport.InpText.SHNCD.getObj()) && StringUtils.equals(key, "SEL") && (DefineReport.ID_PAGE_JU012.equals(outpage) || DefineReport.ID_PAGE_JU013.equals(outpage) || DefineReport.ID_PAGE_JU032.equals(outpage) || DefineReport.ID_PAGE_JU033.equals(outpage))) {
+    if (outobj.equals(DefineReport.InpText.SHNCD.getObj()) && StringUtils.equals(key, "SEL")
+        && (DefineReport.ID_PAGE_JU012.equals(outpage) || DefineReport.ID_PAGE_JU013.equals(outpage) || DefineReport.ID_PAGE_JU032.equals(outpage) || DefineReport.ID_PAGE_JU033.equals(outpage))) {
       String JNDIname = Defines.STR_JNDI_DS;
       User userInfo = (User) session.getAttribute(Consts.STR_SES_LOGINUSER);
       Iterator keys = obj.keys();
