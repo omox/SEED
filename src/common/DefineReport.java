@@ -1657,7 +1657,8 @@ public class DefineReport {
      * @return true：テキスト false：その他
      */
     public boolean isText() {
-      return TEXT.equals(getObj()) || ZEN.equals(getObj()) || KANA.equals(getObj()) || ALPHA.equals(getObj()) || SUUJI.equals(getObj()) || LPADZERO.equals(getObj()) || TEL.equals(getObj()) || FAX.equals(getObj());
+      return TEXT.equals(getObj()) || ZEN.equals(getObj()) || KANA.equals(getObj()) || ALPHA.equals(getObj()) || SUUJI.equals(getObj()) || LPADZERO.equals(getObj()) || TEL.equals(getObj())
+          || FAX.equals(getObj());
     }
 
     /** @return データ型タグ */
@@ -5332,14 +5333,16 @@ public class DefineReport {
   public final static String ID_SQL_GRD_CMN = "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) ";
   public final static String ID_SQL_GRD_CMN0 = "with T1(IDX) as (select 0 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) ";
   public final static String ID_SQL_GRD_EMPTY = ID_SQL_GRD_CMN + "select IDX from T1";
-  public final static String ID_SQL_CMN_WEEK = "WITH WEEK as (select CWEEK,'('||JWEEK||')' as JWEEK, JWEEK as JWEEK2 from (values(1,'日'),(2,'月'),(3,'火'),(4,'水'),(5,'木'),(6,'金'),(7,'土')) as TMP(CWEEK,JWEEK)) ";
+  public final static String ID_SQL_CMN_WEEK =
+      "WITH WEEK as (select CWEEK,'('||JWEEK||')' as JWEEK, JWEEK as JWEEK2 from (values(1,'日'),(2,'月'),(3,'火'),(4,'水'),(5,'木'),(6,'金'),(7,'土')) as TMP(CWEEK,JWEEK)) ";
 
   public final static String ID_SQL_CHK_TBL = "select count(@C) as VALUE from @T where @C in (?)";
   public final static String ID_SQL_CHK_TBL_SEL = "select @C as VALUE from @T where @C in (?)";
 
   public final static String ID_SQL_CHK_TBL_MULTI = "select count(*) as VALUE from @T where ";
 
-  public final static String ID_SQL_ARR_CMN = ",ARRWK(IDX, RNK, S, ARR, LEN) as (" + " select 1, SUBSTR(ARR, 1 , LEN), 1 + LEN, ARR, LEN from wk " + " union all" + " select IDX+1, SUBSTR(ARR, S , LEN), S + LEN, ARR, LEN from ARRWK where S <= length(ARR)" + ") ";
+  public final static String ID_SQL_ARR_CMN = ",ARRWK(IDX, RNK, S, ARR, LEN) as (" + " select 1, SUBSTR(ARR, 1 , LEN), 1 + LEN, ARR, LEN from wk " + " union all"
+      + " select IDX+1, SUBSTR(ARR, S , LEN), S + LEN, ARR, LEN from ARRWK where S <= length(ARR)" + ") ";
 
   // SQL：カレンダーマスター
   public final static String ID_SQL_CAL = "select min(COMTOB) as " + MINDT + ", max(COMTOB) as " + MAXDT + " from INAYS.MCALTT";
@@ -5352,18 +5355,20 @@ public class DefineReport {
   // SQL：名称マスタ
   public final static String ID_SQL_MEISYO_CD_WHERE = " and MEISHOCD = ? ";
   public final static String ID_SQL_MEISYO_CD_WHERE2 = " and MEISHOCD||'" + SEPARATOR + "'||rtrim(NMKN) like ? ";
-  public final static String ID_SQL_MEISYO_HEAD =
-      "select " + VAL + " as " + KBN + "," + VAL + "," + TXT + " as " + KTXT + "," + TXT + "," + TXT + " as TEXT2," + TXT + " as " + STXT + "," + TXT + " as " + KANA + " from (values ROW('" + Values.NONE.getVal() + "','　')) as X(" + VAL + "," + TXT + ") union all ";
-  public final static String ID_SQL_MEISYO_HEAD2 =
-      "select " + VAL + " as " + KBN + "," + VAL + "," + TXT + " as " + KTXT + "," + TXT + "," + TXT + " as TEXT2," + TXT + " as " + STXT + "," + TXT + " as " + KANA + " from (values ROW('" + Values.ALLKAN.getVal() + "','" + Values.ALLKAN.getTxt() + "')) as X(" + VAL + "," + TXT + ") union all ";
-  public final static String ID_SQL_MEISYO_HEAD3 =
-      "select " + VAL + " as " + KBN + "," + VAL + "," + TXT + " as " + KTXT + "," + TXT + "," + TXT + " as TEXT2," + TXT + " as " + STXT + "," + TXT + " as " + KANA + " from (values ROW('" + Values.ALL.getVal() + "','" + Values.ALL.getTxt() + "')) as X(" + VAL + "," + TXT + ") union all ";
-  public final static String ID_SQL_MEISYO =
-      "select MEISHOKBN as " + KBN + ", MEISHOCD as " + VAL + ", MEISHOKBNKN as " + KTXT + ", MEISHOCD||'" + SEPARATOR + "'||rtrim(NMKN) as " + TXT + ", rtrim(NMKN) as TEXT2, TNMKN as " + STXT + ", NMAN as " + KANA + " from INAMS.MSTMEISHO where MEISHOKBN = ? ";
-  public final static String ID_SQL_MEISYO2 = "select MEISHOKBN as " + KBN + ", MEISHOCD as " + VAL + ", MEISHOKBNKN as " + KTXT + ", rtrim(NMKN) as " + TXT + ", rtrim(NMKN) as TEXT2, TNMKN as " + STXT + ", NMAN as " + KANA + " from INAMS.MSTMEISHO where MEISHOKBN = ? ";
+  public final static String ID_SQL_MEISYO_HEAD = "select " + VAL + " as " + KBN + "," + VAL + "," + TXT + " as " + KTXT + "," + TXT + "," + TXT + " as TEXT2," + TXT + " as " + STXT + "," + TXT
+      + " as " + KANA + " from (values ROW('" + Values.NONE.getVal() + "','　')) as X(" + VAL + "," + TXT + ") union all ";
+  public final static String ID_SQL_MEISYO_HEAD2 = "select " + VAL + " as " + KBN + "," + VAL + "," + TXT + " as " + KTXT + "," + TXT + "," + TXT + " as TEXT2," + TXT + " as " + STXT + "," + TXT
+      + " as " + KANA + " from (values ROW('" + Values.ALLKAN.getVal() + "','" + Values.ALLKAN.getTxt() + "')) as X(" + VAL + "," + TXT + ") union all ";
+  public final static String ID_SQL_MEISYO_HEAD3 = "select " + VAL + " as " + KBN + "," + VAL + "," + TXT + " as " + KTXT + "," + TXT + "," + TXT + " as TEXT2," + TXT + " as " + STXT + "," + TXT
+      + " as " + KANA + " from (values ROW('" + Values.ALL.getVal() + "','" + Values.ALL.getTxt() + "')) as X(" + VAL + "," + TXT + ") union all ";
+  public final static String ID_SQL_MEISYO = "select MEISHOKBN as " + KBN + ", MEISHOCD as " + VAL + ", MEISHOKBNKN as " + KTXT + ", MEISHOCD||'" + SEPARATOR + "'||rtrim(NMKN) as " + TXT
+      + ", rtrim(NMKN) as TEXT2, TNMKN as " + STXT + ", NMAN as " + KANA + " from INAMS.MSTMEISHO where MEISHOKBN = ? ";
+  public final static String ID_SQL_MEISYO2 = "select MEISHOKBN as " + KBN + ", MEISHOCD as " + VAL + ", MEISHOKBNKN as " + KTXT + ", rtrim(NMKN) as " + TXT + ", rtrim(NMKN) as TEXT2, TNMKN as "
+      + STXT + ", NMAN as " + KANA + " from INAMS.MSTMEISHO where MEISHOKBN = ? ";
   public final static String ID_SQL_MEISYO_FOOTER = " order by " + KBN + ", " + VAL + ", " + TXT + "";
   public final static String ID_SQL_MEISYO_FOOTER2 = " order by " + KBN + ", " + VAL + " DESC, " + TXT + "";
-  public final static String ID_SQL_MEISYO_PROHIBITED = "select * from (values ROW('" + DataType.KANA.getObj() + "', 'ｧｨｩｪｫｯｬｭｮ', 'ｱｲｳｴｵﾂﾔﾕﾖ'),ROW('" + DataType.ZEN.getObj() + "', '〜', 'ー'),ROW('ng', ',', null)) as MSTMEISHO(MOJI, " + TXT + ", " + TXT + "2)";
+  public final static String ID_SQL_MEISYO_PROHIBITED = "select * from (values ROW('" + DataType.KANA.getObj() + "', 'ｧｨｩｪｫｯｬｭｮ', 'ｱｲｳｴｵﾂﾔﾕﾖ'),ROW('" + DataType.ZEN.getObj()
+      + "', '〜', 'ー'),ROW('ng', ',', null)) as MSTMEISHO(MOJI, " + TXT + ", " + TXT + "2)";
 
   // SQL：メッセージマスター
   public final static String ID_SQL_MSG_WHERE = " where MSGCD = ?";
@@ -5373,35 +5378,43 @@ public class DefineReport {
   // SQL：処理日付 TODO:本当に取り方これでいいのか確認？
   public final static String ID_SQLSHORIDT = "select SHORIDT as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
   public final static String ID_SQLSHORIDT2 = "select SUBSTR(SHORIDT,3) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
-  public final static String ID_SQLSHORIDT3 = "select SHORIDT as " + VAL + "2,TO_CHAR(TO_DATE(SHORIDT,'yyyymmdd') +1 year,'yyyymmdd') as " + VAL + "3 from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
+  public final static String ID_SQLSHORIDT3 = "select SHORIDT as " + VAL + "2,TO_CHAR(TO_DATE(SHORIDT,'yyyymmdd') +1 year,'yyyymmdd') as " + VAL
+      + "3 from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
 
   // SQL：処理日付曜日
-  public final static String ID_SQLSHORIDTWEEK = "select DAYOFWEEK(TO_DATE(SHORIDT,'YYYYMMDD')) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
+  public final static String ID_SQLSHORIDTWEEK =
+      "select DAYOFWEEK(TO_DATE(SHORIDT,'YYYYMMDD')) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
 
   // SQL：週№期間を取得
-  public final static String ID_SQLSHUNOPERIOD = DefineReport.ID_SQL_CMN_WEEK + ",SHORI as(SELECT CASE WHEN DAYOFWEEK(TO_DATE(" + VAL + ",'YYYYMMDD')) = 2 OR DAYOFWEEK(TO_DATE(" + VAL + ",'YYYYMMDD')) = 3 THEN TO_CHAR(TO_DATE(" + VAL + ",'YYYYMMDD') + 7 DAY,'YYYYMMDD') ELSE TO_CHAR(TO_DATE(" + VAL
-      + ",'YYYYMMDD') + 14 DAY,'yyyymmdd') END AS DT FROM(" + DefineReport.ID_SQLSHORIDT + ")) "
+  public final static String ID_SQLSHUNOPERIOD = DefineReport.ID_SQL_CMN_WEEK + ",SHORI as(SELECT CASE WHEN DAYOFWEEK(TO_DATE(" + VAL + ",'YYYYMMDD')) = 2 OR DAYOFWEEK(TO_DATE(" + VAL
+      + ",'YYYYMMDD')) = 3 THEN TO_CHAR(TO_DATE(" + VAL + ",'YYYYMMDD') + 7 DAY,'YYYYMMDD') ELSE TO_CHAR(TO_DATE(" + VAL + ",'YYYYMMDD') + 14 DAY,'yyyymmdd') END AS DT FROM("
+      + DefineReport.ID_SQLSHORIDT + ")) "
       + "SELECT TO_CHAR(TO_DATE(SHUNO.STARTDT,'YYYYMMDD'),'YYYY/MM/DD') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(TO_DATE(SHUNO.STARTDT,'YYYYMMDD'))) || '～' || TO_CHAR(TO_DATE(SHUNO.ENDDT,'YYYYMMDD'),'yyyy/mm/dd') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(TO_DATE(SHUNO.ENDDT,'YYYYMMDD'))) AS "
       + VAL + " FROM INAAD.SYSSHUNO AS SHUNO, SHORI WHERE SHORI.DT BETWEEN SHUNO.STARTDT AND SHUNO.ENDDT";
   // SQL：期間(初期表示用)
   public final static String ID_SQL_KIKAN_DAY_INIT = "select max(COMTOB) as DT1, max(COMTOB) as DT2 from INAYS.MCALTT";
-  public final static String ID_SQL_KIKAN_WEEK_INIT = "select COALESCE(MAX(NENDO), - 1) as NENDO, COALESCE(MIN(COMTOB), - 1) as MINDT, COALESCE(MAX(COMTOB), - 1) as MAXDT from INAYS.MCALTT where NENSYUU = (select integer(NENSYUU) - 100 from INAYS.MCALTT where COMTOB = ?)";
+  public final static String ID_SQL_KIKAN_WEEK_INIT =
+      "select COALESCE(MAX(NENDO), - 1) as NENDO, COALESCE(MIN(COMTOB), - 1) as MINDT, COALESCE(MAX(COMTOB), - 1) as MAXDT from INAYS.MCALTT where NENSYUU = (select integer(NENSYUU) - 100 from INAYS.MCALTT where COMTOB = ?)";
   // 登録系画面
-  public final static String ID_SQL_KIKAN_MONTH_INIT = "select DT1, DT2 from ( select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ?" + " union all select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ?"
+  public final static String ID_SQL_KIKAN_MONTH_INIT = "select DT1, DT2 from ( select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ?"
+      + " union all select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ?"
       + " union all select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT ) T where DT1 is not null fetch first 1 row only";
   // 確認系画面
-  public final static String ID_SQL_KIKAN_MONTH_INIT2 = "select DT1, DT2 from ( select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ? and '01' < ?" + " union all select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ?"
+  public final static String ID_SQL_KIKAN_MONTH_INIT2 = "select DT1, DT2 from ( select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ? and '01' < ?"
+      + " union all select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT where NENTUKI = ?"
       + " union all select max(NENTUKI) as DT1, max(NENTUKI) as DT2 from INAYS.MCALTT ) T where DT1 is not null fetch first 1 row only";
   /** 共通（INAYS.MCALTT） */
   // SQL：期間(月)共通部
-  private final static String ID_SQL_KIKAN_YM_2 = ", TEXT from (select MIN(NENTUKI) as MINDT, MAX(NENTUKI) as MAXDT, left(NENTUKI,4) || '年' || substr(NENTUKI,5) || '月' as TEXT from INAYS.MCALTT group by NENTUKI) order by VALUE desc";
+  private final static String ID_SQL_KIKAN_YM_2 =
+      ", TEXT from (select MIN(NENTUKI) as MINDT, MAX(NENTUKI) as MAXDT, left(NENTUKI,4) || '年' || substr(NENTUKI,5) || '月' as TEXT from INAYS.MCALTT group by NENTUKI) order by VALUE desc";
   // SQL：期間(月)FROM
   public final static String ID_SQL_KIKAN_YM_FROM = "select MINDT as VALUE" + ID_SQL_KIKAN_YM_2;
   // SQL：期間(月)TO
   public final static String ID_SQL_KIKAN_YM_TO = "select MAXDT as VALUE" + ID_SQL_KIKAN_YM_2;
 
   // SQL 催しコード
-  public final static String ID_SQL_MOYSCD = "select CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), right ('000' || T1.MOYSRBAN, 3)) as VALUE, CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), right ('000' || T1.MOYSRBAN, 3)) as TEXT from INATK.TOKMOYCD T1 ";
+  public final static String ID_SQL_MOYSCD =
+      "select CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), right ('000' || T1.MOYSRBAN, 3)) as VALUE, CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), right ('000' || T1.MOYSRBAN, 3)) as TEXT from INATK.TOKMOYCD T1 ";
   public final static String ID_SQL_MOYSCD_HEAD = " union all select VALUE, TEXT from (values ROW('-1', '　')) as X(value, TEXT)  ";
   public final static String ID_SQL_HEAD_MOYSCD =
       "select VALUE, TEXT, TEXT2, TEXT3, TEXT4 from (values ROW('-1', '　', 0, 0, 0)) as X(value, TEXT, TEXT2, TEXT3, TEXT4) union all select CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), T1.MOYSRBAN) as VALUE, CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), T1.MOYSRBAN) as TEXT, T1.MOYSKBN as TEXT2, T1.MOYSSTDT as TEXT3, T1.MOYSRBAN as TEXT4 from INATK.TOKMOYCD T1 where T1.MOYSKBN = 8 order by TEXT2, TEXT3, TEXT4;";
@@ -5409,8 +5422,10 @@ public class DefineReport {
       + "select MOYKN as F2,TO_CHAR(TO_DATE(NNSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNSTDT, 'YYYYMMDD')))    ||'～'||    TO_CHAR(TO_DATE(NNEDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNEDDT, 'YYYYMMDD'))) as F3, NNSTDT as F4, NNEDDT as F5 from INATK.TOKMOYCD where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
   public final static String ID_SQL_MOYSCD2 = DefineReport.ID_SQL_CMN_WEEK
       + "select MOYKN as F2,TO_CHAR(TO_DATE(NNSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNSTDT, 'YYYYMMDD')))    ||'～'||    TO_CHAR(TO_DATE(NNEDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNEDDT, 'YYYYMMDD'))) as F3"
-      + ",TO_CHAR(TO_DATE(HBSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(HBSTDT, 'YYYYMMDD'))) as F4" + ",TO_CHAR(TO_DATE(HBEDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(HBEDDT, 'YYYYMMDD'))) as F5"
-      + ",TO_CHAR(TO_DATE(PLUSDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(PLUSDDT, 'YYYYMMDD'))) as F6,PLUSFLG as F7, PLUSDDT as F8" + " from INATK.TOKMOYCD where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
+      + ",TO_CHAR(TO_DATE(HBSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(HBSTDT, 'YYYYMMDD'))) as F4"
+      + ",TO_CHAR(TO_DATE(HBEDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(HBEDDT, 'YYYYMMDD'))) as F5"
+      + ",TO_CHAR(TO_DATE(PLUSDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(PLUSDDT, 'YYYYMMDD'))) as F6,PLUSFLG as F7, PLUSDDT as F8"
+      + " from INATK.TOKMOYCD where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
   public final static String ID_SQL_TOKMOYCD = "SELECT COUNT(MOYSKBN) AS " + VAL + " FROM INATK.TOKMOYCD WHERE MOYSKBN=? AND MOYSSTDT=? AND MOYSRBAN=? AND PLUSFLG='1'";
 
   // SQL PLU配信済のPLU配信日
@@ -5428,15 +5443,18 @@ public class DefineReport {
 
   /** 共通（INAAD.MCALTT） */
   // SQL：期間(月)TO
-  public final static String ID_SQL_SHUNO = " select RIGHT('0000'||T1.SHUNO,4) as " + VAL + ", RIGHT('0000'||T1.SHUNO,4)||'-'||TO_CHAR(TO_DATE(T1.STARTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STARTDT, 'YYYYMMDD')))"
-      + "||'～'||TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) as " + TXT + "@C" + " from INAAD.SYSSHUNO T1" + " @T";
+  public final static String ID_SQL_SHUNO = " select RIGHT('0000'||T1.SHUNO,4) as " + VAL
+      + ", RIGHT('0000'||T1.SHUNO,4)||'-'||TO_CHAR(TO_DATE(T1.STARTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STARTDT, 'YYYYMMDD')))"
+      + "||'～'||TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) as " + TXT + "@C" + " from INAAD.SYSSHUNO T1"
+      + " @T";
   public final static String ID_SQL_TOKSHUNO = " select RIGHT('0000'||T2.SHUNO,4) as " + VAL
       + ", CASE WHEN T1.STARTDT IS NULL AND T1.ENDDT IS NULL THEN RIGHT ('0000' || T2.SHUNO, 4) || '-' ELSE RIGHT('0000'||T2.SHUNO,4)||'-'||TO_CHAR(TO_DATE(T1.STARTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STARTDT, 'YYYYMMDD')))"
-      + "||'～'||TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) END as " + TXT + "@C" + " from INATK.TOKMOYSYU T2 LEFT JOIN INAAD.SYSSHUNO T1 ON T1.SHUNO = T2.SHUNO where T2.UPDKBN = 0 " + " @T";
+      + "||'～'||TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) END as " + TXT + "@C"
+      + " from INATK.TOKMOYSYU T2 LEFT JOIN INAAD.SYSSHUNO T1 ON T1.SHUNO = T2.SHUNO where T2.UPDKBN = 0 " + " @T";
   // SQL：週№(処理日付を基準日とした週、翌週、翌々週のデータ)
   public final static String ID_SQL_SHUNO2 = DefineReport.ID_SQL_CMN_WEEK
-      + ",SHORI as(SELECT DAYOFWEEK(TO_DATE(VALUE, 'YYYYMMDD')) AS DT,TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD'), 'YYYYMMDD') AS N,TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD') + 7 DAY, 'YYYYMMDD') AS N1,TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD') + 14 DAY, 'YYYYMMDD') AS N2 FROM(" + DefineReport.ID_SQLSHORIDT + ")) "
-      + "SELECT SHUNO.SHUNO AS " + VAL + ",SUBSTR(SHUNO.SHUNO,1,2) || '" + SEPARATOR
+      + ",SHORI as(SELECT DAYOFWEEK(TO_DATE(VALUE, 'YYYYMMDD')) AS DT,TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD'), 'YYYYMMDD') AS N,TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD') + 7 DAY, 'YYYYMMDD') AS N1,TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD') + 14 DAY, 'YYYYMMDD') AS N2 FROM("
+      + DefineReport.ID_SQLSHORIDT + ")) " + "SELECT SHUNO.SHUNO AS " + VAL + ",SUBSTR(SHUNO.SHUNO,1,2) || '" + SEPARATOR
       + "' ||SUBSTR(SHUNO.SHUNO,3,4) ||' ' || TO_CHAR(TO_DATE(SHUNO.STARTDT,'YYYYMMDD'),'YYYY/MM/DD') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(TO_DATE(SHUNO.STARTDT,'YYYYMMDD'))) || '～' || TO_CHAR(TO_DATE(SHUNO.ENDDT,'YYYYMMDD'),'yyyy/mm/dd') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(TO_DATE(SHUNO.ENDDT,'YYYYMMDD'))) AS "
       + TXT + " FROM INAAD.SYSSHUNO AS SHUNO, SHORI "
       + "WHERE (SHORI.DT IN (2,3) AND (SHORI.N BETWEEN SHUNO.STARTDT AND SHUNO.ENDDT OR SHORI.N1 BETWEEN SHUNO.STARTDT AND SHUNO.ENDDT)) OR ((SHORI.DT <> 2 AND SHORI.DT <> 3) AND (SHORI.N1 BETWEEN SHUNO.STARTDT AND SHUNO.ENDDT OR SHORI.N2 BETWEEN SHUNO.STARTDT AND SHUNO.ENDDT)) ORDER BY SHUNO.SHUNO";
@@ -5466,9 +5484,11 @@ public class DefineReport {
   /** 閉鎖店除外条件 */
   public final static String ID_SQL_TEN_EXIST = " and (TENHEH >= TO_CHAR(current date, 'yyyyMMdd') or TENHEH = 0) ";
   /** 既存店条件 */
-  public final static String ID_SQL_TEN_KZN = " and exists (select 'X' from INAMS.MTNPJIK M20 where M20.NENTUKI = ? and M20.MISECD = T1.MISECD and M20.KIZONTEN_KBN = '" + DefineReport.ValKizonKbn.KIZON.getVal() + "') ";
+  public final static String ID_SQL_TEN_KZN =
+      " and exists (select 'X' from INAMS.MTNPJIK M20 where M20.NENTUKI = ? and M20.MISECD = T1.MISECD and M20.KIZONTEN_KBN = '" + DefineReport.ValKizonKbn.KIZON.getVal() + "') ";
   /** 新店条件 */
-  public final static String ID_SQL_TEN_NEW = " and exists (select 'X' from INAMS.MTNPJIK M20 where M20.NENTUKI = ? and M20.MISECD = T1.MISECD and M20.KIZONTEN_KBN = '" + DefineReport.ValKizonKbn.NEW.getVal() + "') ";
+  public final static String ID_SQL_TEN_NEW =
+      " and exists (select 'X' from INAMS.MTNPJIK M20 where M20.NENTUKI = ? and M20.MISECD = T1.MISECD and M20.KIZONTEN_KBN = '" + DefineReport.ValKizonKbn.NEW.getVal() + "') ";
 
   // SQL：店舗
   public final static String ID_SQL_TENPO_FOOTER = " order by VALUE";
@@ -5477,37 +5497,45 @@ public class DefineReport {
   /** 店舗データ（INATR.MTNPXX） */
   public final static String ID_SQL_TENPO_XX = "select MISECD as VALUE,  MISECD|| ' ' || rtrim(TENMEI) as TEXT from INATR.MTNPXX";
   /** 共通（INAMS.MSTTENT） */
-  public final static String ID_SQL_TENPO_MDM = "select right ('000' || TENCD, 3) as value, right ('000' || TENCD, 3) || '" + SEPARATOR + "' || COALESCE(RTRIM(RTRIM(TENKN), '　'), '') as TEXT, RTRIM(RTRIM(TENKN), '　') as TEXT2 from INAMS.MSTTEN order by VALUE";
+  public final static String ID_SQL_TENPO_MDM = "select right ('000' || TENCD, 3) as value, right ('000' || TENCD, 3) || '" + SEPARATOR
+      + "' || COALESCE(RTRIM(RTRIM(TENKN), '　'), '') as TEXT, RTRIM(RTRIM(TENKN), '　') as TEXT2 from INAMS.MSTTEN order by VALUE";
 
   public final static String ID_SQL_TENPO_HEAD = "select VALUE, TEXT from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_TENPO_HEAD2 =
-      "select VALUE, TEXT from (values " + " (" + Values.TENPO_ALL.getVal() + ", '" + Values.TENPO_ALL.getTxt() + "'),(" + Values.TENPO_NEW.getVal() + ", '" + Values.TENPO_NEW.getTxt() + "'),(" + Values.TENPO_EX.getVal() + ", '" + Values.TENPO_EX.getTxt() + "')" + ") as X(value, TEXT) union all ";
+  public final static String ID_SQL_TENPO_HEAD2 = "select VALUE, TEXT from (values " + " (" + Values.TENPO_ALL.getVal() + ", '" + Values.TENPO_ALL.getTxt() + "'),(" + Values.TENPO_NEW.getVal() + ", '"
+      + Values.TENPO_NEW.getTxt() + "'),(" + Values.TENPO_EX.getVal() + ", '" + Values.TENPO_EX.getTxt() + "')" + ") as X(value, TEXT) union all ";
   public final static String ID_SQL_TENPO_HEAD3 = "select VALUE, TEXT from (values ROW('', '')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_TENPO_MDM_HEAD = "select " + VAL + "," + TXT + "," + TXT + " as TEXT2 from (values ROW('" + Values.NONE.getVal() + "','　')) as X(" + VAL + "," + TXT + ") union all ";
+  public final static String ID_SQL_TENPO_MDM_HEAD =
+      "select " + VAL + "," + TXT + "," + TXT + " as TEXT2 from (values ROW('" + Values.NONE.getVal() + "','　')) as X(" + VAL + "," + TXT + ") union all ";
 
   // SQL：店舗 TODO:
-  public final static String ID_SQL_TEN = "select TENCD as F1, TENAN as F2, CASE WHEN TENKN IS NULL OR TENKN = '' THEN '　' ELSE TENKN END as F3 from INAMS.MSTTEN where UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal();
+  public final static String ID_SQL_TEN =
+      "select TENCD as F1, TENAN as F2, CASE WHEN TENKN IS NULL OR TENKN = '' THEN '　' ELSE TENKN END as F3 from INAMS.MSTTEN where UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal();
 
   // SQL：週No. TODO:
   public final static String ID_SQL_SHUNO_M = "select SHUNO as F1 from INAAD.SYSSHUNO where STARTDT <= ? and ? <= ENDDT ";
 
   // SQL：店グループ TODO:
   public final static String ID_SQL_TEN_MR002 = "select TENGPCD as F1, TENGPAN as F2, TENGPKN as F3 from INAMS.MSTHSTENGP where HSGPCD = ? and TENGPCD = ? ";
-  public final static String ID_SQL_TEN_SI002 = "select HSTG.HSGPCD as F1, HSTG.TENGPAN as F2, HSTG.TENGPKN as F3 from INAMS.MSTAREAHSPTN EHP left join INAMS.MSTHSTENGP HSTG on HSTG.HSGPCD = EHP.HSGPCD and HSTG.TENGPCD = EHP.TENGPCD where EHP.HSPTN = ? and EHP.TENGPCD = ? ";
+  public final static String ID_SQL_TEN_SI002 =
+      "select HSTG.HSGPCD as F1, HSTG.TENGPAN as F2, HSTG.TENGPKN as F3 from INAMS.MSTAREAHSPTN EHP left join INAMS.MSTHSTENGP HSTG on HSTG.HSGPCD = EHP.HSGPCD and HSTG.TENGPCD = EHP.TENGPCD where EHP.HSPTN = ? and EHP.TENGPCD = ? ";
   public final static String ID_SQL_TENGPCD = "select TENGPCD as VALUE from INATK.TOKTG_QATEN where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and TENCD = ? and KYOSEIFLG = ? and LDTENKBN = 1";
 
   // SQL：付番済管理番号
-  public final static String SUMI_KANRINO = "select SYSR.SUMI_KANRINO + 1 as VALUE from INATK.SYSRS SYSR where SYSR.HBSTDT = ? and SYSR.BMNCD = ? and SYSR.WRITUKBN = ? and SYSR.SEICUTKBN = ? and SYSR.DUMMYCD = ? ";
+  public final static String SUMI_KANRINO =
+      "select SYSR.SUMI_KANRINO + 1 as VALUE from INATK.SYSRS SYSR where SYSR.HBSTDT = ? and SYSR.BMNCD = ? and SYSR.WRITUKBN = ? and SYSR.SEICUTKBN = ? and SYSR.DUMMYCD = ? ";
 
   // SQL：店舗一覧(汎用):
-  public final static String ID_SQL_TENPO_LIST = ID_SQL_GRD_CMN + "select T1.IDX, T2.TENCD, T2.TENKN from T1" + " left join (select ROW_NUMBER() over (order by T.TENCD) as IDX, T.TENCD as TENCD, M.TENKN as TENKN from @T T left join INAMS.MSTTEN M on T.TENCD = M.TENCD and M.UPDKBN = "
+  public final static String ID_SQL_TENPO_LIST = ID_SQL_GRD_CMN + "select T1.IDX, T2.TENCD, T2.TENKN from T1"
+      + " left join (select ROW_NUMBER() over (order by T.TENCD) as IDX, T.TENCD as TENCD, M.TENKN as TENKN from @T T left join INAMS.MSTTEN M on T.TENCD = M.TENCD and M.UPDKBN = "
       + DefineReport.ValUpdkbn.NML.getVal() + " fetch first @M row only) T2 on T1.IDX = T2.IDX order by T1.IDX ,T2.TENCD";
 
   // SQL：店舗一覧(エリア区分１) TODO:
-  public final static String ID_SQL_TENPO_TB = "select right('000' || TBM.TENCD, 3) as F1, MAX(TEN.TENKN) as F2 from INAMS.MSTTENBMN TBM left join INAMS.MSTTEN TEN on TEN.TENCD = TBM.TENCD where TBM.AREACD = ? group by TBM.TENCD order by TBM.TENCD";
+  public final static String ID_SQL_TENPO_TB =
+      "select right('000' || TBM.TENCD, 3) as F1, MAX(TEN.TENKN) as F2 from INAMS.MSTTENBMN TBM left join INAMS.MSTTEN TEN on TEN.TENCD = TBM.TENCD where TBM.AREACD = ? group by TBM.TENCD order by TBM.TENCD";
 
   // SQL：店舗一覧(エリア区分２) TODO:
-  public final static String ID_SQL_TENPO_HG = "select right('000' || HGT.TENCD, 3) as F1, TEN.TENKN as F2 from INAMS.MSTHSGPTEN HGT left join INAMS.MSTTEN TEN on TEN.TENCD = HGT.TENCD where HGT.HSGPCD = ? and HGT.TENGPCD = ? order by HGT.TENCD";
+  public final static String ID_SQL_TENPO_HG =
+      "select right('000' || HGT.TENCD, 3) as F1, TEN.TENKN as F2 from INAMS.MSTHSGPTEN HGT left join INAMS.MSTTEN TEN on TEN.TENCD = HGT.TENCD where HGT.HSGPCD = ? and HGT.TENGPCD = ? order by HGT.TENCD";
 
   // SQL：店舗一覧(エリア区分２) TODO:
   public final static String ID_SQL_TENPO_HG2 = ID_SQL_GRD_CMN
@@ -5515,7 +5543,8 @@ public class DefineReport {
 
   // SQL：店舗一覧(商品店グループ店舗参照) TODO:
   public final static String ID_SQL_TENPO_STGT = "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENCD, T2.TENKN from T1"
-      + " left join (select ROW_NUMBER() over (order by TENGP.GPKBN, TENGP.BMNCD, TENGP.TENGPCD, TENGP.TENCD) as IDX, TENGP.TENCD as TENCD, TEN.TENKN as TENKN from INAMS.MSTSHNTENGPTEN TENGP left join (select TENCD, TENKN from INAMS.MSTTEN where UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal()
+      + " left join (select ROW_NUMBER() over (order by TENGP.GPKBN, TENGP.BMNCD, TENGP.TENGPCD, TENGP.TENCD) as IDX, TENGP.TENCD as TENCD, TEN.TENKN as TENKN from INAMS.MSTSHNTENGPTEN TENGP left join (select TENCD, TENKN from INAMS.MSTTEN where UPDKBN = "
+      + DefineReport.ValUpdkbn.NML.getVal()
       + ") TEN on TEN.TENCD = TENGP.TENCD where TENGP.GPKBN = ? and TENGP.BMNCD = ? and TENGP.TENGPCD = ? order by TENGP.TENCD) T2 on T1.IDX = T2.IDX order by T1.IDX ,T2.TENCD";
 
   // SQL：店舗一覧(発注数項目あり) TODO:
@@ -5556,11 +5585,15 @@ public class DefineReport {
   public final static String ID_SQL_BMN_SHO_WHERE_M = " and SHOCD <> '00'";
 
   // SQL：部門
-  public final static String ID_SQL_BUMON_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.ALL.getVal() + "','" + Values.ALL.getTxt() + "')) as X(" + VAL + "," + TXT + ") union all ";
+  public final static String ID_SQL_BUMON_HEAD =
+      "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.ALL.getVal() + "','" + Values.ALL.getTxt() + "')) as X(" + VAL + "," + TXT + ") union all ";
   public final static String ID_SQL_BUMON_HEAD2 = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_BUMON_HEAD3 = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '" + Values.BUMON_ALL_TOK.getTxt() + "')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_BUMON_CMN = "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(BMNKN)), '　'),'') as TEXT, rtrim(rtrim(max(BMNKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_BUMON_CMN_C = "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(BMNKN), '　'),'') as TEXT, rtrim(rtrim(BMNKN), '　') as TEXT2, * ";
+  public final static String ID_SQL_BUMON_HEAD3 =
+      "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '" + Values.BUMON_ALL_TOK.getTxt() + "')) as X(value, TEXT) union all ";
+  public final static String ID_SQL_BUMON_CMN =
+      "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(BMNKN)), '　'),'') as TEXT, rtrim(rtrim(max(BMNKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_BUMON_CMN_C =
+      "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(BMNKN), '　'),'') as TEXT, rtrim(rtrim(BMNKN), '　') as TEXT2, * ";
   public final static String ID_SQL_BUMON = ID_SQL_BUMON_CMN + "from INAMS.MSTBMN";
   public final static String ID_SQL_BUMON_C = ID_SQL_BUMON_CMN_C + "from INAMS.MSTBMN";
   public final static String ID_SQL_BUMON_FOOTER = " group by BMNCD order by VALUE";
@@ -5574,10 +5607,14 @@ public class DefineReport {
   // SQL：大分類
   public final static String ID_SQL_DAI_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
   public final static String ID_SQL_DAI_BUN_HEAD2 = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_DAI_BUN_CMN = "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_DAI_BUN_SHC = "select right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_DAI_BUN_SHC2 = "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_DAI_BUN_SHC3 = "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, DAICD ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_DAI_BUN_CMN = "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||'" + SEPARATOR
+      + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_DAI_BUN_SHC =
+      "select right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_DAI_BUN_SHC2 = "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR
+      + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_DAI_BUN_SHC3 =
+      "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, DAICD ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
   public final static String ID_SQL_DAI_BUN = ID_SQL_DAI_BUN_CMN + "from INAMS.MSTDAIBRUI ";
   public final static String ID_SQL_DAI_BUN_S = ID_SQL_DAI_BUN_SHC + "from INAMS.MSTDAIBRUI ";
   public final static String ID_SQL_DAI_BUN_S2 = ID_SQL_DAI_BUN_SHC2 + "from INAMS.MSTDAIBRUI ";
@@ -5590,11 +5627,14 @@ public class DefineReport {
   // SQL：中分類
   public final static String ID_SQL_CHU_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
   public final static String ID_SQL_CHU_BUN_HEAD2 = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_CHU_BUN_CMN =
-      "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_CHU_BUN_SHC = "select right('0'||CHUCD,2) as VALUE, right('0'||CHUCD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_CHU_BUN_SHC2 = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, right('0'||CHUCD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_CHU_BUN_SHC3 = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, CHUCD ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_CHU_BUN_CMN = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||'"
+      + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_CHU_BUN_SHC =
+      "select right('0'||CHUCD,2) as VALUE, right('0'||CHUCD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_CHU_BUN_SHC2 = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, right('0'||CHUCD,2) ||'" + SEPARATOR
+      + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_CHU_BUN_SHC3 = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, CHUCD ||'" + SEPARATOR
+      + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
   public final static String ID_SQL_CHU_BUN = ID_SQL_CHU_BUN_CMN + "from INAMS.MSTCHUBRUI";
   public final static String ID_SQL_CHU_BUN_S = ID_SQL_CHU_BUN_SHC + "from INAMS.MSTCHUBRUI";
   public final static String ID_SQL_CHU_BUN_S2 = ID_SQL_CHU_BUN_SHC2 + "from INAMS.MSTCHUBRUI";
@@ -5606,8 +5646,9 @@ public class DefineReport {
 
   // SQL：小分類
   public final static String ID_SQL_SHO_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_SHO_BUN_CMN = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||'" + SEPARATOR
-      + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_SHO_BUN_CMN =
+      "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||'"
+          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN)), '　') as TEXT2 ";
   public final static String ID_SQL_SHO_BUN = ID_SQL_SHO_BUN_CMN + "from INAMS.MSTSHOBRUI";
   public final static String ID_SQL_SHO_BUN_NEZ = ID_SQL_SHO_BUN_CMN + "from INAMS.MSTSHOBRUI_NEZ";
   public final static String ID_SQL_SHO_BUN_URI = ID_SQL_SHO_BUN_CMN + "from INAMS.MSTSHOBRUI_URI";
@@ -5616,29 +5657,39 @@ public class DefineReport {
 
   // SQL：小小分類
   public final static String ID_SQL_SSHO_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_SSHO_BUN = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||SSHOCD as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||'" + SEPARATOR
-      + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN)), '　') as TEXT2 from INAMS.MSTSSHOBRUI";
+  public final static String ID_SQL_SSHO_BUN =
+      "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||SSHOCD as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||'"
+          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN)), '　') as TEXT2 from INAMS.MSTSSHOBRUI";
   public final static String ID_SQL_SSHO_BUN_FOOTER = " group by BMNCD,DAICD,CHUCD,SHOCD order by VALUE";
 
   // SQL:部門マスタ存在チェック
-  public final static String ID_SQL_BMN_CHK_HEAD = "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
-  public final static String ID_SQL_BMN_CHK =
-      ID_SQL_BMN_CHK_HEAD + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', ''), COALESCE(M5.SSHOCD || '', '') from INP T1 " + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1" + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTSHOBRUI@ M4  on T1.BMNCD = M4.BMNCD and T1.DAICD = M4.DAICD and T1.CHUCD = M4.CHUCD and T1.SHOCD = M4.SHOCD and COALESCE(M4.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTSSHOBRUI M5 on T1.BMNCD = M5.BMNCD and T1.DAICD = M5.DAICD and T1.CHUCD = M5.CHUCD and T1.SHOCD = M5.SHOCD and T1.SSHOCD = M5.SSHOCD and COALESCE(M5.UPDKBN,0) <> 1";
+  public final static String ID_SQL_BMN_CHK_HEAD =
+      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
+  public final static String ID_SQL_BMN_CHK = ID_SQL_BMN_CHK_HEAD
+      + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', ''), COALESCE(M5.SSHOCD || '', '') from INP T1 "
+      + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
+      + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1"
+      + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
+      + " left outer join INAMS.MSTSHOBRUI@ M4  on T1.BMNCD = M4.BMNCD and T1.DAICD = M4.DAICD and T1.CHUCD = M4.CHUCD and T1.SHOCD = M4.SHOCD and COALESCE(M4.UPDKBN,0) <> 1"
+      + " left outer join INAMS.MSTSSHOBRUI M5 on T1.BMNCD = M5.BMNCD and T1.DAICD = M5.DAICD and T1.CHUCD = M5.CHUCD and T1.SHOCD = M5.SHOCD and T1.SSHOCD = M5.SSHOCD and COALESCE(M5.UPDKBN,0) <> 1";
   // SQL:値付分類コードチェック
-  public final static String ID_SQL_KRYO_CHK_HEAD = "with INP as (select BMNCD, DAICD, CHUCD, SHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD))";
+  public final static String ID_SQL_KRYO_CHK_HEAD =
+      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD))";
   public final static String ID_SQL_KRYO_CHK =
-      ID_SQL_KRYO_CHK_HEAD + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', '') from INP T1 " + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1" + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
+      ID_SQL_KRYO_CHK_HEAD + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', '') from INP T1 "
+          + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
+          + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1"
+          + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
           + " left outer join INAMS.MSTSHOBRUI@ M4  on T1.BMNCD = M4.BMNCD and T1.DAICD = M4.DAICD and T1.CHUCD = M4.CHUCD and T1.SHOCD = M4.SHOCD and COALESCE(M4.UPDKBN,0) <> 1";
 
   // SQL:商品マスタ
   /** 共通（INAMS.MSTSHN） */
-  public final static String ID_SQL_SHN_CHK_UPDATECNT = "select CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?) where CNT < (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU)";
-  public final static String ID_SQL_SHN_CHK_UPDATECNT2 = "select (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU) - CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?)";
-  public final static String ID_SQL_SHN_SHNCD = "select SUBSTRING(right ('0000000' || RTRIM(CHAR (SHNCD)), 8), 1, 4) || '" + SEPARATOR + "' || SUBSTRING(right ('0000000' || RTRIM(CHAR (SHNCD)), 8), 5, 4) AS F1,SHNKN as F2,right ('0000000' || RTRIM(CHAR (SHNCD)), 8) as VALUE from INAMS.MSTSHN";
+  public final static String ID_SQL_SHN_CHK_UPDATECNT =
+      "select CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?) where CNT < (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU)";
+  public final static String ID_SQL_SHN_CHK_UPDATECNT2 =
+      "select (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU) - CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?)";
+  public final static String ID_SQL_SHN_SHNCD = "select SUBSTRING(right ('0000000' || RTRIM(CHAR (SHNCD)), 8), 1, 4) || '" + SEPARATOR
+      + "' || SUBSTRING(right ('0000000' || RTRIM(CHAR (SHNCD)), 8), 5, 4) AS F1,SHNKN as F2,right ('0000000' || RTRIM(CHAR (SHNCD)), 8) as VALUE from INAMS.MSTSHN";
   public final static String ID_SQL_SHN_SHNCD_TAIL = " order by VALUE fetch first 1001 row only";
   // SQL：商品名（漢字） TODO:
   public final static String ID_SQL_SHNKN = "select case when SHNKN is null or SHNKN = '' then '　' else SHNKN end as F1 from INAMS.MSTSHN " + DefineReport.ID_SQL_CMN_WHERE + " and SHNCD = ?";
@@ -5665,7 +5716,8 @@ public class DefineReport {
   public final static String ID_SQL_SHNKN_PC = "select case when PCARDKN is null or PCARDKN = '' then '　' else PCARDKN end as F1 from INAMS.MSTSHN " + DefineReport.ID_SQL_CMN_WHERE + " and SHNCD = ?";
 
   // SQL：冷凍食品（新規コード） TODO:
-  public final static String ID_SQL_TOKRS = "select MTSH.SANCHIKN as F3,  MTSH.SHNKN as F4,  MTSH.KIKKN as F5, case when MTSH.HS_IRISU is NOT NULL then MTSH.HS_IRISU else MTSH.RG_IRISU END as F6 , " + DefineReport.ID_SQL_TOKBAIKA_COL_SOU.replaceAll("@BAIKA", "MTSH.RG_BAIKAAM").replaceAll("@DT", "?")
+  public final static String ID_SQL_TOKRS = "select MTSH.SANCHIKN as F3,  MTSH.SHNKN as F4,  MTSH.KIKKN as F5, case when MTSH.HS_IRISU is NOT NULL then MTSH.HS_IRISU else MTSH.RG_IRISU END as F6 , "
+      + DefineReport.ID_SQL_TOKBAIKA_COL_SOU.replaceAll("@BAIKA", "MTSH.RG_BAIKAAM").replaceAll("@DT", "?")
       + " as F7, MTSH.RG_BAIKAAM as F8, MTSH.RG_GENKAAM as F9, MSBR.SHOBRUIKN as F13 from INAMS.MSTSHN MTSH left join INAMS.MSTMAKER MSMK on MTSH.MAKERCD = MSMK.MAKERCD left join INAMS.MSTSHOBRUI MSBR on MTSH.DAICD = MSBR.DAICD and MTSH.CHUCD = MSBR.CHUCD and MTSH.SHOCD = MSBR.SHOCD and MSBR.BMNCD = MTSH.BMNCD left outer join INAMS.MSTSHN M0 on M0.SHNCD = MTSH.SHNCD and COALESCE(M0.UPDKBN, 0) <> 1 left outer join INAMS.MSTBMN M1 on M1.BMNCD = MTSH.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = M0.ZEIRTKBN and COALESCE(M2.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = M0.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN, 0) <> 1 where MTSH.UPDKBN <> 1 and MTSH.SHNCD = ?";
 
   // SQL：冷凍食品（新売価） TODO:
@@ -5673,8 +5725,9 @@ public class DefineReport {
       + " as F11 from INATK.TOKRS_SHN TRSH left join INAMS.MSTSHN MTSH on TRSH.SHNCD = MTSH.SHNCD left join INAMS.MSTSHOBRUI MSBR on MTSH.DAICD = MSBR.DAICD and MTSH.CHUCD = MSBR.CHUCD and MTSH.SHOCD = MSBR.SHOCD and MSBR.BMNCD = MTSH.BMNCD left outer join INAMS.MSTSHN M0 on M0.SHNCD = TRSH.SHNCD and COALESCE(M0.UPDKBN, 0) <> 1 left outer join INAMS.MSTBMN M1 on M1.BMNCD = TRSH.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = M0.ZEIRTKBN and COALESCE(M2.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = M0.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN, 0) <> 1 left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN, 0) <> 1 where TRSH.HBSTDT = ? and TRSH.BMNCD = ? and TRSH.WRITUKBN = ? and TRSH.SEICUTKBN = ? and TRSH.DUMMYCD = ? and TRSH.UPDKBN <> 1 and TRSH.SHNCD = ?";
 
   // SQL：税率区分
-  public final static String ID_SQL_ZEIRT =
-      "select VALUE, TEXT from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all select CAST(ZRT.ZEIRTKBN AS CHAR) as value, ZRT.ZEIRTKBN || '-' ||COALESCE(TRIM(ZRT.ZEIRTKN),'') as TEXT from INAMS.MSTZEIRT ZRT " + DefineReport.ID_SQL_CMN_WHERE + " order by value";
+  public final static String ID_SQL_ZEIRT = "select VALUE, TEXT from (values ROW('" + Values.NONE.getVal()
+      + "', '　')) as X(value, TEXT) union all select CAST(ZRT.ZEIRTKBN AS CHAR) as value, ZRT.ZEIRTKBN || '-' ||COALESCE(TRIM(ZRT.ZEIRTKN),'') as TEXT from INAMS.MSTZEIRT ZRT "
+      + DefineReport.ID_SQL_CMN_WHERE + " order by value";
 
   // SQL：分類区分
   public final static String ID_SQL_BUNRUI = "select VALUE, TEXT from (values ROW(1, '標準'), ROW(2, '用途'), ROW(3, '売場')) as X(value, TEXT) order by value";
@@ -5685,14 +5738,18 @@ public class DefineReport {
 
   // SQL：店舗名称(漢字)
   public final static String ID_SQL_TENKN = "select TENCD as VALUE, TENKN as TEXT from INAMS.MSTTEN  " + DefineReport.ID_SQL_CMN_WHERE + DefineReport.ID_SQL_CMN_FOOTER;
-  public final static String ID_SQL_TENKN2 = "select TENCD as VALUE, right ('00' || TENCD, 3) || '-' ||COALESCE(TENKN,'') as TEXT from INAMS.MSTTEN " + DefineReport.ID_SQL_CMN_WHERE + " and TENCD = ? order by right ('00' || TENCD,3 )";
-  public final static String ID_SQL_TENKN_HEAD = "select TENCD as VALUE, right ('00' || TENCD, 3) || '-' ||COALESCE(TENKN,'') as TEXT from INAMS.MSTTEN " + DefineReport.ID_SQL_CMN_WHERE + "order by right ('00' || TENCD,3 )";
+  public final static String ID_SQL_TENKN2 =
+      "select TENCD as VALUE, right ('00' || TENCD, 3) || '-' ||COALESCE(TENKN,'') as TEXT from INAMS.MSTTEN " + DefineReport.ID_SQL_CMN_WHERE + " and TENCD = ? order by right ('00' || TENCD,3 )";
+  public final static String ID_SQL_TENKN_HEAD =
+      "select TENCD as VALUE, right ('00' || TENCD, 3) || '-' ||COALESCE(TENKN,'') as TEXT from INAMS.MSTTEN " + DefineReport.ID_SQL_CMN_WHERE + "order by right ('00' || TENCD,3 )";
   public final static String ID_SQL_TENKN_HEAD2 =
       "select right ('00' || T1.TENCD, 3) as VALUE, right ('00' || T1.TENCD, 3) || '-' || T2.TENKN as TEXT from INATK.TOKTG_QATEN T1 left join INAMS.MSTTEN T2 on T2.TENCD = T1.TENCD where MOYSKBN = ? and T1.MOYSSTDT = ? and T1.MOYSRBAN = ? and T1.KYOSEIFLG = ? and T1.TENGPCD = ? and T2.TENCD = T1.TENCD order by VALUE";
 
   // SQL：センターコード
   public final static String ID_SQL_CENTER_HEAD = "select VALUE, TEXT from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_CENTER = "SELECT DISTINCT CENTERCD AS VALUE, CENTERCD TEXT FROM INAORR.ORRCOURSEMASTER WHERE TO_CHAR(EFFECTIVESTARTDATE,'YYYYMMDD') <= ? AND TO_CHAR(EFFECTIVEENDDATE,'YYYYMMDD') >= ? AND LOGICALDELFLG = " + DefineReport.ValUpdkbn.NML.getVal() + " ORDER BY VALUE";
+  public final static String ID_SQL_CENTER =
+      "SELECT DISTINCT CENTERCD AS VALUE, CENTERCD TEXT FROM INAORR.ORRCOURSEMASTER WHERE TO_CHAR(EFFECTIVESTARTDATE,'YYYYMMDD') <= ? AND TO_CHAR(EFFECTIVEENDDATE,'YYYYMMDD') >= ? AND LOGICALDELFLG = "
+          + DefineReport.ValUpdkbn.NML.getVal() + " ORDER BY VALUE";
 
   // SQL：便コード
   public final static String ID_SQL_SUPPLYNO_HEAD = "select VALUE, TEXT from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
@@ -5715,13 +5772,15 @@ public class DefineReport {
 
   // SQL：実仕入先 TODO:
   /** 共通（INAMS.MSTSIR） */
-  public final static String ID_SQL_ZITSIR = ID_SQL_GRD_CMN + " select T1.IDX, T2.RSIRCD, T3.SIRKN as SIRKN_R from T1 left join (select ROW_NUMBER() over (order by SIRCD) as IDX, * from INAMS.MSTFUKUSUSIR_R where SIRCD = ? and UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal()
-      + " order by SIRCD fetch first @M rows only) T2 on T1.IDX = T2.SEQNO" + " left join INAMS.MSTSIR T3 on T3.SIRCD = T2.RSIRCD order by T1.IDX";
+  public final static String ID_SQL_ZITSIR =
+      ID_SQL_GRD_CMN + " select T1.IDX, T2.RSIRCD, T3.SIRKN as SIRKN_R from T1 left join (select ROW_NUMBER() over (order by SIRCD) as IDX, * from INAMS.MSTFUKUSUSIR_R where SIRCD = ? and UPDKBN = "
+          + DefineReport.ValUpdkbn.NML.getVal() + " order by SIRCD fetch first @M rows only) T2 on T1.IDX = T2.SEQNO" + " left join INAMS.MSTSIR T3 on T3.SIRCD = T2.RSIRCD order by T1.IDX";
 
   // SQL：複数仕入先店舗一覧 TODO:
   /** 共通（INAMS.MSTFUKUSUSIR_T） */
-  public final static String ID_SQL_FSTNEPO = "select TEN.TENCD, TEN.TENKN, FST.SEQNO from INAMS.MSTTEN TEN left join (select TENCD, MAX(SEQNO) as SEQNO from INAMS.MSTFUKUSUSIR_T where UPDKBN = 0 and SIRCD = ? group by SIRCD, TENCD) FST on FST.TENCD = TEN.TENCD where TEN.UPDKBN = "
-      + DefineReport.ValUpdkbn.NML.getVal() + " order by TEN.TENCD";
+  public final static String ID_SQL_FSTNEPO =
+      "select TEN.TENCD, TEN.TENKN, FST.SEQNO from INAMS.MSTTEN TEN left join (select TENCD, MAX(SEQNO) as SEQNO from INAMS.MSTFUKUSUSIR_T where UPDKBN = 0 and SIRCD = ? group by SIRCD, TENCD) FST on FST.TENCD = TEN.TENCD where TEN.UPDKBN = "
+          + DefineReport.ValUpdkbn.NML.getVal() + " order by TEN.TENCD";
 
   // SQL：配送パターン TODO:
   /** 共通（INAMS.MSTHSPTN） */
@@ -5747,8 +5806,8 @@ public class DefineReport {
   // T1.IDX = T2.IDX order by T1.IDX, T2.SIRCD, T2.HSPTN";
   public final static String ID_SQL_HSPTN_LIST =
       "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.HSPTN, T2.HSPTNKN, right ('000' || T2.CENTERCD, 3) as CENTERCD, right ('000' || TRIM(T2.YCENTERCD), 3) as YCENTERCD, T2.TENDENFLG || '-' || RTRIM(M1.NMKN) as TEMBETSUDENPYOFLG, T2.VANKBN || '-' || RTRIM(M2.NMKN) as KEISANCENTER, T2.UNYOKBN || '-' || RTRIM(M3.NMKN) as UNYOKBN, T2.DENPKBN || '-' || RTRIM(M4.NMKN) as DENPYOKBN, T2.SHUHKBN || '-' || RTRIM(M5.NMKN) as SHUKEIHYO1, T2.PICKDKBN || '-' || RTRIM(M6.NMKN) as PICKINGDATA, T2.PICKLKBN || '-' || RTRIM(M7.NMKN) as PICKINGLIST, T2.WAPNKBN || '-' || RTRIM(M8.NMKN) as WAPPEN, T2.IDENPKBN || '-' || RTRIM(M9.NMKN) as IKKATSUDENPYO, T2.KAKOSJKBN || '-' || RTRIM(M10.NMKN) as KAKOSHIJI, T2.RYUTSUKBN || '-' || RTRIM(M11.NMKN) as RYUTSUKBN"
-          + ", T2.ZDENPKBN || '-' || RTRIM(M12.NMKN) as ZAIKOCHIWAKE_DENPYOKBN, T2.ZSHUHKBN || '-' || RTRIM(M13.NMKN) as ZAIKOCHIWAKE_SHUKEIHYO, T2.ZPICKDKBN || '-' || RTRIM(M14.NMKN) as ZAIKOCHIWAKE_PICKINGDATA, T2.ZPICKLKBN || '-' || RTRIM(M15.NMKN) as ZAIKOCHIWAKE_PICKINGLIST, case when T2.SIRKN is not null then right ('000000' || TRIM(T2.RSIRCD), 6) end  as RSIRCD, T2.SIRKN as SIRKN_R, T2.YKNSHKBN || '-' || RTRIM(M16.NMKN) as YOKOMOCHISAKI_KENSHUKBN, T2.YDENPKBN || '-' || RTRIM(M17.NMKN) as YOKOMOCHISAKI_DENPYOKBN, T2.DSHUHKBN || '-' || RTRIM(M18.NMKN) as YOKOMOCHISAKI_SHUKEIHYO from T1 left join (select ROW_NUMBER() over (order by SIRCD, HSPTN) as IDX, * from (select HSPS.SIRCD, HSP.HSPTN, HSP.HSPTNKN, HSP.CENTERCD, TRIM(HSP.YCENTERCD) as YCENTERCD, HSPS.TENDENFLG, HSPS.VANKBN, HSPS.UNYOKBN, HSPS.DENPKBN, HSPS.SHUHKBN, HSPS.PICKDKBN, HSPS.PICKLKBN, HSPS.WAPNKBN, HSPS.IDENPKBN, HSPS.KAKOSJKBN, HSPS.RYUTSUKBN, HSPS.ZDENPKBN, HSPS.ZSHUHKBN, HSPS.ZPICKDKBN, HSPS.ZPICKLKBN, HSPS.RSIRCD, SIR.SIRKN, HSPS.YKNSHKBN, HSPS.YDENPKBN, HSPS.DSHUHKBN"
-          + " from INAMS.MSTHSPTNSIR HSPS left join INAMS.MSTHSPTN HSP on HSP.HSPTN = HSPS.HSPTN left join INAMS.MSTSIR SIR on SIR.SIRCD = NULLIF(Trim(HSPS.RSIRCD), '') where HSPS.SIRCD = ? order by HSPS.SIRCD, HSP.HSPTN)) T2 on T1.IDX = T2.IDX left outer join INAMS.MSTMEISHO M1 on M1.MEISHOKBN = 425 and TO_CHAR(T2.TENDENFLG) = M1.MEISHOCD left outer join INAMS.MSTMEISHO M2 on M2.MEISHOKBN = 406 and TO_CHAR(T2.VANKBN) = M2.MEISHOCD left outer join INAMS.MSTMEISHO M3 on M3.MEISHOKBN = 407 and TO_CHAR(T2.UNYOKBN) = M3.MEISHOCD left outer join INAMS.MSTMEISHO M4 on M4.MEISHOKBN = 408 and TO_CHAR(T2.DENPKBN) = M4.MEISHOCD left outer join INAMS.MSTMEISHO M5 on M5.MEISHOKBN = 409 and TO_CHAR(T2.SHUHKBN) = M5.MEISHOCD left outer join INAMS.MSTMEISHO M6 on M6.MEISHOKBN = 410 and TO_CHAR(T2.PICKDKBN) = M6.MEISHOCD left outer join INAMS.MSTMEISHO M7 on M7.MEISHOKBN = 411 and TO_CHAR(T2.PICKLKBN) = M7.MEISHOCD"
+          + ", T2.ZDENPKBN || '-' || RTRIM(M12.NMKN) as ZAIKOCHIWAKE_DENPYOKBN, T2.ZSHUHKBN || '-' || RTRIM(M13.NMKN) as ZAIKOCHIWAKE_SHUKEIHYO, T2.ZPICKDKBN || '-' || RTRIM(M14.NMKN) as ZAIKOCHIWAKE_PICKINGDATA, T2.ZPICKLKBN || '-' || RTRIM(M15.NMKN) as ZAIKOCHIWAKE_PICKINGLIST, case when T2.SIRKN is not null then right ('000000' || TRIM(T2.RSIRCD), 6) end  as RSIRCD, T2.SIRKN as SIRKN_R, T2.YKNSHKBN || '-' || RTRIM(M16.NMKN) as YOKOMOCHISAKI_KENSHUKBN, T2.YDENPKBN || '-' || RTRIM(M17.NMKN) as YOKOMOCHISAKI_DENPYOKBN, T2.DSHUHKBN || '-' || RTRIM(M18.NMKN) as YOKOMOCHISAKI_SHUKEIHYO from T1 left join (select ROW_NUMBER() over (order by SIRCD, HSPTN) as IDX, Te1.* from (select HSPS.SIRCD, HSP.HSPTN, HSP.HSPTNKN, HSP.CENTERCD, TRIM(HSP.YCENTERCD) as YCENTERCD, HSPS.TENDENFLG, HSPS.VANKBN, HSPS.UNYOKBN, HSPS.DENPKBN, HSPS.SHUHKBN, HSPS.PICKDKBN, HSPS.PICKLKBN, HSPS.WAPNKBN, HSPS.IDENPKBN, HSPS.KAKOSJKBN, HSPS.RYUTSUKBN, HSPS.ZDENPKBN, HSPS.ZSHUHKBN, HSPS.ZPICKDKBN, HSPS.ZPICKLKBN, HSPS.RSIRCD, SIR.SIRKN, HSPS.YKNSHKBN, HSPS.YDENPKBN, HSPS.DSHUHKBN"
+          + " from INAMS.MSTHSPTNSIR HSPS left join INAMS.MSTHSPTN HSP on HSP.HSPTN = HSPS.HSPTN left join INAMS.MSTSIR SIR on SIR.SIRCD = NULLIF(Trim(HSPS.RSIRCD), '') where HSPS.SIRCD = ? order by HSPS.SIRCD, HSP.HSPTN) AS Te1 ) T2 on T1.IDX = T2.IDX left outer join INAMS.MSTMEISHO M1 on M1.MEISHOKBN = 425 and TO_CHAR(T2.TENDENFLG) = M1.MEISHOCD left outer join INAMS.MSTMEISHO M2 on M2.MEISHOKBN = 406 and TO_CHAR(T2.VANKBN) = M2.MEISHOCD left outer join INAMS.MSTMEISHO M3 on M3.MEISHOKBN = 407 and TO_CHAR(T2.UNYOKBN) = M3.MEISHOCD left outer join INAMS.MSTMEISHO M4 on M4.MEISHOKBN = 408 and TO_CHAR(T2.DENPKBN) = M4.MEISHOCD left outer join INAMS.MSTMEISHO M5 on M5.MEISHOKBN = 409 and TO_CHAR(T2.SHUHKBN) = M5.MEISHOCD left outer join INAMS.MSTMEISHO M6 on M6.MEISHOKBN = 410 and TO_CHAR(T2.PICKDKBN) = M6.MEISHOCD left outer join INAMS.MSTMEISHO M7 on M7.MEISHOKBN = 411 and TO_CHAR(T2.PICKLKBN) = M7.MEISHOCD"
           + " left outer join INAMS.MSTMEISHO M8 on M8.MEISHOKBN = 412 and TO_CHAR(T2.WAPNKBN) = M8.MEISHOCD left outer join INAMS.MSTMEISHO M9 on M9.MEISHOKBN = 413 and TO_CHAR(T2.IDENPKBN) = M9.MEISHOCD left outer join INAMS.MSTMEISHO M10 on M10.MEISHOKBN = 414 and TO_CHAR(T2.KAKOSJKBN) = M10.MEISHOCD left outer join INAMS.MSTMEISHO M11 on M11.MEISHOKBN = 415 and TO_CHAR(T2.RYUTSUKBN) = M11.MEISHOCD left outer join INAMS.MSTMEISHO M12 on M12.MEISHOKBN = 416 and TO_CHAR(T2.ZDENPKBN) = M12.MEISHOCD left outer join INAMS.MSTMEISHO M13 on M13.MEISHOKBN = 417 and TO_CHAR(T2.ZSHUHKBN) = M13.MEISHOCD left outer join INAMS.MSTMEISHO M14 on M14.MEISHOKBN = 418 and TO_CHAR(T2.ZPICKDKBN) = M14.MEISHOCD left outer join INAMS.MSTMEISHO M15 on M15.MEISHOKBN = 419 and TO_CHAR(T2.ZPICKLKBN) = M15.MEISHOCD"
           + " left outer join INAMS.MSTMEISHO M16 on M16.MEISHOKBN = 422 and TO_CHAR(T2.YKNSHKBN) = M16.MEISHOCD left outer join INAMS.MSTMEISHO M17 on M17.MEISHOKBN = 423 and TO_CHAR(T2.YDENPKBN) = M17.MEISHOCD left outer join INAMS.MSTMEISHO M18 on M18.MEISHOKBN = 424 and TO_CHAR(T2.DSHUHKBN) = M18.MEISHOCD order by T1.IDX, T2.SIRCD, T2.HSPTN";
 
@@ -5764,8 +5823,8 @@ public class DefineReport {
   /** 共通（INAMS.MSTHSPTN） */
   public final static String ID_SQL_EHSPTN_LIST =
       "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.HSPTN, T2.HSPTNKN, right ('000' || T2.CENTERCD, 3) as CENTERCD, right ('000' || TRIM(T2.YCENTERCD), 3) as YCENTERCD, right ('0000' || T2.TENGPCD, 4) as TENGPCD, T2.TENGPKN, T2.HSPTN, T2.TENDENFLG || '-' || RTRIM(M1.NMKN) as TEMBETSUDENPYOFLG, T2.VANKBN || '-' || RTRIM(M2.NMKN) as KEISANCENTER, T2.UNYOKBN || '-' || RTRIM(M3.NMKN) as UNYOKBN, T2.DENPKBN || '-' || RTRIM(M4.NMKN) as DENPYOKBN, T2.SHUHKBN || '-' || RTRIM(M5.NMKN) as SHUKEIHYO1, T2.PICKDKBN || '-' || RTRIM(M6.NMKN) as PICKINGDATA, T2.PICKLKBN || '-' || RTRIM(M7.NMKN) as PICKINGLIST, T2.WAPNKBN || '-' || RTRIM(M8.NMKN) as WAPPEN, T2.IDENPKBN || '-' || RTRIM(M9.NMKN) as IKKATSUDENPYO, T2.KAKOSJKBN || '-' || RTRIM(M10.NMKN) as KAKOSHIJI, T2.RYUTSUKBN || '-' || RTRIM(M11.NMKN) as RYUTSUKBN"
-          + ", T2.ZDENPKBN || '-' || RTRIM(M12.NMKN) as ZAIKOCHIWAKE_DENPYOKBN, T2.ZSHUHKBN || '-' || RTRIM(M13.NMKN) as ZAIKOCHIWAKE_SHUKEIHYO, T2.ZPICKDKBN || '-' || RTRIM(M14.NMKN) as ZAIKOCHIWAKE_PICKINGDATA, T2.ZPICKLKBN || '-' || RTRIM(M15.NMKN) as ZAIKOCHIWAKE_PICKINGLIST, case when T2.SIRKN is not null then right ('000000' || TRIM(T2.RSIRCD), 6) end  as RSIRCD, T2.SIRKN as SIRKN_R, T2.YKNSHKBN || '-' || RTRIM(M16.NMKN) as YOKOMOCHISAKI_KENSHUKBN, T2.YDENPKBN || '-' || RTRIM(M17.NMKN) as YOKOMOCHISAKI_DENPYOKBN, T2.DSHUHKBN || '-' || RTRIM(M18.NMKN) as YOKOMOCHISAKI_SHUKEIHYO from T1 left join (select ROW_NUMBER() over (order by SIRCD, HSPTN, TENGPCD) as IDX, * from (select EHSPS.SIRCD, EHSPS.HSPTN, HSPTN.HSPTNKN, EHSP.CENTERCD, TRIM(EHSP.YCENTERCD) as YCENTERCD, EHSPS.TENGPCD, HSTG.TENGPKN, EHSPS.TENDENFLG, EHSPS.VANKBN, EHSPS.UNYOKBN, EHSPS.DENPKBN, EHSPS.SHUHKBN, EHSPS.PICKDKBN, EHSPS.PICKLKBN, EHSPS.WAPNKBN, EHSPS.IDENPKBN, EHSPS.KAKOSJKBN, EHSPS.RYUTSUKBN, EHSPS.ZDENPKBN, EHSPS.ZSHUHKBN, EHSPS.ZPICKDKBN, EHSPS.ZPICKLKBN, EHSPS.RSIRCD, SIR.SIRKN, EHSPS.YKNSHKBN, EHSPS.YDENPKBN, EHSPS.DSHUHKBN"
-          + " from INAMS.MSTAREAHSPTNSIR EHSPS left join INAMS.MSTAREAHSPTN EHSP on EHSP.HSPTN = EHSPS.HSPTN and EHSP.TENGPCD = EHSPS.TENGPCD left join INAMS.MSTHSPTN HSPTN on HSPTN.HSPTN = EHSPS.HSPTN left join INAMS.MSTHSTENGP HSTG on HSTG.HSGPCD = EHSP.HSGPCD and HSTG.TENGPCD = EHSP.TENGPCD left join INAMS.MSTSIR SIR on SIR.SIRCD = NULLIF(TRIM(EHSPS.RSIRCD), '') where EHSPS.SIRCD = ? order by EHSPS.SIRCD, EHSP.HSPTN, EHSP.TENGPCD)) T2 on T1.IDX = T2.IDX left outer join INAMS.MSTMEISHO M1 on M1.MEISHOKBN = 425 and TO_CHAR(T2.TENDENFLG) = M1.MEISHOCD left outer join INAMS.MSTMEISHO M2 on M2.MEISHOKBN = 406 and TO_CHAR(T2.VANKBN) = M2.MEISHOCD left outer join INAMS.MSTMEISHO M3 on M3.MEISHOKBN = 407 and TO_CHAR(T2.UNYOKBN) = M3.MEISHOCD left outer join INAMS.MSTMEISHO M4 on M4.MEISHOKBN = 408 and TO_CHAR(T2.DENPKBN) = M4.MEISHOCD left outer join INAMS.MSTMEISHO M5 on M5.MEISHOKBN = 409 and TO_CHAR(T2.SHUHKBN) = M5.MEISHOCD"
+          + ", T2.ZDENPKBN || '-' || RTRIM(M12.NMKN) as ZAIKOCHIWAKE_DENPYOKBN, T2.ZSHUHKBN || '-' || RTRIM(M13.NMKN) as ZAIKOCHIWAKE_SHUKEIHYO, T2.ZPICKDKBN || '-' || RTRIM(M14.NMKN) as ZAIKOCHIWAKE_PICKINGDATA, T2.ZPICKLKBN || '-' || RTRIM(M15.NMKN) as ZAIKOCHIWAKE_PICKINGLIST, case when T2.SIRKN is not null then right ('000000' || TRIM(T2.RSIRCD), 6) end  as RSIRCD, T2.SIRKN as SIRKN_R, T2.YKNSHKBN || '-' || RTRIM(M16.NMKN) as YOKOMOCHISAKI_KENSHUKBN, T2.YDENPKBN || '-' || RTRIM(M17.NMKN) as YOKOMOCHISAKI_DENPYOKBN, T2.DSHUHKBN || '-' || RTRIM(M18.NMKN) as YOKOMOCHISAKI_SHUKEIHYO from T1 left join (select ROW_NUMBER() over (order by SIRCD, HSPTN, TENGPCD) as IDX, Te1.* from (select EHSPS.SIRCD, EHSPS.HSPTN, HSPTN.HSPTNKN, EHSP.CENTERCD, TRIM(EHSP.YCENTERCD) as YCENTERCD, EHSPS.TENGPCD, HSTG.TENGPKN, EHSPS.TENDENFLG, EHSPS.VANKBN, EHSPS.UNYOKBN, EHSPS.DENPKBN, EHSPS.SHUHKBN, EHSPS.PICKDKBN, EHSPS.PICKLKBN, EHSPS.WAPNKBN, EHSPS.IDENPKBN, EHSPS.KAKOSJKBN, EHSPS.RYUTSUKBN, EHSPS.ZDENPKBN, EHSPS.ZSHUHKBN, EHSPS.ZPICKDKBN, EHSPS.ZPICKLKBN, EHSPS.RSIRCD, SIR.SIRKN, EHSPS.YKNSHKBN, EHSPS.YDENPKBN, EHSPS.DSHUHKBN"
+          + " from INAMS.MSTAREAHSPTNSIR EHSPS left join INAMS.MSTAREAHSPTN EHSP on EHSP.HSPTN = EHSPS.HSPTN and EHSP.TENGPCD = EHSPS.TENGPCD left join INAMS.MSTHSPTN HSPTN on HSPTN.HSPTN = EHSPS.HSPTN left join INAMS.MSTHSTENGP HSTG on HSTG.HSGPCD = EHSP.HSGPCD and HSTG.TENGPCD = EHSP.TENGPCD left join INAMS.MSTSIR SIR on SIR.SIRCD = NULLIF(TRIM(EHSPS.RSIRCD), '') where EHSPS.SIRCD = ? order by EHSPS.SIRCD, EHSP.HSPTN, EHSP.TENGPCD) AS Te1) T2 on T1.IDX = T2.IDX left outer join INAMS.MSTMEISHO M1 on M1.MEISHOKBN = 425 and TO_CHAR(T2.TENDENFLG) = M1.MEISHOCD left outer join INAMS.MSTMEISHO M2 on M2.MEISHOKBN = 406 and TO_CHAR(T2.VANKBN) = M2.MEISHOCD left outer join INAMS.MSTMEISHO M3 on M3.MEISHOKBN = 407 and TO_CHAR(T2.UNYOKBN) = M3.MEISHOCD left outer join INAMS.MSTMEISHO M4 on M4.MEISHOKBN = 408 and TO_CHAR(T2.DENPKBN) = M4.MEISHOCD left outer join INAMS.MSTMEISHO M5 on M5.MEISHOKBN = 409 and TO_CHAR(T2.SHUHKBN) = M5.MEISHOCD"
           + " left outer join INAMS.MSTMEISHO M6 on M6.MEISHOKBN = 410 and TO_CHAR(T2.PICKDKBN) = M6.MEISHOCD left outer join INAMS.MSTMEISHO M7 on M7.MEISHOKBN = 411 and TO_CHAR(T2.PICKLKBN) = M7.MEISHOCD left outer join INAMS.MSTMEISHO M8 on M8.MEISHOKBN = 412 and TO_CHAR(T2.WAPNKBN) = M8.MEISHOCD left outer join INAMS.MSTMEISHO M9 on M9.MEISHOKBN = 413 and TO_CHAR(T2.IDENPKBN) = M9.MEISHOCD left outer join INAMS.MSTMEISHO M10 on M10.MEISHOKBN = 414 and TO_CHAR(T2.KAKOSJKBN) = M10.MEISHOCD left outer join INAMS.MSTMEISHO M11 on M11.MEISHOKBN = 415 and TO_CHAR(T2.RYUTSUKBN) = M11.MEISHOCD left outer join INAMS.MSTMEISHO M12 on M12.MEISHOKBN = 416 and TO_CHAR(T2.ZDENPKBN) = M12.MEISHOCD left outer join INAMS.MSTMEISHO M13 on M13.MEISHOKBN = 417 and TO_CHAR(T2.ZSHUHKBN) = M13.MEISHOCD left outer join INAMS.MSTMEISHO M14 on M14.MEISHOKBN = 418 and TO_CHAR(T2.ZPICKDKBN) = M14.MEISHOCD left outer join INAMS.MSTMEISHO M15 on M15.MEISHOKBN = 419 and TO_CHAR(T2.ZPICKLKBN) = M15.MEISHOCD"
           + " left outer join INAMS.MSTMEISHO M16 on M16.MEISHOKBN = 422 and TO_CHAR(T2.YKNSHKBN) = M16.MEISHOCD left outer join INAMS.MSTMEISHO M17 on M17.MEISHOKBN = 423 and TO_CHAR(T2.YDENPKBN) = M17.MEISHOCD left outer join INAMS.MSTMEISHO M18 on M18.MEISHOKBN = 424 and TO_CHAR(T2.DSHUHKBN) = M18.MEISHOCD order by T1.IDX, T2.SIRCD, T2.HSPTN, T2.TENGPCD";
 
@@ -5790,8 +5849,10 @@ public class DefineReport {
   // SQL：リードタイムパターン TODO:
   /** 共通（INAMS.MSTREADTM） */
   public final static String ID_SQL_READTMPTN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW(" + Values.NONE.getVal() + ", '　')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_READTMPTN = "select READTMPTN as VALUE, right('000'||READTMPTN,3)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(READTMPTNKN), '　'),'') as TEXT, rtrim(rtrim(READTMPTNKN), '　') as TEXT2 from INAMS.MSTREADTM" + ID_SQL_CMN_WHERE;
-  public final static String ID_SQL_READTMPTN2 = "select READTMPTN as F1, rtrim(rtrim(READTMPTNKN), '　') as F2, READTM_MON as F3, READTM_TUE as F4, READTM_WED as F5, READTM_THU as F6, READTM_FRI as F7, READTM_SAT as F8, READTM_SUN as F9 from INAMS.MSTREADTM";
+  public final static String ID_SQL_READTMPTN = "select READTMPTN as VALUE, right('000'||READTMPTN,3)||'" + SEPARATOR
+      + "'||COALESCE(rtrim(rtrim(READTMPTNKN), '　'),'') as TEXT, rtrim(rtrim(READTMPTNKN), '　') as TEXT2 from INAMS.MSTREADTM" + ID_SQL_CMN_WHERE;
+  public final static String ID_SQL_READTMPTN2 =
+      "select READTMPTN as F1, rtrim(rtrim(READTMPTNKN), '　') as F2, READTM_MON as F3, READTM_TUE as F4, READTM_WED as F5, READTM_THU as F6, READTM_FRI as F7, READTM_SAT as F8, READTM_SUN as F9 from INAMS.MSTREADTM";
   public final static String ID_SQL_READTMPTN_WHERE = ID_SQL_CMN_WHERE + " and READTMPTN = ? ";
 
   // SQL：ソースコード
@@ -5799,10 +5860,10 @@ public class DefineReport {
   // ソースコード：優先順位判断
   public final static String ID_SQL_SRCCD_COL = "T.SHNCD,T.SRCCD,T.YOYAKUDT,T.SEQNO,T.SOURCEKBN,T.YUKO_STDT,T.YUKO_EDDT";
   public final static String ID_SQL_SRCCD_JAN = " select " + ID_SQL_SRCCD_COL + " ,T.JAN1NO" + " from (" + "  select SHNCD,SRCCD,YOYAKUDT,SEQNO,SOURCEKBN,YUKO_STDT,YUKO_EDDT"
-      + "  ,row_number() over(partition by SHNCD,YOYAKUDT order by COALESCE(SEQNO, 9),case when STNO <= 0 then abs(STNO) end,case when STNO > 0 then STNO end,SRCCD) as JAN1NO" + "  from (select " + ID_SQL_SRCCD_COL
-      + ",days(to_date(T.YUKO_STDT,'YYYYMMDD'))-days(current date) as STNO,days(to_date(T.YUKO_EDDT,'YYYYMMDD'))-days(current date) as EDNO from @T ) WK" + " ) T";
-  public final static String ID_SQL_SRCCD_SEL =
-      " select trim(T.SRCCD) as SRCCD, T.SOURCEKBN||'" + SEPARATOR + "'||RTRIM(T2.NMKN) as SOURCEKBN, T.SOURCEKBN as SOURCEKBN2, COALESCE(right(T.YUKO_STDT, 6),'') as YUKO_STDT, COALESCE(right(T.YUKO_EDDT,6),'') as YUKO_EDDT, COALESCE(to_char(SEQNO), '') as SEQNO";
+      + "  ,row_number() over(partition by SHNCD,YOYAKUDT order by COALESCE(SEQNO, 9),case when STNO <= 0 then abs(STNO) end,case when STNO > 0 then STNO end,SRCCD) as JAN1NO" + "  from (select "
+      + ID_SQL_SRCCD_COL + ",days(to_date(T.YUKO_STDT,'YYYYMMDD'))-days(current date) as STNO,days(to_date(T.YUKO_EDDT,'YYYYMMDD'))-days(current date) as EDNO from @T ) WK" + " ) T";
+  public final static String ID_SQL_SRCCD_SEL = " select trim(T.SRCCD) as SRCCD, T.SOURCEKBN||'" + SEPARATOR
+      + "'||RTRIM(T2.NMKN) as SOURCEKBN, T.SOURCEKBN as SOURCEKBN2, COALESCE(right(T.YUKO_STDT, 6),'') as YUKO_STDT, COALESCE(right(T.YUKO_EDDT,6),'') as YUKO_EDDT, COALESCE(to_char(SEQNO), '') as SEQNO";
   public final static String ID_SQL_SRCCD_JOIN = " left outer join INAMS.MSTMEISHO T2 on T2.MEISHOKBN = " + MeisyoSelect.KBN136.getCd() + " and TO_CHAR(T.SOURCEKBN) = T2.MEISHOCD";
   public final static String ID_SQL_SRCCD1 = ID_SQL_SRCCD_SEL + " from (select " + ID_SQL_SRCCD_COL + " from @T) T" + ID_SQL_SRCCD_JOIN + " order by T.SEQNO";
   public final static String ID_SQL_SRCCD2 = ID_SQL_SRCCD_SEL + " from (" + ID_SQL_SRCCD_JAN + ") T" + ID_SQL_SRCCD_JOIN + " order by T.JAN1NO";
@@ -5820,18 +5881,24 @@ public class DefineReport {
       "SELECT TENGP.TENGPCD AS HSTENGPCD, TENGP.TENGPKN AS TENGPKN, CASE HSGP.AREAKBN WHEN '0' THEN '0' WHEN '1' THEN CNT.CNT END AS TENPOSU, HSGP.AREAKBN FROM INAMS.MSTHSGP AS HSGP, INAMS.MSTHSTENGP AS TENGP, (SELECT COUNT(GPTEN.TENCD) AS CNT, TENGP.HSGPCD AS HSGPCD, TENGP.TENGPCD AS TENGPCD FROM INAMS.MSTHSTENGP AS TENGP LEFT JOIN INAMS.MSTHSGPTEN AS GPTEN ON TENGP.HSGPCD = GPTEN.HSGPCD AND TENGP.TENGPCD = GPTEN.TENGPCD AND GPTEN.UPDKBN = ? GROUP BY TENGP.HSGPCD, TENGP.TENGPCD) AS CNT WHERE HSGP.HSGPCD = ? AND HSGP.UPDKBN = ? AND HSGP.HSGPCD = TENGP.HSGPCD AND TENGP.UPDKBN = ? AND TENGP.HSGPCD = CNT.HSGPCD AND TENGP.TENGPCD = CNT.TENGPCD";
 
   // SQL：店グループ
-  public static final String ID_SQL_MSTGRP =
-      ID_SQL_GRD_CMN + "select T2.GRPID, T3.GRPKN from T1" + " left outer join (select ROW_NUMBER() over (order by GRPID) as IDX, * from INAMS.MSTGRP where SHNCD like ? order by GRPID fetch first @M rows only) T2 on T1.IDX = T2.IDX" + " left outer join INAMS.MSTGROUP T3 on T2.GRPID = T3.GRPID";
-  public static final String ID_SQL_MSTGRP_Y = ID_SQL_GRD_CMN + "select T2.GRPID, T3.GRPKN from T1" + " left outer join (select ROW_NUMBER() over (order by GRPID) as IDX, * from INAMS.MSTGRP_Y where SHNCD like ? and YOYAKUDT = ? order by GRPID fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+  public static final String ID_SQL_MSTGRP = ID_SQL_GRD_CMN + "select T2.GRPID, T3.GRPKN from T1"
+      + " left outer join (select ROW_NUMBER() over (order by GRPID) as IDX, * from INAMS.MSTGRP where SHNCD like ? order by GRPID fetch first @M rows only) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTGROUP T3 on T2.GRPID = T3.GRPID";
-  public static final String ID_SQL_MSTGROUP = "select GRPID as " + VAL + ", GRPKN as " + TXT + " from INAMS.MSTGROUP " + ID_SQL_CMN_WHERE + " and GRPKN like ? order by GRPKN fetch first @M rows only ";
-  public static final String ID_SQL_MSTGROUP2 = "with INP as (select IDX, GRPKN from (values @V) as X(IDX, GRPKN))" + "select T2.GRPID, T1.GRPKN from INP T1 left outer join INAMS.MSTGROUP T2 on T1.GRPKN = T2.GRPKN and COALESCE(T2.UPDKBN,0) <> 1 order by T1.IDX, T2.GRPID";
+  public static final String ID_SQL_MSTGRP_Y = ID_SQL_GRD_CMN + "select T2.GRPID, T3.GRPKN from T1"
+      + " left outer join (select ROW_NUMBER() over (order by GRPID) as IDX, * from INAMS.MSTGRP_Y where SHNCD like ? and YOYAKUDT = ? order by GRPID fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join INAMS.MSTGROUP T3 on T2.GRPID = T3.GRPID";
+  public static final String ID_SQL_MSTGROUP =
+      "select GRPID as " + VAL + ", GRPKN as " + TXT + " from INAMS.MSTGROUP " + ID_SQL_CMN_WHERE + " and GRPKN like ? order by GRPKN fetch first @M rows only ";
+  public static final String ID_SQL_MSTGROUP2 = "with INP as (select IDX, GRPKN from (values @V) as X(IDX, GRPKN))"
+      + "select T2.GRPID, T1.GRPKN from INP T1 left outer join INAMS.MSTGROUP T2 on T1.GRPKN = T2.GRPKN and COALESCE(T2.UPDKBN,0) <> 1 order by T1.IDX, T2.GRPID";
 
   // SQL：商品店グループ TODO:
   /** 共通（INAMS.MSTSHNTENGP） */
   public final static String ID_SQL_TENGP =
-      "select T1.TENGPCD as VALUE, T1.TENGPCD||'" + SEPARATOR + "'||rtrim(rtrim(T1.TENGPKN), '　') as TEXT, T1.TENGPKN as TEXT2, T1.AREAKBN from INAMS.MSTSHNTENGP T1 " + ID_SQL_CMN_WHERE + " and TO_CHAR(T1.TENGPCD) = ? and TO_CHAR(T1.GPKBN) = ? and TO_CHAR(T1.AREAKBN) = ? and TO_CHAR(T1.BMNCD) = ?";
-  public final static String ID_SQL_TENGP2 = "select T1.TENGPCD as F1, max(rtrim(rtrim(T1.TENGPKN),'　')) as F2, count(T2.TENCD) as F3" + " from INAMS.MSTSHNTENGP T1 left outer join INAMS.MSTSHNTENGPTEN T2 on T1.GPKBN = T2.GPKBN and T1.BMNCD = T2.BMNCD and T1.TENGPCD = T2.TENGPCD "
+      "select T1.TENGPCD as VALUE, T1.TENGPCD||'" + SEPARATOR + "'||rtrim(rtrim(T1.TENGPKN), '　') as TEXT, T1.TENGPKN as TEXT2, T1.AREAKBN from INAMS.MSTSHNTENGP T1 " + ID_SQL_CMN_WHERE
+          + " and TO_CHAR(T1.TENGPCD) = ? and TO_CHAR(T1.GPKBN) = ? and TO_CHAR(T1.AREAKBN) = ? and TO_CHAR(T1.BMNCD) = ?";
+  public final static String ID_SQL_TENGP2 = "select T1.TENGPCD as F1, max(rtrim(rtrim(T1.TENGPKN),'　')) as F2, count(T2.TENCD) as F3"
+      + " from INAMS.MSTSHNTENGP T1 left outer join INAMS.MSTSHNTENGPTEN T2 on T1.GPKBN = T2.GPKBN and T1.BMNCD = T2.BMNCD and T1.TENGPCD = T2.TENGPCD "
       + " where T1.UPDKBN = 0 and T1.GPKBN = ? and T1.BMNCD = ? and T1.AREAKBN = ? and T1.TENGPKN like ? group by T1.TENGPCD";
   public final static String ID_SQL_TENGP_CHK_TEN_CNT = "select count(TENCD) as CNT from INAMS.MSTSHNTENGP T1 inner join INAMS.MSTSHNTENGPTEN T2"
       + " on T1.GPKBN = T2.GPKBN and T1.BMNCD = T2.BMNCD and T1.TENGPCD = T2.TENGPCD and T1.GPKBN = ? and T1.BMNCD = ? and T1.AREAKBN = ? and T1.TENGPCD in (@) and COALESCE(T1.UPDKBN,0) <> 1 group by TENCD having count(TENCD) > 1";
@@ -5839,43 +5906,46 @@ public class DefineReport {
   /** 仕入グループ（INAMS.MSTSIRGPSHN） */
   public final static String ID_SQL_TENGP_SIR = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.SIRCD, T2.SIRCD as SSIRCD, T4.SIRKN, T2.HSPTN, T5.HSPTNKN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTSIRGPSHN where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
   public final static String ID_SQL_TENGP_SIR_Y = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.SIRCD, T2.SIRCD as SSIRCD, T4.SIRKN, T2.HSPTN, T5.HSPTNKN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTSIRGPSHN_Y where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
   public final static String ID_SQL_TENGP_SIR_C = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.SIRCD, T2.SIRCD as SSIRCD, T4.SIRKN, T2.HSPTN, T5.HSPTNKN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.CSVSIRSHN where SEQ = ? and INPUTNO = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
   public final static String ID_SQL_TENGP_SIR_CHK_CNT = "select count(TENCD) from INAMS.MSTSHNTENGP T1 inner join INAMS.MSTSHNTENGPTEN T2"
       + " on T1.GPKBN = T2.GPKBN and T1.BMNCD = T2.BMNCD and T1.TENGPCD = T2.TENGPCD and T1.GPKBN = ? and T1.BMNCD = ? and T1.AREAKBN = ? and T1.TENGPCD in (@) and COALESCE(T1.UPDKBN,0) <> 1 group by TENCD having count(TENCD) > 1";
 
   /** 売価グループ（INAMS.MSTBAIKACTL） */
   public final static String ID_SQL_TENGP_BAIKA = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTBAIKACTL where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
+      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
   public final static String ID_SQL_TENGP_BAIKA_Y = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTBAIKACTL_Y where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
+      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
   public final static String ID_SQL_TENGP_BAIKA_C = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.CSVBAIKACTL where SEQ = ? and INPUTNO = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
+      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
 
   /** 品揃えグループ（INAMS.MSTSHINAGP） */
   public final static String ID_SQL_TENGP_SHINA = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTSHINAGP where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd()
-      + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
   public final static String ID_SQL_TENGP_SHINA_Y = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTSHINAGP_Y where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd()
-      + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
   public final static String ID_SQL_TENGP_SHINA_C = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.CSVSHINAGP where SEQ = ? and INPUTNO = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd()
-      + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
 
   /** 店異部門（INAMS.MSTSHNTENBMN）※店別異部門の店グループ情報は、商品店グループでは、売価グループを参照する */
   public final static String ID_SQL_TENGP_TBMN = ID_SQL_GRD_CMN + "select T2.TENSHNCD,T2.TENGPCD, T3.TENGPKN, T2.AREAKBN, trim(T2.SRCCD) as SRCCD from T1"
@@ -5890,20 +5960,22 @@ public class DefineReport {
 
   // SQL：添加物 TODO:
   /** 共通（INAMS.MSTTENKABUTSU） */
-  public final static String ID_SQL_ALLERGY2 = "select T1.VALUE, T1.TEXT, case when T2.TENKABCD is null then '' else '1' end as SEL from (" + DefineReport.ID_SQL_MEISYO + ") T1" + " left outer join @T T2 on T2.TENKABCD = T1.VALUE @W order by VALUE";
+  public final static String ID_SQL_ALLERGY2 = "select T1.VALUE, T1.TEXT, case when T2.TENKABCD is null then '' else '1' end as SEL from (" + DefineReport.ID_SQL_MEISYO + ") T1"
+      + " left outer join @T T2 on T2.TENKABCD = T1.VALUE @W order by VALUE";
   public final static String ID_SQL_TENKABUTSU2 = ID_SQL_GRD_CMN + "select T2.TENKABCD2||'" + SEPARATOR + "'||RTRIM(T3.NMKN) as TENKABCD, T2.TENKABCD2 as TENKABCD2 from T1"
-      + " left outer join (select ROW_NUMBER() over (order by TENKABCD) as IDX, right ('0000'||TENKABCD, 5) as TENKABCD2 , *  from @T where TENKABKBN = ? @W order by TENKABCD fetch first 10 rows only) T2 on T1.IDX = T2.IDX" + " left outer join INAMS.MSTMEISHO T3 on T3.MEISHOKBN = "
-      + MeisyoSelect.KBN138.getCd() + " and T2.TENKABCD2= T3.MEISHOCD ";
+      + " left outer join (select ROW_NUMBER() over (order by TENKABCD) as IDX, right ('0000'||TENKABCD, 5) as TENKABCD2 , *  from @T where TENKABKBN = ? @W order by TENKABCD fetch first 10 rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join INAMS.MSTMEISHO T3 on T3.MEISHOKBN = " + MeisyoSelect.KBN138.getCd() + " and T2.TENKABCD2= T3.MEISHOCD ";
 
   // SQL：自動発注
   /** 共通（INAMS.MSTAHS） */
-  public final static String ID_SQL_AHS = "select M1.TENCD, M1.TENKN, COALESCE(T1.AHSKB, '" + Values.OFF.getVal() + "') as AHSKB, M2.TENITEMSU, M1.URIAERACD from INAMS.MSTTEN M1" + " left outer join INAMS.MSTTENJSKI M2 on M1.TENCD = M2.TENCD " + " left outer join @T T1  on M1.TENCD = T1.TENCD @W"
-      + " where M1.UPDKBN = 0 order by TENCD";
+  public final static String ID_SQL_AHS = "select M1.TENCD, M1.TENKN, COALESCE(T1.AHSKB, '" + Values.OFF.getVal() + "') as AHSKB, M2.TENITEMSU, M1.URIAERACD from INAMS.MSTTEN M1"
+      + " left outer join INAMS.MSTTENJSKI M2 on M1.TENCD = M2.TENCD " + " left outer join @T T1  on M1.TENCD = T1.TENCD @W" + " where M1.UPDKBN = 0 order by TENCD";
 
   // SQL：催し_デフォルト設定
   /** 共通（INATK.TOKMOYDEF） */
   public static final String ID_SQL_TOKMOYDEF = "select BMNCD as " + VAL + " from INATK.TOKMOYDEF where COALESCE(UPDKBN, 0) = 0";
-  public static final String ID_SQL_TOKMOYDEF2 = "select BMNCD, SZKCD, HBSLIDEKBN, NNSLIDEKBN, KSGRPKBN, DSUEXKBN, DRTEXKBN, DZNENDSKBN, DDNENDSKBN, DCUTEXKBN, DCHIRASKBN, DBMNATRKBN from INATK.TOKMOYDEF where COALESCE(UPDKBN, 0) = 0";
+  public static final String ID_SQL_TOKMOYDEF2 =
+      "select BMNCD, SZKCD, HBSLIDEKBN, NNSLIDEKBN, KSGRPKBN, DSUEXKBN, DRTEXKBN, DZNENDSKBN, DDNENDSKBN, DCUTEXKBN, DCHIRASKBN, DBMNATRKBN from INATK.TOKMOYDEF where COALESCE(UPDKBN, 0) = 0";
 
   // SQL：週間発注計画_計画計表示
   /** 共通（INAMS.MSTAHS） */
@@ -5938,16 +6010,20 @@ public class DefineReport {
       + "SELECT T1.IDX, trim(T2.SHNCD) AS SHNCD,T2.SHNKN FROM T1 LEFT JOIN (SELECT ROW_NUMBER() OVER (ORDER BY KANRINO,SHNCD) AS IDX,MOYSKBN,MOYSSTDT,MOYSRBAN,STNO,KANRINO,SHNCD,SHNKN FROM (SELECT MOYSKBN,MOYSSTDT,MOYSRBAN,STNO,KANRINO,MS.SHNCD,MS.SHNKN FROM (SELECT MOYSKBN,MOYSSTDT,MOYSRBAN,STNO,SHNCD,KANRINO FROM INATK.TOKMM_SHO WHERE MOYSKBN=? AND MOYSSTDT=? AND MOYSRBAN=? AND STNO=? AND WARIGP = ? ORDER BY MOYSKBN,MOYSSTDT,MOYSRBAN,STNO,KANRINO,SHNCD) TK LEFT JOIN INAMS.MSTSHN MS ON TK.SHNCD=MS.SHNCD)) AS T2 ON T1.IDX=T2.IDX ORDER BY T1.IDX";
 
   // SQL：正規定量商品店一覧
-  public final static String ID_SQL_HATSTRSHNTEN = "SELECT * FROM(SELECT 1 AS NUM,'月' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd()
-      + "' AND MEISHOCD='0' UNION ALL SELECT 2 AS NUM,'火' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 3 AS NUM,'水' AS WEEK,MEISHOCD||'" + SEPARATOR
-      + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 4 AS NUM,'木' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '"
-      + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 5 AS NUM,'金' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd()
-      + "' AND MEISHOCD='0' UNION ALL SELECT 6 AS NUM,'土' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 7 AS NUM,'日' AS WEEK,MEISHOCD||'" + SEPARATOR
-      + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0') ORDER BY NUM";
+  public final static String ID_SQL_HATSTRSHNTEN =
+      "SELECT * FROM(SELECT 1 AS NUM,'月' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd()
+          + "' AND MEISHOCD='0' UNION ALL SELECT 2 AS NUM,'火' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '"
+          + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 3 AS NUM,'水' AS WEEK,MEISHOCD||'" + SEPARATOR
+          + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 4 AS NUM,'木' AS WEEK,MEISHOCD||'"
+          + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd()
+          + "' AND MEISHOCD='0' UNION ALL SELECT 5 AS NUM,'金' AS WEEK,MEISHOCD||'" + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '"
+          + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 6 AS NUM,'土' AS WEEK,MEISHOCD||'" + SEPARATOR
+          + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0' UNION ALL SELECT 7 AS NUM,'日' AS WEEK,MEISHOCD||'"
+          + SEPARATOR + "'||RTRIM(NMKN) AS TEISEIKBN4,0 AS SURYO FROM INAMS.MSTMEISHO WHERE MEISHOKBN = '" + MeisyoSelect.KBN105014.getCd() + "' AND MEISHOCD='0') ORDER BY NUM";
   // SQL：正規定量商品店一覧
   public final static String ID_SQL_HATSTRSHNTEN2 =
-      "SELECT TEN.TENCD,MST.TENKN,TEN.SURYO_MON,TEN.SURYO_TUE,TEN.SURYO_WED,TEN.SURYO_THU,TEN.SURYO_FRI,TEN.SURYO_SAT,TEN.SURYO_SUN FROM INATK.HATSTR_TEN TEN LEFT JOIN INAMS.MSTTEN MST ON TEN.TENCD=MST.TENCD WHERE TEN.SHNCD=?AND TEN.BINKBN=?AND TEN.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()
-          + " ORDER BY TEN.TENCD";
+      "SELECT TEN.TENCD,MST.TENKN,TEN.SURYO_MON,TEN.SURYO_TUE,TEN.SURYO_WED,TEN.SURYO_THU,TEN.SURYO_FRI,TEN.SURYO_SAT,TEN.SURYO_SUN FROM INATK.HATSTR_TEN TEN LEFT JOIN INAMS.MSTTEN MST ON TEN.TENCD=MST.TENCD WHERE TEN.SHNCD=?AND TEN.BINKBN=?AND TEN.UPDKBN="
+          + DefineReport.ValUpdkbn.NML.getVal() + " ORDER BY TEN.TENCD";
   // SQL：入力済商品一覧
   public final static String ID_SQL_HATSTRTEN = "WITH SHORI as(" + ID_SQLSHORIDT
       + ") SELECT TN.SHNCD,MS.SHNKN,TN.SURYO_MON,TN.SURYO_TUE,TN.SURYO_WED,TN.SURYO_THU,TN.SURYO_FRI,TN.SURYO_SAT,TN.SURYO_SUN,TO_CHAR(TN.ADDDT,'YY/MM/DD') AS ADDDT,TO_CHAR(TN.UPDDT,'YY/MM/DD') AS UPDDT,TN.OPERATOR FROM INATK.HATSTR_TEN TN,INAMS.MSTSHN MS,SHORI WHERE TN.SHNCD=MS.SHNCD AND TO_DATE(TO_CHAR(TN.UPDDT,'YYYYMMDD'),'YYYY/MM/DD')=TO_DATE(SHORI."
@@ -5958,11 +6034,12 @@ public class DefineReport {
 
   // SQL：風袋マスタリスト TODO:
   /** 共通（INAMS.MSTFTAI） */
-  public final static String ID_SQL_FUTAI = ID_SQL_GRD_CMN + "select  MSFT.FTAISHUKBN, MSFT.FTAIECD,CONCAT(CONCAT(CONCAT(MSFT.FTAISHUKBN, MSFT.FTAIECD),'-' ),MSFT.FTAIKN ) as FUTAI  from INAMS.MSTFTAI MSFT where MSFT.FTAISHUKBN = ";
+  public final static String ID_SQL_FUTAI =
+      ID_SQL_GRD_CMN + "select  MSFT.FTAISHUKBN, MSFT.FTAIECD,CONCAT(CONCAT(CONCAT(MSFT.FTAISHUKBN, MSFT.FTAIECD),'-' ),MSFT.FTAIKN ) as FUTAI  from INAMS.MSTFTAI MSFT where MSFT.FTAISHUKBN = ";
   public final static String ID_SQL_FUTAI_TAIL = " order by MSFT.FTAIECD";
   /** 共通（INAMS.MSTKRYOFTAI） */
-  public final static String ID_SQL_KRYOFUTAI =
-      ID_SQL_GRD_CMN + "select MSKF.FTAISHUKBN,MSKF.FTAIECD, CONCAT(CONCAT(CONCAT(MSKF.FTAISHUKBN, MSKF.FTAIECD),'-' ),MSFT.FTAIKN ) as FUTAI  from INAMS.MSTKRYOFTAI MSKF left join INAMS.MSTFTAI MSFT ON MSKF.FTAISHUKBN = MSFT.FTAISHUKBN AND MSKF.FTAIECD = MSFT.FTAIECD where MSKF.YOBIDASHICD = ";
+  public final static String ID_SQL_KRYOFUTAI = ID_SQL_GRD_CMN
+      + "select MSKF.FTAISHUKBN,MSKF.FTAIECD, CONCAT(CONCAT(CONCAT(MSKF.FTAISHUKBN, MSKF.FTAIECD),'-' ),MSFT.FTAIKN ) as FUTAI  from INAMS.MSTKRYOFTAI MSKF left join INAMS.MSTFTAI MSFT ON MSKF.FTAISHUKBN = MSFT.FTAISHUKBN AND MSKF.FTAIECD = MSFT.FTAIECD where MSKF.YOBIDASHICD = ";
   public final static String ID_SQL_KRYOFUTAI_TAIL = " order by MSFT.FTAIECD";
 
   // SQL：プライスカード発行枚数
@@ -5978,11 +6055,13 @@ public class DefineReport {
   public final static String ID_SQL_TENHTSU_ARR =
       "select T1.TENCD,case when SUBSTRING(T2.TENHTSU_ARR, 1 + (T1.TENCD - 1) * 5, 5) = '' then null else T1.TENKN END as TENKN,case when SUBSTRING(T2.TENHTSU_ARR, 1 + (T1.TENCD - 1) * 5, 5) = '' then null else cast(SUBSTRING(T2.TENHTSU_ARR, 1 + (T1.TENCD - 1) * 5, 5) as INTEGER) END as SURYO from INAMS.MSTTEN as T1 left join  ? T2 on T2.MOYSKBN = ? and T2.MOYSSTDT = ? and T2.MOYSRBAN = ? and T2.KANRINO = ? where T1.TENCD <= ? and T1.MISEUNYOKBN <> 9 and T1.UPDKBN = 0 order by right('00'||T1.TENCD,3)";
   // 店発注数配列
-  public final static String ID_SQL_SURYO2 = "select T1.SRYPTNNO as F1,max(T1.SRYPTNKN) as F2,sum(T2.SURYO) as F3 @C, T1.SRYPTNNO as IDX" + " from (select BMNCD,SRYPTNNO,SRYPTNKN from INATK.TOKSRPTN where BMNCD = ? and UPDKBN = 0) T1"
-      + " left outer join INATK.TOKSRYRANK T2 on T1.BMNCD = T2.BMNCD and T1.SRYPTNNO = T2.SRYPTNNO" + " group by T1.SRYPTNNO";
-  public final static String ID_SQL_SURYO2EX =
-      "select T1.SRYPTNNO as F1,max(T1.SRYPTNKN) as F2,sum(T2.SURYO) as F3 @C , T1.SRYPTNNO as IDX" + " from (select BMNCD,MOYSKBN,MOYSSTDT,MOYSRBAN,SRYPTNNO,SRYPTNKN from INATK.TOKSRPTNEX where UPDKBN = 0 and BMNCD = ? and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?) T1"
-          + " left outer join INATK.TOKSRYRANKEX T2 on T1.BMNCD = T2.BMNCD and T1.MOYSKBN = T2.MOYSKBN and T1.MOYSSTDT = T2.MOYSSTDT and T1.MOYSRBAN = T2.MOYSRBAN and T1.SRYPTNNO = T2.SRYPTNNO" + " group by T1.SRYPTNNO";
+  public final static String ID_SQL_SURYO2 =
+      "select T1.SRYPTNNO as F1,max(T1.SRYPTNKN) as F2,sum(T2.SURYO) as F3 @C, T1.SRYPTNNO as IDX" + " from (select BMNCD,SRYPTNNO,SRYPTNKN from INATK.TOKSRPTN where BMNCD = ? and UPDKBN = 0) T1"
+          + " left outer join INATK.TOKSRYRANK T2 on T1.BMNCD = T2.BMNCD and T1.SRYPTNNO = T2.SRYPTNNO" + " group by T1.SRYPTNNO";
+  public final static String ID_SQL_SURYO2EX = "select T1.SRYPTNNO as F1,max(T1.SRYPTNKN) as F2,sum(T2.SURYO) as F3 @C , T1.SRYPTNNO as IDX"
+      + " from (select BMNCD,MOYSKBN,MOYSSTDT,MOYSRBAN,SRYPTNNO,SRYPTNKN from INATK.TOKSRPTNEX where UPDKBN = 0 and BMNCD = ? and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?) T1"
+      + " left outer join INATK.TOKSRYRANKEX T2 on T1.BMNCD = T2.BMNCD and T1.MOYSKBN = T2.MOYSKBN and T1.MOYSSTDT = T2.MOYSSTDT and T1.MOYSRBAN = T2.MOYSRBAN and T1.SRYPTNNO = T2.SRYPTNNO"
+      + " group by T1.SRYPTNNO";
 
   // SQL：率パターン
   /** 通常率パターン(INATK.TOKRTPTN) */
@@ -5990,10 +6069,12 @@ public class DefineReport {
 
   // SQL：ランク
   /** ランクマスタ(INATK.TOKRANK) */
-  public final static String ID_SQL_RANK = "select right('000'||RANKNO,3) as F1, RANKKN as F2,length(REGEXP_REPLACE(TENRANK_ARR, '[^A-Z]', '')) as F3, RANKNO as F4 from INATK.TOKRANK where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? order by RANKNO";
+  public final static String ID_SQL_RANK =
+      "select right('000'||RANKNO,3) as F1, RANKKN as F2,length(REGEXP_REPLACE(TENRANK_ARR, '[^A-Z]', '')) as F3, RANKNO as F4 from INATK.TOKRANK where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? order by RANKNO";
   /** 臨時ランクマスタ(INATK.TOKRANKEX) */
-  public final static String ID_SQL_RANKEX = "select right('000'||RANKNO,3) as F1, RANKKN as F2,length(REGEXP_REPLACE(TENRANK_ARR, '[^A-Z]', '')) as F3, RANKNO as F4, MOYSKBN as F5, MOYSSTDT as F6, MOYSRBAN as F7 "
-      + " from INATK.TOKRANKEX where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? order by RANKNO";
+  public final static String ID_SQL_RANKEX =
+      "select right('000'||RANKNO,3) as F1, RANKKN as F2,length(REGEXP_REPLACE(TENRANK_ARR, '[^A-Z]', '')) as F3, RANKNO as F4, MOYSKBN as F5, MOYSSTDT as F6, MOYSRBAN as F7 "
+          + " from INATK.TOKRANKEX where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? order by RANKNO";
   /** ランク・臨時マスタ共通 */
   public final static String ID_SQL_RANK_SELECT = "SELECT BMNCD,TENRANK_ARR ";
   public final static String ID_SQL_RANKARR_SELECT = "SELECT TENRANK_ARR AS VALUE ";
@@ -6032,7 +6113,8 @@ public class DefineReport {
   public final static String ID_SQL_TENBETUSU = "select TEN.TENCD, TEN.TENKN, 0 as SURYO from INAMS.MSTTEN TEN where TEN.MISEUNYOKBN <> 9 and TEN.TENCD <= 400";
 
   // SQL：店番一括入力チェック
-  public final static String ID_SQL_TENBMN = "select COUNT(1) as value from INAMS.MSTTEN T1 left join INAMS.MSTTENBMN T2 on T1.TENCD = T2.TENCD and T2.UPDKBN <> 1 where T1.TENCD = ? and T2.BMNCD = ? " + "and T1.MISEUNYOKBN <> 9 and T1.TENCD <= 400 and T1.UPDKBN <> 1 ";
+  public final static String ID_SQL_TENBMN = "select COUNT(1) as value from INAMS.MSTTEN T1 left join INAMS.MSTTENBMN T2 on T1.TENCD = T2.TENCD and T2.UPDKBN <> 1 where T1.TENCD = ? and T2.BMNCD = ? "
+      + "and T1.MISEUNYOKBN <> 9 and T1.TENCD <= 400 and T1.UPDKBN <> 1 ";
 
   // // TODO
   // // SQL：実績率パターン店別分配率
@@ -6053,7 +6135,8 @@ public class DefineReport {
   // SQL：ランク別数量
   public final static String ID_SQL_RANKSURYO_NEW =
       "select 'A' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all  select 'B' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'C' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'D' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'E' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'F' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'G' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'H' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'I' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'J' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'K' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'L' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'M' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'N' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'O' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'P' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'Q' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'R' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'S' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'T' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'U' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'V' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'W' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'X' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'Y' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 union all select 'Z' as RANK , 0 as SURYO from SYSIBM.SYSDUMMY1 order by RANK";
-  public final static String ID_SQL_RANKSURYO_CHANGE = "select SRYRANK.TENRANK as RANK, SRYRANK.SURYO as SURYO from INATK.TOKSRYRANK SRYRANK where SRYRANK.BMNCD = ? and SRYRANK.SRYPTNNO = ? order by SRYRANK.TENRANK";
+  public final static String ID_SQL_RANKSURYO_CHANGE =
+      "select SRYRANK.TENRANK as RANK, SRYRANK.SURYO as SURYO from INATK.TOKSRYRANK SRYRANK where SRYRANK.BMNCD = ? and SRYRANK.SRYPTNNO = ? order by SRYRANK.TENRANK";
   public final static String ID_SQL_RANKSURYO_CHANGE_EX =
       "select SRYRANKEX.TENRANK as RANK, SRYRANKEX.SURYO from INATK.TOKSRYRANKEX SRYRANKEX where SRYRANKEX.BMNCD = ? and SRYRANKEX.SRYPTNNO = ? and SRYRANKEX.MOYSKBN = ? and SRYRANKEX.MOYSSTDT = ? and SRYRANKEX.MOYSRBAN = ? order by SRYRANKEX.TENRANK";
 
@@ -6076,34 +6159,44 @@ public class DefineReport {
   public final static String ID_SQL_MD03100901_WHERE_AUTO = "and exists(" + ID_SQL_MD03100901_EXISTS_AUTO + ")";
 
   /** 添付資料（MD03100902）の販売コード付番機能 */
-  public final static String ID_SQL_MD03100902 =
-      "with FU as (select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU fetch first 1 rows only)" + ", AKI as (select MIN(T1.URICD) as MIN_AKI_URICD from INAAD.SYSURICD_AKI T1 inner join FU T2 on T1.URICD between T2.STARTNO and T2.ENDNO and COALESCE(T1.USEFLG, 0) <> 1)"
-          + " select case when ENDNO > SUMINO then SUMINO + 1 when ENDNO = SUMINO then MIN_AKI_URICD end as VALUE, 0 as USEFLG from FU, AKI";
-  public final static String ID_SQL_MD03100902_USE = "select T1.URICD as VALUE, 1 as USEFLG, T1.SHNCD, T1.UPDDT, T1.UPDKBN from INAMS.MSTSHN T1 where T1.SHNCD = ? order by T1.UPDDT desc fetch first 1 rows only";
+  public final static String ID_SQL_MD03100902 = "with FU as (select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU fetch first 1 rows only)"
+      + ", AKI as (select MIN(T1.URICD) as MIN_AKI_URICD from INAAD.SYSURICD_AKI T1 inner join FU T2 on T1.URICD between T2.STARTNO and T2.ENDNO and COALESCE(T1.USEFLG, 0) <> 1)"
+      + " select case when ENDNO > SUMINO then SUMINO + 1 when ENDNO = SUMINO then MIN_AKI_URICD end as VALUE, 0 as USEFLG from FU, AKI";
+  public final static String ID_SQL_MD03100902_USE =
+      "select T1.URICD as VALUE, 1 as USEFLG, T1.SHNCD, T1.UPDDT, T1.UPDKBN from INAMS.MSTSHN T1 where T1.SHNCD = ? order by T1.UPDDT desc fetch first 1 rows only";
 
   /** 添付資料（MD03112501）のメーカーコードの取得方法 */
-  public final static String ID_SQL_MD03112501 =
-      "with INP as (select CD, KBN, BMNCD from (values ROW(cast(? as varchar (14)), cast(? as varchar (2)), cast(? as varchar (2)))) as X(CD, KBN, BMNCD))" + "select case when CD='' then right('0'||BMNCD,2)||'00001'" + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1)<= 5 then left(CD,7)"
-          + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1) > 5 then left(CD,9)" + " when KBN='1' and left(CD,2)='49' then left(CD,7)" + " when KBN='2' then left(CD,6)" + " else right('0'||BMNCD,2)||'00002' end as value" + " from INP";
+  public final static String ID_SQL_MD03112501 = "with INP as (select CD, KBN, BMNCD from (values ROW(cast(? as varchar (14)), cast(? as varchar (2)), cast(? as varchar (2)))) as X(CD, KBN, BMNCD))"
+      + "select case when CD='' then right('0'||BMNCD,2)||'00001'" + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1)<= 5 then left(CD,7)"
+      + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1) > 5 then left(CD,9)" + " when KBN='1' and left(CD,2)='49' then left(CD,7)" + " when KBN='2' then left(CD,6)"
+      + " else right('0'||BMNCD,2)||'00002' end as value" + " from INP";
 
   /** SQL:添付資料（MD03111301）の総売価の取得 */
-  public final static String ID_SQL_MD03111301_IN = "(values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM))";
+  public final static String ID_SQL_MD03111301_IN =
+      "(values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM))";
   public final static String ID_SQL_MD03111301_IN_RG = "with INP as (select BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM as RG_BAIKAAM from " + ID_SQL_MD03111301_IN;
   public final static String ID_SQL_MD03111301_IN_HS = "with INP as (select BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM as HS_BAIKAAM from " + ID_SQL_MD03111301_IN;
-  public final static String ID_SQL_MD03111301_COL_RG = " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
-      + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
-      + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
-      + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M5.ZEIRT)/100, 0), 0)" + " else T1.RG_BAIKAAM end";
-  public final static String ID_SQL_MD03111301_COL_HS = " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
-      + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
-      + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
-      + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M5.ZEIRT)/100, 0), 0)" + " else T1.HS_BAIKAAM end";
+  public final static String ID_SQL_MD03111301_COL_RG =
+      " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M5.ZEIRT)/100, 0), 0)"
+          + " else T1.RG_BAIKAAM end";
+  public final static String ID_SQL_MD03111301_COL_HS =
+      " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M5.ZEIRT)/100, 0), 0)"
+          + " else T1.HS_BAIKAAM end";
   public final static String ID_SQL_MD03111301_COL_RG_Y = StringUtils.replace(ID_SQL_MD03111301_COL_RG, "T4.SHORIDT", "T1.TENBAIKADT");
   public final static String ID_SQL_MD03111301_COL_HS_Y = StringUtils.replace(ID_SQL_MD03111301_COL_HS, "T4.SHORIDT", "T1.TENBAIKADT");
   public final static String ID_SQL_MD03111301_JOIN_Y =
-      " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1" + " left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = T1.ZEIRTKBN and COALESCE(M2.UPDKBN,0) <> 1" + " left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = T1.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN,0) <> 1" + " left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN,0) <> 1";
-  public final static String ID_SQL_MD03111301_JOIN = " left outer join (select ID, SHORIDT as SHORIDT from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 fetch first 1 rows only) T4 on 1=1" + ID_SQL_MD03111301_JOIN_Y;
+      " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1" + " left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = T1.ZEIRTKBN and COALESCE(M2.UPDKBN,0) <> 1"
+          + " left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = T1.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN,0) <> 1"
+          + " left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN,0) <> 1"
+          + " left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN,0) <> 1";
+  public final static String ID_SQL_MD03111301_JOIN =
+      " left outer join (select ID, SHORIDT as SHORIDT from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 fetch first 1 rows only) T4 on 1=1" + ID_SQL_MD03111301_JOIN_Y;
   public final static String ID_SQL_MD03111301_RG = ID_SQL_MD03111301_IN_RG + " select " + ID_SQL_MD03111301_COL_RG + " as VALUE from INP as T1" + ID_SQL_MD03111301_JOIN;
   public final static String ID_SQL_MD03111301_HS = ID_SQL_MD03111301_IN_HS + " select " + ID_SQL_MD03111301_COL_HS + " as VALUE from INP as T1" + ID_SQL_MD03111301_JOIN;
   public final static String ID_SQL_MD03111301_RG_Y = ID_SQL_MD03111301_IN_RG + " select " + ID_SQL_MD03111301_COL_RG_Y + " as VALUE from INP as T1" + ID_SQL_MD03111301_JOIN_Y;
@@ -6111,10 +6204,12 @@ public class DefineReport {
 
   /** SQL:添付資料（特売基本情報）の本体売価/総売価の取得 */
   public final static String ID_SQL_TOKBAIKA_IN = "with INP as (select SHNCD, BAIKA, DT from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(SHNCD, BAIKA, DT))";
-  public final static String ID_SQL_TOKBAIKA_COL_SOU = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M2.ZEIRT)/100, 0), 0)"
-      + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M3.ZEIRT)/100, 0), 0)"
-      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M4.ZEIRT)/100, 0), 0)"
-      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M5.ZEIRT)/100, 0), 0)" + " else @BAIKA end";
+  public final static String ID_SQL_TOKBAIKA_COL_SOU =
+      " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M2.ZEIRT)/100, 0), 0)"
+          + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M3.ZEIRT)/100, 0), 0)"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M4.ZEIRT)/100, 0), 0)"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M5.ZEIRT)/100, 0), 0)"
+          + " else @BAIKA end";
   /*
    * public final static String ID_SQL_TOKBAIKA_COL_HON =
    * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)"
@@ -6134,37 +6229,46 @@ public class DefineReport {
    */
 
   // 割引本体売価 小数点切上げ
-  public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0))"
-      + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0))"
-      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0))"
-      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0))" + " else @BAIKA end";
+  public final static String ID_SQL_TOKBAIKA_COL_HON =
+      " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0))"
+          + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0))"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0))"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0))" + " else @BAIKA end";
 
-  public final static String ID_SQL_TOKBAIKA_COL_HON2 = " case when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0))"
-      + " when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0))"
-      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0))"
-      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0))" + " else @BAIKA end";
+  public final static String ID_SQL_TOKBAIKA_COL_HON2 =
+      " case when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0))"
+          + " when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0))"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0))"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0))"
+          + " else @BAIKA end";
 
-  public final static String ID_SQL_TOKBAIKA_JOIN = " left outer join INAMS.MSTSHN M0 on M0.SHNCD = @SHNCD   and COALESCE(M0.UPDKBN, 0) <> 1 " + " left outer join INAMS.MSTBMN M1 on M1.BMNCD = M0.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1"
-      + " left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = M0.ZEIRTKBN and COALESCE(M2.UPDKBN, 0) <> 1" + " left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = M0.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN, 0) <> 1"
-      + " left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN, 0) <> 1" + " left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN, 0) <> 1";
+  public final static String ID_SQL_TOKBAIKA_JOIN = " left outer join INAMS.MSTSHN M0 on M0.SHNCD = @SHNCD   and COALESCE(M0.UPDKBN, 0) <> 1 "
+      + " left outer join INAMS.MSTBMN M1 on M1.BMNCD = M0.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1" + " left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = M0.ZEIRTKBN and COALESCE(M2.UPDKBN, 0) <> 1"
+      + " left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = M0.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN, 0) <> 1"
+      + " left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN, 0) <> 1"
+      + " left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN, 0) <> 1";
   public final static String ID_SQL_TOKBAIKA_SOU = ID_SQL_TOKBAIKA_IN + " select " + ID_SQL_TOKBAIKA_COL_SOU + " as VALUE from INP as T1" + ID_SQL_TOKBAIKA_JOIN;
   public final static String ID_SQL_TOKBAIKA_HON = ID_SQL_TOKBAIKA_IN + " select " + ID_SQL_TOKBAIKA_COL_HON + " as VALUE from INP as T1" + ID_SQL_TOKBAIKA_JOIN;
   public final static String ID_SQL_TOKBAIKA_HON2 =
       "SELECT T2.ZEIRT AS F1 FROM(SELECT CASE WHEN T1.ZEIKBN <> '3' THEN CASE WHEN T1.ZEIKBN <> '0' THEN NULL WHEN T1.ZEIKBN = '0' AND SUBSTR(T1.ZEIRTHENKODT, 3, 6) <= ? THEN T1.ZEIRTKBN WHEN T1.ZEIKBN = '0' AND SUBSTR(T1.ZEIRTHENKODT, 3, 6) > ? THEN T1.ZEIRTKBN_OLD END ELSE CASE WHEN T2.ZEIKBN <> '0' THEN NULL WHEN T2.ZEIKBN='0' AND SUBSTR(T2.ZEIRTHENKODT, 3, 6) <= ? THEN T2.ZEIRTKBN WHEN T2.ZEIKBN = '0' AND SUBSTR(T2.ZEIRTHENKODT, 3, 6) > ? THEN T2.ZEIRTKBN_OLD END END ZEIRTKBN FROM INAMS.MSTSHN T1 LEFT JOIN INAMS.MSTBMN T2 ON SUBSTR(T1.SHNCD, 1, 2) = T2.BMNCD WHERE T1.SHNCD=?) T1 LEFT JOIN INAMS.MSTZEIRT T2 ON T1.ZEIRTKBN=T2.ZEIRTKBN";
 
   // 特売共通処理：全品割引商品登録時のチェック用SQL
-  public final static String ID_SQL_TOKRS_KKK_CNT = "with INP as (" + "  select HBSTDT, int (left (LPAD(SHNCD, 8, '0'), 2)) as BMNCD, SHNCD, WRITUKBN" + "  from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(HBSTDT, SHNCD, WRITUKBN)" + " )"
-      + " select count(T.HBSTDT) as VALUE from INATK.TOKRS_KKK T" + " inner join (" + "  select MAX(T.HBSTDT) as HBSTDT, T.BMNCD, X.WRITUKBN, X.SHNCD" + "  from INATK.TOKRS_KKK T " + "  inner join INP X on T.HBSTDT <= X.HBSTDT and T.BMNCD = X.BMNCD and T.DUMMYCD = SHNCD and T.SEICUTKBN = 0"
-      + "  group by T.BMNCD, X.WRITUKBN, X.SHNCD" + " ) X on T.HBSTDT = X.HBSTDT and T.BMNCD = X.BMNCD and T.WRITUKBN = X.WRITUKBN and T.DUMMYCD = SHNCD and T.SEICUTKBN = 0";
+  public final static String ID_SQL_TOKRS_KKK_CNT = "with INP as (" + "  select HBSTDT, int (left (LPAD(SHNCD, 8, '0'), 2)) as BMNCD, SHNCD, WRITUKBN"
+      + "  from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(HBSTDT, SHNCD, WRITUKBN)" + " )" + " select count(T.HBSTDT) as VALUE from INATK.TOKRS_KKK T"
+      + " inner join (" + "  select MAX(T.HBSTDT) as HBSTDT, T.BMNCD, X.WRITUKBN, X.SHNCD" + "  from INATK.TOKRS_KKK T "
+      + "  inner join INP X on T.HBSTDT <= X.HBSTDT and T.BMNCD = X.BMNCD and T.DUMMYCD = SHNCD and T.SEICUTKBN = 0" + "  group by T.BMNCD, X.WRITUKBN, X.SHNCD"
+      + " ) X on T.HBSTDT = X.HBSTDT and T.BMNCD = X.BMNCD and T.WRITUKBN = X.WRITUKBN and T.DUMMYCD = SHNCD and T.SEICUTKBN = 0";
 
   /**
    * 商品カテゴリ関連のSQL
    */
   /** 商品条件（T_CTG_HEAD）検索 */
-  public static final String ID_SQL_KEY_HEAD = "select VALUE, TEXT from (values ROW('', '')) as X(value, TEXT) union all " + "select TO_CHAR(CD_CTG) as VALUE, NM_CTG as TEXT from KEYSYS.T_CTG_HEAD where CD_USER = ? order by TEXT";
+  public static final String ID_SQL_KEY_HEAD =
+      "select VALUE, TEXT from (values ROW('', '')) as X(value, TEXT) union all " + "select TO_CHAR(CD_CTG) as VALUE, NM_CTG as TEXT from KEYSYS.T_CTG_HEAD where CD_USER = ? order by TEXT";
 
   /** 商品条件（T_CTG_HEAD）検索 */
-  public static final String ID_SQL_KEY_HEAD_NO = "SELECT RTRIM(T1.CD_ITEM) AS F1, T2.SYOM AS F2, ROW_NUMBER() OVER () AS F3 FROM KEYSYS.T_CTG_ITEM AS T1 INNER JOIN INATR.SYOUHIN_MST AS T2 ON T1.CD_ITEM = T2.SYOCD WHERE T1.CD_CTG = ? ORDER BY T1.NO_LINE ASC";
+  public static final String ID_SQL_KEY_HEAD_NO =
+      "SELECT RTRIM(T1.CD_ITEM) AS F1, T2.SYOM AS F2, ROW_NUMBER() OVER () AS F3 FROM KEYSYS.T_CTG_ITEM AS T1 INNER JOIN INATR.SYOUHIN_MST AS T2 ON T1.CD_ITEM = T2.SYOCD WHERE T1.CD_CTG = ? ORDER BY T1.NO_LINE ASC";
 
   /** 商品条件（T_CTG_HEAD）登録 */
   public static final String ID_SQL_KEY_SET_HEAD =
@@ -6184,16 +6288,19 @@ public class DefineReport {
   public static final String ID_SQL_KEY_DELETE_ITEM_SP = "delete from KEYSYS.T_CTG_ITEM where CD_CTG = ?";
 
   /** SQL：商品検索（JANコード） */
-  public final static String ID_SQL_SYOHIN_JAN = "SELECT VALUE, TEXT FROM (SELECT SYOCD AS VALUE, SYOM AS TEXT FROM INAMS.SYOUHIN_MST WHERE (SYOCD LIKE ? OR SYOM LIKE ? ) FETCH FIRST 30 ROWS ONLY) ORDER BY TEXT";
+  public final static String ID_SQL_SYOHIN_JAN =
+      "SELECT VALUE, TEXT FROM (SELECT SYOCD AS VALUE, SYOM AS TEXT FROM INAMS.SYOUHIN_MST WHERE (SYOCD LIKE ? OR SYOM LIKE ? ) FETCH FIRST 30 ROWS ONLY) ORDER BY TEXT";
 
   /**
    * 店舗グループ関連のSQL
    */
   /** 店舗グループ（T_TNP_HEAD）検索 */
-  public static final String ID_SQL_KEY_HEAD_TG = "select VALUE, TEXT from (values ROW('', '')) as X(value, TEXT) union all " + "select TO_CHAR(CD_CTG) as VALUE, NM_CTG as TEXT from KEYSYS.T_TNP_HEAD where CD_USER = ? order by TEXT";
+  public static final String ID_SQL_KEY_HEAD_TG =
+      "select VALUE, TEXT from (values ROW('', '')) as X(value, TEXT) union all " + "select TO_CHAR(CD_CTG) as VALUE, NM_CTG as TEXT from KEYSYS.T_TNP_HEAD where CD_USER = ? order by TEXT";
 
   /** 店舗グループ（T_TNP_HEAD）検索 */
-  public static final String ID_SQL_KEY_HEAD_NO_TG = "SELECT RTRIM(T1.CD_ITEM) AS F1, T2.TENMEI AS F2, ROW_NUMBER() OVER () AS F3 FROM KEYSYS.T_TNP_ITEM AS T1 INNER JOIN INAMS.TENPO_MST AS T2 ON T1.CD_ITEM = T2.MISECD WHERE T1.CD_CTG = ? ORDER BY T1.NO_LINE ASC";
+  public static final String ID_SQL_KEY_HEAD_NO_TG =
+      "SELECT RTRIM(T1.CD_ITEM) AS F1, T2.TENMEI AS F2, ROW_NUMBER() OVER () AS F3 FROM KEYSYS.T_TNP_ITEM AS T1 INNER JOIN INAMS.TENPO_MST AS T2 ON T1.CD_ITEM = T2.MISECD WHERE T1.CD_CTG = ? ORDER BY T1.NO_LINE ASC";
 
   /** 店舗グループ（T_TNP_HEAD）登録 */
   public static final String ID_SQL_KEY_SET_HEAD_TG =
@@ -6213,7 +6320,8 @@ public class DefineReport {
   public static final String ID_SQL_KEY_DELETE_ITEM_SP_TG = "delete from KEYSYS.T_TNP_ITEM where CD_CTG = ?";
 
   /** SQL：店舗検索 */
-  public final static String ID_SQL_SYOHIN_TENPO = "SELECT VALUE, TEXT FROM (SELECT MISECD AS VALUE, TENMEI AS TEXT FROM INAMS.TENPO_MST WHERE (MISECD LIKE ? OR TENMEI LIKE ? ) FETCH FIRST 30 ROWS ONLY) ORDER BY TEXT";
+  public final static String ID_SQL_SYOHIN_TENPO =
+      "SELECT VALUE, TEXT FROM (SELECT MISECD AS VALUE, TENMEI AS TEXT FROM INAMS.TENPO_MST WHERE (MISECD LIKE ? OR TENMEI LIKE ? ) FETCH FIRST 30 ROWS ONLY) ORDER BY TEXT";
   /** SQL：店舗基本マスタ検索 */
   public final static String ID_SQL_TENPOKHN = "select distinct CASE WHEN TENKN IS NULL THEN '　' ELSE TENKN END as F1, TENAN as F2 from INAMS.MSTTEN where TENCD = ?";
 
@@ -6225,9 +6333,11 @@ public class DefineReport {
   /** 検索条件の登録 */
   public static final String ID_SQL_INSERT_SHIORI = "INSERT INTO KEYSYS.T_SHIORI(CD_USER,CD_REPORT,NM_SHIORI,SNAPSHOT,FG_PUBLIC) VALUES(?,?,?,?,?)";
   /** SQL：定義検索 */
-  public final static String ID_SQL_SELECT_SHIORI = "SELECT VALUE, TEXT, PUBLIC, FG_PUBLIC, CD_USER, SNAPSHOT FROM ( " + "(SELECT CD_SHIORI AS VALUE, NM_SHIORI AS TEXT, '' AS PUBLIC, FG_PUBLIC, CD_USER, SNAPSHOT, 0 AS SORT FROM KEYSYS.T_SHIORI WHERE FG_PUBLIC = 0 AND CD_USER = ? AND CD_REPORT = ?) "
+  public final static String ID_SQL_SELECT_SHIORI = "SELECT VALUE, TEXT, PUBLIC, FG_PUBLIC, CD_USER, SNAPSHOT FROM ( "
+      + "(SELECT CD_SHIORI AS VALUE, NM_SHIORI AS TEXT, '' AS PUBLIC, FG_PUBLIC, CD_USER, SNAPSHOT, 0 AS SORT FROM KEYSYS.T_SHIORI WHERE FG_PUBLIC = 0 AND CD_USER = ? AND CD_REPORT = ?) "
       + "UNION ALL (SELECT VALUE, TEXT, PUBLIC, FG_PUBLIC, CD_USER, SNAPSHOT, SORT FROM (SELECT CD_SHIORI AS VALUE, NM_SHIORI AS TEXT, '部署' AS PUBLIC, FG_PUBLIC, T1.CD_USER, SNAPSHOT, 8 AS SORT, COALESCE(T4.HTOUKATU_CD_S || T4.HANBAIB_S, T3.JIMU_SOSIKI_CD, '') AS FGCD FROM KEYSYS.T_SHIORI T1 INNER JOIN KEYSYS.SYS_USERS T2 ON T1.CD_USER = T2.CD_USER LEFT OUTER JOIN INAMS.JINJI_KIHON_MST T3 ON T2.USER_ID = T3.SYAIN_NO LEFT OUTER JOIN INAMS.TENPO_MST T4 ON T3.JIMU_SOSIKI_CD = T4.MISECD WHERE FG_PUBLIC = 2 AND CD_REPORT = ?) X WHERE X.FGCD IN (SELECT COALESCE(T4.HTOUKATU_CD_S || T4.HANBAIB_S, T3.JIMU_SOSIKI_CD, '') AS FGCD FROM KEYSYS.SYS_USERS T2 LEFT OUTER JOIN INAMS.JINJI_KIHON_MST T3 ON T2.USER_ID = T3.SYAIN_NO LEFT OUTER JOIN INAMS.TENPO_MST T4 ON T3.JIMU_SOSIKI_CD = T4.MISECD WHERE T2.CD_USER = ?)) "
-      + "UNION ALL (SELECT CD_SHIORI AS VALUE, NM_SHIORI AS TEXT, '全社' AS PUBLIC, FG_PUBLIC, CD_USER, SNAPSHOT, 9 AS SORT FROM KEYSYS.T_SHIORI WHERE FG_PUBLIC = 1 AND CD_REPORT = ?) " + ") WHERE TEXT LIKE ? ORDER BY SORT, TEXT FETCH FIRST 300 ROWS ONLY ";
+      + "UNION ALL (SELECT CD_SHIORI AS VALUE, NM_SHIORI AS TEXT, '全社' AS PUBLIC, FG_PUBLIC, CD_USER, SNAPSHOT, 9 AS SORT FROM KEYSYS.T_SHIORI WHERE FG_PUBLIC = 1 AND CD_REPORT = ?) "
+      + ") WHERE TEXT LIKE ? ORDER BY SORT, TEXT FETCH FIRST 300 ROWS ONLY ";
 
   // "SELECT VALUE, TEXT, PUBLIC, CD_USER, SNAPSHOT FROM ((SELECT CD_SHIORI AS
   // VALUE, NM_SHIORI AS TEXT, CASE WHEN FG_PUBLIC = 1 THEN '*' ELSE '' END AS
@@ -6302,8 +6412,8 @@ public class DefineReport {
    */
   public final static String ID_SQL_TORIHIKI_HEAD = "select VALUE, TEXT from (values ROW('" + Values.NONE.getVal() + "',' ')) as X(" + VAL + "," + TXT + ") union all ";
   public final static String ID_SQL_TORIHIKI_x245 = "select SSM.SIRCD as VALUE, SSM.SIRCD || ' ' || SSM.SIRKN as TEXT from INAMS.MSTSIR SSM where SSM.SIRCD = ? order by VALUE";
-  public final static String ID_SQL_TORIHIKI_NO_YOBI_x245 =
-      ID_SQL_TORIHIKI_HEAD + "select SSM.SIRCD as VALUE, SSM.SIRCD || ' ' || SSM.SIRKN as TEXT from INAMS.MSTSIR SSM inner join (select MAX(STARTDT) as STARTDT, SIRCD from INAMS.MSTSIR where STARTDT <= ?  group by SIRCD) TMP on TMP.STARTDT = SSM.STARTDT and TMP.SIRCD = SSM.SIRCD order by VALUE";
+  public final static String ID_SQL_TORIHIKI_NO_YOBI_x245 = ID_SQL_TORIHIKI_HEAD
+      + "select SSM.SIRCD as VALUE, SSM.SIRCD || ' ' || SSM.SIRKN as TEXT from INAMS.MSTSIR SSM inner join (select MAX(STARTDT) as STARTDT, SIRCD from INAMS.MSTSIR where STARTDT <= ?  group by SIRCD) TMP on TMP.STARTDT = SSM.STARTDT and TMP.SIRCD = SSM.SIRCD order by VALUE";
 
   /**
    * Web商談 SQL：提案
@@ -6316,12 +6426,12 @@ public class DefineReport {
    */
   public final static String ID_SQL_TENGP_SIR_TEIAN = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.SIRCD, T2.SIRCD as SSIRCD, T4.SIRKN, T2.HSPTN, T5.HSPTNKN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAWS.PIMTISIRGPSHN where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
   public final static String ID_SQL_TENGP_SIR_SHIKAKARI = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.SIRCD, T2.SIRCD as SSIRCD, T4.SIRKN, T2.HSPTN, T5.HSPTNKN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAWS.PIMSISIRGPSHN where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SIR.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTSIR T4 on T2.SIRCD = T4.SIRCD and COALESCE(T4.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTHSPTN T5 on T2.HSPTN = T5.HSPTN and COALESCE(T5.UPDKBN,0) <> 1 ";
   /**
    * Web商談 売価グループ（INAWS.PIMTIBAIKACTL）, （INAWS.PIMSIBAIKACTL）
    */
@@ -6340,18 +6450,19 @@ public class DefineReport {
    */
   public final static String ID_SQL_TENGP_SHINA_TEIAN = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAWS.PIMTISHINAGP where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd()
-      + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
   public final static String ID_SQL_TENGP_SHINA_SHIKAKARI = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAWS.PIMSISHINAGP where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
-      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 " + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd()
-      + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
 
   /**
    * Web商談 メーカー（INAWS.PIMTIMAKER）, （INAWS.PIMSIMAKER）
    */
   public final static String ID_SQL_MAKER_TEIAN = "select case when (DMAKERCD = MAKERCD or DMAKERCD is null) then '代表' end as F1, MAKERCD as F2, MAKERKN as F3, DMAKERCD as F4 from INAWS.PIMTIMAKER";
-  public final static String ID_SQL_MAKER_SHIKAKARI = "select case when (DMAKERCD = MAKERCD or DMAKERCD is null) then '代表' end as F1, MAKERCD as F2, MAKERKN as F3, DMAKERCD as F4 from INAWS.PIMSIMAKER";
+  public final static String ID_SQL_MAKER_SHIKAKARI =
+      "select case when (DMAKERCD = MAKERCD or DMAKERCD is null) then '代表' end as F1, MAKERCD as F2, MAKERKN as F3, DMAKERCD as F4 from INAWS.PIMSIMAKER";
 
   /**
    * 時間帯売上実績の範囲
