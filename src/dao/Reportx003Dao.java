@@ -160,7 +160,7 @@ public class Reportx003Dao extends ItemDao {
     sbSQL.append("  ,case IDX when 1 then RG_IDENFLG end IDENFLG"); // 一括
     sbSQL.append("  ,case IDX when 1 then lpad(SSIRCD, 6, '0') end"); // 標準仕入先
     sbSQL.append("  ,case IDX when 1 then right('0'||COALESCE(T1.BMNCD,0),2)||right('0'||COALESCE(T1.DAICD,0),2)||right('0'||COALESCE(T1.CHUCD,0),2)||right('0'||COALESCE(T1.SHOCD,0),2) end"); // 分類コード
-    sbSQL.append("  ,case IDX when 1 then COALESCE(DATE_FORMAT(DATE_FORMAT(T1.UPDDT, '%Y%m%d'), '%Y/%m/%d'), '__/__/__')  end as UPDDT "); // 更新日
+    sbSQL.append("  ,case IDX when 1 then COALESCE(DATE_FORMAT(DATE_FORMAT(T1.UPDDT, '%Y%m%d'), '%y/%m/%d'), '__/__/__')  end as UPDDT "); // 更新日
     sbSQL.append(" from INAMS.MSTSHN T1");
     sbSQL.append(" inner join INP T0 on T1.SHNCD = T0.SHNCD and COALESCE(T1.UPDKBN, 0) <> 1");
     sbSQL.append(" inner join (values row(1, 'レギュラー'),ROW(2, '販促')) as T2(IDX, KTXT) on 1=1");
