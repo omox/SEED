@@ -330,7 +330,7 @@
 					{field:'F14',	title:'　',					width: 40,halign:'center',align:'left'},
 					{field:'F15',	title:'標準仕入先',			width: 70,halign:'center',align:'left'},
 					{field:'F16',	title:'分類コード',			width: 80,halign:'center',align:'left'},
-					{field:'F17',	title:'更新日',				width: 70,halign:'center',align:'left'}
+					{field:'F17',	title:'更新日',				width: 80,halign:'center',align:'left'}
 				]],
 				fitColumns:false,	// 指定カラム幅を適用する場合、false 指定。
 				rowStyler:function(index, row){

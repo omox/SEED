@@ -6177,16 +6177,16 @@ public class DefineReport {
   public final static String ID_SQL_MD03111301_IN_RG = "with INP as (select BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM as RG_BAIKAAM from " + ID_SQL_MD03111301_IN;
   public final static String ID_SQL_MD03111301_IN_HS = "with INP as (select BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM as HS_BAIKAAM from " + ID_SQL_MD03111301_IN;
   public final static String ID_SQL_MD03111301_COL_RG =
-      " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
-          + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
-          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
-          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.RG_BAIKAAM*M5.ZEIRT)/100, 0), 0)"
+      " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate((T1.RG_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate((T1.RG_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate((T1.RG_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.RG_BAIKAAM,0),0) + COALESCE(truncate((T1.RG_BAIKAAM*M5.ZEIRT)/100, 0), 0)"
           + " else T1.RG_BAIKAAM end";
   public final static String ID_SQL_MD03111301_COL_HS =
-      " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
-          + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
-          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
-          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate(decimal(T1.HS_BAIKAAM*M5.ZEIRT)/100, 0), 0)"
+      " case when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate((T1.HS_BAIKAAM*M2.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 0 and COALESCE(T1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate((T1.HS_BAIKAAM*M3.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate((T1.HS_BAIKAAM*M4.ZEIRT)/100, 0), 0)"
+          + " when T1.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(T4.SHORIDT, 0) then COALESCE(truncate(T1.HS_BAIKAAM,0),0) + COALESCE(truncate((T1.HS_BAIKAAM*M5.ZEIRT)/100, 0), 0)"
           + " else T1.HS_BAIKAAM end";
   public final static String ID_SQL_MD03111301_COL_RG_Y = StringUtils.replace(ID_SQL_MD03111301_COL_RG, "T4.SHORIDT", "T1.TENBAIKADT");
   public final static String ID_SQL_MD03111301_COL_HS_Y = StringUtils.replace(ID_SQL_MD03111301_COL_HS, "T4.SHORIDT", "T1.TENBAIKADT");
@@ -6196,7 +6196,7 @@ public class DefineReport {
           + " left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN,0) <> 1"
           + " left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN,0) <> 1";
   public final static String ID_SQL_MD03111301_JOIN =
-      " left outer join (select ID, SHORIDT as SHORIDT from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 fetch first 1 rows only) T4 on 1=1" + ID_SQL_MD03111301_JOIN_Y;
+      " left outer join (select ID, SHORIDT as SHORIDT from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <>1 LIMIT 1) T4 on 1=1" + ID_SQL_MD03111301_JOIN_Y;
   public final static String ID_SQL_MD03111301_RG = ID_SQL_MD03111301_IN_RG + " select " + ID_SQL_MD03111301_COL_RG + " as VALUE from INP as T1" + ID_SQL_MD03111301_JOIN;
   public final static String ID_SQL_MD03111301_HS = ID_SQL_MD03111301_IN_HS + " select " + ID_SQL_MD03111301_COL_HS + " as VALUE from INP as T1" + ID_SQL_MD03111301_JOIN;
   public final static String ID_SQL_MD03111301_RG_Y = ID_SQL_MD03111301_IN_RG + " select " + ID_SQL_MD03111301_COL_RG_Y + " as VALUE from INP as T1" + ID_SQL_MD03111301_JOIN_Y;
@@ -6211,21 +6211,13 @@ public class DefineReport {
           + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M5.ZEIRT)/100, 0), 0)"
           + " else @BAIKA end";
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON =
-   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)"
-   * +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)" +" else @BAIKA end";
    */
 
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON =
-   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)"
-   * +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)" +" else @BAIKA end";
    */
 
   // 割引本体売価 小数点切上げ
