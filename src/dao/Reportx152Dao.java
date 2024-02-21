@@ -265,7 +265,7 @@ public class Reportx152Dao extends ItemDao {
       sbSQL.append(", null"); // F50 ： 登録日
       sbSQL.append(", null"); // F51 ： 更新日
       sbSQL.append(", null"); // F52 ： オペレータ
-      sbSQL.append(" from (SELECT 1 AS DUMMY) AS DUAL");
+      sbSQL.append(" from (SELECT 1 AS DUMMY) AS DUMMY");
     }
 
     // オプション情報（タイトル）設定
