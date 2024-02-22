@@ -320,7 +320,6 @@ public class Reportx152Dao extends ItemDao {
 
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
-    String sendBtnid = getMap().get("SENDBTNID"); // 呼出しボタン
 
     ArrayList<String> prmData = new ArrayList<String>();
     Object[] valueData = new Object[] {};
@@ -451,19 +450,15 @@ public class Reportx152Dao extends ItemDao {
     sbSQL.append(", UPDKBN"); // 更新区分
     sbSQL.append(", SENDFLG"); // 送信フラグ
     sbSQL.append(", OPERATOR "); // オペレーター
-    if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-      sbSQL.append(",ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
-    }
+    sbSQL.append(",ADDDT ");// 登録日
     sbSQL.append(",UPDDT ");
     sbSQL.append(")");
     sbSQL.append("VALUES (");
-    sbSQL.append(StringUtils.join(valueData, ",").substring(1));
+    sbSQL.append(StringUtils.join(valueData, ",").substring(2));
     sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
     sbSQL.append(", 0"); // 送信フラグ
     sbSQL.append(", '" + userId + "' "); // オペレーター
-    if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-      sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
-    }
+    sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
     sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
     sbSQL.append(")");
 
@@ -490,11 +485,6 @@ public class Reportx152Dao extends ItemDao {
       if (!dataT.isEmpty()) {
         for (int k = 1; k <= maxField; k++) {
           String key = "F" + String.valueOf(k);
-
-          if (k == 1) {
-            values += String.valueOf(0 + 1);
-
-          }
 
           if (!ArrayUtils.contains(new String[] {""}, key)) {
             String val = dataT.optString(key);
@@ -541,18 +531,14 @@ public class Reportx152Dao extends ItemDao {
         sbSQL.append(", DSHUHKBN"); // 横持先_集計表
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(",ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
-        }
+        sbSQL.append(",ADDDT ");// 登録日
         sbSQL.append(",UPDDT ");
         sbSQL.append(")");
         sbSQL.append("VALUES (");
         sbSQL.append(StringUtils.join(valueData, ",").substring(1));
         sbSQL.append(", 0"); // 送信フラグ
         sbSQL.append(", '" + userId + "' "); // オペレーター
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
-        }
+        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
         sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
         sbSQL.append(")");
 
@@ -580,11 +566,6 @@ public class Reportx152Dao extends ItemDao {
       if (!dataT.isEmpty()) {
         for (int k = 1; k <= maxField; k++) {
           String key = "F" + String.valueOf(k);
-
-          if (k == 1) {
-            values += String.valueOf(0 + 1);
-
-          }
 
           if (!ArrayUtils.contains(new String[] {""}, key)) {
             String val = dataT.optString(key);
@@ -632,18 +613,14 @@ public class Reportx152Dao extends ItemDao {
         sbSQL.append(", DSHUHKBN"); // 横持先_集計表
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター：
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(",ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
-        }
+        sbSQL.append(",ADDDT ");// 登録日
         sbSQL.append(",UPDDT ");
         sbSQL.append(")");
         sbSQL.append("VALUES (");
         sbSQL.append(StringUtils.join(valueData, ",").substring(1));
         sbSQL.append(", 0"); // 送信フラグ
         sbSQL.append(", '" + userId + "' "); // オペレーター
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
-        }
+        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
         sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
         sbSQL.append(")");
 
