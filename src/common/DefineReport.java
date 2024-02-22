@@ -5330,8 +5330,8 @@ public class DefineReport {
   public final static String ID_SQL_CMN_FOOTER = " order by VALUE";
   public final static String ID_SQL_CMN_WHERE = " where COALESCE(UPDKBN,0) <> 1 ";
   public final static String ID_SQL_CMN_WHERE2 = " and COALESCE(UPDKBN,0) <> 1 ";
-  public final static String ID_SQL_GRD_CMN = "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) ";
-  public final static String ID_SQL_GRD_CMN0 = "with T1(IDX) as (select 0 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) ";
+  public final static String ID_SQL_GRD_CMN = "WITH RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY UNION ALL SELECT IDX+1 FROM T1 WHERE IDX < @M ) ";
+  public final static String ID_SQL_GRD_CMN0 = "WITH RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY UNION ALL SELECT IDX+1 FROM T1 WHERE IDX < @M ) ";
   public final static String ID_SQL_GRD_EMPTY = ID_SQL_GRD_CMN + "select IDX from T1";
   public final static String ID_SQL_CMN_WEEK =
       "WITH WEEK as (select CWEEK,'('||JWEEK||')' as JWEEK, JWEEK as JWEEK2 from (values(1,'日'),(2,'月'),(3,'火'),(4,'水'),(5,'木'),(6,'金'),(7,'土')) as TMP(CWEEK,JWEEK)) ";
