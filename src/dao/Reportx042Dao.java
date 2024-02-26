@@ -271,7 +271,7 @@ public class Reportx042Dao extends ItemDao {
    */
   public String createSqlTREADTM(JSONObject data, HashMap<String, String> map, User userInfo) {
 
-    StringBuffer sbSQL = new StringBuffer();
+    new StringBuffer();
 
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
@@ -308,71 +308,71 @@ public class Reportx042Dao extends ItemDao {
     // sbSQL = new StringBuffer();
 
     //
-    sbSQL = new StringBuffer();
-    sbSQL.append(" INSERT into INAMS.MSTREADTM  ( ");
-    sbSQL.append(" READTMPTN "); // リードタイムパターン
-    sbSQL.append(",READTMPTNKN "); // リードタイム名称
-    sbSQL.append(",READTM_MON "); // リードタイム_月
-    sbSQL.append(",READTM_TUE "); // リードタイム_火
-    sbSQL.append(",READTM_WED "); // リードタイム_水
-    sbSQL.append(",READTM_THU "); // リードタイム_木
-    sbSQL.append(",READTM_FRI "); // リードタイム_金
-    sbSQL.append(",READTM_SAT "); // リードタイム_土
-    sbSQL.append(",READTM_SUN "); // リードタイム_日
-    sbSQL.append(",UPDKBN "); // 更新区分：
-    sbSQL.append(",SENDFLG "); // 送信フラグ
-    sbSQL.append(",OPERATOR "); // オペレーター：
-    sbSQL.append(",ADDDT "); // 登録日：
-    sbSQL.append(",UPDDT "); // 更新日：
-    sbSQL.append(")");
-    sbSQL.append("select ");
-    sbSQL.append(" READTMPTN AS READTMPTN "); // リードタイムパターン
-    sbSQL.append(",READTMPTNKN AS READTMPTNKN"); // リードタイム名称
-    sbSQL.append(",READTM_MON AS READTM_MON "); // リードタイム_月
-    sbSQL.append(",READTM_TUE AS READTM_TUE "); // リードタイム_火
-    sbSQL.append(",READTM_WED AS READTM_WED "); // リードタイム_水
-    sbSQL.append(",READTM_THU AS READTM_THU "); // リードタイム_木
-    sbSQL.append(",READTM_FRI AS READTM_FRI "); // リードタイム_金
-    sbSQL.append(",READTM_SAT AS READTM_SAT "); // リードタイム_土
-    sbSQL.append(",READTM_SUN AS READTM_SUN "); // リードタイム_日
-    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
-    sbSQL.append(", 0 as SENDFLG"); // 送信フラグ
-    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
-    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
-    sbSQL.append(", CURRENT_TIMESTAMP  AS UPDDT "); // 更新日：
-    sbSQL.append(" FROM (VALUES ROW ");
-    sbSQL.append(StringUtils.join(valueData, ",") + ") as T1(NUM, ");
-    sbSQL.append(" READTMPTN");
-    sbSQL.append(", READTMPTNKN");
-    sbSQL.append(", READTM_MON");
-    sbSQL.append(", READTM_TUE");
-    sbSQL.append(", READTM_WED");
-    sbSQL.append(", READTM_THU");
-    sbSQL.append(", READTM_FRI");
-    sbSQL.append(", READTM_SAT");
-    sbSQL.append(", READTM_SUN)  ");
-    sbSQL.append(" ON DUPLICATE KEY UPDATE ");// リードタイムパターンが重複した時のUPDATE処理
-    sbSQL.append("READTMPTN = VALUES(READTMPTN) ");
-    sbSQL.append(",READTMPTNKN = VALUES(READTMPTNKN) ");
-    sbSQL.append(",READTM_MON = VALUES(READTM_MON) ");
-    sbSQL.append(",READTM_TUE = VALUES(READTM_TUE) ");
-    sbSQL.append(",READTM_WED = VALUES(READTM_WED) ");
-    sbSQL.append(",READTM_THU = VALUES(READTM_THU) ");
-    sbSQL.append(",READTM_FRI = VALUES(READTM_FRI ) ");
-    sbSQL.append(",READTM_SAT = VALUES(READTM_SAT) ");
-    sbSQL.append(",READTM_SUN= VALUES(READTM_SUN) ");
-    sbSQL.append(",UPDKBN= VALUES(UPDKBN) ");
-    sbSQL.append(",SENDFLG = VALUES(SENDFLG) ");
-    sbSQL.append(",OPERATOR = VALUES(OPERATOR) ");
-    sbSQL.append(",ADDDT= (case when (select COALESCE(UPDKBN, 0) FROM INAMS.MSTREADTM where READTMPTN = T1.READTMPTN) = 1 then CURRENT_TIMESTAMP  else ADDDT end ) ");
-    sbSQL.append(",UPDDT = VALUES(UPDDT) ");
+    StringBuffer sb = new StringBuffer();
+    sb.append(" INSERT into INAMS.MSTREADTM  ( ");
+    sb.append(" READTMPTN "); // リードタイムパターン
+    sb.append(",READTMPTNKN "); // リードタイム名称
+    sb.append(",READTM_MON "); // リードタイム_月
+    sb.append(",READTM_TUE "); // リードタイム_火
+    sb.append(",READTM_WED "); // リードタイム_水
+    sb.append(",READTM_THU "); // リードタイム_木
+    sb.append(",READTM_FRI "); // リードタイム_金
+    sb.append(",READTM_SAT "); // リードタイム_土
+    sb.append(",READTM_SUN "); // リードタイム_日
+    sb.append(",UPDKBN "); // 更新区分：
+    sb.append(",SENDFLG "); // 送信フラグ
+    sb.append(",OPERATOR "); // オペレーター：
+    sb.append(",ADDDT "); // 登録日：
+    sb.append(",UPDDT "); // 更新日：
+    sb.append(")");
+    sb.append("select ");
+    sb.append(" READTMPTN AS READTMPTN "); // リードタイムパターン
+    sb.append(",READTMPTNKN AS READTMPTNKN"); // リードタイム名称
+    sb.append(",READTM_MON AS READTM_MON "); // リードタイム_月
+    sb.append(",READTM_TUE AS READTM_TUE "); // リードタイム_火
+    sb.append(",READTM_WED AS READTM_WED "); // リードタイム_水
+    sb.append(",READTM_THU AS READTM_THU "); // リードタイム_木
+    sb.append(",READTM_FRI AS READTM_FRI "); // リードタイム_金
+    sb.append(",READTM_SAT AS READTM_SAT "); // リードタイム_土
+    sb.append(",READTM_SUN AS READTM_SUN "); // リードタイム_日
+    sb.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
+    sb.append(", 0 as SENDFLG"); // 送信フラグ
+    sb.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+    sb.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+    sb.append(", CURRENT_TIMESTAMP  AS UPDDT "); // 更新日：
+    sb.append(" FROM (VALUES ROW ");
+    sb.append(StringUtils.join(valueData, ",") + ") as T1(NUM, ");
+    sb.append(" READTMPTN");
+    sb.append(", READTMPTNKN");
+    sb.append(", READTM_MON");
+    sb.append(", READTM_TUE");
+    sb.append(", READTM_WED");
+    sb.append(", READTM_THU");
+    sb.append(", READTM_FRI");
+    sb.append(", READTM_SAT");
+    sb.append(", READTM_SUN)  ");
+    sb.append(" ON DUPLICATE KEY UPDATE ");// リードタイムパターンが重複した時のUPDATE処理
+    sb.append("READTMPTN = VALUES(READTMPTN) ");
+    sb.append(",READTMPTNKN = VALUES(READTMPTNKN) ");
+    sb.append(",READTM_MON = VALUES(READTM_MON) ");
+    sb.append(",READTM_TUE = VALUES(READTM_TUE) ");
+    sb.append(",READTM_WED = VALUES(READTM_WED) ");
+    sb.append(",READTM_THU = VALUES(READTM_THU) ");
+    sb.append(",READTM_FRI = VALUES(READTM_FRI ) ");
+    sb.append(",READTM_SAT = VALUES(READTM_SAT) ");
+    sb.append(",READTM_SUN= VALUES(READTM_SUN) ");
+    sb.append(",UPDKBN= VALUES(UPDKBN) ");
+    sb.append(",SENDFLG = VALUES(SENDFLG) ");
+    sb.append(",OPERATOR = VALUES(OPERATOR) ");
+    sb.append(",ADDDT= (case when (select COALESCE(UPDKBN, 0) FROM INAMS.MSTREADTM where READTMPTN = T1.READTMPTN) = 1 then CURRENT_TIMESTAMP  else ADDDT end ) ");
+    sb.append(",UPDDT = VALUES(UPDDT) ");
 
 
 
     if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      System.out.println(this.getClass().getName() + ":" + sb.toString());
 
-    sqlList.add(sbSQL.toString());
+    sqlList.add(sb.toString());
     prmList.add(prmData);
     lblList.add("リードタイムパターンマスタ");
 
@@ -381,7 +381,7 @@ public class Reportx042Dao extends ItemDao {
     valueData = new Object[] {};
     values = "";
 
-    return sbSQL.toString();
+    return sb.toString();
   }
 
 
