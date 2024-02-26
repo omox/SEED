@@ -5592,7 +5592,7 @@ public class DefineReport {
   public final static String ID_SQL_BUMON_CMN =
       "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(BMNKN)), '　'),'') as TEXT, rtrim(rtrim(max(BMNKN)), '　') as TEXT2 ";
   public final static String ID_SQL_BUMON_CMN_C =
-      "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(BMNKN), '　'),'') as TEXT, rtrim(rtrim(BMNKN), '　') as TEXT2, * ";
+      "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(BMNKN),'') as TEXT, rtrim(BMNKN) as TEXT2, INAMS.MSTBMN.* ";
   public final static String ID_SQL_BUMON = ID_SQL_BUMON_CMN + "from INAMS.MSTBMN";
   public final static String ID_SQL_BUMON_C = ID_SQL_BUMON_CMN_C + "from INAMS.MSTBMN";
   public final static String ID_SQL_BUMON_FOOTER = " group by BMNCD order by VALUE";
