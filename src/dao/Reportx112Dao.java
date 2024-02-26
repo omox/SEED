@@ -1086,7 +1086,7 @@ public class Reportx112Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "";
-    String updateRows = "";
+    // String updateRows = "";
     sqlList = new ArrayList<String>();
     prmList = new ArrayList<ArrayList<String>>();
     lblList = new ArrayList<String>();
@@ -1114,7 +1114,7 @@ public class Reportx112Dao extends ItemDao {
 
         }
       }
-      updateRows = StringUtils.removeStart(values, ",");
+      // updateRows = StringUtils.removeStart(values, ",");
       if (!values.isEmpty()) {
         sbSQL = new StringBuffer();
         sbSQL.append("REPLACE INTO INAMS.MSTTENTENANT (");
@@ -1130,39 +1130,12 @@ public class Reportx112Dao extends ItemDao {
         }
         sbSQL.append(", UPDDT"); // 更新日：
 
-
-        // sbSQL.append(" from (values " + updateRows + ") as T1(");
-        // sbSQL.append(" TENCD");
-        // sbSQL.append(", TENANTKB");
-        // sbSQL.append(", TENANTKN");
-        // sbSQL.append("))as RE on (T.TENCD = RE.TENCD and T.TENANTKB = RE.TENANTKB)");
-        // sbSQL.append(" when matched then update set");
-        // sbSQL.append(" TENCD = RE.TENCD");
-        // sbSQL.append(", TENANTKB = RE.TENANTKB");
-        // sbSQL.append(", TENANTKN = RE.TENANTKN");
-        // sbSQL.append(", SENDFLG = RE.SENDFLG");
-        // sbSQL.append(", UPDKBN = RE.UPDKBN");
-        // sbSQL.append(", OPERATOR = RE.OPERATOR");
-        // sbSQL.append(", UPDDT = RE.UPDDT");
-        // sbSQL.append(" when not matched then insert(");
-        // sbSQL.append(" TENCD");
-        // sbSQL.append(", TENANTKB");
-        // sbSQL.append(", TENANTKN");
-        // sbSQL.append(", SENDFLG");
-        // sbSQL.append(", UPDKBN");
-        // sbSQL.append(", OPERATOR");
-        // sbSQL.append(", ADDDT");
-        // sbSQL.append(", UPDDT");
-
-
         sbSQL.append(") VALUES (");
-        sbSQL.append("  " + updateRows + " ");
-        // sbSQL.append(", ?");
-        // sbSQL.append(", ?");
-        // sbSQL.append(", ?");
-        // sbSQL.append(", NULL");
-        // sbSQL.append(", NULL");
-        sbSQL.append(", 0 "); // 送信フラグ：
+        // sbSQL.append(" " + updateRows + " ");
+        sbSQL.append(" ?");
+        sbSQL.append(", ?");
+        sbSQL.append(", NULL");
+        sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
         sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
         sbSQL.append(", '" + userId + "' "); // オペレーター：
         if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
