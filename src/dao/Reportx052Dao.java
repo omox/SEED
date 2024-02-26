@@ -283,6 +283,7 @@ public class Reportx052Dao extends ItemDao {
     map.get("SENDBTNID");
 
     ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> valData = new ArrayList<String>();
     Object[] valueData = new Object[] {};
     String values = "";
 
@@ -297,6 +298,7 @@ public class Reportx052Dao extends ItemDao {
 
       if (!ArrayUtils.contains(new String[] {""}, key)) {
         String val = data.optString(key);
+        valData.add(val);
         if (StringUtils.isEmpty(val)) {
           values += ", null";
         } else {
@@ -330,7 +332,8 @@ public class Reportx052Dao extends ItemDao {
     sb.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " ");
     sb.append(",0 ");
     sb.append(",'" + userId + "' ");
-    sb.append(",CURRENT_TIMESTAMP ");
+    sb.append(",(SELECT * FROM (SELECT CASE WHEN IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END ");
+    sb.append("FROM INAMS.MSTMAKER WHERE MAKERCD =" + valData.get(0) + " ) T1 ) ");
     sb.append(",CURRENT_TIMESTAMP ");
     sb.append(")");
 
