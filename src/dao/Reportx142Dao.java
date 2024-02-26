@@ -279,7 +279,7 @@ public class Reportx142Dao extends ItemDao {
 		if(DefineReport.Button.UPD_TAB1.getObj().equals(obj)){
 			dataArray = JSONArray.fromObject(map.get("DATA_TEN"));	// 対象情報
 			dataArray2 = JSONArray.fromObject(map.get("DATA"));	// 対象情報
-			targetWhere =" NVL(UPDKBN, 0) <> "+DefineReport.ValUpdkbn.DEL.getVal()+" and TENKYUDT = ? and TENCD = ?";
+			targetWhere =" IFNULL(UPDKBN, 0) <> "+DefineReport.ValUpdkbn.DEL.getVal()+" and TENKYUDT = ? and TENCD = ?";
 			for (int i = 0; i < dataArray.size(); i++) {
 				data = dataArray.getJSONObject(i);
 				data2 = dataArray2.getJSONObject(0);
@@ -304,7 +304,7 @@ public class Reportx142Dao extends ItemDao {
 
 			dataArray = JSONArray.fromObject(map.get("DATA_KIKAN"));	// 対象情報
 			dataArray2 = JSONArray.fromObject(map.get("DATA"));	// 対象情報
-			targetWhere =" NVL(UPDKBN, 0) <> "+DefineReport.ValUpdkbn.DEL.getVal()+" and TENCD = ? and TENKYUDT = ? ";
+			targetWhere =" IFNULL(UPDKBN, 0) <> "+DefineReport.ValUpdkbn.DEL.getVal()+" and TENCD = ? and TENKYUDT = ? ";
 			for (int i = 0; i < dataArray.size(); i++) {
 				data = dataArray.getJSONObject(i);
 				data2 = dataArray2.getJSONObject(0);
