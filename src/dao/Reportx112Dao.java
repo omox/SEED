@@ -725,8 +725,9 @@ public class Reportx112Dao extends ItemDao {
     // DB検索用パラメータ設定
     setParamData(paramData);
 
-    if (DefineReport.ID_DEBUG_MODE)
+    if (DefineReport.ID_DEBUG_MODE) {
       System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    }
     return sbSQL.toString();
   }
 
@@ -817,8 +818,9 @@ public class Reportx112Dao extends ItemDao {
     if (StringUtils.isEmpty(super.getMessage())) {
       for (int i = 0; i < countList.size(); i++) {
         successCount++;
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(MessageUtility.getMessage(Msg.S00006.getVal(), new String[] {lblList.get(i), Integer.toString(countList.get(i))}));
+        }
       }
 
     } else {
@@ -837,8 +839,9 @@ public class Reportx112Dao extends ItemDao {
     if (StringUtils.isEmpty(super.getMessage())) {
       for (int i = 0; i < countList.size(); i++) {
         successCount++;
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(MessageUtility.getMessage(Msg.S00006.getVal(), new String[] {lblList.get(i), Integer.toString(countList.get(i))}));
+        }
       }
     } else {
       option.put(MsgKey.E.getKey(), super.getMessage());
@@ -856,8 +859,9 @@ public class Reportx112Dao extends ItemDao {
     if (StringUtils.isEmpty(super.getMessage())) {
       for (int i = 0; i < countList.size(); i++) {
         successCount++;
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(MessageUtility.getMessage(Msg.S00006.getVal(), new String[] {lblList.get(i), Integer.toString(countList.get(i))}));
+        }
       }
     } else {
       option.put(MsgKey.E.getKey(), super.getMessage());
@@ -1052,8 +1056,9 @@ public class Reportx112Dao extends ItemDao {
         sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
         sbSQL.append(")");
 
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
@@ -1081,12 +1086,11 @@ public class Reportx112Dao extends ItemDao {
   public String createSqlTenant(JSONArray dataArray, HashMap<String, String> map, User userInfo) {
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
-    String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
 
     StringBuffer sbSQL = new StringBuffer();
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "";
-    // String updateRows = "";
+    String updateRows = "";
     sqlList = new ArrayList<String>();
     prmList = new ArrayList<ArrayList<String>>();
     lblList = new ArrayList<String>();
@@ -1105,47 +1109,39 @@ public class Reportx112Dao extends ItemDao {
             prmData.add(data.optString("F1"));
             prmData.add(String.valueOf(j));
             if (StringUtils.isEmpty(data.optString("F" + (k + 20)))) {
-              values += ",NULL";
+              values += ",(?,?,NULL";
             } else {
               prmData.add(data.optString("F" + (k + 20)));
-              values += ",?";
+              values += ",(?,?,?";
             }
+            values += (", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
+            values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
+            values += (", '" + userId + "' "); // オペレーター：
+            values += (", CURRENT_TIMESTAMP "); // 登録日
+            values += (", CURRENT_TIMESTAMP "); // 更新日
+            values += ")";
           }
 
         }
       }
-      // updateRows = StringUtils.removeStart(values, ",");
+      updateRows = StringUtils.removeStart(values, ",");
       if (!values.isEmpty()) {
         sbSQL = new StringBuffer();
         sbSQL.append("REPLACE INTO INAMS.MSTTENTENANT (");
         sbSQL.append("  TENCD"); // 店コード
         sbSQL.append(", TENANTKB"); // テント種別
         sbSQL.append(", TENANTKN"); // テナント社名
-        // sbSQL.append(", SEQNO");
         sbSQL.append(", SENDFLG"); // 送信区分：
         sbSQL.append(", UPDKBN"); // 更新区分：
         sbSQL.append(", OPERATOR"); // オペレーター：
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
-        }
+        sbSQL.append(", ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
         sbSQL.append(", UPDDT"); // 更新日：
+        sbSQL.append(") VALUES");
+        sbSQL.append(" " + updateRows + " ");
 
-        sbSQL.append(") VALUES (");
-        // sbSQL.append(" " + updateRows + " ");
-        sbSQL.append(" ?");
-        sbSQL.append(", ?");
-        sbSQL.append(", NULL");
-        sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
-        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
-        sbSQL.append(", '" + userId + "' "); // オペレーター：
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
-        }
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
-
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
@@ -1171,11 +1167,11 @@ public class Reportx112Dao extends ItemDao {
   public String createSqlSyakusu(JSONArray dataArray, HashMap<String, String> map, User userInfo) {
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
-    String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
 
     StringBuffer sbSQL = new StringBuffer();
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "";
+    String updateRows = "";
     sqlList = new ArrayList<String>();
     prmList = new ArrayList<ArrayList<String>>();
     lblList = new ArrayList<String>();
@@ -1190,15 +1186,20 @@ public class Reportx112Dao extends ItemDao {
           prmData.add(data.optString("F1"));
           prmData.add(data.optString(key));
           if (StringUtils.isEmpty(data.optString("F" + (k - 20)))) {
-            values += ",(?, ?, null)";
+            values += ",(?, ?, null";
           } else {
             prmData.add(data.optString("F" + (k - 20)));
-            values += ",(?, ?, ?)";
+            values += ",(?, ?, ?";
           }
-
+          values += (", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分
+          values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分
+          values += (", '" + userId + "' "); // オペレーター
+          values += (", CURRENT_TIMESTAMP "); // 登録日
+          values += (", CURRENT_TIMESTAMP "); // 更新日
+          values += ")";
         }
       }
-      StringUtils.removeStart(values, ",");
+      updateRows = StringUtils.removeStart(values, ",");
       if (!values.isEmpty()) {
         sbSQL = new StringBuffer();
         sbSQL.append("REPLACE INTO INAMS.MSTTENBMNSK (");
@@ -1208,26 +1209,14 @@ public class Reportx112Dao extends ItemDao {
         sbSQL.append(", SENDFLG"); // 送信区分
         sbSQL.append(", UPDKBN"); // 更新区分
         sbSQL.append(", OPERATOR"); // オペレーター
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", ADDDT"); // 登録日
-        }
+        sbSQL.append(", ADDDT"); // 登録日
         sbSQL.append(", UPDDT"); // 更新日
+        sbSQL.append(") VALUES");
+        sbSQL.append(" " + updateRows + " ");
 
-        sbSQL.append(") values (");
-        sbSQL.append("  TENCD");
-        sbSQL.append(", BMNCD");
-        sbSQL.append(", SYAKU");
-        sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分
-        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分
-        sbSQL.append(", '" + userId + "' "); // オペレーター
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
-        }
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
-
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
