@@ -5772,9 +5772,9 @@ public class DefineReport {
 
   // SQL：実仕入先 TODO:
   /** 共通（INAMS.MSTSIR） */
-  public final static String ID_SQL_ZITSIR =
-      ID_SQL_GRD_CMN + " select T1.IDX, T2.RSIRCD, T3.SIRKN as SIRKN_R from T1 left join (select ROW_NUMBER() over (order by SIRCD) as IDX, * from INAMS.MSTFUKUSUSIR_R where SIRCD = ? and UPDKBN = "
-          + DefineReport.ValUpdkbn.NML.getVal() + " order by SIRCD fetch first @M rows only) T2 on T1.IDX = T2.SEQNO" + " left join INAMS.MSTSIR T3 on T3.SIRCD = T2.RSIRCD order by T1.IDX";
+  public final static String ID_SQL_ZITSIR = ID_SQL_GRD_CMN
+      + " select T1.IDX, T2.RSIRCD, T3.SIRKN as SIRKN_R from T1 left join (select ROW_NUMBER() over (order by SIRCD) as IDX, MSTFR.* from INAMS.MSTFUKUSUSIR_R AS MSTFR where SIRCD = ? and UPDKBN = "
+      + DefineReport.ValUpdkbn.NML.getVal() + " order by SIRCD LIMIT @M ) T2 on T1.IDX = T2.SEQNO" + " left join INAMS.MSTSIR T3 on T3.SIRCD = T2.RSIRCD order by T1.IDX";
 
   // SQL：複数仕入先店舗一覧 TODO:
   /** 共通（INAMS.MSTFUKUSUSIR_T） */
