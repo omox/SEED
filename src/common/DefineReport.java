@@ -5848,8 +5848,8 @@ public class DefineReport {
   // SQL：リードタイムパターン TODO:
   /** 共通（INAMS.MSTREADTM） */
   public final static String ID_SQL_READTMPTN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW(" + Values.NONE.getVal() + ", '　')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_READTMPTN = "select READTMPTN as VALUE, right('000'||READTMPTN,3)||'" + SEPARATOR
-      + "'||COALESCE(rtrim(rtrim(READTMPTNKN), '　'),'') as TEXT, rtrim(rtrim(READTMPTNKN), '　') as TEXT2 from INAMS.MSTREADTM" + ID_SQL_CMN_WHERE;
+  public final static String ID_SQL_READTMPTN =
+      "select READTMPTN as VALUE, right('000'||READTMPTN,3)||'" + SEPARATOR + "'||COALESCE(rtrim(READTMPTNKN),'') as TEXT, rtrim(READTMPTNKN) as TEXT2 from INAMS.MSTREADTM" + ID_SQL_CMN_WHERE;
   public final static String ID_SQL_READTMPTN2 =
       "select READTMPTN as F1, rtrim(rtrim(READTMPTNKN), '　') as F2, READTM_MON as F3, READTM_TUE as F4, READTM_WED as F5, READTM_THU as F6, READTM_FRI as F7, READTM_SAT as F8, READTM_SUN as F9 from INAMS.MSTREADTM";
   public final static String ID_SQL_READTMPTN_WHERE = ID_SQL_CMN_WHERE + " and READTMPTN = ? ";
