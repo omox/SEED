@@ -265,7 +265,7 @@ public class Reportx143Dao extends ItemDao {
     sb.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " ");// F4 : 送信フラグ
     sb.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " ");// F5 : 更新区分
     sb.append(", '" + userId + "' ");// F6 : オペレータ
-    sb.append(",(SELECT * FROM (SELECT CASE WHEN IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END ");
+    sb.append(",(SELECT * FROM (SELECT CASE WHEN COUNT(*) = 0 OR ISNULL(ADDDT) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END ");
     sb.append("FROM INAMS.MSTTENKYU WHERE TENCD =" + valdata.get(1) + "  AND TENKYUDT = " + valdata.get(0) + ") T1 ) ");
     sb.append(",CURRENT_TIMESTAMP ");// F7 : 更新日
     sb.append(")");

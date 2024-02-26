@@ -332,7 +332,7 @@ public class Reportx052Dao extends ItemDao {
     sb.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " ");
     sb.append(",0 ");
     sb.append(",'" + userId + "' ");
-    sb.append(",(SELECT * FROM (SELECT CASE WHEN IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END ");
+    sb.append(",(SELECT * FROM (SELECT CASE WHEN COUNT(*) = 0 OR ISNULL(ADDDT) = 1  THEN CURRENT_TIMESTAMP ELSE ADDDT END ");
     sb.append("FROM INAMS.MSTMAKER WHERE MAKERCD =" + valData.get(0) + " ) T1 ) ");
     sb.append(",CURRENT_TIMESTAMP ");
     sb.append(")");
