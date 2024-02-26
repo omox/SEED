@@ -660,10 +660,11 @@ public class Reportx131Dao extends ItemDao {
 
     StringBuffer sbSQL = new StringBuffer();
     JSONArray dataArray = JSONArray.fromObject(map.get("DATA")); // 更新情報(予約発注_納品日)
-    String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
+
 
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
+    map.get("SENDBTNID");
 
     ArrayList<String> prmData = new ArrayList<String>();
     Object[] valueData = new Object[] {};
@@ -711,9 +712,7 @@ public class Reportx131Dao extends ItemDao {
         sbSQL.append(", UPDKBN "); // 更新区分：
         sbSQL.append(", SENDFLG "); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター：
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", ADDDT "); // 登録日：
-        }
+        sbSQL.append(", ADDDT ");// 登録日
         sbSQL.append(", UPDDT "); // 更新日：
         sbSQL.append(") ");
         sbSQL.append("VALUES (");
@@ -721,9 +720,7 @@ public class Reportx131Dao extends ItemDao {
         sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
         sbSQL.append(", 0"); // 送信フラグ
         sbSQL.append(", '" + userId + "' "); // オペレーター
-        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-          sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
-        }
+        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
         sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
         sbSQL.append(")");
 
