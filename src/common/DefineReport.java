@@ -5376,14 +5376,13 @@ public class DefineReport {
   public final static String ID_SQL_MSG = "select * from INAAD.MSTSYSMSG ";
 
   // SQL：処理日付 TODO:本当に取り方これでいいのか確認？
-  public final static String ID_SQLSHORIDT = "select SHORIDT as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
-  public final static String ID_SQLSHORIDT2 = "select SUBSTR(SHORIDT,3) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
-  public final static String ID_SQLSHORIDT3 = "select SHORIDT as " + VAL + "2,TO_CHAR(TO_DATE(SHORIDT,'yyyymmdd') +1 year,'yyyymmdd') as " + VAL
-      + "3 from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
+  public final static String ID_SQLSHORIDT = "select SHORIDT as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
+  public final static String ID_SQLSHORIDT2 = "select SUBSTR(SHORIDT,3) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
+  public final static String ID_SQLSHORIDT3 =
+      "select SHORIDT as " + VAL + "2,TO_CHAR(TO_DATE(SHORIDT,'yyyymmdd') +1 year,'yyyymmdd') as " + VAL + "3 from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
 
   // SQL：処理日付曜日
-  public final static String ID_SQLSHORIDTWEEK =
-      "select DAYOFWEEK(TO_DATE(SHORIDT,'YYYYMMDD')) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc fetch first 1 rows only";
+  public final static String ID_SQLSHORIDTWEEK = "select DAYOFWEEK(TO_DATE(SHORIDT,'YYYYMMDD')) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
 
   // SQL：週№期間を取得
   public final static String ID_SQLSHUNOPERIOD = DefineReport.ID_SQL_CMN_WEEK + ",SHORI as(SELECT CASE WHEN DAYOFWEEK(TO_DATE(" + VAL + ",'YYYYMMDD')) = 2 OR DAYOFWEEK(TO_DATE(" + VAL
