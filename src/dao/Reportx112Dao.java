@@ -1086,6 +1086,7 @@ public class Reportx112Dao extends ItemDao {
   public String createSqlTenant(JSONArray dataArray, HashMap<String, String> map, User userInfo) {
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
+    String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
 
     StringBuffer sbSQL = new StringBuffer();
     ArrayList<String> prmData = new ArrayList<String>();
@@ -1117,7 +1118,9 @@ public class Reportx112Dao extends ItemDao {
             values += (", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
             values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
             values += (", '" + userId + "' "); // オペレーター：
-            values += (", CURRENT_TIMESTAMP "); // 登録日
+            if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+              values += (", CURRENT_TIMESTAMP "); // 登録日
+            }
             values += (", CURRENT_TIMESTAMP "); // 更新日
             values += ")";
           }
@@ -1134,7 +1137,9 @@ public class Reportx112Dao extends ItemDao {
         sbSQL.append(", SENDFLG"); // 送信区分：
         sbSQL.append(", UPDKBN"); // 更新区分：
         sbSQL.append(", OPERATOR"); // オペレーター：
-        sbSQL.append(", ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(", ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
+        }
         sbSQL.append(", UPDDT"); // 更新日：
         sbSQL.append(") VALUES");
         sbSQL.append(" " + updateRows + " ");
@@ -1167,6 +1172,7 @@ public class Reportx112Dao extends ItemDao {
   public String createSqlSyakusu(JSONArray dataArray, HashMap<String, String> map, User userInfo) {
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
+    String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
 
     StringBuffer sbSQL = new StringBuffer();
     ArrayList<String> prmData = new ArrayList<String>();
@@ -1194,7 +1200,9 @@ public class Reportx112Dao extends ItemDao {
           values += (", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分
           values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分
           values += (", '" + userId + "' "); // オペレーター
-          values += (", CURRENT_TIMESTAMP "); // 登録日
+          if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+            values += (", CURRENT_TIMESTAMP "); // 登録日
+          }
           values += (", CURRENT_TIMESTAMP "); // 更新日
           values += ")";
         }
@@ -1209,7 +1217,9 @@ public class Reportx112Dao extends ItemDao {
         sbSQL.append(", SENDFLG"); // 送信区分
         sbSQL.append(", UPDKBN"); // 更新区分
         sbSQL.append(", OPERATOR"); // オペレーター
-        sbSQL.append(", ADDDT"); // 登録日
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(", ADDDT"); // 登録日 新規登録時には登録日の更新も行う。
+        }
         sbSQL.append(", UPDDT"); // 更新日
         sbSQL.append(") VALUES");
         sbSQL.append(" " + updateRows + " ");
