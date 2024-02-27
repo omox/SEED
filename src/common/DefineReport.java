@@ -5830,7 +5830,7 @@ public class DefineReport {
   // SQL：エリア別配送パターン(配送パターンマスタ画面で使用) TODO:
   /** 共通（INAMS.MSTHSPTN） */
   public final static String ID_SQL_EHSPTN_HP012_INS =
-      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENGPCD, T2.TENGPKN, null as CENTERCD, null as YCENTERCD, null as TENKN_CENTER_G, null as TENKN_YCENTER_G, T2.SELCHECK as SEL from T1 left join (select ROW_NUMBER() over (order by TENGPCD) as IDX,HSTENGP ,TENGPCD, HSTENGP ,SELCHECK  from (select HSTENGP.TENGPCD, HSTENGP.TENGPKN, 0 as SELCHECK from INAMS.MSTHSGP HSGP"
+      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENGPCD, T2.TENGPKN, null as CENTERCD, null as YCENTERCD, null as TENKN_CENTER_G, null as TENKN_YCENTER_G, T2.SELCHECK as SEL from T1 left join (select ROW_NUMBER() over (order by TENGPCD) as IDX ,TENGPCD ,TENGPKN ,SELCHECK  from (select HSTENGP.TENGPCD, HSTENGP.TENGPKN, 0 as SELCHECK from INAMS.MSTHSGP HSGP"
           + " inner join INAMS.MSTHSTENGP HSTENGP on HSTENGP.HSGPCD = HSGP.HSGPCD and COALESCE(HSTENGP.UPDKBN, 0) <> 1 where COALESCE(HSGP.UPDKBN, 0) <> 1 and HSGP.AREAKBN = ? and HSGP.HSGPCD = ? ) T5 order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX order by T1.IDX";
 
   public final static String ID_SQL_EHSPTN_HP012_UPD =
