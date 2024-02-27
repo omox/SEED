@@ -5830,15 +5830,15 @@ public class DefineReport {
   // SQL：エリア別配送パターン(配送パターンマスタ画面で使用) TODO:
   /** 共通（INAMS.MSTHSPTN） */
   public final static String ID_SQL_EHSPTN_HP012_INS =
-      "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENGPCD, T2.TENGPKN, null as CENTERCD, null as YCENTERCD, null as TENKN_CENTER_G, null as TENKN_YCENTER_G, T2.SELCHECK as SEL from T1 left join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from (select HSTENGP.TENGPCD, HSTENGP.TENGPKN, 0 as SELCHECK from INAMS.MSTHSGP HSGP"
-          + " inner join INAMS.MSTHSTENGP HSTENGP on HSTENGP.HSGPCD = HSGP.HSGPCD and COALESCE(HSTENGP.UPDKBN, 0) <> 1 where COALESCE(HSGP.UPDKBN, 0) <> 1 and HSGP.AREAKBN = ? and HSGP.HSGPCD = ? ) order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX order by T1.IDX";
+      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENGPCD, T2.TENGPKN, null as CENTERCD, null as YCENTERCD, null as TENKN_CENTER_G, null as TENKN_YCENTER_G, T2.SELCHECK as SEL from T1 left join (select ROW_NUMBER() over (order by TENGPCD) as IDX,HSTENGP ,TENGPCD, HSTENGP ,SELCHECK  from (select HSTENGP.TENGPCD, HSTENGP.TENGPKN, 0 as SELCHECK from INAMS.MSTHSGP HSGP"
+          + " inner join INAMS.MSTHSTENGP HSTENGP on HSTENGP.HSGPCD = HSGP.HSGPCD and COALESCE(HSTENGP.UPDKBN, 0) <> 1 where COALESCE(HSGP.UPDKBN, 0) <> 1 and HSGP.AREAKBN = ? and HSGP.HSGPCD = ? ) T5 order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX order by T1.IDX";
 
   public final static String ID_SQL_EHSPTN_HP012_UPD =
-      "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENGPCD, T2.TENGPKN, case when int (T2.CENTERCD) = 0 then null else TRIM(T2.CENTERCD) end as CENTERCD, case when replace (T2.YCENTERCD, '0', '') = '' then null else TRIM(T2.YCENTERCD) end as YCENTERCD, case when int (T2.CENTERCD) = 0 then null else TEN1.TENKN end as TENKN_CENTER_G, case when replace (T2.YCENTERCD, '0', '') = '' then null else TEN2.TENKN end as TENKN_YCENTER_G, T2.SELCHECK as SEL from T1 left join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from (select HSTENGP.TENGPCD, HSTENGP.TENGPKN, AHS.CENTERCD as CENTERCD, case when TRIM(COALESCE(AHS.YCENTERCD, '')) = '' then null else TRIM(AHS.YCENTERCD) end as YCENTERCD, case when AHS.TENGPCD is not null then 1 else 0 end as SELCHECK from INAMS.MSTHSGP HSGP"
-          + " inner join INAMS.MSTHSTENGP HSTENGP on HSTENGP.HSGPCD = HSGP.HSGPCD and COALESCE(HSTENGP.UPDKBN, 0) <> 1 left join (select * from INAMS.MSTAREAHSPTN where HSPTN = ? ) AHS on AHS.HSGPCD = HSGP.HSGPCD and AHS.TENGPCD = HSTENGP.TENGPCD and AHS.AREAKBN = HSGP.AREAKBN where COALESCE(HSGP.UPDKBN, 0) <> 1 and HSGP.AREAKBN = ? and HSGP.HSGPCD = ? ) order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX left join INAMS.MSTTEN TEN1 on TEN1.TENCD = T2.CENTERCD left join INAMS.MSTTEN TEN2 on TEN2.TENCD = T2.YCENTERCD order by T1.IDX";
+      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENGPCD, T2.TENGPKN, case when T2.CENTERCD = 0 then null else TRIM(T2.CENTERCD) end as CENTERCD, case when replace (T2.YCENTERCD, '0', '') = '' then null else TRIM(T2.YCENTERCD) end as YCENTERCD, case when T2.CENTERCD = 0 then null else TEN1.TENKN end as TENKN_CENTER_G, case when replace (T2.YCENTERCD, '0', '') = '' then null else TEN2.TENKN end as TENKN_YCENTER_G, T2.SELCHECK as SEL from T1 left join (select ROW_NUMBER() over (order by TENGPCD) as IDX ,TENGPCD ,TENGPKN ,CENTERCD ,YCENTERCD ,SELCHECK  from (select HSTENGP.TENGPCD, HSTENGP.TENGPKN, AHS.CENTERCD as CENTERCD, case when TRIM(COALESCE(AHS.YCENTERCD, '')) = '' then null else TRIM(AHS.YCENTERCD) end as YCENTERCD, case when AHS.TENGPCD is not null then 1 else 0 end as SELCHECK from INAMS.MSTHSGP HSGP"
+          + " inner join INAMS.MSTHSTENGP HSTENGP on HSTENGP.HSGPCD = HSGP.HSGPCD and COALESCE(HSTENGP.UPDKBN, 0) <> 1 left join (select * from INAMS.MSTAREAHSPTN where HSPTN = ? ) AHS on AHS.HSGPCD = HSGP.HSGPCD and AHS.TENGPCD = HSTENGP.TENGPCD and AHS.AREAKBN = HSGP.AREAKBN where COALESCE(HSGP.UPDKBN, 0) <> 1 and HSGP.AREAKBN = ? and HSGP.HSGPCD = ? ) T5 order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX left join INAMS.MSTTEN TEN1 on TEN1.TENCD = T2.CENTERCD left join INAMS.MSTTEN TEN2 on TEN2.TENCD = T2.YCENTERCD order by T1.IDX";
 
   public final static String ID_SQL_NOHIN =
-      "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < 10), WEEK as (select CWEEK, JWEEK from (values ROW(1, '日'), ROW(2, '月'), ROW(3, '火'), ROW(4, '水'), ROW(5, '木'), ROW(6, '金'), ROW(7, '土')) as TMP(CWEEK, JWEEK)) select T1.IDX, right (T2.NNDT, 6) as NNDT, W1.JWEEK as WEE, T2.YOTEISU as YOTEISU, T2.GENDOSU as GENDOSU from T1 left join (select ROW_NUMBER() over (order by KKKCD, SHNCD) as IDX, NNDT, YOTEISU, GENDOSU, DAYOFWEEK(TO_DATE('20' || right ('0' || NNDT, 6), 'YYYYMMDD')) as NNDT_WNUM from INATK.HATYH_NNDT where KKKCD = ? and SHNCD = ? ) as T2 on T2.IDX = T1.IDX left outer join WEEK W1 on T2.NNDT_WNUM = W1.CWEEK order by T1.IDX";
+      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < 10), WEEK as (select CWEEK, JWEEK from (values ROW(1, '日'), ROW(2, '月'), ROW(3, '火'), ROW(4, '水'), ROW(5, '木'), ROW(6, '金'), ROW(7, '土')) as TMP(CWEEK, JWEEK)) select T1.IDX, right (T2.NNDT, 6) as NNDT, W1.JWEEK as WEE, T2.YOTEISU as YOTEISU, T2.GENDOSU as GENDOSU from T1 left join (select ROW_NUMBER() over (order by KKKCD, SHNCD) as IDX, NNDT, YOTEISU, GENDOSU, DAYOFWEEK(TO_DATE('20' || right ('0' || NNDT, 6), 'YYYYMMDD')) as NNDT_WNUM from INATK.HATYH_NNDT where KKKCD = ? and SHNCD = ? ) as T2 on T2.IDX = T1.IDX left outer join WEEK W1 on T2.NNDT_WNUM = W1.CWEEK order by T1.IDX";
 
   // SQL：納品日一覧(発注数項目あり) TODO:
   public final static String ID_SQL_NOHIN_HTS =
@@ -6210,21 +6210,13 @@ public class DefineReport {
           + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M5.ZEIRT)/100, 0), 0)"
           + " else @BAIKA end";
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON =
-   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)"
-   * +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)" +" else @BAIKA end";
    */
 
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON =
-   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)"
-   * +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)" +" else @BAIKA end";
    */
 
   // 割引本体売価 小数点切上げ
