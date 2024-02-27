@@ -5589,8 +5589,7 @@ public class DefineReport {
   public final static String ID_SQL_BUMON_HEAD2 = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
   public final static String ID_SQL_BUMON_HEAD3 =
       "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '" + Values.BUMON_ALL_TOK.getTxt() + "')) as X(value, TEXT) union all ";
-  public final static String ID_SQL_BUMON_CMN =
-      "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(BMNKN)), '　'),'') as TEXT, rtrim(rtrim(max(BMNKN)), '　') as TEXT2 ";
+  public final static String ID_SQL_BUMON_CMN = "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(max(BMNKN)),'') as TEXT, rtrim(max(BMNKN)) as TEXT2 ";
   public final static String ID_SQL_BUMON_CMN_C =
       "select right('0'||BMNCD,2) as VALUE, right('0'||BMNCD,2)||'" + SEPARATOR + "'||COALESCE(rtrim(BMNKN),'') as TEXT, rtrim(BMNKN) as TEXT2, INAMS.MSTBMN.* ";
   public final static String ID_SQL_BUMON = ID_SQL_BUMON_CMN + "from INAMS.MSTBMN";
