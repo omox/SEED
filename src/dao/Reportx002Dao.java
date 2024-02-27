@@ -421,7 +421,7 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" , " + DefineReport.ValKbn135.VAL0.getVal() + " as AREAKBN_SIR"); // F130
       sbSQL.append(" , " + DefineReport.ValKbn135.VAL0.getVal() + " as AREAKBN_TBMN"); // F131
 
-      sbSQL.append(" from SYSIBM.SYSDUMMY1 ");
+      sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
 
       // 流用新規・変更
     } else {
@@ -588,7 +588,7 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" , T1.ITFCD"); // F120: ITFコード
       sbSQL.append(" , T1.CENTER_IRISU"); // F121: センター入数
 
-      sbSQL.append(" , (select YOBIDASHICD from INAMS.MSTKRYO T2 where T1.SHNCD = T2.SHNCD and T1.BMNCD = T2.BMNCD order by T2.UPDDT desc fetch first 1 rows only ) as YOBIDASHICD"); // F122:呼出コード
+      sbSQL.append(" , (select YOBIDASHICD from INAMS.MSTKRYO T2 where T1.SHNCD = T2.SHNCD and T1.BMNCD = T2.BMNCD order by T2.UPDDT desc LIMIT 1 ) as YOBIDASHICD"); // F122:呼出コード
       sbSQL.append(" , (select AVGPTANKAAM from INAMS.MSTAVGPTANKA T3 where T1.SHNCD = T3.SHNCD) as RG_AVGPTANKAAM"); // F123:TODO
       sbSQL.append(" , '' as HS_AVGPTANKAAM"); // F124:販促平均パック単価(=空白)
       if (isCsverr) {
@@ -3710,7 +3710,7 @@ public class Reportx002Dao extends ItemDao {
     boolean useAki = false;
 
     paramData = new ArrayList<String>();
-    sqlcommand = "select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU fetch first 1 rows only";
+    sqlcommand = "select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU LIMIT 1";
     if (sqlcommand.length() > 0) {
       @SuppressWarnings("static-access")
       JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
@@ -6852,7 +6852,7 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append("  cast('" + sysdate + "' as integer) as UPDATEDT"); // F1 : 日付
     sbSQL.append(" ,cast(1 as SMALLINT) as UPDATECNT"); // F2 : 件数 insert用
     sbSQL.append(" ,current timestamp as UPDDT"); // F3 : 更新日
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY");
     sbSQL.append(" ) as RE on (" + szWhere + ") ");
 
     if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
