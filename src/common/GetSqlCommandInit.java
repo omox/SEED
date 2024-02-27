@@ -125,8 +125,9 @@ public class GetSqlCommandInit {
         paramData.add(moyocd[2]);
       } else {
         sqlcommand = "(" + DefineReport.ID_SQL_MOYSCD;
-        sqlcommand += " where T1.MOYSKBN = 8 AND T1.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " and NOT EXISTS(SELECT T2.MOYSKBN FROM INATK.TOKQJU_MOY T2 WHERE T1.MOYSKBN=T2.MOYSKBN AND T1.MOYSSTDT=T2.MOYSSTDT AND T1.MOYSRBAN=T2.MOYSRBAN AND T2.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()
-            + ") order by T1.MOYSKBN , T1.MOYSSTDT , T1.MOYSSTDT )";
+        sqlcommand += " where T1.MOYSKBN = 8 AND T1.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()
+            + " and NOT EXISTS(SELECT T2.MOYSKBN FROM INATK.TOKQJU_MOY T2 WHERE T1.MOYSKBN=T2.MOYSKBN AND T1.MOYSSTDT=T2.MOYSSTDT AND T1.MOYSRBAN=T2.MOYSRBAN AND T2.UPDKBN="
+            + DefineReport.ValUpdkbn.NML.getVal() + ") order by T1.MOYSKBN , T1.MOYSSTDT , T1.MOYSSTDT )";
         sqlcommand += DefineReport.ID_SQL_MOYSCD_HEAD;
       }
     }
@@ -177,7 +178,8 @@ public class GetSqlCommandInit {
     if (outobj.equals(DefineReport.Select.TENPO.getObj())) {
       JSONObject obj = (JSONObject) map.get(0);
       if ("TenSelect".equals(outpage) && lusr != null && !StringUtils.isEmpty(lusr.getYobi9_())) {
-        sqlcommand = "select right ('000' || T2.TENCD, 3) as value, right ('000' || T2.TENCD, 3) || '" + DefineReport.SEPARATOR + "' || NVL(RTRIM(RTRIM(T2.TENKN), '　'), '') as TEXT, RTRIM(RTRIM(T2.TENKN), '　') as TEXT2 FROM (values";
+        sqlcommand = "select right ('000' || T2.TENCD, 3) as value, right ('000' || T2.TENCD, 3) || '" + DefineReport.SEPARATOR
+            + "' || NVL(RTRIM(RTRIM(T2.TENKN), '　'), '') as TEXT, RTRIM(RTRIM(T2.TENKN), '　') as TEXT2 FROM (values";
         for (int i = 0; i < lusr.getYobi9_().split(",").length; i++) {
           sqlcommand += "(?)";
           if (i + 1 != lusr.getYobi9_().split(",").length) {
@@ -211,8 +213,8 @@ public class GetSqlCommandInit {
         } else if (!DefineReport.ID_PAGE_SA003.equals(outpage)) {
           sqlcommand = DefineReport.ID_SQL_BUMON_HEAD2 + sqlcommand;
         }
-      } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X231.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X246.equals(outpage) || DefineReport.ID_PAGE_X249.equals(outpage) || DefineReport.ID_PAGE_X250.equals(outpage)
-          || DefineReport.ID_PAGE_X261.equals(outpage) || DefineReport.ID_PAGE_X280.equals(outpage)) {
+      } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X231.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X246.equals(outpage)
+          || DefineReport.ID_PAGE_X249.equals(outpage) || DefineReport.ID_PAGE_X250.equals(outpage) || DefineReport.ID_PAGE_X261.equals(outpage) || DefineReport.ID_PAGE_X280.equals(outpage)) {
         sqlcommand = DefineReport.ID_SQL_BUMON_HEAD + sqlcommand;
       }
       if (DefineReport.ID_PAGE_TJ014.equals(outpage)) {
@@ -235,8 +237,9 @@ public class GetSqlCommandInit {
           sqlWhere += DefineReport.ID_SQL_BMN_BUMONS_WHERE.replace("@", array1.join(",").replaceAll("\"", "'"));
         }
 
-        if (!DefineReport.ID_PAGE_X001.equals(outpage) && !DefineReport.ID_PAGE_HT002.equals(outpage) && !DefineReport.ID_PAGE_HT004.equals(outpage) && !DefineReport.ID_PAGE_HT007.equals(outpage) && !DefineReport.ID_PAGE_HT009.equals(outpage) && !DefineReport.ID_PAGE_X231.equals(outpage)
-            && !DefineReport.ID_PAGE_X244.equals(outpage) && !DefineReport.ID_PAGE_X261.equals(outpage) && !DefineReport.ID_PAGE_X280.equals(outpage)) {
+        if (!DefineReport.ID_PAGE_X001.equals(outpage) && !DefineReport.ID_PAGE_HT002.equals(outpage) && !DefineReport.ID_PAGE_HT004.equals(outpage) && !DefineReport.ID_PAGE_HT007.equals(outpage)
+            && !DefineReport.ID_PAGE_HT009.equals(outpage) && !DefineReport.ID_PAGE_X231.equals(outpage) && !DefineReport.ID_PAGE_X244.equals(outpage) && !DefineReport.ID_PAGE_X261.equals(outpage)
+            && !DefineReport.ID_PAGE_X280.equals(outpage)) {
           sqlcommand = DefineReport.ID_SQL_DAI_BUN + sqlWhere + DefineReport.ID_SQL_DAI_BUN_FOOTER;
         } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X261.equals(outpage) || DefineReport.ID_PAGE_X280.equals(outpage)) {
           sqlcommand = DefineReport.ID_SQL_DAI_BUN_S3 + sqlWhere + DefineReport.ID_SQL_DAI_BUN_FOOTER;
@@ -257,7 +260,8 @@ public class GetSqlCommandInit {
         } else {
           sqlcommand = DefineReport.ID_SQL_BUMON_HEAD2 + sqlcommand;
         }
-      } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X231.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X261.equals(outpage) || DefineReport.ID_PAGE_X280.equals(outpage)) {
+      } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X231.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X261.equals(outpage)
+          || DefineReport.ID_PAGE_X280.equals(outpage)) {
         sqlcommand = DefineReport.ID_SQL_BUMON_HEAD + sqlcommand;
       }
     }
@@ -276,8 +280,9 @@ public class GetSqlCommandInit {
           sqlWhere += DefineReport.ID_SQL_BMN_DAIS_WHERE.replace("@", array1.join(",").replaceAll("\"", "'"));
         }
 
-        if (!DefineReport.ID_PAGE_X001.equals(outpage) && !DefineReport.ID_PAGE_HT002.equals(outpage) && !DefineReport.ID_PAGE_HT004.equals(outpage) && !DefineReport.ID_PAGE_HT007.equals(outpage) && !DefineReport.ID_PAGE_HT009.equals(outpage) && !DefineReport.ID_PAGE_X231.equals(outpage)
-            && !DefineReport.ID_PAGE_X244.equals(outpage) && !DefineReport.ID_PAGE_X261.equals(outpage) && !DefineReport.ID_PAGE_X280.equals(outpage)) {
+        if (!DefineReport.ID_PAGE_X001.equals(outpage) && !DefineReport.ID_PAGE_HT002.equals(outpage) && !DefineReport.ID_PAGE_HT004.equals(outpage) && !DefineReport.ID_PAGE_HT007.equals(outpage)
+            && !DefineReport.ID_PAGE_HT009.equals(outpage) && !DefineReport.ID_PAGE_X231.equals(outpage) && !DefineReport.ID_PAGE_X244.equals(outpage) && !DefineReport.ID_PAGE_X261.equals(outpage)
+            && !DefineReport.ID_PAGE_X280.equals(outpage)) {
           sqlcommand = DefineReport.ID_SQL_CHU_BUN + sqlWhere + DefineReport.ID_SQL_CHU_BUN_FOOTER;
         } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X261.equals(outpage) || DefineReport.ID_PAGE_X280.equals(outpage)) {
           sqlcommand = DefineReport.ID_SQL_CHU_BUN_S3 + sqlWhere + DefineReport.ID_SQL_CHU_BUN_FOOTER;
@@ -302,7 +307,8 @@ public class GetSqlCommandInit {
         } else {
           sqlcommand = DefineReport.ID_SQL_BUMON_HEAD2 + sqlcommand;
         }
-      } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X231.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X261.equals(outpage) || DefineReport.ID_PAGE_X280.equals(outpage)) {
+      } else if (DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X231.equals(outpage) || DefineReport.ID_PAGE_X244.equals(outpage) || DefineReport.ID_PAGE_X261.equals(outpage)
+          || DefineReport.ID_PAGE_X280.equals(outpage)) {
         sqlcommand = DefineReport.ID_SQL_BUMON_HEAD + sqlcommand;
       }
     }
@@ -430,7 +436,8 @@ public class GetSqlCommandInit {
     }
 
     // 名称マスタ
-    if (ArrayUtils.contains(DefineReport.getItemObjs(MeisyoSelect.values()), outobj) || ArrayUtils.contains(DefineReport.getItemObjs(MeisyoSelect.values()), outobj.replaceFirst("_[0-9a-z]{1}$", ""))) {
+    if (ArrayUtils.contains(DefineReport.getItemObjs(MeisyoSelect.values()), outobj)
+        || ArrayUtils.contains(DefineReport.getItemObjs(MeisyoSelect.values()), outobj.replaceFirst("_[0-9a-z]{1}$", ""))) {
       JSONObject obj = (JSONObject) map.get(0);
       String id = outobj.replaceFirst("_[0-9a-z]{1}$", "");
       if (!ArrayUtils.contains(DefineReport.getItemObjs(MeisyoSelect.values()), id)) {
@@ -449,7 +456,8 @@ public class GetSqlCommandInit {
           sqlWhere = " AND MEISHOCD NOT IN ('" + DefineReport.ValKbn10002.VAL7.getVal() + "') ";
         }
         if (DefineReport.ID_PAGE_TG017.equals(outpage)) {
-          sqlWhere = " AND MEISHOCD IN ('" + DefineReport.ValKbn10002.VAL0.getVal() + "','" + DefineReport.ValKbn10002.VAL1.getVal() + "','" + DefineReport.ValKbn10002.VAL2.getVal() + "','" + DefineReport.ValKbn10002.VAL3.getVal() + "') ";
+          sqlWhere = " AND MEISHOCD IN ('" + DefineReport.ValKbn10002.VAL0.getVal() + "','" + DefineReport.ValKbn10002.VAL1.getVal() + "','" + DefineReport.ValKbn10002.VAL2.getVal() + "','"
+              + DefineReport.ValKbn10002.VAL3.getVal() + "') ";
         }
         if (DefineReport.ID_PAGE_X231.equals(outpage)) {
           sqlWhere = " AND MEISHOCD IN ('" + DefineReport.ValKbn10002.VAL0.getVal() + "','" + DefineReport.ValKbn10002.VAL1.getVal() + "','" + DefineReport.ValKbn10002.VAL2.getVal() + "') ";
@@ -457,8 +465,8 @@ public class GetSqlCommandInit {
       }
       sqlcommand = DefineReport.ID_SQL_MEISYO + sqlWhere + DefineReport.ID_SQL_MEISYO_FOOTER;
 
-      if (obj.containsKey("TOPBLANK") && !DefineReport.ID_PAGE_BM003.equals(outpage) && !DefineReport.MeisyoSelect.KBN910009.getObj().equals(id) && (!DefineReport.ID_PAGE_TR001.equals(outpage) || !DefineReport.MeisyoSelect.KBN105014.getObj().equals(id))
-          && !DefineReport.ID_PAGE_GM001.equals(outpage)) {
+      if (obj.containsKey("TOPBLANK") && !DefineReport.ID_PAGE_BM003.equals(outpage) && !DefineReport.MeisyoSelect.KBN910009.getObj().equals(id)
+          && (!DefineReport.ID_PAGE_TR001.equals(outpage) || !DefineReport.MeisyoSelect.KBN105014.getObj().equals(id)) && !DefineReport.ID_PAGE_GM001.equals(outpage)) {
         sqlcommand = DefineReport.ID_SQL_MEISYO_HEAD + sqlcommand;
       } else if (DefineReport.ID_PAGE_BM003.equals(outpage) || DefineReport.ID_PAGE_GM001.equals(outpage) || DefineReport.ID_PAGE_MM001.equals(outpage)) {
         sqlcommand = DefineReport.ID_SQL_MEISYO_HEAD2 + sqlcommand;
@@ -468,8 +476,8 @@ public class GetSqlCommandInit {
 
       // X001 衣料使い回しフラグの場合
       if ((DefineReport.ID_PAGE_X001.equals(outpage) || DefineReport.ID_PAGE_X280.equals(outpage)) && DefineReport.MeisyoSelect.KBN142.getObj().equals(id)) {
-        sqlcommand = "select KBN,VALUE,'' as " + DefineReport.KTXT + ",VALUE||'" + DefineReport.SEPARATOR + "'||TEXT as TEXT,TEXT as TEXT2,'' as " + DefineReport.STXT + ",'' as " + DefineReport.KANA + " from (values ('" + DefineReport.MeisyoSelect.KBN142.getCd()
-            + "','2','両方')) as X(KBN,VALUE,TEXT) union all " + sqlcommand;
+        sqlcommand = "select KBN,VALUE,'' as " + DefineReport.KTXT + ",VALUE||'" + DefineReport.SEPARATOR + "'||TEXT as TEXT,TEXT as TEXT2,'' as " + DefineReport.STXT + ",'' as " + DefineReport.KANA
+            + " from (values ROW('" + DefineReport.MeisyoSelect.KBN142.getCd() + "','2','両方')) as X(KBN,VALUE,TEXT) union all " + sqlcommand;
       }
     }
 
@@ -753,7 +761,8 @@ public class GetSqlCommandInit {
         } else {
           max_row = "400";
         }
-        if (!StringUtils.isEmpty(txt_tengpcd) && !StringUtils.isEmpty(gpkbn) && !StringUtils.isEmpty(SelBumon) && !StringUtils.equals(DefineReport.Values.NONE.getVal(), gpkbn) && !StringUtils.equals(DefineReport.Values.NONE.getVal(), SelBumon)) {
+        if (!StringUtils.isEmpty(txt_tengpcd) && !StringUtils.isEmpty(gpkbn) && !StringUtils.isEmpty(SelBumon) && !StringUtils.equals(DefineReport.Values.NONE.getVal(), gpkbn)
+            && !StringUtils.equals(DefineReport.Values.NONE.getVal(), SelBumon)) {
           paramData.add(gpkbn);
           paramData.add(SelBumon);
           paramData.add(txt_tengpcd);
@@ -979,21 +988,23 @@ public class GetSqlCommandInit {
           }
 
           String FromPage = (String) request.getSession().getAttribute("frompage");
-          if (DefineReport.ID_PAGE_X247.equals(outpage) || (StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031") && DefineReport.ID_PAGE_X247.equals(obj.optString("callpage")))) {
+          if (DefineReport.ID_PAGE_X247.equals(outpage)
+              || (StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031") && DefineReport.ID_PAGE_X247.equals(obj.optString("callpage")))) {
             if (StringUtils.isEmpty(FromPage) || !FromPage.equals(DefineReport.ID_PAGE_X280)) {
               sztable = "INAWS.PIMTISRCCD T where T.SHNCD like ? ";
             }
-          } else if ((DefineReport.ID_PAGE_X251.equals(outpage) && FromPage.equals(DefineReport.ID_PAGE_X249))
-              || (StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031") && (DefineReport.ID_PAGE_X251.equals(obj.optString("callpage")) && FromPage.equals(DefineReport.ID_PAGE_X249)))) {
+          } else if ((DefineReport.ID_PAGE_X251.equals(outpage) && FromPage.equals(DefineReport.ID_PAGE_X249)) || (StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031")
+              && (DefineReport.ID_PAGE_X251.equals(obj.optString("callpage")) && FromPage.equals(DefineReport.ID_PAGE_X249)))) {
             sztable = "INAWS.PIMTISRCCD T where T.SHNCD like ? ";
-          } else if ((DefineReport.ID_PAGE_X251.equals(outpage) && FromPage.equals(DefineReport.ID_PAGE_X250))
-              || (StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031") && (DefineReport.ID_PAGE_X251.equals(obj.optString("callpage")) && FromPage.equals(DefineReport.ID_PAGE_X250)))) {
+          } else if ((DefineReport.ID_PAGE_X251.equals(outpage) && FromPage.equals(DefineReport.ID_PAGE_X250)) || (StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031")
+              && (DefineReport.ID_PAGE_X251.equals(obj.optString("callpage")) && FromPage.equals(DefineReport.ID_PAGE_X250)))) {
             sztable = "INAWS.PIMSISRCCD T where T.SHNCD like ? ";
           }
           sqlcommand = DefineReport.ID_SQL_SRCCD1.replace("@T", sztable);
 
           if (DefineReport.ID_PAGE_X002.equals(outpage) || StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031")) {
-            sqlcommand = "SELECT * FROM(" + sqlcommand + ") order by case when SEQNO = '1' then '1' when SEQNO = '2' then '2' else '9' end, case when to_char(sysdate,'yymmdd') <= YUKO_STDT then 1 else 9 end, YUKO_STDT, SRCCD";
+            sqlcommand = "SELECT * FROM(" + sqlcommand
+                + ") order by case when SEQNO = '1' then '1' when SEQNO = '2' then '2' else '9' end, case when to_char(sysdate,'yymmdd') <= YUKO_STDT then 1 else 9 end, YUKO_STDT, SRCCD";
           }
           /*
            * if (DefineReport.ID_PAGE_X251.equals(outpage) || StringUtils.equals(outobj,
@@ -1035,8 +1046,10 @@ public class GetSqlCommandInit {
           sqlcommand = DefineReport.ID_SQL_TENGP2;
         }
       }
-    } else if (StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.SIR.getVal()) || StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.BAIKA.getVal())
-        || StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.SHINA.getVal()) || StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.TBMN.getVal())) {
+    } else if (StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.SIR.getVal())
+        || StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.BAIKA.getVal())
+        || StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.SHINA.getVal())
+        || StringUtils.startsWith(outobj, DefineReport.Grid.TENGP.getObj() + DefineReport.ValGpkbn.TBMN.getVal())) {
       JSONObject obj = (JSONObject) map.get(0);
       String gpkbn = obj.optString("GPKBN");
       String bmncd = obj.optString("BMNCD");
@@ -1455,8 +1468,8 @@ public class GetSqlCommandInit {
       String max_row = DefineReport.SubGridRowNumber.BMSHN.getVal();
       sqlcommand = sqlcommand.replaceAll("@M", max_row);
 
-      if (!StringUtils.isEmpty(txt_moyskbn) && !StringUtils.isEmpty(txt_moyskbn) && !StringUtils.isEmpty(txt_moysstdt) && !StringUtils.isEmpty(txt_moysstdt) && !StringUtils.isEmpty(txt_moysrban) && !StringUtils.isEmpty(txt_moysrban) && !StringUtils.isEmpty(txt_bmnno)
-          && !StringUtils.isEmpty(txt_bmnno)) {
+      if (!StringUtils.isEmpty(txt_moyskbn) && !StringUtils.isEmpty(txt_moyskbn) && !StringUtils.isEmpty(txt_moysstdt) && !StringUtils.isEmpty(txt_moysstdt) && !StringUtils.isEmpty(txt_moysrban)
+          && !StringUtils.isEmpty(txt_moysrban) && !StringUtils.isEmpty(txt_bmnno) && !StringUtils.isEmpty(txt_bmnno)) {
         paramData.add(txt_moyskbn);
         paramData.add(txt_moysstdt.substring(2));
         paramData.add(txt_moysrban);
@@ -1482,9 +1495,11 @@ public class GetSqlCommandInit {
         // 発注数量
         sqlcommand = new ReportJU033Dao(JNDIname).createCommandSub(hsmap, userInfo);
       } else if (StringUtils.equals(obj.optString("callpage"), DefineReport.ID_PAGE_JU012)) {
-        sqlcommand = "select TEN.TENCD, TEN.TENKN, null from INAMS.MSTTEN TEN where TEN.UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " and TEN.TENCD <= 400 and TEN.MISEUNYOKBN <> 9 order by TEN.TENCD";
+        sqlcommand =
+            "select TEN.TENCD, TEN.TENKN, null from INAMS.MSTTEN TEN where TEN.UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " and TEN.TENCD <= 400 and TEN.MISEUNYOKBN <> 9 order by TEN.TENCD";
       } else if (StringUtils.equals(obj.optString("callpage"), DefineReport.ID_PAGE_JU032)) {
-        sqlcommand = "select TEN.TENCD, TEN.TENKN, null from INAMS.MSTTEN TEN where TEN.UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " and TEN.TENCD < 800 and TEN.MISEUNYOKBN <> 9 order by TEN.TENCD";
+        sqlcommand =
+            "select TEN.TENCD, TEN.TENKN, null from INAMS.MSTTEN TEN where TEN.UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " and TEN.TENCD < 800 and TEN.MISEUNYOKBN <> 9 order by TEN.TENCD";
       }
 
       // 正規定量商品店一覧
@@ -1733,7 +1748,8 @@ public class GetSqlCommandInit {
         String txt_nndt = obj.optString("NNDT"); // 納入日(納入店確認時)
         String btnid = obj.optString("BTNID"); // ボタンID(販売店/納入店)
 
-        if (StringUtils.isNotEmpty(txt_moyskbn) && StringUtils.isNotEmpty(txt_moysstdt) && StringUtils.isNotEmpty(txt_moysrban) && StringUtils.isNotEmpty(txt_bmncd) && StringUtils.isNotEmpty(txt_kanrino) && StringUtils.isNotEmpty(txt_kanrieno)
+        if (StringUtils.isNotEmpty(txt_moyskbn) && StringUtils.isNotEmpty(txt_moysstdt) && StringUtils.isNotEmpty(txt_moysrban) && StringUtils.isNotEmpty(txt_bmncd)
+            && StringUtils.isNotEmpty(txt_kanrino) && StringUtils.isNotEmpty(txt_kanrieno)
             && (StringUtils.endsWith(btnid, "_h") || (StringUtils.endsWith(btnid, "_n") && StringUtils.isNotEmpty(txt_nndt)))) {
           paramData.add(txt_moyskbn);
           paramData.add(txt_moysstdt);
@@ -1941,7 +1957,8 @@ public class GetSqlCommandInit {
 
 
     /* 販促 */
-    if (StringUtils.startsWith(outobj, DefineReport.Grid.MOYCD_R.getObj()) || StringUtils.startsWith(outobj, DefineReport.Grid.MOYCD_S.getObj()) || StringUtils.startsWith(outobj, DefineReport.Grid.MOYCD_T.getObj())) {
+    if (StringUtils.startsWith(outobj, DefineReport.Grid.MOYCD_R.getObj()) || StringUtils.startsWith(outobj, DefineReport.Grid.MOYCD_S.getObj())
+        || StringUtils.startsWith(outobj, DefineReport.Grid.MOYCD_T.getObj())) {
       JSONObject obj = (JSONObject) map.get(0);
       String sel_shuno = obj.optString("SEL_SHUNO");
       String moyskbn = obj.optString("MOYSKBN");
@@ -2081,9 +2098,11 @@ public class GetSqlCommandInit {
       sqlcommand += " ,sum(case when (case when TTSH.ADDSHUKBN <> 01 then (case when TTSH.BD1_C_BAIKAAN > 0 then TO_CHAR(TTSH.KO_C_BAIKAAN) else TO_CHAR(TTSH.C_BAIKAAM) END)";
       sqlcommand += "  else (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = char (TTSH.C_WRITUKBN)) END) is null then 0 else 1 end) as VALUE2 ";
       sqlcommand += "  from INATK.TOKTG_SHN TTSH left join INATK.TOKTG_KHN TTKH on TTKH.MOYSKBN =" + txt_moyskbn + " and TTKH.MOYSSTDT = " + txt_moysstdt + " and TTKH.MOYSRBAN =" + txt_moysrban;
-      sqlcommand += "  left join INATK.TOKTG_QAGP TTQG on TTQG.MOYSKBN = " + txt_moyskbn + " and TTQG.MOYSSTDT = " + txt_moysstdt + " and TTQG.MOYSRBAN = " + txt_moysrban + " and TTQG.TENGPCD = " + txt_tengpcd;
+      sqlcommand +=
+          "  left join INATK.TOKTG_QAGP TTQG on TTQG.MOYSKBN = " + txt_moyskbn + " and TTQG.MOYSSTDT = " + txt_moysstdt + " and TTQG.MOYSRBAN = " + txt_moysrban + " and TTQG.TENGPCD = " + txt_tengpcd;
       sqlcommand += "  left join INATK.TOKMOYCD TMYC on TMYC.MOYSKBN = " + txt_moyskbn + " and TMYC.MOYSSTDT = " + txt_moysstdt + " and TMYC.MOYSRBAN = " + txt_moysrban;
-      sqlcommand += "  left join INATK.TOKTG_QASHN TTQS on TTQS.MOYSKBN = " + txt_moyskbn + " and TTQS.MOYSSTDT = " + txt_moysstdt + " and TTQS.MOYSRBAN = " + txt_moysrban + " and TTQS.TENGPCD = " + txt_tengpcd;
+      sqlcommand += "  left join INATK.TOKTG_QASHN TTQS on TTQS.MOYSKBN = " + txt_moyskbn + " and TTQS.MOYSSTDT = " + txt_moysstdt + " and TTQS.MOYSRBAN = " + txt_moysrban + " and TTQS.TENGPCD = "
+          + txt_tengpcd;
       sqlcommand += "  and TTQS.KANRINO = TTSH.KANRINO and TTQS.BMNCD = TTSH.BMNCD and TTQS.KANRIENO = TTSH.KANRIENO";
       sqlcommand += "  where TTSH.MOYSKBN = " + txt_moyskbn + " and TTSH.MOYSSTDT = " + txt_moysstdt + " and TTSH.MOYSRBAN = " + txt_moysrban + "";
       sqlcommand += "  and   TTKH.MOYSKBN = " + txt_moyskbn + " and TTKH.MOYSSTDT = " + txt_moysstdt + " and TTKH.MOYSRBAN = " + txt_moysrban + "";
