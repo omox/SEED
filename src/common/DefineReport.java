@@ -5541,10 +5541,11 @@ public class DefineReport {
       + "SELECT T1.IDX,T2.TENCD,T2.TENKN FROM T1 LEFT JOIN (SELECT ROW_NUMBER() OVER (ORDER BY HGT.HSGPCD,HGT.TENGPCD,HGT.TENCD) AS IDX,HGT.TENCD,TEN.TENKN FROM INAMS.MSTHSGPTEN HGT LEFT JOIN INAMS.MSTTEN TEN ON TEN.TENCD=HGT.TENCD WHERE HGT.HSGPCD=? AND HGT.TENGPCD=? AND HGT.UPDKBN=0 ORDER BY HGT.HSGPCD,HGT.TENGPCD,HGT.TENCD) AS T2 ON T1.IDX=T2.IDX ORDER BY T1.IDX";
 
   // SQL：店舗一覧(商品店グループ店舗参照) TODO:
-  public final static String ID_SQL_TENPO_STGT = "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENCD, T2.TENKN from T1"
-      + " left join (select ROW_NUMBER() over (order by TENGP.GPKBN, TENGP.BMNCD, TENGP.TENGPCD, TENGP.TENCD) as IDX, TENGP.TENCD as TENCD, TEN.TENKN as TENKN from INAMS.MSTSHNTENGPTEN TENGP left join (select TENCD, TENKN from INAMS.MSTTEN where UPDKBN = "
-      + DefineReport.ValUpdkbn.NML.getVal()
-      + ") TEN on TEN.TENCD = TENGP.TENCD where TENGP.GPKBN = ? and TENGP.BMNCD = ? and TENGP.TENGPCD = ? order by TENGP.TENCD) T2 on T1.IDX = T2.IDX order by T1.IDX ,T2.TENCD";
+  public final static String ID_SQL_TENPO_STGT =
+      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) AS DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENCD, T2.TENKN from T1"
+          + " left join (select ROW_NUMBER() over (order by TENGP.GPKBN, TENGP.BMNCD, TENGP.TENGPCD, TENGP.TENCD) as IDX, TENGP.TENCD as TENCD, TEN.TENKN as TENKN from INAMS.MSTSHNTENGPTEN TENGP left join (select TENCD, TENKN from INAMS.MSTTEN where UPDKBN = "
+          + DefineReport.ValUpdkbn.NML.getVal()
+          + ") TEN on TEN.TENCD = TENGP.TENCD where TENGP.GPKBN = ? and TENGP.BMNCD = ? and TENGP.TENGPCD = ? order by TENGP.TENCD) T2 on T1.IDX = T2.IDX order by T1.IDX ,T2.TENCD";
 
   // SQL：店舗一覧(発注数項目あり) TODO:
   public final static String ID_SQL_TENPO_HTS =
