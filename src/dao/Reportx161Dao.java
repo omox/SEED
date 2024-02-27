@@ -452,7 +452,7 @@ public class Reportx161Dao extends ItemDao {
     Object[] valueData = new Object[] {};
     String values = "";
 
-    int maxField = 3; // Fxxの最大値
+    int maxField = 1; // Fxxの最大値
     int len = dataArrayFUKUSUSIR_R.size();
 
     for (int i = 0; i < len; i++) {
@@ -464,12 +464,21 @@ public class Reportx161Dao extends ItemDao {
           if (!ArrayUtils.contains(new String[] {""}, key)) {
             String val = dataT.optString(key);
             if (StringUtils.isEmpty(val)) {
-              values += ", null";
+              values += "(?,?,NULL";
             } else {
-              values += ", ?";
-              prmData.add(val);
+              prmData.add(dataT.optString(key));
+              prmData.add(dataT.optString("F2"));
+              prmData.add(dataT.optString("F3"));
+              values += "(?,?,?";
             }
+            values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
+            values += (", 0 "); // 送信フラグ
+            values += (", '" + userId + "' "); // オペレーター：
+            values += (", CURRENT_TIMESTAMP "); // 登録日
+            values += (", CURRENT_TIMESTAMP "); // 更新日
+            values += ")";
           }
+
 
           if (k == maxField) {
             valueData = ArrayUtils.add(valueData, values);
@@ -490,19 +499,11 @@ public class Reportx161Dao extends ItemDao {
         sbSQL.append(", UPDKBN"); // 更新区分
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター
-        // sbSQL.append(", current timestamp AS ADDDT "); // 登録日
-        // sbSQL.append(", current timestamp AS UPDDT "); // 更新日
         sbSQL.append(",ADDDT ");// 登録日
         sbSQL.append(",UPDDT ");
         sbSQL.append(")");
         sbSQL.append("VALUES (");
         sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
-        sbSQL.append(", 0"); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
 
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println("/* " + this.getClass().getName() + " */ " + sbSQL.toString());
@@ -519,7 +520,7 @@ public class Reportx161Dao extends ItemDao {
       }
     }
 
-    maxField = 3; // Fxxの最大値
+    maxField = 1; // Fxxの最大値
     len = dataArrayFUKUSUSIR_T.size();
     for (int i = 0; i < len; i++) {
       JSONObject dataT = dataArrayFUKUSUSIR_T.getJSONObject(i);
@@ -530,17 +531,23 @@ public class Reportx161Dao extends ItemDao {
           if (!ArrayUtils.contains(new String[] {""}, key)) {
             String val = dataT.optString(key);
             if (StringUtils.isEmpty(val)) {
-              values += ", null";
+              values += "(?,?,NULL";
             } else {
-              values += ", ?";
-              prmData.add(val);
+              prmData.add(dataT.optString(key));
+              prmData.add(dataT.optString("F2"));
+              prmData.add(dataT.optString("F3"));
+              values += "(?,?,?";
             }
+            values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
+            values += (", 0 "); // 送信フラグ
+            values += (", '" + userId + "' "); // オペレーター：
+            values += (", CURRENT_TIMESTAMP "); // 登録日
+            values += (", CURRENT_TIMESTAMP "); // 更新日
+            values += ")";
           }
 
-          if (k == maxField) {
-            valueData = ArrayUtils.add(valueData, values);
-            values = "";
-          }
+          valueData = ArrayUtils.add(valueData, values);
+          values = "";
         }
       }
 
@@ -555,19 +562,11 @@ public class Reportx161Dao extends ItemDao {
         sbSQL.append(", UPDKBN"); // 更新区分
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター
-        // sbSQL.append(", current timestamp AS ADDDT "); // 登録日
-        // sbSQL.append(", current timestamp AS UPDDT "); // 更新日
-        sbSQL.append(",ADDDT ");// 登録日
-        sbSQL.append(",UPDDT ");
+        sbSQL.append(", ADDDT ");// 登録日
+        sbSQL.append(", UPDDT ");
         sbSQL.append(")");
         sbSQL.append("VALUES (");
         sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
-        sbSQL.append(", 0"); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
 
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println("/* " + this.getClass().getName() + " */ " + sbSQL.toString());
@@ -721,7 +720,7 @@ public class Reportx161Dao extends ItemDao {
     sbSQL.append(" UPDATE INAMS.MSTFUKUSUSIR_R SET ");
     sbSQL.append(" UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
     sbSQL.append(", OPERATOR='" + userId + "'");
-    sbSQL.append(", UPDDT=current timestamp ");
+    sbSQL.append(", UPDDT=CURRENT_TIMESTAMP ");
     sbSQL.append(" WHERE SIRCD = ? ");
 
     prmData.add(szSircd);
@@ -735,7 +734,7 @@ public class Reportx161Dao extends ItemDao {
     sbSQL.append(" UPDATE INAMS.MSTFUKUSUSIR_T SET ");
     sbSQL.append(" UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
     sbSQL.append(", OPERATOR='" + userId + "'");
-    sbSQL.append(", UPDDT=current timestamp ");
+    sbSQL.append(", UPDDT=CURRENT_TIMESTAMP ");
     sbSQL.append(" WHERE SIRCD = ? ");
 
     prmData.add(szSircd);
