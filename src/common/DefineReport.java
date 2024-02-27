@@ -5607,13 +5607,13 @@ public class DefineReport {
   public final static String ID_SQL_DAI_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
   public final static String ID_SQL_DAI_BUN_HEAD2 = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
   public final static String ID_SQL_DAI_BUN_CMN = "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||'" + SEPARATOR
-      + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
+      + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN))),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_DAI_BUN_SHC =
-      "select right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
-  public final static String ID_SQL_DAI_BUN_SHC2 = "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR
-      + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
+      "select right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN))),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN))) as TEXT2 ";
+  public final static String ID_SQL_DAI_BUN_SHC2 =
+      "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, right('0'||DAICD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN))),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_DAI_BUN_SHC3 =
-      "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, DAICD ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN)), '　') as TEXT2 ";
+      "select right('0'||BMNCD,2)||right('0'||DAICD,2) as VALUE, DAICD ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(DAIBRUIKN))),'') as TEXT, rtrim(rtrim(max(DAIBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_DAI_BUN = ID_SQL_DAI_BUN_CMN + "from INAMS.MSTDAIBRUI ";
   public final static String ID_SQL_DAI_BUN_S = ID_SQL_DAI_BUN_SHC + "from INAMS.MSTDAIBRUI ";
   public final static String ID_SQL_DAI_BUN_S2 = ID_SQL_DAI_BUN_SHC2 + "from INAMS.MSTDAIBRUI ";
@@ -5627,13 +5627,13 @@ public class DefineReport {
   public final static String ID_SQL_CHU_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
   public final static String ID_SQL_CHU_BUN_HEAD2 = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
   public final static String ID_SQL_CHU_BUN_CMN = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||'"
-      + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+      + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN))),'') as TEXT, rtrim(rtrim(max(CHUBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_CHU_BUN_SHC =
-      "select right('0'||CHUCD,2) as VALUE, right('0'||CHUCD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+      "select right('0'||CHUCD,2) as VALUE, right('0'||CHUCD,2) ||'" + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN))),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_CHU_BUN_SHC2 = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, right('0'||CHUCD,2) ||'" + SEPARATOR
-      + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+      + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN))),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_CHU_BUN_SHC3 = "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2) as VALUE, CHUCD ||'" + SEPARATOR
-      + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN)), '　'),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN)), '　') as TEXT2 ";
+      + "'||COALESCE(rtrim(rtrim(max(CHUBRUIKN))),'') as TEXT , rtrim(rtrim(max(CHUBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_CHU_BUN = ID_SQL_CHU_BUN_CMN + "from INAMS.MSTCHUBRUI";
   public final static String ID_SQL_CHU_BUN_S = ID_SQL_CHU_BUN_SHC + "from INAMS.MSTCHUBRUI";
   public final static String ID_SQL_CHU_BUN_S2 = ID_SQL_CHU_BUN_SHC2 + "from INAMS.MSTCHUBRUI";
@@ -5647,7 +5647,7 @@ public class DefineReport {
   public final static String ID_SQL_SHO_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
   public final static String ID_SQL_SHO_BUN_CMN =
       "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2) as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||'"
-          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN)), '　') as TEXT2 ";
+          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN))),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN))) as TEXT2 ";
   public final static String ID_SQL_SHO_BUN = ID_SQL_SHO_BUN_CMN + "from INAMS.MSTSHOBRUI";
   public final static String ID_SQL_SHO_BUN_NEZ = ID_SQL_SHO_BUN_CMN + "from INAMS.MSTSHOBRUI_NEZ";
   public final static String ID_SQL_SHO_BUN_URI = ID_SQL_SHO_BUN_CMN + "from INAMS.MSTSHOBRUI_URI";
@@ -5658,7 +5658,7 @@ public class DefineReport {
   public final static String ID_SQL_SSHO_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
   public final static String ID_SQL_SSHO_BUN =
       "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||SSHOCD as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||'"
-          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN)), '　'),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN)), '　') as TEXT2 from INAMS.MSTSSHOBRUI";
+          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN))),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN))) as TEXT2 from INAMS.MSTSSHOBRUI";
   public final static String ID_SQL_SSHO_BUN_FOOTER = " group by BMNCD,DAICD,CHUCD,SHOCD order by VALUE";
 
   // SQL:部門マスタ存在チェック
@@ -6210,13 +6210,21 @@ public class DefineReport {
           + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M5.ZEIRT)/100, 0), 0)"
           + " else @BAIKA end";
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)" +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON =
+   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)"
+   * +" else @BAIKA end";
    */
 
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)" +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON =
+   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)"
+   * +" else @BAIKA end";
    */
 
   // 割引本体売価 小数点切上げ
