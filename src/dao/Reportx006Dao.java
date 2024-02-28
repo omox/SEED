@@ -63,7 +63,7 @@ public class Reportx006Dao extends ItemDao {
     sbSQL.append(" select ");
     sbSQL.append("  T1.OPERATOR"); // F1 : オペレータ
     sbSQL.append(" ,DATE_FORMAT(INPUT_DATE, '%Y%m%d')"); // F2 : 取込日時
-    sbSQL.append(" ,TIME_FORMAT (INPUT_DATE, '%H%i%S')"); // F3 : 取込日時
+    sbSQL.append(" ,DATE_FORMAT (INPUT_DATE, '%H%i%S')"); // F3 : 取込日時
     sbSQL.append(" ,T1.COMMENTKN"); // F4 : コメント
     sbSQL.append(" ,T1.SEQ"); // F5 : SEQ
     sbSQL.append(" from INAMS.CSVSHNHEAD T1");

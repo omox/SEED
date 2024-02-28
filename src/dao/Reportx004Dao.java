@@ -753,7 +753,7 @@ public class Reportx004Dao extends ItemDao {
 				if(itm.getNo() > 1){ sbSQL.append(" ,"); }
 				sbSQL.append(itm.getCol() + " as " + itm.getId());
 			}
-			sbSQL.append(" from INAMS.MSTSHN where SHNCD like ? and nvl(UPDKBN, 0) <> 1");
+			sbSQL.append(" from INAMS.MSTSHN where SHNCD like ? and COALESCE(UPDKBN, 0) <> 1");
 
 			ItemList iL = new ItemList();
 			@SuppressWarnings("static-access")
@@ -782,7 +782,7 @@ public class Reportx004Dao extends ItemDao {
 				if(itm.getNo() > 1){ sbSQL.append(" ,"); }
 				sbSQL.append(itm.getCol() + " as " + itm.getId());
 			}
-			sbSQL.append(" from INAMS.MSTSHN_Y where SHNCD like ? and nvl(UPDKBN, 0) <> 1 order by YOYAKUDT");
+			sbSQL.append(" from INAMS.MSTSHN_Y where SHNCD like ? and COALESCE(UPDKBN, 0) <> 1 order by YOYAKUDT");
 
 			ItemList iL = new ItemList();
 			@SuppressWarnings("static-access")
@@ -1655,7 +1655,7 @@ public class Reportx004Dao extends ItemDao {
 				sbSQLIn.append("null as "+itm.getCol());
 			}
 		}
-		sbSQLIn.append(" from SYSIBM.SYSDUMMY1");
+		sbSQLIn.append(" from (SELECT 1 AS DUMMY) DUMMY ");
 
 		// 基本Select文
 		StringBuffer sbSQL = new StringBuffer();
@@ -1671,14 +1671,14 @@ public class Reportx004Dao extends ItemDao {
 				// POP名称の場合
 				if (itm.getCol().equals(MSTSHNLayout.POPKN.getCol())) {
 					sbSQL.append("CASE WHEN nvl(RE."+MSTSHNLayout.SHNKBN.getCol()+", varchar(T."+MSTSHNLayout.SHNKBN.getCol()+")) = '0' AND ");
-					sbSQL.append("trim(nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) = '' THEN ");
-					sbSQL.append("trim(nvl(RE."+MSTSHNLayout.SHNKN.getCol()+", varchar(T."+MSTSHNLayout.SHNKN.getCol()+"))) ELSE ");
-					sbSQL.append("trim(nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) END as "+itm.getId());
+					sbSQL.append("trim(COALESCE(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) = '' THEN ");
+					sbSQL.append("trim(COALESCE(RE."+MSTSHNLayout.SHNKN.getCol()+", varchar(T."+MSTSHNLayout.SHNKN.getCol()+"))) ELSE ");
+					sbSQL.append("trim(COALESCE(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) END as "+itm.getId());
 				} else {
-					sbSQL.append("trim(nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) as "+itm.getId());
+					sbSQL.append("trim(COALESCE(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) as "+itm.getId());
 				}
 			}else{
-				sbSQL.append("nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+")) as "+itm.getId());
+				sbSQL.append("COALESCE(RE."+itm.getCol()+", varchar(T."+itm.getCol()+")) as "+itm.getId());
 			}
 		}
 		sbSQL.append(" from (" + sbSQLIn.toString() + ") RE");
@@ -1752,7 +1752,7 @@ public class Reportx004Dao extends ItemDao {
 				if(itm.isText()){
 					sbSQL.append("trim(nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) as "+itm.getId());
 				}else{
-					sbSQL.append("nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+")) as "+itm.getId());
+					sbSQL.append("COALESCE(RE."+itm.getCol()+", varchar(T."+itm.getCol()+")) as "+itm.getId());
 				}
 			}
 		}
@@ -2066,9 +2066,9 @@ public class Reportx004Dao extends ItemDao {
 		for(dao.Reportx002Dao.MSTLayout itm :layouts){
 			if(itm.getNo() > 1){ sbSQL.append(","); }
 			if(itm.isText()){
-				sbSQL.append("trim(nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) as "+itm.getCol());
+				sbSQL.append("trim(COALESCE(RE."+itm.getCol()+", varchar(T."+itm.getCol()+"))) as "+itm.getCol());
 			}else{
-				sbSQL.append("nvl(RE."+itm.getCol()+", varchar(T."+itm.getCol()+")) as "+itm.getCol());
+				sbSQL.append("COALESCE(RE."+itm.getCol()+", varchar(T."+itm.getCol()+")) as "+itm.getCol());
 			}
 		}
 		for(CSVCMNLayout itm : CSVCMNLayout.values()){

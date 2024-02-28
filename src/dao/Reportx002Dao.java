@@ -600,10 +600,10 @@ public class Reportx002Dao extends ItemDao {
       if (isCopyNew) {
         sbSQL.append(" , null as HDN_UPDDT"); // F127:更新日時
       } else if (isNewY2) {
-        sbSQL.append(" , (select DATE_FORMAT(UPDDT, '%Y%m%d%H%i%S') from INAMS.MSTSHN where SHNCD like '" + szSelShncd.replace("-", "") + "%' and COALESCE(UPDKBN, 0) <> 1 " + super.getFechSql("1")
+        sbSQL.append(" , (select DATE_FORMAT(UPDDT, '%Y%m%d%H%i%s%f') from INAMS.MSTSHN where SHNCD like '" + szSelShncd.replace("-", "") + "%' and COALESCE(UPDKBN, 0) <> 1 " + super.getFechSql("1")
             + ") as HDN_UPDDT"); // F127:更新日時
       } else {
-        sbSQL.append(" , DATE_FORMAT(T1.UPDDT, '%Y%m%d%H%i%S') as HDN_UPDDT"); // F127:更新日時
+        sbSQL.append(" , DATE_FORMAT(T1.UPDDT, '%Y%m%d%H%i%s%f') as HDN_UPDDT"); // F127:更新日時
       }
       sbSQL.append(" , COALESCE((select max(AREAKBN) from " + szTableShina + " T1 " + szWhereTable + ")," + DefineReport.ValKbn135.VAL0.getVal() + ") as AREAKBN_SHINA"); // F128
       sbSQL.append(" , COALESCE((select max(AREAKBN) from " + szTableBaika + " T1 " + szWhereTable + ")," + DefineReport.ValKbn135.VAL1.getVal() + ") as AREAKBN_BAIKA"); // F129
