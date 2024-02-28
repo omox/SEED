@@ -5663,7 +5663,7 @@ public class DefineReport {
 
   // SQL:部門マスタ存在チェック
   public final static String ID_SQL_BMN_CHK_HEAD =
-      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
+      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
   public final static String ID_SQL_BMN_CHK = ID_SQL_BMN_CHK_HEAD
       + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', ''), COALESCE(M5.SSHOCD || '', '') from INP T1 "
       + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
@@ -5673,7 +5673,7 @@ public class DefineReport {
       + " left outer join INAMS.MSTSSHOBRUI M5 on T1.BMNCD = M5.BMNCD and T1.DAICD = M5.DAICD and T1.CHUCD = M5.CHUCD and T1.SHOCD = M5.SHOCD and T1.SSHOCD = M5.SSHOCD and COALESCE(M5.UPDKBN,0) <> 1";
   // SQL:値付分類コードチェック
   public final static String ID_SQL_KRYO_CHK_HEAD =
-      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD))";
+      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD from (values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, DAICD, CHUCD, SHOCD))";
   public final static String ID_SQL_KRYO_CHK =
       ID_SQL_KRYO_CHK_HEAD + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', '') from INP T1 "
           + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
@@ -5862,8 +5862,8 @@ public class DefineReport {
       + "  ,row_number() over(partition by SHNCD,YOYAKUDT order by COALESCE(SEQNO, 9),case when STNO <= 0 then abs(STNO) end,case when STNO > 0 then STNO end,SRCCD) as JAN1NO" + "  from (select "
       + ID_SQL_SRCCD_COL + ",days(to_date(T.YUKO_STDT,'YYYYMMDD'))-days(current date) as STNO,days(to_date(T.YUKO_EDDT,'YYYYMMDD'))-days(current date) as EDNO from @T ) WK" + " ) T";
   public final static String ID_SQL_SRCCD_SEL = " select trim(T.SRCCD) as SRCCD, T.SOURCEKBN||'" + SEPARATOR
-      + "'||RTRIM(T2.NMKN) as SOURCEKBN, T.SOURCEKBN as SOURCEKBN2, COALESCE(right(T.YUKO_STDT, 6),'') as YUKO_STDT, COALESCE(right(T.YUKO_EDDT,6),'') as YUKO_EDDT, COALESCE(to_char(SEQNO), '') as SEQNO";
-  public final static String ID_SQL_SRCCD_JOIN = " left outer join INAMS.MSTMEISHO T2 on T2.MEISHOKBN = " + MeisyoSelect.KBN136.getCd() + " and TO_CHAR(T.SOURCEKBN) = T2.MEISHOCD";
+      + "'||RTRIM(T2.NMKN) as SOURCEKBN, T.SOURCEKBN as SOURCEKBN2, COALESCE(right(T.YUKO_STDT, 6),'') as YUKO_STDT, COALESCE(right(T.YUKO_EDDT,6),'') as YUKO_EDDT, COALESCE(CAST(SEQNO AS CHAR ), '') as SEQNO";
+  public final static String ID_SQL_SRCCD_JOIN = " left outer join INAMS.MSTMEISHO T2 on T2.MEISHOKBN = " + MeisyoSelect.KBN136.getCd() + " and CAST(T.SOURCEKBN AS CHAR) = T2.MEISHOCD";
   public final static String ID_SQL_SRCCD1 = ID_SQL_SRCCD_SEL + " from (select " + ID_SQL_SRCCD_COL + " from @T) T" + ID_SQL_SRCCD_JOIN + " order by T.SEQNO";
   public final static String ID_SQL_SRCCD2 = ID_SQL_SRCCD_SEL + " from (" + ID_SQL_SRCCD_JAN + ") T" + ID_SQL_SRCCD_JOIN + " order by T.JAN1NO";
 

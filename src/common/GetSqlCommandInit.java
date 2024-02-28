@@ -1004,7 +1004,7 @@ public class GetSqlCommandInit {
 
           if (DefineReport.ID_PAGE_X002.equals(outpage) || StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031")) {
             sqlcommand = "SELECT * FROM(" + sqlcommand
-                + ") order by case when SEQNO = '1' then '1' when SEQNO = '2' then '2' else '9' end, case when to_char(sysdate,'yymmdd') <= YUKO_STDT then 1 else 9 end, YUKO_STDT, SRCCD";
+                + ") order by case when SEQNO = '1' then '1' when SEQNO = '2' then '2' else '9' end, case when DATE_FORMAT(sysdate,'%y%m%d') <= YUKO_STDT then 1 else 9 end, YUKO_STDT, SRCCD";
           }
           /*
            * if (DefineReport.ID_PAGE_X251.equals(outpage) || StringUtils.equals(outobj,
