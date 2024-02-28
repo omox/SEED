@@ -1004,7 +1004,7 @@ public class GetSqlCommandInit {
 
           if (DefineReport.ID_PAGE_X002.equals(outpage) || StringUtils.equals(outobj, DefineReport.Grid.SRCCD.getObj() + "_winIT031")) {
             sqlcommand = "SELECT * FROM(" + sqlcommand
-                + ") order by case when SEQNO = '1' then '1' when SEQNO = '2' then '2' else '9' end, case when DATE_FORMAT(sysdate,'%y%m%d') <= YUKO_STDT then 1 else 9 end, YUKO_STDT, SRCCD";
+                + ") AS MT order by case when SEQNO = '1' then '1' when SEQNO = '2' then '2' else '9' end, case when DATE_FORMAT(SYSDATE(),'%y%m%d') <= YUKO_STDT then 1 else 9 end, YUKO_STDT, SRCCD";
           }
           /*
            * if (DefineReport.ID_PAGE_X251.equals(outpage) || StringUtils.equals(outobj,
@@ -1017,7 +1017,7 @@ public class GetSqlCommandInit {
       // 出力行数指定
       String rownum = obj.optString("ROWNUM");
       if (StringUtils.isNotEmpty(sqlcommand) && StringUtils.isNotEmpty(rownum) && NumberUtils.isNumber(rownum)) {
-        sqlcommand += " fetch first " + rownum + " rows only";
+        sqlcommand += " LIMIT " + rownum + " ";
       }
     } else if (StringUtils.equals(outobj, DefineReport.Grid.TENGP.getObj())) {
       JSONObject obj = (JSONObject) map.get(0);

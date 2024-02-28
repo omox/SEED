@@ -5892,9 +5892,8 @@ public class DefineReport {
 
   // SQL：商品店グループ TODO:
   /** 共通（INAMS.MSTSHNTENGP） */
-  public final static String ID_SQL_TENGP =
-      "select T1.TENGPCD as VALUE, T1.TENGPCD||'" + SEPARATOR + "'||rtrim(rtrim(T1.TENGPKN), '　') as TEXT, T1.TENGPKN as TEXT2, T1.AREAKBN from INAMS.MSTSHNTENGP T1 " + ID_SQL_CMN_WHERE
-          + " and TO_CHAR(T1.TENGPCD) = ? and TO_CHAR(T1.GPKBN) = ? and TO_CHAR(T1.AREAKBN) = ? and TO_CHAR(T1.BMNCD) = ?";
+  public final static String ID_SQL_TENGP = "select T1.TENGPCD as VALUE, T1.TENGPCD||'" + SEPARATOR + "'||rtrim(rtrim(T1.TENGPKN)) as TEXT, T1.TENGPKN as TEXT2, T1.AREAKBN from INAMS.MSTSHNTENGP T1 "
+      + ID_SQL_CMN_WHERE + " and CAST(T1.TENGPCD AS CHAR) = ? and CAST(T1.GPKBN AS CHAR) = ? and CAST(T1.AREAKBN AS CHAR) = ? and CAST(T1.BMNCD AS CHAR) = ?";
   public final static String ID_SQL_TENGP2 = "select T1.TENGPCD as F1, max(rtrim(rtrim(T1.TENGPKN),'　')) as F2, count(T2.TENCD) as F3"
       + " from INAMS.MSTSHNTENGP T1 left outer join INAMS.MSTSHNTENGPTEN T2 on T1.GPKBN = T2.GPKBN and T1.BMNCD = T2.BMNCD and T1.TENGPCD = T2.TENGPCD "
       + " where T1.UPDKBN = 0 and T1.GPKBN = ? and T1.BMNCD = ? and T1.AREAKBN = ? and T1.TENGPKN like ? group by T1.TENGPCD";
@@ -5919,15 +5918,15 @@ public class DefineReport {
 
   /** 売価グループ（INAMS.MSTBAIKACTL） */
   public final static String ID_SQL_TENGP_BAIKA = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
-      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTBAIKACTL where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.MSTBAIKACTL AS TA1 where SHNCD like ? and AREAKBN = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
       + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
   public final static String ID_SQL_TENGP_BAIKA_Y = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
-      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTBAIKACTL_Y where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.MSTBAIKACTL_Y AS TA1 where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
       + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
   public final static String ID_SQL_TENGP_BAIKA_C = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
-      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.CSVBAIKACTL where SEQ = ? and INPUTNO = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.CSVBAIKACTL AS TA1 where SEQ = ? and INPUTNO = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
       + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
 
@@ -6171,7 +6170,7 @@ public class DefineReport {
 
   /** SQL:添付資料（MD03111301）の総売価の取得 */
   public final static String ID_SQL_MD03111301_IN =
-      "(values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM))";
+      "(values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM))";
   public final static String ID_SQL_MD03111301_IN_RG = "with INP as (select BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM as RG_BAIKAAM from " + ID_SQL_MD03111301_IN;
   public final static String ID_SQL_MD03111301_IN_HS = "with INP as (select BMNCD, ZEIKBN, ZEIRTKBN, ZEIRTKBN_OLD, ZEIRTHENKODT, TENBAIKADT, BAIKAAM as HS_BAIKAAM from " + ID_SQL_MD03111301_IN;
   public final static String ID_SQL_MD03111301_COL_RG =
