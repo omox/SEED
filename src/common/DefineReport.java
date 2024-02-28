@@ -5894,7 +5894,7 @@ public class DefineReport {
   /** 共通（INAMS.MSTSHNTENGP） */
   public final static String ID_SQL_TENGP = "select T1.TENGPCD as VALUE, T1.TENGPCD||'" + SEPARATOR + "'||rtrim(rtrim(T1.TENGPKN)) as TEXT, T1.TENGPKN as TEXT2, T1.AREAKBN from INAMS.MSTSHNTENGP T1 "
       + ID_SQL_CMN_WHERE + " and CAST(T1.TENGPCD AS CHAR) = ? and CAST(T1.GPKBN AS CHAR) = ? and CAST(T1.AREAKBN AS CHAR) = ? and CAST(T1.BMNCD AS CHAR) = ?";
-  public final static String ID_SQL_TENGP2 = "select T1.TENGPCD as F1, max(rtrim(rtrim(T1.TENGPKN),'　')) as F2, count(T2.TENCD) as F3"
+  public final static String ID_SQL_TENGP2 = "select T1.TENGPCD as F1, max(rtrim(rtrim(T1.TENGPKN))) as F2, count(T2.TENCD) as F3"
       + " from INAMS.MSTSHNTENGP T1 left outer join INAMS.MSTSHNTENGPTEN T2 on T1.GPKBN = T2.GPKBN and T1.BMNCD = T2.BMNCD and T1.TENGPCD = T2.TENGPCD "
       + " where T1.UPDKBN = 0 and T1.GPKBN = ? and T1.BMNCD = ? and T1.AREAKBN = ? and T1.TENGPKN like ? group by T1.TENGPCD";
   public final static String ID_SQL_TENGP_CHK_TEN_CNT = "select count(TENCD) as CNT from INAMS.MSTSHNTENGP T1 inner join INAMS.MSTSHNTENGPTEN T2"
