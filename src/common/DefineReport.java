@@ -5934,17 +5934,17 @@ public class DefineReport {
 
   /** 品揃えグループ（INAMS.MSTSHINAGP） */
   public final static String ID_SQL_TENGP_SHINA = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
-      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTSHINAGP where SHNCD like ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.MSTSHINAGP AS TA1 where SHNCD like ? and AREAKBN = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and CAST(T2.ATSUKKBN AS CHAR) = T4.MEISHOCD";
   public final static String ID_SQL_TENGP_SHINA_Y = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
-      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.MSTSHINAGP_Y where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.MSTSHINAGP_Y AS TA1 where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and CAST(T2.ATSUKKBN AS CHAR) = T4.MEISHOCD";
   public final static String ID_SQL_TENGP_SHINA_C = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
-      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, * from INAMS.CSVSHINAGP where SEQ = ? and INPUTNO = ? order by TENGPCD fetch first @M rows only) T2 on T1.IDX = T2.IDX"
+      + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.CSVSHINAGP AS TA1 where SEQ = ? and INPUTNO = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.SHINA.getVal() + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 "
-      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and TO_CHAR(T2.ATSUKKBN) = T4.MEISHOCD";
+      + " left outer join INAMS.MSTMEISHO T4 on T4.MEISHOKBN = " + MeisyoSelect.KBN139.getCd() + " and CAST(T2.ATSUKKBN AS CHAR ) = T4.MEISHOCD";
 
   /** 店異部門（INAMS.MSTSHNTENBMN）※店別異部門の店グループ情報は、商品店グループでは、売価グループを参照する */
   public final static String ID_SQL_TENGP_TBMN = ID_SQL_GRD_CMN + "select T2.TENSHNCD,T2.TENGPCD, T3.TENGPKN, T2.AREAKBN, trim(T2.SRCCD) as SRCCD from T1"
