@@ -391,7 +391,8 @@ public class ItemDao implements ItemInterface {
     } catch (SQLException e) {
       rollback(con);
       e.printStackTrace();
-      if (DefineReport.ID_SQLSTATE_COLUMN_GREATER.equals(e.getSQLState()) || DefineReport.ID_SQLSTATE_APPLICATION_HEPE.equals(e.getSQLState()) || DefineReport.ID_SQLSTATE_BUFFER_GREATER.equals(e.getSQLState()) || DefineReport.ID_SQLSTATE_COLUMN_OVER.equals(e.getSQLState())) {
+      if (DefineReport.ID_SQLSTATE_COLUMN_GREATER.equals(e.getSQLState()) || DefineReport.ID_SQLSTATE_APPLICATION_HEPE.equals(e.getSQLState())
+          || DefineReport.ID_SQLSTATE_BUFFER_GREATER.equals(e.getSQLState()) || DefineReport.ID_SQLSTATE_COLUMN_OVER.equals(e.getSQLState())) {
         // 横軸（列）が多すぎる場合
         setMessage(DefineReport.ID_MSG_COLUMN_GREATER + "(" + e.getSQLState() + ")");
       } else if (DefineReport.ID_SQLSTATE_CONNECTION_RESET.equals(e.getSQLState())) {
@@ -1101,7 +1102,7 @@ public class ItemDao implements ItemInterface {
    * @return =条件句
    */
   protected String getFechSql(String rowNum) {
-    return " fetch first " + rowNum + " rows only ";
+    return " LIMIT " + rowNum + " ";
   }
 
   /** message 情報 */
