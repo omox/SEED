@@ -162,8 +162,9 @@ public class Reportx001Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
 
     sbSQL.append(" with");
-    sbSQL.append("  WKSHN as (select SHNCD from INAMS.MSTSHN T1 where " + szWhereCmd + " and COALESCE(UPDKBN, 0) <> 1 )");
-    sbSQL.append(" ,WKIDX(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from WKIDX where IDX <= " + maxMSTTENKABUTSU1 + ") ");
+    sbSQL.append(" RECURSIVE WKIDX(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from WKIDX where IDX <= " + maxMSTTENKABUTSU1 + ") ");
+
+    sbSQL.append(" ,WKSHN as (select SHNCD from INAMS.MSTSHN T1 where " + szWhereCmd + " and COALESCE(UPDKBN, 0) <> 1 )");
     sbSQL.append(" select ''"); // 更新区分 :A
     sbSQL.append("  ,rtrim(T.SHNCD)"); // 商品コード :
     sbSQL.append("  ,null"); // 商品コード桁数 :0
@@ -183,8 +184,8 @@ public class Reportx001Dao extends ItemDao {
     sbSQL.append("  ,max('\"'||T.SALESCOMKN||'\"')"); // 商品コメント・セールスコピー（漢字）
     sbSQL.append("  ,max('\"'||T.POPKN||'\"')"); // ＰＯＰ名称（漢字）
     sbSQL.append("  ,max('\"'||T.KIKKN||'\"')"); // 規格
-    sbSQL.append("  ,max(T.RG_ATSUKFLG),max(RTRIM(TRIM('0' FROM T.RG_GENKAAM),'.')),max(T.RG_BAIKAAM),max(T.RG_IRISU),rtrim(max(T.RG_IDENFLG)),rtrim(max(T.RG_WAPNFLG))"); // レギュラー情報_取扱フラグ、原価、売価、店入数、一括伝票、ワッペン
-    sbSQL.append("  ,max(T.HS_ATSUKFLG),max(RTRIM(TRIM('0' FROM T.HS_GENKAAM),'.')),max(T.HS_BAIKAAM),max(T.HS_IRISU),rtrim(max(T.HS_WAPNFLG)),rtrim(max(T.HP_SWAPNFLG))"); // 販促情報_取扱フラグ、原価、売価、店入数、ワッペン、特売ワッペン
+    sbSQL.append("  ,max(T.RG_ATSUKFLG),max(RTRIM(TRIM('0' FROM T.RG_GENKAAM))),max(T.RG_BAIKAAM),max(T.RG_IRISU),rtrim(max(T.RG_IDENFLG)),rtrim(max(T.RG_WAPNFLG))"); // レギュラー情報_取扱フラグ、原価、売価、店入数、一括伝票、ワッペン
+    sbSQL.append("  ,max(T.HS_ATSUKFLG),max(RTRIM(TRIM('0' FROM T.HS_GENKAAM))),max(T.HS_BAIKAAM),max(T.HS_IRISU),rtrim(max(T.HS_WAPNFLG)),rtrim(max(T.HP_SWAPNFLG))"); // 販促情報_取扱フラグ、原価、売価、店入数、ワッペン、特売ワッペン
     sbSQL.append("  ,max(T.BINKBN)"); // 便区分
     sbSQL.append("  ,max(T.SIMEKAISU)"); // 締め回数
     sbSQL.append("  ,max(right('00'||T.KOMONOKBM,2))"); // 小物区分
@@ -211,7 +212,7 @@ public class Reportx001Dao extends ItemDao {
     sbSQL.append("  ,max(T3.AREAKBN)");
     for (int i = 1; i <= maxMSTBAIKACTL; i++) {
       sbSQL.append(",max(case X.IDX when " + i + " then T3.TENGPCD end)"); // 店グループ（エリア）
-      sbSQL.append(",TO_CHAR(max(case X.IDX when " + i + " then (case when MOD(T3.GENKAAM, 1) = 0 then int(T3.GENKAAM) else double(T3.GENKAAM) end) end))"); // 原価
+      sbSQL.append(",CAST(max(case X.IDX when " + i + " then (case when MOD(T3.GENKAAM, 1) = 0 then CAST(T3.GENKAAM AS SIGNED) else T3.GENKAAM end) end) AS CHAR )"); // 原価
       sbSQL.append(",max(case X.IDX when " + i + " then T3.BAIKAAM end)"); // 売価
       sbSQL.append(",max(case X.IDX when " + i + " then T3.IRISU end)"); // 店入数
 
@@ -234,7 +235,7 @@ public class Reportx001Dao extends ItemDao {
     for (int i = 1; i <= maxMSTTENKABUTSU2; i++) {
       sbSQL.append("  ,max(case X.IDX when " + i + " then T7.TENKABCD end)"); // アレルギー
     }
-    sbSQL.append("  ,rtrim(max(T.SHUBETUCD)),max(T.IRYOREFLG),max(T.TOROKUMOTO),max(T.OPERATOR),max(TO_CHAR(T.ADDDT,'YYYYMMDD')),max(TO_CHAR(T.UPDDT,'YYYYMMDD'))"); // 種別コード、衣料使い回しフラグ、登録元、オペレータ、登録日、更新日
+    sbSQL.append("  ,rtrim(max(T.SHUBETUCD)),max(T.IRYOREFLG),max(T.TOROKUMOTO),max(T.OPERATOR),max(DATE_FORMAT(T.ADDDT,'%Y%m%d')),max(DATE_FORMAT(T.UPDDT,'%Y%m%d'))"); // 種別コード、衣料使い回しフラグ、登録元、オペレータ、登録日、更新日
     sbSQL.append(" , max(case when T.BMNCD IN (20,23,70,73) THEN T.K_HONKB ELSE null END)");
     sbSQL.append(" , max(case when T.BMNCD IN (20,23,70,73) THEN T.K_WAPNFLG_R ELSE null END)");
     sbSQL.append(" , max(case when T.BMNCD IN (20,23,70,73) THEN T.K_TORIKB ELSE null END)");
@@ -369,11 +370,11 @@ public class Reportx001Dao extends ItemDao {
     }
     if (!StringUtils.isEmpty(szUpddtf)) {
       String convdt = CmnDate.getConvInpDate(szUpddtf);
-      szWhereCmd += " and to_char(T1.UPDDT, 'YYYYMMDD') >= '" + convdt + "'";
+      szWhereCmd += " and DATE_FORMAT(T1.UPDDT, '%Y%m%d') >= '" + convdt + "'";
     }
     if (!StringUtils.isEmpty(szUpddtt)) {
       String convdt = CmnDate.getConvInpDate(szUpddtt);
-      szWhereCmd += " and to_char(T1.UPDDT, 'YYYYMMDD') <= '" + convdt + "'";
+      szWhereCmd += " and DATE_FORMAT(T1.UPDDT, '%Y%m%d') <= '" + convdt + "'";
     }
     if (!DefineReport.Values.ALL.getVal().equals(szIryoreflg)) {
       String[] vals = new String[] {DefineReport.ValKbn142.VAL0.getVal(), DefineReport.ValKbn142.VAL1.getVal()};

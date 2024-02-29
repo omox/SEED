@@ -3547,7 +3547,7 @@ public class Reportx002Dao extends ItemDao {
   public String getJNLSHN_SEQ() {
     // 関連情報取得
     ItemList iL = new ItemList();
-    String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ002";
+    String sqlColCommand = "SELECT INAMS.nextval('SEQ002') AS \"2\"";
     @SuppressWarnings("static-access")
     JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
