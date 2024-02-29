@@ -224,38 +224,38 @@ public class Reportx092Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
 
     if (DefineReport.Button.SEL_CHANGE.getObj().equals(sendBtnid)) {
-      sbSQL.append(" select");
-      sbSQL.append(" T1.BMNCD as F1"); // F1 : 部門
-      sbSQL.append(" ,T1.CALLCD as F2"); // F2 : 呼出コード
-      sbSQL.append(" ,right ('0000000' || RTRIM(CHAR (T1.SHNCD)), 8) as F3");
-      sbSQL.append(" ,T2.SHNKN as F4"); // F4 : 商品名漢字
-      sbSQL.append(" ,T1.SHNKNUP as F5");// F5 : 商品名上段
-      sbSQL.append(" ,T1.SHNKNDN as F6");// F6 : 商品名下段
-      sbSQL.append(" ,lpad(T2.DAICD,2,'0') as F7");// F7 : 大コード
-      sbSQL.append(" ,T3.DAIBRUIKN as F8");// F8 : 大分類名（漢字）
-      sbSQL.append(" ,lpad(T2.CHUCD,2,'0') as F9");// F9 : 中コード
-      sbSQL.append(" ,T4.CHUBRUIKN as F10");// F10 : 中分類名（漢字）
-      sbSQL.append(" ,lpad(T2.SHOCD,2,'0') as F11");// F11 : 小コード
-      sbSQL.append(" ,T5.SHOBRUIKN as F12");// F12 : 小分類名（漢字）
-      sbSQL.append(" ,T2.RG_IRISU as F13");// F13 : 入数
-      sbSQL.append(" ,T1.UTRAY as F14");// F14 : 使用トレイ
-      sbSQL.append(" ,T1.KAKOKBN as F15");// F15 : 生鮮・加工食品区分
-      sbSQL.append(" ,T1.KONPOU as F16");// F16: 梱包
-      sbSQL.append(" ,T1.TEIKANKBN as F17");// F17 : 定貫・不定貫区分
-      sbSQL.append(" ,T1.FUTAI as F18");// F18: 風袋
-      sbSQL.append(" ,T2.URICD as F19");// F19 : 販売コード
-      sbSQL.append(" ,T1.JURYOUP as F20");// F20: 下限重量
-      sbSQL.append(" ,T2.KIKKN as F21");// F21 : 規格漢字名
-      sbSQL.append(" ,T1.JURYODN as F22");// F22: 上限重量
-      sbSQL.append(" ,T1.NAIKN as F23");// F23 : 内容量
-      sbSQL.append(" ,T2.ODS_NATSUSU as F24");// F24 : ODS_賞味期限_夏
-      sbSQL.append(" ,T1.UPDKBN as F25");// F25: 更新区分
-      sbSQL.append(" ,T1.SENDFLG as F26");// F41: 送信フラグ
-      sbSQL.append(" ,TO_CHAR(T1.ADDDT,'yy/mm/dd') as F42");// F42: 登録日
-      sbSQL.append(" ,TO_CHAR(T1.UPDDT,'yy/mm/dd') as F43");// F43: 更新日
-      sbSQL.append(" ,T1.OPERATOR as F44");// F44: オペレータ
-      sbSQL.append(", TO_CHAR(T1.UPDDT,'YYYYMMDDHH24MISSNNNNNN') as HDN_UPDDT "); // 排他チェック用：更新日
-      sbSQL.append(" from INAMS.MSTNETSUKE T1");
+      sbSQL.append("SELECT ");
+      sbSQL.append("T1.BMNCD as F1 "); // F1 : 部門
+      sbSQL.append(",T1.CALLCD as F2 "); // F2 : 呼出コード
+      sbSQL.append(",RIGHT ('0000000' || RTRIM(T1.SHNCD), 8) as F3 ");
+      sbSQL.append(",T2.SHNKN as F4 "); // F4 : 商品名漢字
+      sbSQL.append(",T1.SHNKNUP as F5 ");// F5 : 商品名上段
+      sbSQL.append(",T1.SHNKNDN as F6 ");// F6 : 商品名下段
+      sbSQL.append(",lpad(T2.DAICD,2,'0') as F7 ");// F7 : 大コード
+      sbSQL.append(",T3.DAIBRUIKN as F8 ");// F8 : 大分類名（漢字）
+      sbSQL.append(",lpad(T2.CHUCD,2,'0') as F9 ");// F9 : 中コード
+      sbSQL.append(",T4.CHUBRUIKN as F10 ");// F10 : 中分類名（漢字）
+      sbSQL.append(",lpad(T2.SHOCD,2,'0') as F11 ");// F11 : 小コード
+      sbSQL.append(",T5.SHOBRUIKN as F12 ");// F12 : 小分類名（漢字）
+      sbSQL.append(",T2.RG_IRISU as F13 ");// F13 : 入数
+      sbSQL.append(",T1.UTRAY as F14 ");// F14 : 使用トレイ
+      sbSQL.append(",T1.KAKOKBN as F15 ");// F15 : 生鮮・加工食品区分
+      sbSQL.append(",T1.KONPOU as F16 ");// F16: 梱包
+      sbSQL.append(",T1.TEIKANKBN as F17 ");// F17 : 定貫・不定貫区分
+      sbSQL.append(",T1.FUTAI as F18 ");// F18: 風袋
+      sbSQL.append(",T2.URICD as F19 ");// F19 : 販売コード
+      sbSQL.append(",T1.JURYOUP as F20 ");// F20: 下限重量
+      sbSQL.append(",T2.KIKKN as F21 ");// F21 : 規格漢字名
+      sbSQL.append(",T1.JURYODN as F22 ");// F22: 上限重量
+      sbSQL.append(",T1.NAIKN as F23 ");// F23 : 内容量
+      sbSQL.append(",T2.ODS_NATSUSU as F24 ");// F24 : ODS_賞味期限_夏
+      sbSQL.append(",T1.UPDKBN as F25 ");// F25: 更新区分
+      sbSQL.append(",T1.SENDFLG as F26 ");// F41: 送信フラグ
+      sbSQL.append(",DATE_FORMAT(T1.ADDDT,'%y/%m/%d') as F42 ");// F42: 登録日
+      sbSQL.append(",DATE_FORMAT(T1.UPDDT,'%y/%m/%d') as F43 ");// F43: 更新日
+      sbSQL.append(",T1.OPERATOR as F44 ");// F44: オペレータ
+      sbSQL.append(",DATE_FORMAT(T1.UPDDT,'%Y%m%d%H%i%s%f') as HDN_UPDDT "); // 排他チェック用：更新日
+      sbSQL.append("from INAMS.MSTNETSUKE T1 ");
       sbSQL.append(" left join INAMS.MSTSHN T2 on ");
       sbSQL.append(" T1.SHNCD = T2.SHNCD and ");
       sbSQL.append(" T2.UPDKBN <> 1 ");
@@ -264,7 +264,7 @@ public class Reportx092Dao extends ItemDao {
       sbSQL.append(" T2.DAICD = T3.DAICD and ");
       sbSQL.append(" T3.UPDKBN <> 1 ");
       sbSQL.append(" left join INAMS.MSTCHUBRUI T4 on ");
-      sbSQL.append(" T2.BMNCD = T4.BMNCD and  ");
+      sbSQL.append(" T2.BMNCD = T4.BMNCD and ");
       sbSQL.append(" T2.DAICD = T4.DAICD and ");
       sbSQL.append(" T2.CHUCD = T4.CHUCD and ");
       sbSQL.append(" T4.UPDKBN <> 1 ");
@@ -300,28 +300,28 @@ public class Reportx092Dao extends ItemDao {
   public String getTOKMOYCDData(JSONObject obj) {
 
     StringBuffer sbSQL = new StringBuffer();
-    sbSQL.append("  select");
-    sbSQL.append(" right ('0000000' || RTRIM(CHAR (T1.SHNCD)), 8) as F1");
-    sbSQL.append(",T2.SHNKN as F2");
-    sbSQL.append(",T1.NAIKN as F3");
-    sbSQL.append(",T1.GENKA as F4");
-    sbSQL.append(",T1.BUDOMARI as F5");
-    sbSQL.append(",T1.GENKAKEI as F6");
-    sbSQL.append(",T3.SIRKN as F7");
-    sbSQL.append(",0 as F8");
-    sbSQL.append(",1 as F9");
-    sbSQL.append(" from");
-    sbSQL.append(" INAMS.MSTUGENRYO T1");
-    sbSQL.append(" left join");
-    sbSQL.append(" INAMS.MSTSHN T2");
-    sbSQL.append(" on T1.SHNCD = T2.SHNCD");
-    sbSQL.append(" left join");
-    sbSQL.append(" INAMS.MSTSIR T3");
-    sbSQL.append(" on T3.SIRCD = T2.SSIRCD");
-    sbSQL.append(" where");
-    sbSQL.append(" T1.BMNCD = ? ");
-    sbSQL.append(" and T1.CALLCD = ?");
-    sbSQL.append(" order by T1.SHNCD");
+    sbSQL.append("SELECT ");
+    sbSQL.append("RIGHT ('0000000' || RTRIM(T1.SHNCD), 8) as F1 ");
+    sbSQL.append(",T2.SHNKN as F2 ");
+    sbSQL.append(",T1.NAIKN as F3 ");
+    sbSQL.append(",T1.GENKA as F4 ");
+    sbSQL.append(",T1.BUDOMARI as F5 ");
+    sbSQL.append(",T1.GENKAKEI as F6 ");
+    sbSQL.append(",T3.SIRKN as F7 ");
+    sbSQL.append(",0 as F8 ");
+    sbSQL.append(",1 as F9 ");
+    sbSQL.append("FROM ");
+    sbSQL.append("INAMS.MSTUGENRYO T1 ");
+    sbSQL.append("LEFT JOIN ");
+    sbSQL.append("INAMS.MSTSHN T2 ");
+    sbSQL.append("ON T1.SHNCD = T2.SHNCD ");
+    sbSQL.append("LEFT JOIN ");
+    sbSQL.append("INAMS.MSTSIR T3 ");
+    sbSQL.append("ON T3.SIRCD = T2.SSIRCD ");
+    sbSQL.append("WHERE ");
+    sbSQL.append("T1.BMNCD = ? ");
+    sbSQL.append("AND T1.CALLCD = ? ");
+    sbSQL.append("ORDER BY T1.SHNCD ");
 
 
     return sbSQL.toString();
