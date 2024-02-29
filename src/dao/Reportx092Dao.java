@@ -138,36 +138,36 @@ public class Reportx092Dao extends ItemDao {
 
     // 詳細部分
     StringBuffer sbSQL = new StringBuffer();
-    sbSQL.append(" select ");
-    sbSQL.append(" T1.SHNKN as F1");
-    sbSQL.append(" ,lpad(T2.DAICD,2,'0') as F2");
-    sbSQL.append(" ,T2.DAIBRUIKN as F3");
-    sbSQL.append(" ,lpad(T3.CHUCD,2,'0') as F4");
-    sbSQL.append(" ,T3.CHUBRUIKN as F5");
-    sbSQL.append(" ,lpad(T4.SHOCD,2,'0') as F6");
-    sbSQL.append(" ,T4.SHOBRUIKN as F7");
-    sbSQL.append(" ,T1.URICD as F8");
-    sbSQL.append(" ,T1.KIKKN as F9");
-    sbSQL.append(" ,T1.ODS_NATSUSU as F10");
-    sbSQL.append(" ,T1.RG_IRISU as F11");
-    sbSQL.append(" from INAMS.MSTSHN T1 ");
-    sbSQL.append(" left join INAMS.MSTDAIBRUI T2 on ");
-    sbSQL.append(" T1.BMNCD = T2.BMNCD and ");
-    sbSQL.append(" T1.DAICD = T2.DAICD and ");
+    sbSQL.append(" SELECT ");
+    sbSQL.append(" T1.SHNKN AS F1");
+    sbSQL.append(" ,LPAD(T2.DAICD,2,'0') AS F2");
+    sbSQL.append(" ,T2.DAIBRUIKN AS F3");
+    sbSQL.append(" ,LPAD(T3.CHUCD,2,'0') AS F4");
+    sbSQL.append(" ,T3.CHUBRUIKN AS F5");
+    sbSQL.append(" ,LPAD(T4.SHOCD,2,'0') AS F6");
+    sbSQL.append(" ,T4.SHOBRUIKN AS F7");
+    sbSQL.append(" ,T1.URICD AS F8");
+    sbSQL.append(" ,T1.KIKKN AS F9");
+    sbSQL.append(" ,T1.ODS_NATSUSU AS F10");
+    sbSQL.append(" ,T1.RG_IRISU AS F11");
+    sbSQL.append(" FROM INAMS.MSTSHN T1 ");
+    sbSQL.append(" LEFT JOIN INAMS.MSTDAIBRUI T2 ON ");
+    sbSQL.append(" T1.BMNCD = T2.BMNCD AND ");
+    sbSQL.append(" T1.DAICD = T2.DAICD AND ");
     sbSQL.append(" T2.UPDKBN <> 1 ");
-    sbSQL.append(" left join INAMS.MSTCHUBRUI T3 on ");
-    sbSQL.append(" T1.BMNCD = T3.BMNCD and  ");
-    sbSQL.append(" T1.DAICD = T3.DAICD and ");
-    sbSQL.append(" T1.CHUCD = T3.CHUCD and ");
+    sbSQL.append(" LEFT JOIN INAMS.MSTCHUBRUI T3 ON ");
+    sbSQL.append(" T1.BMNCD = T3.BMNCD AND  ");
+    sbSQL.append(" T1.DAICD = T3.DAICD AND ");
+    sbSQL.append(" T1.CHUCD = T3.CHUCD AND ");
     sbSQL.append(" T3.UPDKBN <> 1 ");
-    sbSQL.append(" left join INAMS.MSTSHOBRUI T4 on ");
-    sbSQL.append(" T1.BMNCD = T4.BMNCD and ");
-    sbSQL.append(" T1.DAICD = T4.DAICD and ");
-    sbSQL.append(" T1.CHUCD = T4.CHUCD and ");
-    sbSQL.append(" T1.SHOCD = T4.SHOCD and ");
+    sbSQL.append(" LEFT JOIN INAMS.MSTSHOBRUI T4 ON ");
+    sbSQL.append(" T1.BMNCD = T4.BMNCD AND ");
+    sbSQL.append(" T1.DAICD = T4.DAICD AND ");
+    sbSQL.append(" T1.CHUCD = T4.CHUCD AND ");
+    sbSQL.append(" T1.SHOCD = T4.SHOCD AND ");
     sbSQL.append(" T4.UPDKBN <> 1 ");
-    sbSQL.append(" where  ");
-    sbSQL.append(" T1.UPDKBN <> 1 and ");
+    sbSQL.append(" WHERE  ");
+    sbSQL.append(" T1.UPDKBN <> 1 AND ");
     sbSQL.append(" T1.SHNCD = ? ");
 
     return sbSQL.toString();
@@ -182,14 +182,14 @@ public class Reportx092Dao extends ItemDao {
 
     // 詳細部分
     StringBuffer sbSQL = new StringBuffer();
-    sbSQL.append(" select ");
-    sbSQL.append(" T1.SHNKN as F1");
-    sbSQL.append(" ,T2.SIRKN as F2");
-    sbSQL.append(" from INAMS.MSTSHN T1 ");
-    sbSQL.append(" left join INAMS.MSTSIR T2 ");
-    sbSQL.append(" on T1.SSIRCD = T2.SIRCD");
-    sbSQL.append(" where ");
-    sbSQL.append(" T1.shncd = ? ");
+    sbSQL.append(" SELECT ");
+    sbSQL.append(" T1.SHNKN AS F1");
+    sbSQL.append(" ,T2.SIRKN AS F2");
+    sbSQL.append(" FROM INAMS.MSTSHN T1 ");
+    sbSQL.append(" LEFT JOIN INAMS.MSTSIR T2 ");
+    sbSQL.append(" ON T1.SSIRCD = T2.SIRCD");
+    sbSQL.append(" WHERE ");
+    sbSQL.append(" T1.SHNCD = ? ");
 
     return sbSQL.toString();
   }
@@ -225,58 +225,58 @@ public class Reportx092Dao extends ItemDao {
 
     if (DefineReport.Button.SEL_CHANGE.getObj().equals(sendBtnid)) {
       sbSQL.append("SELECT ");
-      sbSQL.append("T1.BMNCD as F1 "); // F1 : 部門
-      sbSQL.append(",T1.CALLCD as F2 "); // F2 : 呼出コード
-      sbSQL.append(",RIGHT ('0000000' || RTRIM(T1.SHNCD), 8) as F3 ");
-      sbSQL.append(",T2.SHNKN as F4 "); // F4 : 商品名漢字
-      sbSQL.append(",T1.SHNKNUP as F5 ");// F5 : 商品名上段
-      sbSQL.append(",T1.SHNKNDN as F6 ");// F6 : 商品名下段
-      sbSQL.append(",lpad(T2.DAICD,2,'0') as F7 ");// F7 : 大コード
-      sbSQL.append(",T3.DAIBRUIKN as F8 ");// F8 : 大分類名（漢字）
-      sbSQL.append(",lpad(T2.CHUCD,2,'0') as F9 ");// F9 : 中コード
-      sbSQL.append(",T4.CHUBRUIKN as F10 ");// F10 : 中分類名（漢字）
-      sbSQL.append(",lpad(T2.SHOCD,2,'0') as F11 ");// F11 : 小コード
-      sbSQL.append(",T5.SHOBRUIKN as F12 ");// F12 : 小分類名（漢字）
-      sbSQL.append(",T2.RG_IRISU as F13 ");// F13 : 入数
-      sbSQL.append(",T1.UTRAY as F14 ");// F14 : 使用トレイ
-      sbSQL.append(",T1.KAKOKBN as F15 ");// F15 : 生鮮・加工食品区分
-      sbSQL.append(",T1.KONPOU as F16 ");// F16: 梱包
-      sbSQL.append(",T1.TEIKANKBN as F17 ");// F17 : 定貫・不定貫区分
-      sbSQL.append(",T1.FUTAI as F18 ");// F18: 風袋
-      sbSQL.append(",T2.URICD as F19 ");// F19 : 販売コード
-      sbSQL.append(",T1.JURYOUP as F20 ");// F20: 下限重量
-      sbSQL.append(",T2.KIKKN as F21 ");// F21 : 規格漢字名
-      sbSQL.append(",T1.JURYODN as F22 ");// F22: 上限重量
-      sbSQL.append(",T1.NAIKN as F23 ");// F23 : 内容量
-      sbSQL.append(",T2.ODS_NATSUSU as F24 ");// F24 : ODS_賞味期限_夏
-      sbSQL.append(",T1.UPDKBN as F25 ");// F25: 更新区分
-      sbSQL.append(",T1.SENDFLG as F26 ");// F41: 送信フラグ
-      sbSQL.append(",DATE_FORMAT(T1.ADDDT,'%y/%m/%d') as F42 ");// F42: 登録日
-      sbSQL.append(",DATE_FORMAT(T1.UPDDT,'%y/%m/%d') as F43 ");// F43: 更新日
-      sbSQL.append(",T1.OPERATOR as F44 ");// F44: オペレータ
-      sbSQL.append(",DATE_FORMAT(T1.UPDDT,'%Y%m%d%H%i%s%f') as HDN_UPDDT "); // 排他チェック用：更新日
-      sbSQL.append("from INAMS.MSTNETSUKE T1 ");
-      sbSQL.append(" left join INAMS.MSTSHN T2 on ");
-      sbSQL.append(" T1.SHNCD = T2.SHNCD and ");
+      sbSQL.append("T1.BMNCD AS F1 "); // F1 : 部門
+      sbSQL.append(",T1.CALLCD AS F2 "); // F2 : 呼出コード
+      sbSQL.append(",RIGHT ('0000000' || RTRIM(T1.SHNCD), 8) AS F3 ");
+      sbSQL.append(",T2.SHNKN AS F4 "); // F4 : 商品名漢字
+      sbSQL.append(",T1.SHNKNUP AS F5 ");// F5 : 商品名上段
+      sbSQL.append(",T1.SHNKNDN AS F6 ");// F6 : 商品名下段
+      sbSQL.append(",LPAD(T2.DAICD,2,'0') AS F7 ");// F7 : 大コード
+      sbSQL.append(",T3.DAIBRUIKN AS F8 ");// F8 : 大分類名（漢字）
+      sbSQL.append(",LPAD(T2.CHUCD,2,'0') AS F9 ");// F9 : 中コード
+      sbSQL.append(",T4.CHUBRUIKN AS F10 ");// F10 : 中分類名（漢字）
+      sbSQL.append(",LPAD(T2.SHOCD,2,'0') AS F11 ");// F11 : 小コード
+      sbSQL.append(",T5.SHOBRUIKN AS F12 ");// F12 : 小分類名（漢字）
+      sbSQL.append(",T2.RG_IRISU AS F13 ");// F13 : 入数
+      sbSQL.append(",T1.UTRAY AS F14 ");// F14 : 使用トレイ
+      sbSQL.append(",T1.KAKOKBN AS F15 ");// F15 : 生鮮・加工食品区分
+      sbSQL.append(",T1.KONPOU AS F16 ");// F16: 梱包
+      sbSQL.append(",T1.TEIKANKBN AS F17 ");// F17 : 定貫・不定貫区分
+      sbSQL.append(",T1.FUTAI AS F18 ");// F18: 風袋
+      sbSQL.append(",T2.URICD AS F19 ");// F19 : 販売コード
+      sbSQL.append(",T1.JURYOUP AS F20 ");// F20: 下限重量
+      sbSQL.append(",T2.KIKKN AS F21 ");// F21 : 規格漢字名
+      sbSQL.append(",T1.JURYODN AS F22 ");// F22: 上限重量
+      sbSQL.append(",T1.NAIKN AS F23 ");// F23 : 内容量
+      sbSQL.append(",T2.ODS_NATSUSU AS F24 ");// F24 : ODS_賞味期限_夏
+      sbSQL.append(",T1.UPDKBN AS F25 ");// F25: 更新区分
+      sbSQL.append(",T1.SENDFLG AS F26 ");// F41: 送信フラグ
+      sbSQL.append(",DATE_FORMAT(T1.ADDDT,'%y/%m/%d') AS F42 ");// F42: 登録日
+      sbSQL.append(",DATE_FORMAT(T1.UPDDT,'%y/%m/%d') AS F43 ");// F43: 更新日
+      sbSQL.append(",T1.OPERATOR AS F44 ");// F44: オペレータ
+      sbSQL.append(",DATE_FORMAT(T1.UPDDT,'%Y%m%d%H%i%s%f') AS HDN_UPDDT "); // 排他チェック用：更新日
+      sbSQL.append("FROM INAMS.MSTNETSUKE T1 ");
+      sbSQL.append(" LEFT JOIN INAMS.MSTSHN T2 ON ");
+      sbSQL.append(" T1.SHNCD = T2.SHNCD AND ");
       sbSQL.append(" T2.UPDKBN <> 1 ");
-      sbSQL.append(" left join INAMS.MSTDAIBRUI T3 on ");
-      sbSQL.append(" T2.BMNCD = T3.BMNCD and ");
-      sbSQL.append(" T2.DAICD = T3.DAICD and ");
+      sbSQL.append(" LEFT JOIN INAMS.MSTDAIBRUI T3 ON ");
+      sbSQL.append(" T2.BMNCD = T3.BMNCD AND ");
+      sbSQL.append(" T2.DAICD = T3.DAICD AND ");
       sbSQL.append(" T3.UPDKBN <> 1 ");
-      sbSQL.append(" left join INAMS.MSTCHUBRUI T4 on ");
-      sbSQL.append(" T2.BMNCD = T4.BMNCD and ");
-      sbSQL.append(" T2.DAICD = T4.DAICD and ");
-      sbSQL.append(" T2.CHUCD = T4.CHUCD and ");
+      sbSQL.append(" LEFT JOIN INAMS.MSTCHUBRUI T4 ON ");
+      sbSQL.append(" T2.BMNCD = T4.BMNCD AND ");
+      sbSQL.append(" T2.DAICD = T4.DAICD AND ");
+      sbSQL.append(" T2.CHUCD = T4.CHUCD AND ");
       sbSQL.append(" T4.UPDKBN <> 1 ");
-      sbSQL.append(" left join INAMS.MSTSHOBRUI T5 on ");
-      sbSQL.append(" T2.BMNCD = T5.BMNCD and ");
-      sbSQL.append(" T2.DAICD = T5.DAICD and ");
-      sbSQL.append(" T2.CHUCD = T5.CHUCD and ");
-      sbSQL.append(" T2.SHOCD = T5.SHOCD and ");
+      sbSQL.append(" LEFT JOIN INAMS.MSTSHOBRUI T5 ON ");
+      sbSQL.append(" T2.BMNCD = T5.BMNCD AND ");
+      sbSQL.append(" T2.DAICD = T5.DAICD AND ");
+      sbSQL.append(" T2.CHUCD = T5.CHUCD AND ");
+      sbSQL.append(" T2.SHOCD = T5.SHOCD AND ");
       sbSQL.append(" T5.UPDKBN <> 1 ");
-      sbSQL.append(" where T1.BMNCD = ?");
-      sbSQL.append(" and T1.CALLCD = ?");
-      sbSQL.append(" and T1.SHNCD = ?");
+      sbSQL.append(" WHERE T1.BMNCD = ?");
+      sbSQL.append(" AND T1.CALLCD = ?");
+      sbSQL.append(" AND T1.SHNCD = ?");
       // DB検索用パラメータ設定
       setParamData(paramData);
 
@@ -301,15 +301,15 @@ public class Reportx092Dao extends ItemDao {
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append("SELECT ");
-    sbSQL.append("RIGHT ('0000000' || RTRIM(T1.SHNCD), 8) as F1 ");
-    sbSQL.append(",T2.SHNKN as F2 ");
-    sbSQL.append(",T1.NAIKN as F3 ");
-    sbSQL.append(",T1.GENKA as F4 ");
-    sbSQL.append(",T1.BUDOMARI as F5 ");
-    sbSQL.append(",T1.GENKAKEI as F6 ");
-    sbSQL.append(",T3.SIRKN as F7 ");
-    sbSQL.append(",0 as F8 ");
-    sbSQL.append(",1 as F9 ");
+    sbSQL.append("RIGHT ('0000000' || RTRIM(T1.SHNCD), 8) AS F1 ");
+    sbSQL.append(",T2.SHNKN AS F2 ");
+    sbSQL.append(",T1.NAIKN AS F3 ");
+    sbSQL.append(",T1.GENKA AS F4 ");
+    sbSQL.append(",T1.BUDOMARI AS F5 ");
+    sbSQL.append(",T1.GENKAKEI AS F6 ");
+    sbSQL.append(",T3.SIRKN AS F7 ");
+    sbSQL.append(",0 AS F8 ");
+    sbSQL.append(",1 AS F9 ");
     sbSQL.append("FROM ");
     sbSQL.append("INAMS.MSTUGENRYO T1 ");
     sbSQL.append("LEFT JOIN ");
@@ -321,6 +321,7 @@ public class Reportx092Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append("T1.BMNCD = ? ");
     sbSQL.append("AND T1.CALLCD = ? ");
+    sbSQL.append("AND T1.UPDKBN = 0 ");
     sbSQL.append("ORDER BY T1.SHNCD ");
 
 
@@ -392,7 +393,7 @@ public class Reportx092Dao extends ItemDao {
     ArrayList<String> targetParam = new ArrayList<String>();
     if (dataArray.size() > 0) {
       targetTable = "INAMS.MSTNETSUKE";
-      targetWhere = "IFNULL(UPDKBN, 0) <> " + DefineReport.ValUpdkbn.DEL.getVal() + " and BMNCD = ? and CALLCD = ? and SHNCD = ?  ";
+      targetWhere = "IFNULL(UPDKBN, 0) <> " + DefineReport.ValUpdkbn.DEL.getVal() + " AND BMNCD = ? AND CALLCD = ? AND SHNCD = ?  ";
       targetParam.add(data.optString("F1"));
       targetParam.add(data.optString("F2"));
       targetParam.add(data.optString("F3"));
@@ -446,6 +447,8 @@ public class Reportx092Dao extends ItemDao {
     ArrayList<String> whereData = new ArrayList<String>();
     Object[] valueData = new Object[] {};
     String values = "";
+
+    System.out.print("map : " + map + "\n");
 
     map.get("SENDBTNID");
     map.get("BMNCD");
@@ -516,90 +519,90 @@ public class Reportx092Dao extends ItemDao {
     prmList.add(prmData);
     lblList.add("値付器マスタ");
 
-    // クリア
-    prmData = new ArrayList<String>();
-    valueData = new Object[] {};
-    whereData = new ArrayList<String>();
-    values = "";
-    maxField = 7; // Fxxの最大値
-
-    // 使用原料マスタのデータを物理削除する
-    this.createDeleteSqlGENRYO(map);
-
-    for (int j = 0; j < dataArrayT.size(); j++) {
-      if (j == 0) {
-        values += "( ";
-      } else {
-        values += ",( ";
-      }
-
-      for (int i = 1; i <= maxField; i++) {
-        String key = "F" + i;
-        String val = dataArrayT.optJSONObject(j).optString(key);
-        if (StringUtils.isEmpty(val)) {
-          if (i == 1) {
-            values += "NULL ";
-          } else {
-            values += ",NULL ";
-          }
-        } else {
-          if (i == 1) {
-            values += "? ";
-          } else {
-            values += ",? ";
-          }
-          prmData.add(val);
-        }
-      }
-      values += ",0 ";
-      values += ",0 ";
-      values += ",'" + userId + "' ";
-      values += ",( SELECT * FROM ( SELECT CASE WHEN COUNT(*) = 0 OR IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END AS ADDDT ";
-      values += "FROM INAMS.MSTUGENRYO WHERE BMNCD = " + dataArrayT.optJSONObject(j).optString("F3") + " ";
-      values += "AND CALLCD = " + dataArrayT.optJSONObject(j).optString("F2") + " ";
-      values += "AND SHNCD = " + dataArrayT.optJSONObject(j).optString("F1") + " LIMIT 1 ) T2 ) ";
-      values += ",CURRENT_TIMESTAMP ";
-      values += ") ";
-
-      if (j == dataArrayT.size() - 1) {
-        valueData = ArrayUtils.add(valueData, values);
-        values = "";
-      }
-
-    }
-
-
 
     // 使用原料マスタの登録・更新
-    System.out.print("dataArrayT : " + JSONArray.fromObject(map.get("GENRYO_DATA")));
-    sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO INAMS.MSTUGENRYO ( ");
-    sbSQL.append(" SHNCD ");// F1 : 商品コード
-    sbSQL.append(",CALLCD ");// F2 : 呼出コード
-    sbSQL.append(",BMNCD ");// F3 : 部門コード
-    sbSQL.append(",NAIKN ");// F4 : 内容量
-    sbSQL.append(",GENKA ");// F5 : 原料原価
-    sbSQL.append(",BUDOMARI ");// F6 : 歩留り
-    sbSQL.append(",GENKAKEI ");// F7 : 原価小計
-    sbSQL.append(",SENDFLG ");// F8:送信フラグ 0
-    sbSQL.append(",UPDKBN ");// F8:送信フラグ 0
-    sbSQL.append(",OPERATOR ");// F9:オペレーター： '" + userId + "' AS
-    sbSQL.append(",ADDDT ");// F10:登録日：
-    sbSQL.append(",UPDDT ");// F11:更新日： current timestamp AS
-    sbSQL.append(") VALUES " + StringUtils.join(valueData, ",") + " ");
+    if (!dataArrayT.isEmpty()) {
+      // クリア
+      prmData = new ArrayList<String>();
+      valueData = new Object[] {};
+      whereData = new ArrayList<String>();
+      values = "";
+      maxField = 7; // Fxxの最大値
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
-    sqlList.add(sbSQL.toString());
-    prmList.add(prmData);
-    lblList.add("使用原料マスタ");
+      for (int j = 0; j < dataArrayT.size(); j++) {
+        if (j == 0) {
+          values += "( ";
+        } else {
+          values += ",( ";
+        }
 
-    // クリア
-    prmData = new ArrayList<String>();
-    valueData = new Object[] {};
-    values = "";
+        for (int i = 1; i <= maxField; i++) {
+          String key = "F" + i;
+          String val = dataArrayT.optJSONObject(j).optString(key);
+          if (i == 3) {
+            values += ",(SELECT * FROM (SELECT BMNCD FROM INAMS.MSTSHN WHERE SHNCD = " + dataArrayT.optJSONObject(j).optString("F1") + " LIMIT 1) AS T1 )";
+          } else if (StringUtils.isEmpty(val)) {
+            if (i == 1) {
+              values += "NULL ";
+            } else {
+              values += ",NULL ";
+            }
+          } else if (!StringUtils.isEmpty(val)) {
+            if (i == 1) {
+              values += "? ";
+            } else {
+              values += ",? ";
+            }
+            prmData.add(val);
+          }
+        }
+        values += ",0 ";
+        values += ",0 ";
+        values += ",'" + userId + "' ";
+        values += ",( SELECT * FROM ( SELECT CASE WHEN COUNT(*) = 0 OR IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END AS ADDDT ";
+        values += "FROM INAMS.MSTUGENRYO  ";
+        values += "WHERE CALLCD = " + dataArrayT.optJSONObject(j).optString("F2") + " ";
+        values += "AND SHNCD = " + dataArrayT.optJSONObject(j).optString("F1") + " LIMIT 1 ) T2 ) ";
+        values += ",CURRENT_TIMESTAMP ";
+        values += ") ";
 
+        if (j == dataArrayT.size() - 1) {
+          valueData = ArrayUtils.add(valueData, values);
+          values = "";
+        }
+
+      }
+
+      sbSQL = new StringBuffer();
+      sbSQL.append("REPLACE INTO INAMS.MSTUGENRYO ( ");
+      sbSQL.append(" SHNCD ");// F1 : 商品コード
+      sbSQL.append(",CALLCD ");// F2 : 呼出コード
+      sbSQL.append(",BMNCD ");// F3 : 部門コード
+      sbSQL.append(",NAIKN ");// F4 : 内容量
+      sbSQL.append(",GENKA ");// F5 : 原料原価
+      sbSQL.append(",BUDOMARI ");// F6 : 歩留り
+      sbSQL.append(",GENKAKEI ");// F7 : 原価小計
+      sbSQL.append(",SENDFLG ");// F8:送信フラグ
+      sbSQL.append(",UPDKBN ");// F8:送信フラグ
+      sbSQL.append(",OPERATOR ");// F9:オペレーター：
+      sbSQL.append(",ADDDT ");// F10:登録日：
+      sbSQL.append(",UPDDT ");// F11:更新日：
+      sbSQL.append(") VALUES " + StringUtils.join(valueData, ",") + " ");
+
+      if (DefineReport.ID_DEBUG_MODE)
+        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+
+      sqlList.add(sbSQL.toString());
+      prmList.add(prmData);
+      lblList.add("使用原料マスタ");
+
+      // クリア
+      prmData = new ArrayList<String>();
+      valueData = new Object[] {};
+      values = "";
+
+    }
 
     return sbSQL.toString();
   }
@@ -621,7 +624,7 @@ public class Reportx092Dao extends ItemDao {
     StringBuffer sbSQL;
 
     sbSQL = new StringBuffer();;
-    sbSQL.append("delete from INAMS.MSTUGENRYO where BMNCD = ? and CALLCD = ?");
+    sbSQL.append("DELETE FROM INAMS.MSTUGENRYO WHERE BMNCD = ? AND CALLCD = ?");
     prmData.add(bmoncd);
     prmData.add(callcd);
 
@@ -805,14 +808,14 @@ public class Reportx092Dao extends ItemDao {
     prmData.add(callcd);
     // 削除処理：更新区分に"1"（削除）を登録
     sbSQL = new StringBuffer();
-    sbSQL.append("update INAMS.MSTNETSUKE ");
-    sbSQL.append(" set");
-    sbSQL.append(" UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal());
-    sbSQL.append(", SENDFLG = 0 ");
-    sbSQL.append(", OPERATOR = '" + userId + "' ");
-    sbSQL.append(", UPDDT = current timestamp ");
-    sbSQL.append(" where BMNCD = ? ");
-    sbSQL.append(" and CALLCD = ? ");
+    sbSQL.append("UPDATE INAMS.MSTNETSUKE ");
+    sbSQL.append("SET ");
+    sbSQL.append("UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + " ");
+    sbSQL.append(",SENDFLG = 0 ");
+    sbSQL.append(",OPERATOR = '" + userId + "' ");
+    sbSQL.append(",UPDDT = current_timestamp ");
+    sbSQL.append("WHERE BMNCD = ? ");
+    sbSQL.append("AND CALLCD = ? ");
 
     int count = super.executeSQL(sbSQL.toString(), prmData);
     if (StringUtils.isEmpty(getMessage())) {
@@ -824,17 +827,15 @@ public class Reportx092Dao extends ItemDao {
     }
 
     // 基本INSERT/UPDATE文
-    sbSQL = new StringBuffer();;
+    sbSQL = new StringBuffer();
     prmData = new ArrayList<String>();
     prmData.add(bmncd);
     prmData.add(callcd);
-    prmData.add(dataArray.optJSONObject(0).optString("F3"));
     // 削除処理：更新区分に"1"（削除）を登録
     sbSQL = new StringBuffer();
-    sbSQL.append("DELETE from INAMS.MSTUGENRYO ");
-    sbSQL.append("where BMNCD = ? ");
-    sbSQL.append("and CALLCD = ? ");
-    sbSQL.append("and SHNCD = ? ");
+    sbSQL.append("DELETE FROM INAMS.MSTUGENRYO ");
+    sbSQL.append("WHERE BMNCD = ? ");
+    sbSQL.append("AND CALLCD = ? ");
     count = super.executeSQL(sbSQL.toString(), prmData);
     if (StringUtils.isEmpty(getMessage())) {
       if (DefineReport.ID_DEBUG_MODE)
