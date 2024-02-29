@@ -443,6 +443,7 @@ public class Reportx092Dao extends ItemDao {
     String userId = userInfo.getId(); // ログインユーザー
 
     ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> whereData = new ArrayList<String>();
     Object[] valueData = new Object[] {};
     String values = "";
 
@@ -462,92 +463,51 @@ public class Reportx092Dao extends ItemDao {
       if (!ArrayUtils.contains(new String[] {""}, key)) {
         String val = data.optString(key);
         if (StringUtils.isEmpty(val)) {
-          values += ", null";
+          values += ", NULL";
         } else {
           values += ", ?";
           prmData.add(val);
+          whereData.add(val);
         }
       }
 
       if (k == maxField) {
-        valueData = ArrayUtils.add(valueData, "(" + values + ")");
+        valueData = ArrayUtils.add(valueData, values.substring(2));
         values = "";
       }
     }
 
     // 値付器マスタの登録・更新
     sbSQL = new StringBuffer();
-    sbSQL.append("  merge into INAMS.MSTNETSUKE as T using (select");
-    sbSQL.append("   BMNCD");// F1 : 部門
-    sbSQL.append(" , CALLCD");// F2 : 呼出コード
-    sbSQL.append(" , SHNCD");// F3 : 商品コード
-    sbSQL.append(" , SHNKNUP");// F4 : 商品名上段
-    sbSQL.append(" , SHNKNDN");// F5 : 商品名下段
-    sbSQL.append(" , KAKOKBN");// F6 : 生鮮・加工食品区分
-    sbSQL.append(" , TEIKANKBN");// F7 : 定貫・不定貫区分
-    sbSQL.append(" , NAIKN");// F8 : 内容量
-    sbSQL.append(" , UTRAY");// F9 : 使用トレイ
-    sbSQL.append(" , KONPOU");// F10: 包装形態
-    sbSQL.append(" , FUTAI");// F11: 風袋
-    sbSQL.append(" , JURYOUP");// F12: 下限重量
-    sbSQL.append(" , JURYODN");// F13: 上限重量
-    sbSQL.append(" , 0 as UPDKBN");// F14: 更新区分
-    sbSQL.append(",0 as SENDFLG");// F15:送信フラグ
-    sbSQL.append(", '" + userId + "' AS OPERATOR ");// F16:オペレーター：
-    sbSQL.append(", current timestamp AS ADDDT ");// F17:登録日：
-    sbSQL.append(", current timestamp AS UPDDT ");// F18:更新日：
-    sbSQL.append(" from (values " + StringUtils.join(valueData, ",") + ") as T1(NUM");
-    sbSQL.append(" , BMNCD");// F1 : 部門
-    sbSQL.append(" , CALLCD");// F2 : 呼出コード
-    sbSQL.append(" , SHNCD");// F3 : 商品コード
-    sbSQL.append(" , SHNKNUP");// F4 : 商品名上段
-    sbSQL.append(" , SHNKNDN");// F5 : 商品名下段
-    sbSQL.append(" , KAKOKBN");// F6 : 生鮮・加工食品区分
-    sbSQL.append(" , TEIKANKBN");// F7 : 定貫・不定貫区分
-    sbSQL.append(" , NAIKN");// F8 : 内容量
-    sbSQL.append(" , UTRAY");// F9 : 使用トレイ
-    sbSQL.append(" , KONPOU");// F10: 包装形態
-    sbSQL.append(" , FUTAI");// F11: 風袋
-    sbSQL.append(" , JURYOUP");// F12: 下限重量
-    sbSQL.append(" , JURYODN )) as RE on (T.BMNCD = RE.BMNCD and T.CALLCD = RE.CALLCD and T.SHNCD = RE.SHNCD)");// F44: 更新日
-    sbSQL.append(" when matched then update set");
-    sbSQL.append("  BMNCD=RE.BMNCD");// F1 : 部門
-    sbSQL.append(" ,CALLCD=RE.CALLCD");// F2 : 呼出コード
-    sbSQL.append(" ,SHNCD=RE.SHNCD");// F3 : 商品コード
-    sbSQL.append(" ,SHNKNUP=RE.SHNKNUP");// F4 : 値付分類コード
-    sbSQL.append(" ,SHNKNDN=RE.SHNKNDN");// F5 : 加工日印字
-    sbSQL.append(" ,KAKOKBN=RE.KAKOKBN");// F6 : 加工時印字
-    sbSQL.append(" ,TEIKANKBN=RE.TEIKANKBN");// F7 : 加工時選択
-    sbSQL.append(" ,NAIKN=RE.NAIKN");// F8 : 消費日印字
-    sbSQL.append(" ,UTRAY=RE.UTRAY");// F9 : 消費時印字
-    sbSQL.append(" ,KONPOU=RE.KONPOU");// F10: 表貼選択
-    sbSQL.append(" ,FUTAI=RE.FUTAI");// F11: 裏貼発行選択
-    sbSQL.append(" ,JURYOUP=RE.JURYOUP");// F12: 裏貼選択
-    sbSQL.append(" ,JURYODN=RE.JURYODN");// F13: アイキャッチラベル発行
-    sbSQL.append(" ,UPDKBN=RE.UPDKBN");// F40: 更新区分
-    sbSQL.append(" ,SENDFLG=RE.SENDFLG");// F41: 送信フラグ
-    sbSQL.append(" ,OPERATOR=RE.OPERATOR");// F42: オペレータ
-    sbSQL.append(", ADDDT = case when NVL(UPDKBN, 0) = 1 then RE.ADDDT else ADDDT end");// F44: 登録日
-    sbSQL.append(" ,UPDDT=RE.UPDDT");// F44: 更新日
-    sbSQL.append(" when not matched then insert values (");
-    sbSQL.append("  RE.BMNCD");// F1 : 部門
-    sbSQL.append(" ,RE.CALLCD");// F2 : 呼出コード
-    sbSQL.append(" ,RE.SHNCD");// F3 : 商品コード
-    sbSQL.append(" ,RE.SHNKNUP");// F4 : 値付分類コード
-    sbSQL.append(" ,RE.SHNKNDN");// F5 : 加工日印字
-    sbSQL.append(" ,RE.KAKOKBN");// F6 : 加工時印字
-    sbSQL.append(" ,RE.TEIKANKBN");// F7 : 加工時選択
-    sbSQL.append(" ,RE.NAIKN");// F8 : 消費日印字
-    sbSQL.append(" ,RE.UTRAY");// F9 : 消費時印字
-    sbSQL.append(" ,RE.KONPOU");// F10: 表貼選択
-    sbSQL.append(" ,RE.FUTAI");// F11: 裏貼発行選択
-    sbSQL.append(" ,RE.JURYOUP");// F12: 裏貼選択
-    sbSQL.append(" ,RE.JURYODN");// F13: アイキャッチラベル発行
-    sbSQL.append(" ,RE.UPDKBN");// F40: 更新区分
-    sbSQL.append(" ,RE.SENDFLG");// F41: 送信フラグ
-    sbSQL.append(" ,RE.OPERATOR");// F42: オペレータ
-    sbSQL.append(" ,RE.ADDDT");// F43: 登録日
-    sbSQL.append(" ,RE.UPDDT )");// F44: 更新日
+    sbSQL.append("REPLACE INTO INAMS.MSTNETSUKE ( ");
+    sbSQL.append("BMNCD ");// F1 : 部門
+    sbSQL.append(",CALLCD ");// F2 : 呼出コード
+    sbSQL.append(",SHNCD ");// F3 : 商品コード
+    sbSQL.append(",SHNKNUP ");// F4 : 商品名上段
+    sbSQL.append(",SHNKNDN ");// F5 : 商品名下段
+    sbSQL.append(",KAKOKBN ");// F6 : 生鮮・加工食品区分
+    sbSQL.append(",TEIKANKBN");// F7 : 定貫・不定貫区分
+    sbSQL.append(",NAIKN ");// F8 : 内容量
+    sbSQL.append(",UTRAY ");// F9 : 使用トレイ
+    sbSQL.append(",KONPOU ");// F10: 包装形態
+    sbSQL.append(",FUTAI ");// F11: 風袋
+    sbSQL.append(",JURYOUP ");// F12: 下限重量
+    sbSQL.append(",JURYODN ");// F13: 上限重量
+    sbSQL.append(",UPDKBN ");// F14: 更新区分
+    sbSQL.append(",SENDFLG ");// F15:送信フラグ
+    sbSQL.append(",OPERATOR ");// F16:オペレーター：
+    sbSQL.append(",ADDDT ");// F17:登録日：
+    sbSQL.append(",UPDDT ");// F18:更新日：
+    sbSQL.append(" ) VALUES (" + StringUtils.join(valueData, ",") + " ");
+    sbSQL.append(",0 ");
+    sbSQL.append(",0 ");
+    sbSQL.append(",'" + userId + "' ");
+    sbSQL.append(",(SELECT * FROM ( SELECT CASE WHEN COUNT(*) = 0 OR IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ");
+    sbSQL.append("ELSE ADDDT END AS ADDDT FROM INAMS.MSTNETSUKE ");
+    sbSQL.append("WHERE BMNCD = " + whereData.get(0) + " ");
+    sbSQL.append("AND SHNCD = " + whereData.get(2) + " ");
+    sbSQL.append("AND CALLCD = " + whereData.get(1) + " LIMIT 1 ) AS T1 )");
+    sbSQL.append(",CURRENT_TIMESTAMP )");
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -559,93 +519,87 @@ public class Reportx092Dao extends ItemDao {
     // クリア
     prmData = new ArrayList<String>();
     valueData = new Object[] {};
+    whereData = new ArrayList<String>();
     values = "";
-
     maxField = 7; // Fxxの最大値
-    int len = dataArrayT.size();
 
     // 使用原料マスタのデータを物理削除する
     this.createDeleteSqlGENRYO(map);
 
-    for (int i = 0; i < len; i++) {
-      JSONObject dataT = dataArrayT.getJSONObject(i);
-      if (!dataT.isEmpty()) {
-        for (int k = 1; k <= maxField; k++) {
-          String key = "F" + String.valueOf(k);
+    for (int j = 0; j < dataArrayT.size(); j++) {
+      if (j == 0) {
+        values += "( ";
+      } else {
+        values += ",( ";
+      }
 
-          if (k == 1) {
-            values += String.valueOf(0 + 1);
+      for (int i = 1; i <= maxField; i++) {
+        String key = "F" + i;
+        String val = dataArrayT.optJSONObject(j).optString(key);
+        if (StringUtils.isEmpty(val)) {
+          if (i == 1) {
+            values += "NULL ";
+          } else {
+            values += ",NULL ";
           }
-
-          if (!ArrayUtils.contains(new String[] {""}, key)) {
-            String val = dataT.optString(key);
-            if (StringUtils.isEmpty(val)) {
-              values += ", null";
-            } else {
-              values += ", ?";
-              prmData.add(val);
-            }
+        } else {
+          if (i == 1) {
+            values += "? ";
+          } else {
+            values += ",? ";
           }
-
-          if (k == maxField) {
-            valueData = ArrayUtils.add(valueData, "(" + values + ")");
-            values = "";
-          }
+          prmData.add(val);
         }
       }
+      values += ",0 ";
+      values += ",0 ";
+      values += ",'" + userId + "' ";
+      values += ",( SELECT * FROM ( SELECT CASE WHEN COUNT(*) = 0 OR IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END AS ADDDT ";
+      values += "FROM INAMS.MSTUGENRYO WHERE BMNCD = " + dataArrayT.optJSONObject(j).optString("F3") + " ";
+      values += "AND CALLCD = " + dataArrayT.optJSONObject(j).optString("F2") + " ";
+      values += "AND SHNCD = " + dataArrayT.optJSONObject(j).optString("F1") + " LIMIT 1 ) T2 ) ";
+      values += ",CURRENT_TIMESTAMP ";
+      values += ") ";
 
-      if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
-
-        // 使用原料マスタの登録・更新
-        sbSQL = new StringBuffer();
-        sbSQL.append("merge into INAMS.MSTUGENRYO as T using (select");
-        sbSQL.append("   SHNCD");// F1 : 商品コード
-        sbSQL.append(" , CALLCD");// F2 : 呼出コード
-        sbSQL.append(" , BMNCD");// F3 : 部門コード
-        sbSQL.append(" , NAIKN");// F4 : 内容量
-        sbSQL.append(" , GENKA");// F5 : 原料原価
-        sbSQL.append(" , BUDOMARI");// F6 : 歩留り
-        sbSQL.append(" , GENKAKEI");// F7 : 原価小計
-        sbSQL.append(" , 0 as SENDFLG");// F8:送信フラグ
-        sbSQL.append(" , 0 as UPDKBN");// F8:送信フラグ
-        sbSQL.append(" , '" + userId + "' AS OPERATOR ");// F9:オペレーター：
-        sbSQL.append(" , current timestamp AS ADDDT ");// F10:登録日：
-        sbSQL.append(" , current timestamp AS UPDDT ");// F11:更新日：
-        sbSQL.append(" from (values " + StringUtils.join(valueData, ",") + ") as T1(NUM");
-        sbSQL.append(" , SHNCD");// F1 : 部門
-        sbSQL.append(" , CALLCD");// F2 : 呼出コード
-        sbSQL.append(" , BMNCD");// F3 : 風袋種別
-        sbSQL.append(" , NAIKN");// F3 : 風袋種別
-        sbSQL.append(" , GENKA");// F3 : 風袋種別
-        sbSQL.append(" , BUDOMARI");// F3 : 風袋種別
-        sbSQL.append(" , GENKAKEI)) as RE on (T.SHNCD = RE.SHNCD and T.CALLCD = RE.CALLCD and T.BMNCD = RE.BMNCD)");// F8:// 更新日
-        sbSQL.append(" when not matched then insert values (");
-        sbSQL.append("  RE.BMNCD");// F1 : 商品コード
-        sbSQL.append(" ,RE.CALLCD");// F2 : 呼出コード
-        sbSQL.append(" ,RE.SHNCD");// F3 : 部門コード
-        sbSQL.append(" ,RE.NAIKN");// F4 : 内容量
-        sbSQL.append(" ,RE.GENKA");// F5 : 原料原価
-        sbSQL.append(" ,RE.BUDOMARI");// F6 : 歩留り
-        sbSQL.append(" ,RE.GENKAKEI");// F7 : 原価小計
-        sbSQL.append(" ,RE.SENDFLG");// F8: 送信フラグ
-        sbSQL.append(" ,RE.UPDKBN");// F8: 送信フラグ
-        sbSQL.append(" ,RE.OPERATOR");// F9: オペレータ
-        sbSQL.append(" ,RE.ADDDT");// F10: 登録日
-        sbSQL.append(" ,RE.UPDDT )");// F11: 更新日
-
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
-
-        sqlList.add(sbSQL.toString());
-        prmList.add(prmData);
-        lblList.add("使用原料マスタ");
-
-        // クリア
-        prmData = new ArrayList<String>();
-        valueData = new Object[] {};
+      if (j == dataArrayT.size() - 1) {
+        valueData = ArrayUtils.add(valueData, values);
         values = "";
       }
+
     }
+
+
+
+    // 使用原料マスタの登録・更新
+    System.out.print("dataArrayT : " + JSONArray.fromObject(map.get("GENRYO_DATA")));
+    sbSQL = new StringBuffer();
+    sbSQL.append("REPLACE INTO INAMS.MSTUGENRYO ( ");
+    sbSQL.append(" SHNCD ");// F1 : 商品コード
+    sbSQL.append(",CALLCD ");// F2 : 呼出コード
+    sbSQL.append(",BMNCD ");// F3 : 部門コード
+    sbSQL.append(",NAIKN ");// F4 : 内容量
+    sbSQL.append(",GENKA ");// F5 : 原料原価
+    sbSQL.append(",BUDOMARI ");// F6 : 歩留り
+    sbSQL.append(",GENKAKEI ");// F7 : 原価小計
+    sbSQL.append(",SENDFLG ");// F8:送信フラグ 0
+    sbSQL.append(",UPDKBN ");// F8:送信フラグ 0
+    sbSQL.append(",OPERATOR ");// F9:オペレーター： '" + userId + "' AS
+    sbSQL.append(",ADDDT ");// F10:登録日：
+    sbSQL.append(",UPDDT ");// F11:更新日： current timestamp AS
+    sbSQL.append(") VALUES " + StringUtils.join(valueData, ",") + " ");
+
+    if (DefineReport.ID_DEBUG_MODE)
+      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+
+    sqlList.add(sbSQL.toString());
+    prmList.add(prmData);
+    lblList.add("使用原料マスタ");
+
+    // クリア
+    prmData = new ArrayList<String>();
+    valueData = new Object[] {};
+    values = "";
+
 
     return sbSQL.toString();
   }
