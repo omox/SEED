@@ -5658,7 +5658,7 @@ public class DefineReport {
   public final static String ID_SQL_SSHO_BUN_HEAD = "select VALUE, TEXT, TEXT as TEXT2 from (values ROW('" + Values.NONE.getVal() + "', 'すべて')) as X(value, TEXT) union all ";
   public final static String ID_SQL_SSHO_BUN =
       "select right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||SSHOCD as VALUE, right('0'||BMNCD,2)||right('0'||DAICD,2)||right('0'||CHUCD,2)||right('0'||SHOCD,2)||'"
-          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SHOBRUIKN))),'') as TEXT, rtrim(rtrim(max(SHOBRUIKN))) as TEXT2 from INAMS.MSTSSHOBRUI";
+          + SEPARATOR + "'||COALESCE(rtrim(rtrim(max(SSHOBRUIKN))),'') as TEXT, rtrim(rtrim(max(SSHOBRUIKN))) as TEXT2 from INAMS.MSTSSHOBRUI";
   public final static String ID_SQL_SSHO_BUN_FOOTER = " group by BMNCD,DAICD,CHUCD,SHOCD order by VALUE";
 
   // SQL:部門マスタ存在チェック

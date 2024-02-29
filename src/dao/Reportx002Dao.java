@@ -3627,7 +3627,7 @@ public class Reportx002Dao extends ItemDao {
 
     } else {
       String searchCommand = DefineReport.ID_SQL_MD03100901.replace("@W", StringUtils.replace(DefineReport.ID_SQL_MD03100901_WHERE_AUTO, "@C", "T1.SHNCD"));
-      sqlcommand = "select SHNCD as VALUE from FINAL table ( update INAAD.SYSSHNCD_AKI set USEFLG = '1', UPDDT = current timestamp where USEFLG = 0 and SHNCD = (" + searchCommand + "))";
+      sqlcommand = "select SHNCD as VALUE from FINAL table ( update INAAD.SYSSHNCD_AKI set USEFLG = '1', UPDDT = current_timestamp where USEFLG = 0 and SHNCD = (" + searchCommand + "))";
 
       boolean dowhile = true;
       JSONObject data = new JSONObject();
@@ -3679,7 +3679,8 @@ public class Reportx002Dao extends ItemDao {
       paramData.add(shncd);
       // String chksqlcommand = StringUtils.replace(DefineReport.ID_SQL_MD03100901_EXISTS_AUTO, "@C",
       // "?"); // 20210729 No.158 変更
-      String chksqlcommand = StringUtils.replace("select 'X' from INAAD.SYSSHNCD_FU T2 where int(left(@C, 2)) = T2.BMNCD and NOT int(substr(@C, 3, 5)) between T2.STARTNO and T2.ENDNO", "@C", "?");
+      String chksqlcommand = StringUtils
+          .replace("select 'X' from INAAD.SYSSHNCD_FU T2 where CAST(left(@C, 2) AS SIGNED ) = T2.BMNCD and NOT CAST(substr(@C, 3, 5) AS SIGNED ) between T2.STARTNO and T2.ENDNO", "@C", "?");
 
       @SuppressWarnings("static-access")
       JSONArray array = iL.selectJSONArray(chksqlcommand, paramData, Defines.STR_JNDI_DS);
@@ -3689,7 +3690,7 @@ public class Reportx002Dao extends ItemDao {
       if (array.size() > 0) {
         paramData.add(shncd);
         sqlcommand = DefineReport.ID_SQL_MD03100902_USE;
-        sqlcommand = "select URICD as value from FINAL table (update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current timestamp where URICD = (select value from (" + sqlcommand + ")))";
+        sqlcommand = "select URICD as value from FINAL table (update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current_timestamp where URICD = (select value from (" + sqlcommand + ")))";
         @SuppressWarnings("static-access")
         JSONArray array2 = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         if (array2.size() > 0) {
@@ -3750,7 +3751,7 @@ public class Reportx002Dao extends ItemDao {
       paramData.add("" + STARTNO);
       paramData.add("" + ENDNO);
       sqlcommand =
-          "select URICD as value from FINAL table (update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current timestamp where USEFLG = 0 and URICD = (select MIN(URICD) as URICD from INAAD.SYSURICD_AKI where URICD between ? and ? and COALESCE(USEFLG, 0) <> 1))";
+          "select URICD as value from FINAL table (update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current_timestamp where USEFLG = 0 and URICD = (select MIN(URICD) as URICD from INAAD.SYSURICD_AKI where URICD between ? and ? and COALESCE(USEFLG, 0) <> 1))";
 
       String searchCommand = DefineReport.ID_SQL_MD03100902;
       ArrayList<String> searchParamData = new ArrayList<String>();
