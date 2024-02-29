@@ -402,7 +402,7 @@ public class GetSqlCommandInit {
       if (StringUtils.isNotEmpty(center)) {
         sqlcommand = DefineReport.ID_SQL_SUPPLYNO;
         sqlWhere = "WHERE CORPORATIONCODE='0001' AND CENTERCD=? AND ";
-        sqlWhere += "TO_CHAR(EFFECTIVESTARTDATE,'YYYYMMDD') <= ? AND TO_CHAR(EFFECTIVEENDDATE,'YYYYMMDD') >= ? AND ";
+        sqlWhere += "DATE_FORMAT(EFFECTIVESTARTDATE,'%Y%m%d') <= ? AND DATE_FORMAT(EFFECTIVEENDDATE,'%Y%m%d') >= ? AND ";
         sqlWhere += "LOGICALDELFLG = " + DefineReport.ValUpdkbn.NML.getVal() + " ";
         paramData.add(center);
         paramData.add(shoriDt);
@@ -411,7 +411,7 @@ public class GetSqlCommandInit {
         if (!obj.containsKey("REQUIRED")) {
           sqlcommand = DefineReport.ID_SQL_SUPPLYNO_HEAD + sqlcommand;
         }
-        sqlcommand = " SELECT * FROM (" + sqlcommand + sqlWhere + ") ORDER BY VALUE";
+        sqlcommand = " SELECT * FROM (" + sqlcommand + sqlWhere + ") AS T2 ORDER BY VALUE";
       }
     }
 
