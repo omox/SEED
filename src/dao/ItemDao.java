@@ -1139,7 +1139,7 @@ public class ItemDao implements ItemInterface {
   public boolean checkExclusion(String targetTable, String targetWhere, ArrayList<String> targetParam, String inp_upddt) {
     if (targetTable.length() > 0 && targetWhere.length() > 0) {
       ItemList iL = new ItemList();
-      String sqlcommand = "select count(*) as VALUE from " + targetTable + " where " + targetWhere;
+      String sqlcommand = "select count(*) as VALUE from " + targetTable + "as T1 where " + targetWhere;
       // 新規の場合
       if (StringUtils.isEmpty(inp_upddt)) {
         // 関連情報取得
