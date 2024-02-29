@@ -279,8 +279,9 @@ public class Reportx213Dao extends ItemDao {
       int count = 0;
       for (int i = 0; i < countList.size(); i++) {
         count += countList.get(i);
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(MessageUtility.getMessage(Msg.S00006.getVal(), new String[] {lblList.get(i), Integer.toString(countList.get(i))}));
+        }
       }
       if (count == 0) {
         option.put(MsgKey.E.getKey(), MessageUtility.getMessage(Msg.E10000.getVal()));
@@ -339,8 +340,9 @@ public class Reportx213Dao extends ItemDao {
       int count = 0;
       for (int i = 0; i < countList.size(); i++) {
         count += countList.get(i);
-        if (DefineReport.ID_DEBUG_MODE)
+        if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(MessageUtility.getMessage(Msg.S00006.getVal(), new String[] {lblList.get(i), Integer.toString(countList.get(i))}));
+        }
       }
       if (count == 0) {
         option.put(MsgKey.E.getKey(), MessageUtility.getMessage(Msg.E10000.getVal()));
@@ -555,8 +557,9 @@ public class Reportx213Dao extends ItemDao {
       sbSQL.append(" WHERE ");
       sbSQL.append(sqlWhere);
 
-      if (DefineReport.ID_DEBUG_MODE)
+      if (DefineReport.ID_DEBUG_MODE) {
         System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(paramData);
@@ -602,8 +605,9 @@ public class Reportx213Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    if (DefineReport.ID_DEBUG_MODE)
+    if (DefineReport.ID_DEBUG_MODE) {
       System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -620,8 +624,9 @@ public class Reportx213Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    if (DefineReport.ID_DEBUG_MODE)
+    if (DefineReport.ID_DEBUG_MODE) {
       System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -638,7 +643,7 @@ public class Reportx213Dao extends ItemDao {
   public String getInput_SEQ() {
     // 関連情報取得
     ItemList iL = new ItemList();
-    String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ001";
+    String sqlColCommand = "SELECT INAMS.nextval('SEQ001')";
     @SuppressWarnings("static-access")
     JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
@@ -696,8 +701,9 @@ public class Reportx213Dao extends ItemDao {
     // DB検索用パラメータ設定
     setParamData(paramData);
 
-    if (DefineReport.ID_DEBUG_MODE)
+    if (DefineReport.ID_DEBUG_MODE) {
       System.out.println("/* " + getClass().getSimpleName() + "[sql]*/" + sbSQL.toString());
+    }
     return sbSQL.toString();
   }
 
