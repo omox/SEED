@@ -635,8 +635,6 @@ public class Reportx218Dao extends ItemDao {
     String value = "";
     if (array.size() > 0) {
       value = array.optJSONObject(0).optString("1");
-    } else {
-      value = "5";
     }
     return value;
   }
