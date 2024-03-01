@@ -637,7 +637,7 @@ public class Reportx214Dao extends ItemDao {
   public String getInput_SEQ() {
     // 関連情報取得
     ItemList iL = new ItemList();
-    String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ001";
+    String sqlColCommand = "SELECT INAMS.nextval('SEQ001') AS \"1\"";
     @SuppressWarnings("static-access")
     JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
