@@ -558,7 +558,12 @@ public class Reportx092Dao extends ItemDao {
           }
         }
         values += ",0 ";
-        values += ",0 ";
+        // 削除処理
+        if (dataArrayT.optJSONObject(j).optString("F8").equals("1")) {
+          values += ",1 ";
+        } else {
+          values += ",0 ";
+        }
         values += ",'" + userId + "' ";
         values += ",( SELECT * FROM ( SELECT CASE WHEN COUNT(*) = 0 OR IFNULL(UPDKBN,0) = 1 THEN CURRENT_TIMESTAMP ELSE ADDDT END AS ADDDT ";
         values += "FROM INAMS.MSTUGENRYO  ";
@@ -584,7 +589,7 @@ public class Reportx092Dao extends ItemDao {
       sbSQL.append(",BUDOMARI ");// F6 : 歩留り
       sbSQL.append(",GENKAKEI ");// F7 : 原価小計
       sbSQL.append(",SENDFLG ");// F8:送信フラグ
-      sbSQL.append(",UPDKBN ");// F8:送信フラグ
+      sbSQL.append(",UPDKBN ");// F8:更新区分
       sbSQL.append(",OPERATOR ");// F9:オペレーター：
       sbSQL.append(",ADDDT ");// F10:登録日：
       sbSQL.append(",UPDDT ");// F11:更新日：
