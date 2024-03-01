@@ -191,11 +191,9 @@ public class GetSqlCommandCheck {
       // 値付機マスタのチェック
       if (outobj.equals("MSTNETSUKE")) {
         tbl = "INAMS.MSTNETSUKE";
-        String bmncd = obj.optString("BMNCD");
         String callcd = obj.optString("CALLCD");
-        col = "BMNCD";
-        rep += bmncd;
-        szWhere += " and CALLCD = ?";
+        col = "CALLCD";
+        rep += "?";
         szWhere += " and COALESCE(UPDKBN, 0) = 0";
         paramData.add(callcd);
 

@@ -331,8 +331,7 @@
 			},
 			updSuccess: function(id){	// validation OK時 の update処理
 				var that = this;
-				//var txt_bmncd		= $.getJSONValue(this.jsonHidden, $.id_inp.txt_bmncd)	// 部門コード
-				//var txt_callcd		= $.getJSONValue(this.jsonHidden, $.id_inp.txt_callcd)	// 呼出コード
+
 				var txt_callcd	 = $.getInputboxValue($('#'+$.id_inp.txt_callcd));	// 呼出コード
 				var txt_bmncd	 = $.getInputboxValue($('#'+$.id_inp.txt_bmncd));	// 部門コード
 
@@ -342,11 +341,7 @@
 				var targetDatas = that.getGridData( "grd_data");
 				var gridData = that.getGridData($.id.grd_genryo);
 
-//				var targetDatas = [{}];
-//				$('#'+that.focusRootId).find('[col^=F]').each(function(){
-//					var col = $(this).attr('col');
-//					targetDatas[0][col] = $.getInputboxValue($(this));
-//				});
+
 				// 計量風袋
 				// 処理時間計測用
 				that.timeData = (new Date()).getTime();
@@ -423,9 +418,10 @@
 					var rowsGenryo	 = $('#'+$.id.grd_genryo).datagrid('getRows');
 					var txt_callcd	 = $.getInputboxValue($('#'+$.id_inp.txt_callcd));	// 呼出コード
 					var txt_bmncd	 = $.getInputboxValue($('#'+$.id_inp.txt_bmncd));	// 部門コード
+					
 
 					for (var i=0; i<rowsGenryo.length; i++){
-						if(rowsGenryo[i]["F8"]!="1" && (rowsGenryo[i]["F1"] && rowsGenryo[i]["F1"] != '')){
+						if((rowsGenryo[i]["F1"] && rowsGenryo[i]["F1"] != '')){
 							var rowData = {
 									F1 : rowsGenryo[i]["F1"],		// F1	商品コード
 									F2 : txt_callcd,				// F2	商品コード
@@ -434,6 +430,7 @@
 									F5 : rowsGenryo[i]["F4"],		// F5	原価原料
 									F6 : rowsGenryo[i]["F5"],		// F6	歩留り
 									F7 : rowsGenryo[i]["F6"],		// F7	原価小計
+									F8 : rowsGenryo[i]["F8"],   //F8 削除
 							};
 							targetRowsGenryo.push(rowData);
 						}
