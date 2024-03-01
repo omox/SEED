@@ -834,13 +834,11 @@ public class Reportx092Dao extends ItemDao {
     // 基本INSERT/UPDATE文
     sbSQL = new StringBuffer();
     prmData = new ArrayList<String>();
-    prmData.add(bmncd);
     prmData.add(callcd);
-    // 削除処理：更新区分に"1"（削除）を登録
+    // 削除処理
     sbSQL = new StringBuffer();
     sbSQL.append("DELETE FROM INAMS.MSTUGENRYO ");
-    sbSQL.append("WHERE BMNCD = ? ");
-    sbSQL.append("AND CALLCD = ? ");
+    sbSQL.append("WHERE CALLCD = ?  ");
     count = super.executeSQL(sbSQL.toString(), prmData);
     if (StringUtils.isEmpty(getMessage())) {
       if (DefineReport.ID_DEBUG_MODE)
