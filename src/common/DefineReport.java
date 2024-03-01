@@ -5333,8 +5333,8 @@ public class DefineReport {
   public final static String ID_SQL_GRD_CMN = "WITH RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY UNION ALL SELECT IDX+1 FROM T1 WHERE IDX < @M ) ";
   public final static String ID_SQL_GRD_CMN0 = "WITH RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY UNION ALL SELECT IDX+1 FROM T1 WHERE IDX < @M ) ";
   public final static String ID_SQL_GRD_EMPTY = ID_SQL_GRD_CMN + "select IDX from T1";
-  public final static String ID_SQL_CMN_WEEK =
-      "WITH WEEK as (select CWEEK,'('||JWEEK||')' as JWEEK, JWEEK as JWEEK2 from (values(1,'日'),(2,'月'),(3,'火'),(4,'水'),(5,'木'),(6,'金'),(7,'土')) as TMP(CWEEK,JWEEK)) ";
+  public final static String ID_SQL_CMN_WEEK = "WITH WEEK AS (SELECT CWEEK ,'(' || JWEEK || ')' AS JWEEK ,JWEEK AS JWEEK2 FROM ( SELECT 1 AS CWEEK , '日' AS JWEEK "
+      + "UNION SELECT 2 , '月' UNION SELECT 3 ,'火' UNION SELECT 4 ,'水' UNION SELECT 5 ,'木' UNION SELECT 6 ,'金' UNION SELECT 7 ,'土' ) T1 ) ";
 
   public final static String ID_SQL_CHK_TBL = "select count(@C) as VALUE from @T where @C in (?)";
   public final static String ID_SQL_CHK_TBL_SEL = "select @C as VALUE from @T where @C in (?)";
@@ -6208,13 +6208,21 @@ public class DefineReport {
           + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M5.ZEIRT)/100, 0), 0)"
           + " else @BAIKA end";
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)" +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON =
+   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)"
+   * +" else @BAIKA end";
    */
 
   /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)" +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)" +" else @BAIKA end";
+   * public final static String ID_SQL_TOKBAIKA_COL_HON =
+   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
+   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)"
+   * +" else @BAIKA end";
    */
 
   // 割引本体売価 小数点切上げ
