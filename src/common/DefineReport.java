@@ -5756,7 +5756,7 @@ public class DefineReport {
 
   // SQL：商品区分
   public final static String ID_SQL_SHNKBN =
-      "select MEISHOKBN as KBN, MEISHOCD as value, MEISHOKBNKN as KTEXT, MEISHOCD || '-' ||COALESCE(RTRIM(NMKN),'') as TEXT, RTRIM(NMKN) as TEXT2, TNMKN as STEXT, NMAN as KANA from INAMS.MSTMEISHO where MEISHOKBN = '10502' and MEISHOCD = 0 order by KBN, value, TEXT";
+      "select MEISHOKBN as KBN, MEISHOCD as VALUE, MEISHOKBNKN as KTEXT, MEISHOCD || '-' ||COALESCE(RTRIM(NMKN),'') as TEXT, RTRIM(NMKN) as TEXT2, TNMKN as STEXT, NMAN as KANA from INAMS.MSTMEISHO where MEISHOKBN = '10502' and MEISHOCD = 0 order by KBN, value, TEXT";
 
   // SQL：メーカー
   /** 共通（INAMS.MSTMAKER） */
