@@ -5663,7 +5663,7 @@ public class DefineReport {
 
   // SQL:部門マスタ存在チェック
   public final static String ID_SQL_BMN_CHK_HEAD =
-      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
+      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
   public final static String ID_SQL_BMN_CHK = ID_SQL_BMN_CHK_HEAD
       + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', ''), COALESCE(M5.SSHOCD || '', '') from INP T1 "
       + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
@@ -5673,9 +5673,9 @@ public class DefineReport {
       + " left outer join INAMS.MSTSSHOBRUI M5 on T1.BMNCD = M5.BMNCD and T1.DAICD = M5.DAICD and T1.CHUCD = M5.CHUCD and T1.SHOCD = M5.SHOCD and T1.SSHOCD = M5.SSHOCD and COALESCE(M5.UPDKBN,0) <> 1";
   // SQL:値付分類コードチェック
   public final static String ID_SQL_KRYO_CHK_HEAD =
-      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(BMNCD, DAICD, CHUCD, SHOCD))";
+      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD from (values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, DAICD, CHUCD, SHOCD))";
   public final static String ID_SQL_KRYO_CHK =
-      ID_SQL_KRYO_CHK_HEAD + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', '') , COALESCE(M4.SHOCD || '', '') from INP T1 "
+      ID_SQL_KRYO_CHK_HEAD + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', '') from INP T1 "
           + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
           + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1"
           + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
