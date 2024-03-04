@@ -5665,7 +5665,7 @@ public class DefineReport {
   public final static String ID_SQL_BMN_CHK_HEAD =
       "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
   public final static String ID_SQL_BMN_CHK = ID_SQL_BMN_CHK_HEAD
-      + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', ''), COALESCE(M5.SSHOCD || '', '') from INP T1 "
+      + "select COALESCE(M1.BMNCD || '', '') AS BMNCD, COALESCE(M2.DAICD || '', '') AS DAICD, COALESCE(M3.CHUCD || '', '') AS CHUCD, COALESCE(M4.SHOCD || '', '') AS SHOCD, COALESCE(M5.SSHOCD || '', '') AS SSHOCD from INP T1 "
       + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
       + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1"
       + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
@@ -5674,12 +5674,12 @@ public class DefineReport {
   // SQL:値付分類コードチェック
   public final static String ID_SQL_KRYO_CHK_HEAD =
       "with INP as (select BMNCD, DAICD, CHUCD, SHOCD from (values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, DAICD, CHUCD, SHOCD))";
-  public final static String ID_SQL_KRYO_CHK =
-      ID_SQL_KRYO_CHK_HEAD + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', '') from INP T1 "
-          + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
-          + " left outer join INAMS.MSTSHOBRUI@ M4  on T1.BMNCD = M4.BMNCD and T1.DAICD = M4.DAICD and T1.CHUCD = M4.CHUCD and T1.SHOCD = M4.SHOCD and COALESCE(M4.UPDKBN,0) <> 1";
+  public final static String ID_SQL_KRYO_CHK = ID_SQL_KRYO_CHK_HEAD
+      + "select COALESCE(M1.BMNCD || '', '') AS BMNCD, COALESCE(M2.DAICD || '', '') AS DAICD, COALESCE(M3.CHUCD || '', '') AS CHUCD, COALESCE(M4.SHOCD || '', '') AS SHOCD from INP T1 "
+      + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
+      + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1"
+      + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
+      + " left outer join INAMS.MSTSHOBRUI@ M4  on T1.BMNCD = M4.BMNCD and T1.DAICD = M4.DAICD and T1.CHUCD = M4.CHUCD and T1.SHOCD = M4.SHOCD and COALESCE(M4.UPDKBN,0) <> 1";
 
   // SQL:商品マスタ
   /** 共通（INAMS.MSTSHN） */
