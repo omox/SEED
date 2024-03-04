@@ -6202,10 +6202,10 @@ public class DefineReport {
   /** SQL:添付資料（特売基本情報）の本体売価/総売価の取得 */
   public final static String ID_SQL_TOKBAIKA_IN = "with INP as (select SHNCD, BAIKA, DT from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(SHNCD, BAIKA, DT))";
   public final static String ID_SQL_TOKBAIKA_COL_SOU =
-      " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M2.ZEIRT)/100, 0), 0)"
-          + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M3.ZEIRT)/100, 0), 0)"
-          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M4.ZEIRT)/100, 0), 0)"
-          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(decimal(@BAIKA*M5.ZEIRT)/100, 0), 0)"
+      " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M2.ZEIRT as decimal(31,0))/100, 0), 0)"
+          + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M3.ZEIRT as decimal(31,0))/100, 0), 0)"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M4.ZEIRT as decimal(31,0))/100, 0), 0)"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M5.ZEIRT as decimal(31,0))/100, 0), 0)"
           + " else @BAIKA end";
   /*
    * public final static String ID_SQL_TOKBAIKA_COL_HON =
