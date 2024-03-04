@@ -6163,7 +6163,7 @@ public class DefineReport {
       "select T1.URICD as VALUE, 1 as USEFLG, T1.SHNCD, T1.UPDDT, T1.UPDKBN from INAMS.MSTSHN T1 where T1.SHNCD = ? order by T1.UPDDT desc fetch first 1 rows only";
 
   /** 添付資料（MD03112501）のメーカーコードの取得方法 */
-  public final static String ID_SQL_MD03112501 = "with INP as (select CD, KBN, BMNCD from (values ROW(cast(? as varchar (14)), cast(? as varchar (2)), cast(? as varchar (2)))) as X(CD, KBN, BMNCD))"
+  public final static String ID_SQL_MD03112501 = "with INP as (select CD, KBN, BMNCD from (values ROW(cast(? as CHAR (14)), cast(? as CHAR (2)), cast(? as CHAR (2)))) as X(CD, KBN, BMNCD))"
       + "select case when CD='' then right('0'||BMNCD,2)||'00001'" + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1)<= 5 then left(CD,7)"
       + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1) > 5 then left(CD,9)" + " when KBN='1' and left(CD,2)='49' then left(CD,7)" + " when KBN='2' then left(CD,6)"
       + " else right('0'||BMNCD,2)||'00002' end as value" + " from INP";
