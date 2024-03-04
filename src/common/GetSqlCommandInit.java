@@ -349,9 +349,9 @@ public class GetSqlCommandInit {
       }
 
       if (DefineReport.ID_PAGE_ST016.equals(outpage)) {
-        sqlcommand = DefineReport.ID_SQL_SYSLOGIN2 + sqlWhere + " fetch first 100 rows only";
+        sqlcommand = DefineReport.ID_SQL_SYSLOGIN2 + sqlWhere + " LIMIT 100 ";
       } else {
-        sqlcommand = DefineReport.ID_SQL_SYSLOGIN + sqlWhere + " fetch first 100 rows only";
+        sqlcommand = DefineReport.ID_SQL_SYSLOGIN + sqlWhere + " LIMIT 100 ";
       }
 
       if (obj.containsKey("TOPBLANK")) {
