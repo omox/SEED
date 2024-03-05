@@ -5554,7 +5554,7 @@ public class DefineReport {
 
   // SQL：店舗一覧(新店改装発注) TODO:
   public final static String ID_SQL_TENPO_SK =
-      "WITH RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.KANRINO, T2.SHNCD, T2.SHNKN, T2.SURYO from T1 left join (select ROW_NUMBER() over (order by HSKS.INPUTNO, HSKS.KANRINO) as IDX, HSKS.KANRINO, case when HSKS.SHNCD = 99999994 then '99999994' else SHN.SHNCD end as SHNCD, case when HSKS.SHNCD = 99999994 then '棚段変わります' else SHN.SHNKN end as SHNKN, HSKS.SURYO from INATK.HATSK_SHN HSKS left join INAMS.MSTSHN SHN on SHN.SHNCD = right ('00000000' || TRIM(HSKS.SHNCD), 8) where (COALESCE(SHN.UPDKBN, 0) <> 1 or right ('00000000' || TRIM(HSKS.SHNCD), 8) = '99999994') and HSKS.INPUTNO = ? order by HSKS.KANRINO) T2 on T1.IDX = T2.IDX @W order by T1.IDX";
+      "WITH RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.KANRINO, T2.SHNCD, T2.SHNKN, T2.SURYO from T1 left join (select ROW_NUMBER() over (order by HSKS.INPUTNO, HSKS.KANRINO) as IDX, HSKS.KANRINO, case when HSKS.SHNCD = 99999994 then '99999994' else SHN.SHNCD end as SHNCD, case when HSKS.SHNCD = 99999994 then '棚段変わります' else SHN.SHNKN end as SHNKN, HSKS.SURYO from INATK.HATSK_SHN HSKS left join INAMS.MSTSHN SHN on SHN.SHNCD = right ('00000000' || TRIM(HSKS.SHNCD), 8) where (COALESCE(SHN.UPDKBN, 0) <> 1 or right ('00000000' || TRIM(HSKS.SHNCD), 8) = '99999994') and right ('00000' || HSKS.INPUTNO, 5) = ? order by HSKS.KANRINO) T2 on T1.IDX = T2.IDX @W order by T1.IDX";
 
   // SQL：店舗一覧(新店改装発注_構成別) TODO:
   public final static String ID_SQL_TENPO_SK_K =
