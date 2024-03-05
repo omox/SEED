@@ -6210,30 +6210,12 @@ public class DefineReport {
           + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M4.ZEIRT as decimal(31,0))/100, 0), 0)"
           + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M5.ZEIRT as decimal(31,0))/100, 0), 0)"
           + " else @BAIKA end";
-  /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON =
-   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M2.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M3.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M4.ZEIRT)/100)), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(ceil(decimal(@BAIKA)/decimal(1+decimal(M5.ZEIRT)/100)), 0)"
-   * +" else @BAIKA end";
-   */
-
-  /*
-   * public final static String ID_SQL_TOKBAIKA_COL_HON =
-   * " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0), 0)"
-   * +" when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then ROUND(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0), 0)"
-   * +" else @BAIKA end";
-   */
 
   // 割引本体売価 小数点切上げ
-  public final static String ID_SQL_TOKBAIKA_COL_HON =
-      " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0))"
-          + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0))"
-          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0))"
-          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0))" + " else @BAIKA end";
+  public final static String ID_SQL_TOKBAIKA_COL_HON = " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING( (@BAIKA) / NULLIF(1 +  (M2.ZEIRT) / 100, 0))"
+      + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING( (@BAIKA) / NULLIF(1 +  (M3.ZEIRT) / 100, 0))"
+      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) <= COALESCE(@DT, 0) then CEILING((@BAIKA) / NULLIF(1 +  (M4.ZEIRT) / 100, 0))"
+      + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(M1.ZEIRTHENKODT, 0) >  COALESCE(@DT, 0) then CEILING( (@BAIKA) / NULLIF(1 +  (M5.ZEIRT) / 100, 0))" + " else @BAIKA end";
 
   public final static String ID_SQL_TOKBAIKA_COL_HON2 =
       " case when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0))"
