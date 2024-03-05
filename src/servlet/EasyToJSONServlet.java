@@ -585,6 +585,6 @@ public class EasyToJSONServlet extends HttpServlet {
       sqlcol += ",'" + obj.optString(key) + "' as " + key;
     }
 
-    return "select " + StringUtils.removeStart(sqlcol, ",") + " from SYSIBM.SYSDUMMY1";
+    return "select " + StringUtils.removeStart(sqlcol, ",") + " from (SELECT 1 AS DUMMY) DUMMY";
   }
 }

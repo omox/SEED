@@ -5662,10 +5662,12 @@ public class DefineReport {
   public final static String ID_SQL_SSHO_BUN_FOOTER = " group by BMNCD,DAICD,CHUCD,SHOCD order by VALUE";
 
   // SQL:部門マスタ存在チェック
+
+  // SQL:部門マスタ存在チェック
   public final static String ID_SQL_BMN_CHK_HEAD =
-      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR), cast(? as CHAR))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
+      "with INP as (select BMNCD, DAICD, CHUCD, SHOCD, SSHOCD from (values ROW(cast(? as signed), cast(? as signed), cast(? as signed), cast(? as signed), cast(? as signed))) as X(BMNCD, DAICD, CHUCD, SHOCD, SSHOCD))";
   public final static String ID_SQL_BMN_CHK = ID_SQL_BMN_CHK_HEAD
-      + "select COALESCE(M1.BMNCD || '', ''), COALESCE(M2.DAICD || '', ''), COALESCE(M3.CHUCD || '', ''), COALESCE(M4.SHOCD || '', ''), COALESCE(M5.SSHOCD || '', '') from INP T1 "
+      + "select COALESCE(M1.BMNCD || '', '0') AS BMNCD, COALESCE(M2.DAICD || '', '0') AS DAICD, COALESCE(M3.CHUCD || '', '0') AS CHUCD, COALESCE(M4.SHOCD || '', '0') AS SHOCD, COALESCE(M5.SSHOCD || '', '0') AS SSHOCD from INP T1 "
       + " left outer join INAMS.MSTBMN M1 on T1.BMNCD = M1.BMNCD and COALESCE(M1.UPDKBN,0) <> 1"
       + " left outer join INAMS.MSTDAIBRUI@ M2  on T1.BMNCD = M2.BMNCD and T1.DAICD = M2.DAICD and COALESCE(M2.UPDKBN,0) <> 1"
       + " left outer join INAMS.MSTCHUBRUI@ M3  on T1.BMNCD = M3.BMNCD and T1.DAICD = M3.DAICD and T1.CHUCD = M3.CHUCD and COALESCE(M3.UPDKBN,0) <> 1"
