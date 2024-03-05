@@ -1138,11 +1138,21 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ) T1");
     sbSQL.append(" left join INAAD.SYSSHUNO S1 on DATE_FORMAT(T1.ZNENDT, '%Y%m%d') between S1.STARTDT and S1.ENDDT");
     sbSQL.append(")");
+
+
+
     sbSQL.append(",CAL(IDX, DT) as (");
-    sbSQL.append(" select 1 as IDX, NNSTDT as DT from WK");
-    sbSQL.append(" union all ");
-    sbSQL.append(" select IDX+1 as IDX, DATE_FORMAT(DT + INTERVAL 1 day, '%Y%m%d') as DT from CAL where IDX < 10");
-    sbSQL.append(")");
+    sbSQL.append(" select 1 , NNSTDT  from WK");
+    for (int i = 2; i <= 10; i++) {
+      int sel1 = i;
+      int sel2 = i - 1;
+      sbSQL.append(" union all ");
+      sbSQL.append(" select " + sel1 + ", DATE_FORMAT(NNSTDT + INTERVAL " + sel2 + " day, '%Y%m%d') from WK ");
+    }
+    sbSQL.append(" ) ");
+
+
+
     sbSQL.append(" select ");
     sbSQL.append("  IFNULL(DATE_FORMAT(M1.DT, '%m/%d'), '') as N1"); // F148：日付（1～10）
     sbSQL.append(" ,max(JWEEK2) as N2"); // F158：曜日（1～10）
@@ -1215,7 +1225,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" left join " + szTableNNDT
         + " T6 on T1.MOYSKBN = T6.MOYSKBN and T1.MOYSSTDT = T6.MOYSSTDT and T1.MOYSRBAN = T6.MOYSRBAN and T1.BMNCD = T6.BMNCD and T1.KANRINO = T6.KANRINO and T1.KANRIENO = T6.KANRIENO and M1.DT = T6.NNDT");
 
-    sbSQL.append(" group by grouping sets ((),(M1.DT))");
+    sbSQL.append(" group by M1.DT WITH ROLLUP ");
     sbSQL.append(" order by IFNULL(M1.DT, 99999999)");
 
     ItemList iL = new ItemList();
@@ -1343,7 +1353,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append(" ,'' as F161"); // F161：中分類
       sbSQL.append(" ,'' as F175"); // F175：小分類
       sbSQL.append(" ,'' as F176"); // F176：定貫区分
-      sbSQL.append(" from SYSIBM.SYSDUMMY1");
+      sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
       return sbSQL.toString();
     }
 
@@ -1760,10 +1770,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,sum(T6.HTASU) as HTASU"); // 発注総数
     sbSQL.append(" ,max(T6.PTNNO) as PTNNO"); // パターン№
     sbSQL.append(" ,max(T6.TSEIKBN) as TSEIKBN"); // 訂正区分
-    // sbSQL.append(" ,sum(T6.TPSU) as TPSU"); // 店舗数
-    // sbSQL.append(" ,sum(T6.TENKAISU) as TENKAISU"); // 展開数
     sbSQL.append(" ,max(T6.ZJSKFLG) as ZJSKFLG"); // 前年実績フラグ
-    // sbSQL.append(" ,max(T6.WEEKHTDT) as WEEKHTDT"); // 週間発注処理日
     sbSQL.append(" from CAL M1");
     sbSQL.append(" inner join WEEK M2 on CWEEK = DAYOFWEEK(DATE_FORMAT(M1.DT, '%Y%m%d'))");
     sbSQL.append(" inner join WK T1 on 1=1");
@@ -1934,8 +1941,8 @@ public class ReportTG016Dao extends ItemDao {
     // ① ST016の新規・新規（全品割引）より、ST019の選択（確定）より、ST016の月締後新規・新規（全品割引）よりの場合：管理番号：新規付番 / 枝番：0
     boolean isNewKanrino = isModeD || isModeH;
     // ② ST016の月締後今の内容を修正より（１項目でも変更を行った場合）：管理番号：変更なし / 枝番：現枝番+１（「削除」の場合は現枝番+1しない）→ 機能廃止
-    boolean isNewKanrieno = false; // (DefineReport.ID_PAGE_ST016.equals(sendPageid) && (StringUtils.startsWith(sendBtnid,
-                                   // DefineReport.Button.NEW.getObj())));
+    boolean isNewKanrieno = false;
+
     // ③ ST016の選択（販売・納入情報）よりの場合：管理番号：変更無し / 枝番：変更無し
 
     // ランクNo展開配列作成機能
@@ -9120,7 +9127,7 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD");
@@ -9273,7 +9280,7 @@ public class ReportTG016Dao extends ItemDao {
         sbSQL.append(",null as " + itm.getCol());
       }
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO and T.KANRIENO = RE.KANRIENO ");
@@ -9482,7 +9489,7 @@ public class ReportTG016Dao extends ItemDao {
         sbSQL.append(",null as " + itm.getCol());
       }
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO and T.KANRIENO = RE.KANRIENO ");
@@ -9657,7 +9664,7 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("cast(" + data.optString(itm.getId()) + " as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO ");
@@ -10395,7 +10402,7 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO");
@@ -10436,7 +10443,7 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("cast(" + data.optString(itm.getId()) + " as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO");
@@ -10935,7 +10942,7 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD");
@@ -11041,7 +11048,7 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
     sbSQL.append(" ) as RE on (");
     sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
     sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO");
