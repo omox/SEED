@@ -5684,7 +5684,7 @@ public class DefineReport {
   // SQL:商品マスタ
   /** 共通（INAMS.MSTSHN） */
   public final static String ID_SQL_SHN_CHK_UPDATECNT =
-      "select CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?) where CNT < (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU)";
+      "select CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?) AS T1 where CNT < (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU)";
   public final static String ID_SQL_SHN_CHK_UPDATECNT2 =
       "select (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU) - CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?)";
   public final static String ID_SQL_SHN_SHNCD = "select SUBSTRING(right ('0000000' || RTRIM(SHNCD), 8), 1, 4) || '" + SEPARATOR
