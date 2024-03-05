@@ -1508,6 +1508,7 @@ public class Reportx002Dao extends ItemDao {
             dtype = colinf.getDataType();
             digit = colinf.getDigit();
           }
+          System.out.println(txt_bmncd);
           // ①データ型による文字種チェック
           if (!InputChecker.checkDataType(dtype, val)) {
             JSONObject o = mu.getDbMessageObjDataTypeErr(dtype, new String[] {});
