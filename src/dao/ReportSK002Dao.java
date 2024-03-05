@@ -122,10 +122,10 @@ public class ReportSK002Dao extends ItemDao {
     sbSQL.append(", HSK.TENNO");
     sbSQL.append(", TEN.TENKN");
     sbSQL.append(", HSK.KSPAGE");
-    sbSQL.append(", TO_CHAR(TO_DATE('20' || right ('0' || HSK.HTDT, 6), 'YYYYMMDD'), 'YY/MM/DD') as HTDT");
-    sbSQL.append(", DAYOFWEEK(TO_DATE('20' || right ('0' || HSK.HTDT, 6), 'YYYYMMDD')) as HTDT_WNUM");
-    sbSQL.append(", TO_CHAR(TO_DATE('20' || right ('0' || HSK.NNDT, 6), 'YYYYMMDD'), 'YY/MM/DD') as NNDT");
-    sbSQL.append(", DAYOFWEEK(TO_DATE('20' || right ('0' || HSK.NNDT, 6), 'YYYYMMDD')) as NNDT_WNUM");
+    sbSQL.append(", DATE_FORMAT(DATE_FORMAT('20' || right ('0' || HSK.HTDT, 6), '%y/%m/%d'), '%y/%m/%d') as HTDT");
+    sbSQL.append(", DAYOFWEEK(DATE_FORMAT('20' || right ('0' || HSK.HTDT, 6), '%Y%m%d')) as HTDT_WNUM");
+    sbSQL.append(", DATE_FORMAT(DATE_FORMAT('20' || right ('0' || HSK.NNDT, 6), '%y/%m/%d'), '%y/%m/%d') as NNDT");
+    sbSQL.append(", DAYOFWEEK(DATE_FORMAT('20' || right ('0' || HSK.NNDT, 6), '%Y%m%d')) as NNDT_WNUM");
     sbSQL.append(", HSK.SHNKBN from INATK.HATSK HSK");
     sbSQL.append(" left join INAMS.MSTTEN TEN on TEN.TENCD = HSK.TENNO where HSK.UPDKBN = 0) T1");
     sbSQL.append(" left outer join WEEK W1 on T1.HTDT_WNUM = W1.CWEEK");
