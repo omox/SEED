@@ -6152,7 +6152,8 @@ public class DefineReport {
 
   /** 添付資料（MD03100901）の商品コード付番機能 */
   public final static String ID_SQL_MD03100901 = "select min(trim(T1.SHNCD)) as VALUE from INAAD.SYSSHNCD_AKI T1 where T1.USEFLG = 0 and T1.SHNCD like ? @W";
-  public final static String ID_SQL_MD03100901_EXISTS_AUTO = "select 'X' from INAAD.SYSSHNCD_FU T2 where int(left(@C, 2)) = T2.BMNCD and int(substr(@C, 3, 5)) between T2.STARTNO and T2.ENDNO";
+  public final static String ID_SQL_MD03100901_EXISTS_AUTO =
+      "select 'X' from INAAD.SYSSHNCD_FU T2 where CAST(left(@C, 2) AS signed) = T2.BMNCD and CAST(substr(@C, 3, 5) AS signed) between T2.STARTNO and T2.ENDNO";
   public final static String ID_SQL_MD03100901_WHERE_AUTO = "and exists(" + ID_SQL_MD03100901_EXISTS_AUTO + ")";
 
   /** 添付資料（MD03100902）の販売コード付番機能 */
