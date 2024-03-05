@@ -849,7 +849,7 @@ public class GetSqlCommandInit {
 
       if (!StringUtils.isEmpty(txt_tencd) && !StringUtils.isEmpty(txt_kspage)) {
 
-        String szWhere = " where (NVL(SHN.UPDKBN, 0) <> 1 or SHN.SHNCD = '99999994') and TEN.TENCD = ?";
+        String szWhere = " where (COALESCE(SHN.UPDKBN, 0) <> 1 or SHN.SHNCD = '99999994') and TEN.TENCD = ?";
         paramData.add(txt_tencd);
 
         if (!StringUtils.isEmpty(txt_kspage.substring(0, 2))) {
