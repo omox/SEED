@@ -3601,6 +3601,7 @@ public class Reportx002Dao extends ItemDao {
     // 配列準備
     ArrayList<String> paramData = new ArrayList<String>();
     String sqlcommand = "";
+    String sqlcommand2 = "";
 
     JSONObject returndata = new JSONObject();
 
@@ -3628,7 +3629,8 @@ public class Reportx002Dao extends ItemDao {
 
     } else {
       String searchCommand = DefineReport.ID_SQL_MD03100901.replace("@W", StringUtils.replace(DefineReport.ID_SQL_MD03100901_WHERE_AUTO, "@C", "T1.SHNCD"));
-      sqlcommand = "select SHNCD as VALUE from FINAL table ( update INAAD.SYSSHNCD_AKI set USEFLG = '1', UPDDT = current_timestamp where USEFLG = 0 and SHNCD = (" + searchCommand + "))";
+      sqlcommand = "" + searchCommand + "";
+      sqlcommand2 = "update INAAD.SYSSHNCD_AKI set USEFLG = '1', UPDDT = current_timestamp where USEFLG = 0 and SHNCD = (" + searchCommand + ")";
 
       boolean dowhile = true;
       JSONObject data = new JSONObject();
@@ -3637,7 +3639,19 @@ public class Reportx002Dao extends ItemDao {
         if (sqlcommand.length() > 0) {
           data = new JSONObject();
           @SuppressWarnings("static-access")
-          JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+          JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);// SQL実行?
+          if (array.size() > 0) {
+            data = array.optJSONObject(0);
+            if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
+              dowhile = false;
+            }
+          }
+        }
+
+        if (sqlcommand2.length() > 0) {
+          data = new JSONObject();
+          @SuppressWarnings("static-access")
+          JSONArray array = iL.selectJSONArray(sqlcommand2, paramData, Defines.STR_JNDI_DS);// SQL実行?
           if (array.size() > 0) {
             data = array.optJSONObject(0);
             if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
