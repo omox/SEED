@@ -938,14 +938,14 @@ public class GetSqlCommandCheck {
           , tenCdDels // 除外店
       );
 
-      sqlcommand = "SELECT " + tencds.size() + " AS VALUE FROM SYSIBM.SYSDUMMY1";
+      sqlcommand = "SELECT " + tencds.size() + " AS VALUE FROM (SELECT 1 AS DUMMY) DUMMY";
     }
 
     if (outobj.equals(DefineReport.InpText.MOYSCD.getObj()) && StringUtils.isEmpty(key)) {
       String JNDIname = Defines.STR_JNDI_DS;
       JSONArray selectCnt = new ReportJU032Dao(JNDIname).getMoysCdChk(obj);
 
-      sqlcommand = "SELECT " + selectCnt.size() + " AS VALUE FROM SYSIBM.SYSDUMMY1";
+      sqlcommand = "SELECT " + selectCnt.size() + " AS VALUE FROM (SELECT 1 AS DUMMY) DUMMY";
     }
 
     // 禁止文字が含まれる場合
