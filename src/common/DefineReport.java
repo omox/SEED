@@ -6202,7 +6202,7 @@ public class DefineReport {
   public final static String ID_SQL_MD03111301_HS_Y = ID_SQL_MD03111301_IN_HS + " select " + ID_SQL_MD03111301_COL_HS_Y + " as VALUE from INP as T1" + ID_SQL_MD03111301_JOIN_Y;
 
   /** SQL:添付資料（特売基本情報）の本体売価/総売価の取得 */
-  public final static String ID_SQL_TOKBAIKA_IN = "with INP as (select SHNCD, BAIKA, DT from (values ROW(cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(SHNCD, BAIKA, DT))";
+  public final static String ID_SQL_TOKBAIKA_IN = "with INP as (select SHNCD, BAIKA, DT from (values ROW(cast(? as char), cast(? as char), cast(? as char))) as X(SHNCD, BAIKA, DT))";
   public final static String ID_SQL_TOKBAIKA_COL_SOU =
       " case when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) <= COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M2.ZEIRT as decimal(31,0))/100, 0), 0)"
           + " when M0.ZEIKBN = 0 and COALESCE(M0.ZEIRTHENKODT,0) >  COALESCE(@DT, 0) then COALESCE(truncate(@BAIKA,0),0) + COALESCE(truncate(cast(@BAIKA*M3.ZEIRT as decimal(31,0))/100, 0), 0)"
