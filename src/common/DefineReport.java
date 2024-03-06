@@ -6159,7 +6159,7 @@ public class DefineReport {
   public final static String ID_SQL_MD03100901_WHERE_AUTO = "and exists(" + ID_SQL_MD03100901_EXISTS_AUTO + ")";
 
   /** 添付資料（MD03100902）の販売コード付番機能 */
-  public final static String ID_SQL_MD03100902 = "with FU as (select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU fetch first 1 rows only)"
+  public final static String ID_SQL_MD03100902 = "with FU as (select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU LIMIT 1)"
       + ", AKI as (select MIN(T1.URICD) as MIN_AKI_URICD from INAAD.SYSURICD_AKI T1 inner join FU T2 on T1.URICD between T2.STARTNO and T2.ENDNO and COALESCE(T1.USEFLG, 0) <> 1)"
       + " select case when ENDNO > SUMINO then SUMINO + 1 when ENDNO = SUMINO then MIN_AKI_URICD end as VALUE, 0 as USEFLG from FU, AKI";
   public final static String ID_SQL_MD03100902_USE =
