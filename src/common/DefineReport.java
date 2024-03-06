@@ -6162,8 +6162,7 @@ public class DefineReport {
   public final static String ID_SQL_MD03100902 = "with FU as (select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU LIMIT 1)"
       + ", AKI as (select MIN(T1.URICD) as MIN_AKI_URICD from INAAD.SYSURICD_AKI T1 inner join FU T2 on T1.URICD between T2.STARTNO and T2.ENDNO and COALESCE(T1.USEFLG, 0) <> 1)"
       + " select case when ENDNO > SUMINO then SUMINO + 1 when ENDNO = SUMINO then MIN_AKI_URICD end as VALUE, 0 as USEFLG from FU, AKI";
-  public final static String ID_SQL_MD03100902_USE =
-      "select T1.URICD as VALUE, 1 as USEFLG, T1.SHNCD, T1.UPDDT, T1.UPDKBN from INAMS.MSTSHN T1 where T1.SHNCD = ? order by T1.UPDDT desc fetch first 1 rows only";
+  public final static String ID_SQL_MD03100902_USE = "select T1.URICD as VALUE, 1 as USEFLG, T1.SHNCD, T1.UPDDT, T1.UPDKBN from INAMS.MSTSHN T1 where T1.SHNCD = ? order by T1.UPDDT desc LIMIT 1";
 
   /** 添付資料（MD03112501）のメーカーコードの取得方法 */
   public final static String ID_SQL_MD03112501 = "with INP as (select CD, KBN, BMNCD from (values ROW(cast(? as CHAR (14)), cast(? as CHAR (2)), cast(? as CHAR (2)))) as X(CD, KBN, BMNCD))"
