@@ -1761,18 +1761,18 @@ public class GetSqlCommandInit {
           ReportTG016Dao dao = new ReportTG016Dao(jndiName);
           if (StringUtils.endsWith(btnid, "_h")) { // 販売店確認
             if (dao.isTOKTG(txt_moyskbn, txt_moysrban)) { // 全店特売アンケート有無
-              sqlcommand = "with WK as (select TENATSUK_ARR as ARR, 1 as LEN from INATK.TOKTG_HB" + sqlWhere + ")";
+              sqlcommand = "with recursive WK as (select TENATSUK_ARR as ARR, 1 as LEN from INATK.TOKTG_HB" + sqlWhere + ")";
             } else {
-              sqlcommand = "with WK as (select TENATSUK_ARR as ARR, 1 as LEN from INATK.TOKSP_HB" + sqlWhere + ")";
+              sqlcommand = "with recursive WK as (select TENATSUK_ARR as ARR, 1 as LEN from INATK.TOKSP_HB" + sqlWhere + ")";
             }
           } else if (StringUtils.endsWith(btnid, "_n")) { // 納入店確認
             paramData.add(txt_nndt);
             sqlWhere += " and NNDT=? ";
 
             if (dao.isTOKTG(txt_moyskbn, txt_moysrban)) { // 全店特売アンケート有無
-              sqlcommand = "with WK as (select TENHTSU_ARR as ARR, 5 as LEN from INATK.TOKTG_NNDT" + sqlWhere + ")";
+              sqlcommand = "with recursive WK as (select TENHTSU_ARR as ARR, 5 as LEN from INATK.TOKTG_NNDT" + sqlWhere + ")";
             } else {
-              sqlcommand = "with WK as (select TENHTSU_ARR as ARR, 5 as LEN from INATK.TOKSP_NNDT" + sqlWhere + ")";
+              sqlcommand = "with recursive WK as (select TENHTSU_ARR as ARR, 5 as LEN from INATK.TOKSP_NNDT" + sqlWhere + ")";
             }
           }
           sqlcommand += DefineReport.ID_SQL_ARR_CMN;
