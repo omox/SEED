@@ -5341,7 +5341,7 @@ public class DefineReport {
 
   public final static String ID_SQL_CHK_TBL_MULTI = "select count(*) as VALUE from @T where ";
 
-  public final static String ID_SQL_ARR_CMN = ",ARRWK(IDX, RNK, S, ARR, LEN) as (" + " select 1, SUBSTR(ARR, 1 , LEN), 1 + LEN, ARR, LEN from wk " + " union all"
+  public final static String ID_SQL_ARR_CMN = ",ARRWK(IDX, RNK, S, ARR, LEN) as (" + " select 1, SUBSTR(ARR, 1 , LEN), 1 + LEN, ARR, LEN from WK " + " union all"
       + " select IDX+1, SUBSTR(ARR, S , LEN), S + LEN, ARR, LEN from ARRWK where S <= length(ARR)" + ") ";
 
   // SQL：カレンダーマスター
