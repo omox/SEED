@@ -477,7 +477,7 @@ public class Reportx052Dao extends ItemDao {
     // 部門紐付チェック:メーカーマスタ
     sbSQL = new StringBuffer();
     prmData = new ArrayList<String>();
-    sbSQL.append("select DMAKERCD from INAMS.MSTMAKER where DMAKERCD = ? and IFNULL(UPDKBN, 0) <> 1 fetch first 1 rows only");
+    sbSQL.append("select DMAKERCD from INAMS.MSTMAKER where DMAKERCD = ? and IFNULL(UPDKBN, 0) <> 1 limit 1 ");
     prmData.add(szMakercd);
     dbDatas = iL.selectJSONArray(sbSQL.toString(), prmData, Defines.STR_JNDI_DS);
     if (dbDatas.size() > 0) {
