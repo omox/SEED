@@ -2093,9 +2093,9 @@ public class GetSqlCommandInit {
       String txt_tengpcd = obj.optString("TENGPCD");
 
       sqlcommand += "  select ";
-      sqlcommand += "  sum(case when (case when TTSH.ADDSHUKBN <> 01 then (case when TTSH.BD1_B_BAIKAAN > 0 then TO_CHAR(TTSH.KO_B_BAIKAAN) else TO_CHAR(TTSH.B_BAIKAAM) END) ";
+      sqlcommand += "  sum(case when (case when TTSH.ADDSHUKBN <> 01 then (case when TTSH.BD1_B_BAIKAAN > 0 then TTSH.KO_B_BAIKAAN else TTSH.B_BAIKAAM END) ";
       sqlcommand += "  else (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = char (TTSH.B_WRITUKBN)) END) is null then 0 else 1 end) as VALUE1 ";
-      sqlcommand += " ,sum(case when (case when TTSH.ADDSHUKBN <> 01 then (case when TTSH.BD1_C_BAIKAAN > 0 then TO_CHAR(TTSH.KO_C_BAIKAAN) else TO_CHAR(TTSH.C_BAIKAAM) END)";
+      sqlcommand += " ,sum(case when (case when TTSH.ADDSHUKBN <> 01 then (case when TTSH.BD1_C_BAIKAAN > 0 then TTSH.KO_C_BAIKAAN else TTSH.C_BAIKAAM END)";
       sqlcommand += "  else (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = char (TTSH.C_WRITUKBN)) END) is null then 0 else 1 end) as VALUE2 ";
       sqlcommand += "  from INATK.TOKTG_SHN TTSH left join INATK.TOKTG_KHN TTKH on TTKH.MOYSKBN =" + txt_moyskbn + " and TTKH.MOYSSTDT = " + txt_moysstdt + " and TTKH.MOYSRBAN =" + txt_moysrban;
       sqlcommand +=
