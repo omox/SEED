@@ -123,7 +123,7 @@ public class ReportSO002Dao extends ItemDao {
     sbSQL.append(" AND T1.MOYSSTDT=T2.MOYSSTDT");
     sbSQL.append(" AND T1.MOYSRBAN=T2.MOYSRBAN");
     sbSQL.append(" AND T1.BMNCD=T2.BMNCD");
-    sbSQL.append(" AND T1.UPDKBN <> 1 AND T1.UPDKBN <> 1 ");
+    sbSQL.append(" AND T1.UPDKBN <> 1 AND T2.UPDKBN <> 1 ");
     sbSQL.append(" GROUP BY");
     sbSQL.append(" T1.MOYSKBN");
     sbSQL.append(" ,T1.MOYSSTDT");
