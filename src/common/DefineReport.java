@@ -5549,7 +5549,7 @@ public class DefineReport {
 
   // SQL：店舗一覧(発注数項目あり) TODO:
   public final static String ID_SQL_TENPO_HTS =
-      "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.F1 as TENCD, T2.F2 as TENKN, T2.F3 as HTSU, T2.F4 as HTSU_T, case when T2.F1 is not null then 0 else 1 end as SINKFLG from T1 left join (select ROW_NUMBER() over (order by HTEN.TENCD) as IDX, HTEN.TENCD as F1, MAX(TEN.TENKN) as F2, SUM(case when COALESCE(HTEN.INPUTDT, 0) < ? then HTEN.HTSU else 0 end) as F3, SUM(case when COALESCE(HTEN.INPUTDT, 0) = ? then HTEN.HTSU else 0 end) as F4"
+      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.F1 as TENCD, T2.F2 as TENKN, T2.F3 as HTSU, T2.F4 as HTSU_T, case when T2.F1 is not null then 0 else 1 end as SINKFLG from T1 left join (select ROW_NUMBER() over (order by HTEN.TENCD) as IDX, HTEN.TENCD as F1, MAX(TEN.TENKN) as F2, SUM(case when COALESCE(HTEN.INPUTDT, 0) < ? then HTEN.HTSU else 0 end) as F3, SUM(case when COALESCE(HTEN.INPUTDT, 0) = ? then HTEN.HTSU else 0 end) as F4"
           + " from INATK.HATYH_TEN HTEN left join INAMS.MSTTEN TEN on TEN.TENCD = HTEN.TENCD @W group by HTEN.KKKCD, HTEN.SHNCD, HTEN.TENCD order by HTEN.KKKCD, HTEN.SHNCD, HTEN.TENCD) T2 on T1.IDX = T2.IDX order by T1.IDX";
 
   // SQL：店舗一覧(新店改装発注) TODO:
@@ -5845,7 +5845,7 @@ public class DefineReport {
   // SQL：納品日一覧(発注数項目あり) TODO:
   public final static String ID_SQL_NOHIN_HTS =
       "select NNDT.KKKCD, NNDT.SHNCD, NNDT.NNDT, case when NNDT.KKKCD is not null then TO_CHAR(right (NNDT.NNDT, 6)) else '合計' end as F1, SUM(case when COALESCE(TEN.INPUTDT, 0) < ? then TEN.HTSU else 0 end) as F2, SUM(case when COALESCE(TEN.INPUTDT, 0) = ? then TEN.HTSU else 0 end) as F3, case when NNDT.KKKCD is not null then MAX(NNDT.YOTEISU) else 0 end as F4, case when NNDT.KKKCD is not null then MAX(NNDT.GENDOSU) else 0 end as F5 from INATK.HATYH_NNDT NNDT"
-          + " left join INATK.HATYH_TEN TEN on TEN.KKKCD = NNDT.KKKCD and TEN.SHNCD = NNDT.SHNCD and TEN.NNDT = NNDT.NNDT where NNDT.KKKCD = ? and NNDT.SHNCD = ? group by rollup (NNDT.KKKCD, NNDT.SHNCD, NNDT.NNDT) having NNDT.NNDT is not null or NNDT.KKKCD is null order by NNDT.KKKCD, NNDT.SHNCD, NNDT.NNDT";
+          + " left join INATK.HATYH_TEN TEN on TEN.KKKCD = NNDT.KKKCD and TEN.SHNCD = NNDT.SHNCD and TEN.NNDT = NNDT.NNDT where NNDT.KKKCD = ? and NNDT.SHNCD = ? group by NNDT.KKKCD, NNDT.SHNCD, NNDT.NNDT WITH ROLLUP having NNDT.NNDT is not null or NNDT.KKKCD is null order by NNDT.KKKCD, NNDT.SHNCD, NNDT.NNDT";
 
   // SQL：リードタイムパターン TODO:
   /** 共通（INAMS.MSTREADTM） */
