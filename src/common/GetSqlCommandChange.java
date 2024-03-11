@@ -56,7 +56,7 @@ public class GetSqlCommandChange {
     }
 
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
     String json = "";
 
@@ -97,7 +97,8 @@ public class GetSqlCommandChange {
     }
 
     // 店舗名
-    if (outobj.equals(DefineReport.InpText.TENCD.getObj()) || outobj.equals(DefineReport.InpText.TENCD.getObj() + "leader") || outobj.equals(DefineReport.InpText.CENTERCD.getObj()) || outobj.equals(DefineReport.InpText.YCENTERCD.getObj())) {
+    if (outobj.equals(DefineReport.InpText.TENCD.getObj()) || outobj.equals(DefineReport.InpText.TENCD.getObj() + "leader") || outobj.equals(DefineReport.InpText.CENTERCD.getObj())
+        || outobj.equals(DefineReport.InpText.YCENTERCD.getObj())) {
 
       if (StringUtils.isEmpty(value)) {
         sqlcommand = DefineReport.ID_SQL_TEN + " and TENCD = null";
@@ -108,7 +109,8 @@ public class GetSqlCommandChange {
     }
 
     // 仕入先
-    if (outobj.equals(DefineReport.InpText.SSIRCD.getObj()) || outobj.equals(DefineReport.InpText.SIRCD.getObj()) || outobj.equals(DefineReport.InpText.DSIRCD.getObj()) || outobj.equals(DefineReport.InpText.RSIRCD.getObj()) || outobj.equals(DefineReport.InpText.DF_RSIRCD.getObj())) {
+    if (outobj.equals(DefineReport.InpText.SSIRCD.getObj()) || outobj.equals(DefineReport.InpText.SIRCD.getObj()) || outobj.equals(DefineReport.InpText.DSIRCD.getObj())
+        || outobj.equals(DefineReport.InpText.RSIRCD.getObj()) || outobj.equals(DefineReport.InpText.DF_RSIRCD.getObj())) {
       if (NumberUtils.isNumber(value)) {
         paramData.add(value);
         sqlcommand = DefineReport.ID_SQL_SIR + DefineReport.ID_SQL_CMN_WHERE + " and  SIRCD = ?";
@@ -246,7 +248,8 @@ public class GetSqlCommandChange {
         paramData.add(daicd);
         paramData.add(chucd);
         paramData.add(value);
-        String sqlWhere = DefineReport.ID_SQL_CMN_WHERE + DefineReport.ID_SQL_BMN_BUMON_WHERE + DefineReport.ID_SQL_BMN_DAI_WHERE + DefineReport.ID_SQL_BMN_CHU_WHERE + DefineReport.ID_SQL_BMN_SHO_WHERE;
+        String sqlWhere =
+            DefineReport.ID_SQL_CMN_WHERE + DefineReport.ID_SQL_BMN_BUMON_WHERE + DefineReport.ID_SQL_BMN_DAI_WHERE + DefineReport.ID_SQL_BMN_CHU_WHERE + DefineReport.ID_SQL_BMN_SHO_WHERE;
         if (outobj.equals(DefineReport.InpText.YOT_SHOCD.getObj())) {
           sqlcommand = DefineReport.ID_SQL_SHO_BUN_YOT + sqlWhere + DefineReport.ID_SQL_SHO_BUN_FOOTER;
         } else if (outobj.equals(DefineReport.InpText.URI_SHOCD.getObj())) {
@@ -271,7 +274,8 @@ public class GetSqlCommandChange {
         paramData.add(shocd);
         paramData.add(value);
 
-        String sqlWhere = DefineReport.ID_SQL_CMN_WHERE + DefineReport.ID_SQL_BMN_BUMON_WHERE + DefineReport.ID_SQL_BMN_DAI_WHERE + DefineReport.ID_SQL_BMN_CHU_WHERE + DefineReport.ID_SQL_BMN_SHO_WHERE + DefineReport.ID_SQL_BMN_SSHO_WHERE;
+        String sqlWhere = DefineReport.ID_SQL_CMN_WHERE + DefineReport.ID_SQL_BMN_BUMON_WHERE + DefineReport.ID_SQL_BMN_DAI_WHERE + DefineReport.ID_SQL_BMN_CHU_WHERE
+            + DefineReport.ID_SQL_BMN_SHO_WHERE + DefineReport.ID_SQL_BMN_SSHO_WHERE;
         sqlcommand = DefineReport.ID_SQL_SSHO_BUN + sqlWhere + DefineReport.ID_SQL_SSHO_BUN_FOOTER;
       }
     }
@@ -311,7 +315,8 @@ public class GetSqlCommandChange {
           paramData.add(value);
           sqlcommand = ReportSO003Dao.ID_SQL_SHNKN_SO003;
 
-        } else if (DefineReport.ID_PAGE_JU032.equals(outpage) || DefineReport.ID_PAGE_JU033.equals(outpage) || DefineReport.ID_PAGE_JU012.equals(outpage) || DefineReport.ID_PAGE_JU013.equals(outpage)) {
+        } else if (DefineReport.ID_PAGE_JU032.equals(outpage) || DefineReport.ID_PAGE_JU033.equals(outpage) || DefineReport.ID_PAGE_JU012.equals(outpage)
+            || DefineReport.ID_PAGE_JU013.equals(outpage)) {
 
           String shnkbn = obj.optString("shnkbn");
           String stdt = obj.optString("stdt");
@@ -508,7 +513,8 @@ public class GetSqlCommandChange {
     }
 
     // 対象店・徐外店ランク№ (部門_1_店配列_0_店配列の形を返却) ※対象ランク№、部門は必須
-    if (!StringUtils.isEmpty(obj.optString("ID")) && (obj.optString("ID").equals(DefineReport.InpText.TAISYOTEN.getObj() + "_arr") || obj.optString("ID").equals(DefineReport.InpText.JYOGAITEN.getObj() + "_arr") || obj.optString("ID").equals(DefineReport.InpText.BMNCD.getObj() + "_arr"))) {
+    if (!StringUtils.isEmpty(obj.optString("ID")) && (obj.optString("ID").equals(DefineReport.InpText.TAISYOTEN.getObj() + "_arr")
+        || obj.optString("ID").equals(DefineReport.InpText.JYOGAITEN.getObj() + "_arr") || obj.optString("ID").equals(DefineReport.InpText.BMNCD.getObj() + "_arr"))) {
       // 入力値取得
       String bmnCd = obj.optString("BMNCD");
       String rankNoAdd = obj.optString("RANKNOADD");
@@ -546,8 +552,8 @@ public class GetSqlCommandChange {
         // ランクNo.
         paramData.add(rankNoAdd);
 
-        sqlSelect = "SELECT ADD.BMNCD||'_'||ADD.TENRANK_ARR ";
-        sqlTableAdd = " FROM (" + sqlTableAdd + ") AS ADD ";
+        sqlSelect = "SELECT ADD1.BMNCD||'_'||ADD1.TENRANK_ARR ";
+        sqlTableAdd = " FROM (" + sqlTableAdd + ")  ADD1 ";
 
         // 除外店ランク№の入力がある場合は以下のテーブルを追加
         if (!StringUtils.isEmpty(rankNoDel)) {
@@ -590,7 +596,7 @@ public class GetSqlCommandChange {
       String shncd = obj.optString("shncd");
       String stdt = obj.optString("stdt");
       if (NumberUtils.isNumber(value) && NumberUtils.isNumber(shncd) && NumberUtils.isNumber(stdt)) {
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
         paramData.add(stdt);
         paramData.add(stdt);
         paramData.add(stdt);
