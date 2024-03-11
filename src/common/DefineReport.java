@@ -5418,12 +5418,12 @@ public class DefineReport {
   public final static String ID_SQL_HEAD_MOYSCD =
       "select VALUE, TEXT, TEXT2, TEXT3, TEXT4 from (values ROW('-1', '　', 0, 0, 0)) as X(value, TEXT, TEXT2, TEXT3, TEXT4) union all select CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), T1.MOYSRBAN) as VALUE, CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), T1.MOYSRBAN) as TEXT, T1.MOYSKBN as TEXT2, T1.MOYSSTDT as TEXT3, T1.MOYSRBAN as TEXT4 from INATK.TOKMOYCD T1 where T1.MOYSKBN = 8 order by TEXT2, TEXT3, TEXT4;";
   public final static String ID_SQL_MOYO = DefineReport.ID_SQL_CMN_WEEK
-      + "select MOYKN as F2,TO_CHAR(TO_DATE(NNSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNSTDT, 'YYYYMMDD')))    ||'～'||    TO_CHAR(TO_DATE(NNEDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNEDDT, 'YYYYMMDD'))) as F3, NNSTDT as F4, NNEDDT as F5 from INATK.TOKMOYCD where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
+      + "select MOYKN as F2,DATE_FORMAT(DATE_FORMAT(NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNSTDT, '%Y%m%d')))    ||'～'||    DATE_FORMAT(DATE_FORMAT(NNEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNEDDT, '%Y%m%d'))) as F3, NNSTDT as F4, NNEDDT as F5 from INATK.TOKMOYCD where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
   public final static String ID_SQL_MOYSCD2 = DefineReport.ID_SQL_CMN_WEEK
-      + "select MOYKN as F2,TO_CHAR(TO_DATE(NNSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNSTDT, 'YYYYMMDD')))    ||'～'||    TO_CHAR(TO_DATE(NNEDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNEDDT, 'YYYYMMDD'))) as F3"
-      + ",TO_CHAR(TO_DATE(HBSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(HBSTDT, 'YYYYMMDD'))) as F4"
-      + ",TO_CHAR(TO_DATE(HBEDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(HBEDDT, 'YYYYMMDD'))) as F5"
-      + ",TO_CHAR(TO_DATE(PLUSDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(PLUSDDT, 'YYYYMMDD'))) as F6,PLUSFLG as F7, PLUSDDT as F8"
+      + "select MOYKN as F2,DATE_FORMAT(DATE_FORMAT(NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNSTDT, '%Y%m%d')))    ||'～'||    DATE_FORMAT(DATE_FORMAT(NNEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNEDDT, '%Y%m%d'))) as F3"
+      + ",DATE_FORMAT(DATE_FORMAT(HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(HBSTDT, '%Y%m%d'))) as F4"
+      + ",DATE_FORMAT(DATE_FORMAT(HBEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(HBEDDT, '%Y%m%d'))) as F5"
+      + ",DATE_FORMAT(DATE_FORMAT(PLUSDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(PLUSDDT, '%Y%m%d'))) as F6,PLUSFLG as F7, PLUSDDT as F8"
       + " from INATK.TOKMOYCD where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
   public final static String ID_SQL_TOKMOYCD = "SELECT COUNT(MOYSKBN) AS " + VAL + " FROM INATK.TOKMOYCD WHERE MOYSKBN=? AND MOYSSTDT=? AND MOYSRBAN=? AND PLUSFLG='1'";
 
