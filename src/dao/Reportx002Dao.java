@@ -2,7 +2,9 @@ package dao;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.JDBCType;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -3601,7 +3603,9 @@ public class Reportx002Dao extends ItemDao {
     // 配列準備
     ArrayList<String> paramData = new ArrayList<String>();
     String sqlcommand = "";
+    String sqlcommand2 = "";
     JSONObject returndata = new JSONObject();
+    new JSONObject();
 
     // 入力無しの場合部門をキーとして
     if (DefineReport.ValKbn143.VAL0.getVal().equals(ketakbn)) {
@@ -3620,7 +3624,6 @@ public class Reportx002Dao extends ItemDao {
         if (array.size() > 0) {
           data = array.optJSONObject(0);
           if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
-            returndata = data;
           }
         }
       }
@@ -3628,17 +3631,47 @@ public class Reportx002Dao extends ItemDao {
     } else {
       String searchCommand = DefineReport.ID_SQL_MD03100901.replace("@W", StringUtils.replace(DefineReport.ID_SQL_MD03100901_WHERE_AUTO, "@C", "T1.SHNCD"));
 
-      sqlcommand = "update INAAD.SYSSHNCD_AKI set USEFLG = '1', UPDDT = current_timestamp where USEFLG = 0 and SHNCD = (" + searchCommand + ")";
+      sqlcommand2 = "update INAAD.SYSSHNCD_AKI set USEFLG = '1', UPDDT = current_timestamp where USEFLG = 0 and SHNCD = (" + searchCommand + ")";
       sqlcommand = "" + searchCommand + "";
 
       boolean dowhile = true;
       JSONObject data = new JSONObject();
+      int upCount = 0;
+
+      // コネクション
+      Connection con = null;
       while (dowhile) {
         // 取得したい空き番の取得と登録を同時に行う
         if (sqlcommand.length() > 0) {
           data = new JSONObject();
           @SuppressWarnings("static-access")
           JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+          try {
+            // コネクションの取得
+            con = DBConnection.getConnection(this.JNDIname);
+            con.setAutoCommit(false);
+            upCount += updateBySQL(sqlcommand2, paramData, con);
+
+            // 更新0件 --> 登録失敗
+            if (upCount < 1) {
+              throw new NullPointerException();
+            }
+            con.commit();
+            con.close();
+          } catch (Exception e) {
+            /* 接続解除 */
+            if (con != null) {
+              try {
+                con.rollback();
+                con.close();
+              } catch (SQLException e1) {
+                e1.printStackTrace();
+              }
+            }
+            e.printStackTrace();
+          }
+          System.out.println(array.getJSONObject(0).getString("VALUE"));
+          System.out.println(array.size());
           if (array.size() > 0) {
             data = array.optJSONObject(0);
             if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
@@ -3674,6 +3707,12 @@ public class Reportx002Dao extends ItemDao {
     // 配列準備
     ArrayList<String> paramData = new ArrayList<String>();
     String sqlcommand = "";
+    String sqlcommand2 = "";
+    int upCount = 0;
+    int Count = 0;
+
+    // コネクション
+    Connection con = null;
 
     // 衣料の場合
     if (StringUtils.startsWithAny(shncd, new String[] {"13", "27"})) {
@@ -3692,9 +3731,35 @@ public class Reportx002Dao extends ItemDao {
       if (array.size() > 0) {
         paramData.add(shncd);
         sqlcommand = DefineReport.ID_SQL_MD03100902_USE;
-        sqlcommand = "select URICD as value from FINAL table (update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current_timestamp where URICD = (select value from (" + sqlcommand + ")))";
+        sqlcommand2 = "update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current_timestamp where URICD = (select value from (" + sqlcommand + "))";
+        sqlcommand = "" + sqlcommand + "";
+
         @SuppressWarnings("static-access")
         JSONArray array2 = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+        try {
+          // コネクションの取得
+          con = DBConnection.getConnection(this.JNDIname);
+          con.setAutoCommit(false);
+          upCount += updateBySQL(sqlcommand2, paramData, con);
+
+          // 更新0件 --> 登録失敗
+          if (upCount < 1) {
+            throw new NullPointerException();
+          }
+          con.commit();
+          con.close();
+        } catch (Exception e) {
+          /* 接続解除 */
+          if (con != null) {
+            try {
+              con.rollback();
+              con.close();
+            } catch (SQLException e1) {
+              e1.printStackTrace();
+            }
+          }
+          e.printStackTrace();
+        }
         if (array2.size() > 0) {
           JSONObject data = array2.optJSONObject(0);
           if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
@@ -3730,9 +3795,35 @@ public class Reportx002Dao extends ItemDao {
       // 終了番号 > 付番済番号
       // 販売コード付番管理テーブルからデータを取得し、登録を行う。
       paramData = new ArrayList<String>();
-      sqlcommand = "select SUMINO as value from FINAL table (update INAAD.SYSURICD_FU set SUMINO = SUMINO + 1 where ENDNO > SUMINO)";
+      sqlcommand2 = "update INAAD.SYSURICD_FU set SUMINO = SUMINO + 1 where ENDNO > SUMINO";
+      sqlcommand = "select SUMINO as value from INAAD.SYSURICD_FU  where ENDNO > SUMINO)";
+
       @SuppressWarnings("static-access")
       JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      try {
+        // コネクションの取得
+        con = DBConnection.getConnection(this.JNDIname);
+        con.setAutoCommit(false);
+        upCount += updateBySQL(sqlcommand2, paramData, con);
+
+        // 更新0件 --> 登録失敗
+        if (upCount < 1) {
+          throw new NullPointerException();
+        }
+        con.commit();
+        con.close();
+      } catch (Exception e) {
+        /* 接続解除 */
+        if (con != null) {
+          try {
+            con.rollback();
+            con.close();
+          } catch (SQLException e1) {
+            e1.printStackTrace();
+          }
+        }
+        e.printStackTrace();
+      }
       if (array.size() > 0) {
         JSONObject data = array.optJSONObject(0);
         if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
@@ -3752,9 +3843,9 @@ public class Reportx002Dao extends ItemDao {
       paramData = new ArrayList<String>();
       paramData.add("" + STARTNO);
       paramData.add("" + ENDNO);
-      sqlcommand =
-          "select URICD as value from FINAL table (update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current_timestamp where USEFLG = 0 and URICD = (select MIN(URICD) as URICD from INAAD.SYSURICD_AKI where URICD between ? and ? and COALESCE(USEFLG, 0) <> 1))";
-
+      sqlcommand2 =
+          "update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current_timestamp where USEFLG = 0 and URICD = (select MIN(URICD) as URICD from (SELECT * FROM INAAD.SYSURICD_AKI) T1 where URICD between ? and ? and COALESCE(USEFLG, 0) <> 1)";
+      sqlcommand = "select MIN(URICD) as VALUE from INAAD.SYSURICD_AKI where URICD between ? and ? and COALESCE(USEFLG, 0) <> 1";
       String searchCommand = DefineReport.ID_SQL_MD03100902;
       ArrayList<String> searchParamData = new ArrayList<String>();
 
@@ -3766,6 +3857,31 @@ public class Reportx002Dao extends ItemDao {
           data = new JSONObject();
           @SuppressWarnings("static-access")
           JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+          try {
+            // コネクションの取得
+            con = DBConnection.getConnection(this.JNDIname);
+            con.setAutoCommit(false);
+            upCount += updateBySQL(sqlcommand2, paramData, con);
+            Count++;
+
+            // 更新0件 --> 登録失敗
+            if (upCount < 1 || Count > 1) {
+              throw new NullPointerException();
+            }
+            con.commit();
+            con.close();
+          } catch (Exception e) {
+            /* 接続解除 */
+            if (con != null) {
+              try {
+                con.rollback();
+                con.close();
+              } catch (SQLException e1) {
+                e1.printStackTrace();
+              }
+            }
+            e.printStackTrace();
+          }
           if (array.size() > 0) {
             data = array.optJSONObject(0);
             if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
@@ -3786,6 +3902,7 @@ public class Reportx002Dao extends ItemDao {
           }
         }
       }
+
       return data;
     }
     return new JSONObject();
@@ -4571,7 +4688,11 @@ public class Reportx002Dao extends ItemDao {
           }
         }
         System.out.println(StringUtils.isEmpty(val));
-        if ((i == 11) && StringUtils.isEmpty(val)) {
+        if ((i == 1) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 11) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 9 || i == 10)) {
           values += ", current_timestamp";
@@ -4587,7 +4708,7 @@ public class Reportx002Dao extends ItemDao {
         }
         names += "," + col;
       }
-      rows += ",(" + "" + StringUtils.removeStart(values, ",") + "";
+      rows += "," + "" + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -4707,8 +4828,11 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-
-        if (i == 12 && StringUtils.isEmpty(val)) {
+        if ((i == 1) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if (i == 12 && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if (i == 10 || i == 11) {
           values += ", current_timestamp";
@@ -4813,9 +4937,19 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.CSV.getVal() == tbl.getVal()) {
       colNum += CSVCMNLayout.values().length;
     }
+    System.out.println(dataArray.size());
+    System.out.println("↑j ");
+    System.out.println(colNum);
+    System.out.println("↑i ");
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
+      if (j == 1) {
+        values += "( ";
+      } else {
+        values += ",( ";
+
+      }
       for (int i = 1; i <= colNum; i++) {
         String col = "F" + i;
         String val = dataArray.optJSONObject(j).optString(col);
@@ -4844,7 +4978,14 @@ public class Reportx002Dao extends ItemDao {
         if (TblType.TMP.getVal() == tbl.getVal()) {
           // dataArrayに追加前提
         }
-        if ((i == 12) && StringUtils.isEmpty(val)) {
+        if ((i == 1) && StringUtils.isEmpty(val)) {
+          values += " COALESCE(null,0)";
+        } else if ((i == 1) && !StringUtils.isEmpty(val)) {
+          prmData.add(val);
+          values += " ? ";
+        } else if ((i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 12 || i == 13 || i == 14) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 8 || i == 9)) {
           values += ", current_timestamp";
@@ -4856,7 +4997,9 @@ public class Reportx002Dao extends ItemDao {
         }
         names += ", " + col;
       }
+      values += ") ";
       rows += "," + StringUtils.removeStart(values, ",") + "";
+
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -4918,21 +5061,18 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,YUKO_STDT"); // F10: 有効開始日
     sbSQL.append(" ,YUKO_EDDT"); // F11: 有効終了日
     if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,RENNO"); // F2 : RENNO
-      sbSQL.append(" ,");
     }
     if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      sbSQL.append(" ,");
     }
     if (TblType.TMP.getVal() == tbl.getVal()) {
-      sbSQL.append("  SESID"); // F1 : セッションID
-      sbSQL.append(" ,");
+      sbSQL.append(" ,SESID"); // F1 : セッションID
     }
-    sbSQL.append(" )VALUES (" + values + ")");
+    sbSQL.append(" )VALUES " + values + " ");
     return sbSQL.toString();
   }
 
@@ -4987,7 +5127,9 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        if ((i == 9) && StringUtils.isEmpty(val)) {
+        if ((i == 1 || i == 2 || i == 3) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 9) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 7 || i == 8)) {
           values += ", current_timestamp";
@@ -5057,15 +5199,13 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,ADDDT"); // F7 : 登録日
     sbSQL.append(" ,UPDDT"); // F8 : 更新日
     if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // SEQ
+      sbSQL.append(" ,SEQ"); // SEQ
       sbSQL.append(" ,RENNO"); // RENNO
-      sbSQL.append(" ,");
     }
     if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      sbSQL.append(" ,");
     }
     sbSQL.append(" )VALUES (" + values + ")");
     return sbSQL.toString();
@@ -5121,7 +5261,9 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        if ((i == 10) && StringUtils.isEmpty(val)) {
+        if ((i == 1 || i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 10) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 8 || i == 9)) {
           values += ", current_timestamp";
@@ -5181,7 +5323,7 @@ public class Reportx002Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO " + szTable + " as T");
+    sbSQL.append("REPLACE INTO " + szTable + " ( ");
     sbSQL.append("  SHNCD"); // F1 : 商品コード
     sbSQL.append(" ,TENGPCD"); // F2 : 店グループ
     sbSQL.append(" ,YOYAKUDT"); // F3 : マスタ変更予定日
@@ -5192,15 +5334,13 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,ADDDT"); // F8 : 登録日
     sbSQL.append(" ,UPDDT"); // F9 : 更新日
     if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // SEQ
+      sbSQL.append(" ,SEQ"); // SEQ
       sbSQL.append(" ,RENNO"); // RENNO
-      sbSQL.append(" ,");
     }
     if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      sbSQL.append(" ,");
     }
     sbSQL.append(" )VALUES (" + values + ")");
     return sbSQL.toString();
@@ -5256,7 +5396,9 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        if ((i == 11) && StringUtils.isEmpty(val)) {
+        if ((i == 1 || i == 2 || i == 3) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 11 || i == 12 || i == 13) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 8 || i == 9)) {
           values += ", current_timestamp";
@@ -5328,15 +5470,13 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,UPDDT"); // F9 : 更新日
     sbSQL.append(" ,SRCCD"); // F10: ソースコード
     if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // SEQ
+      sbSQL.append(" ,SEQ"); // SEQ
       sbSQL.append(" ,RENNO"); // RENNO
-      sbSQL.append(" ,");
     }
     if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      sbSQL.append(" ,");
     }
     sbSQL.append(" )VALUES (" + values + ")");
     return sbSQL.toString();
@@ -5427,7 +5567,7 @@ public class Reportx002Dao extends ItemDao {
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "", names = "", rows = "";
-    int colNum = MSTGRPLayout.values().length; // テーブル列数
+    int colNum = 8; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
       colNum += 2;
     }
@@ -5460,7 +5600,9 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        if ((i == 9) && StringUtils.isEmpty(val)) {
+        if ((i == 1 || i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 9 || i == 10) && StringUtils.isEmpty(val) && (TblType.JNL.getVal() == tbl.getVal() || TblType.CSV.getVal() == tbl.getVal())) {
           values += ", COALESCE(null,0)";
         } else if ((i == 7 || i == 8)) {
           values += ", current_timestamp";
@@ -5530,15 +5672,13 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,ADDDT"); // F7 : 登録日
     sbSQL.append(" ,UPDDT"); // F8 : 更新日
     if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // SEQ
+      sbSQL.append(" ,SEQ"); // SEQ
       sbSQL.append(" ,RENNO"); // RENNO
-      sbSQL.append(" ,");
     }
     if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      sbSQL.append(" ,");
     }
     sbSQL.append(" )VALUES (" + values + ")");
     return sbSQL.toString();
@@ -5594,7 +5734,9 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        if ((i == 9) && StringUtils.isEmpty(val)) {
+        if ((i == 1 || i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 9 || i == 10 || i == 11) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 7 || i == 8)) {
           values += ", current_timestamp";
@@ -5610,7 +5752,7 @@ public class Reportx002Dao extends ItemDao {
         }
         names += ", " + col;
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += "," + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -5664,15 +5806,13 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,ADDDT"); // F7 : 登録日
     sbSQL.append(" ,UPDDT"); // F8 : 更新日
     if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,RENNO"); // F2 : RENNO
-      sbSQL.append(" ,");
     }
     if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      sbSQL.append(" ,");
     }
     sbSQL.append(" )VALUES (" + values + ")");
     return sbSQL.toString();
@@ -5876,21 +6016,16 @@ public class Reportx002Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<String>();
 
     String szTable = "INAAD.SYSURICD_FU";
-    String szWhere = "T.ID = RE.ID";
-
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + szTable + " as T");
-    sbSQL.append(" using (");
-    sbSQL.append("  select min(ID) as ID from " + szTable);
-    sbSQL.append(" ) as RE on (" + szWhere + ") ");
-    if (SqlType.UPD.getVal() == sql.getVal()) {
-      sbSQL.append(" when matched then ");
-      sbSQL.append(" update set");
-      sbSQL.append("  SUMINO = case when SUMINO+1 <=ENDNO then SUMINO+1 else SUMINO end"); // F4 : 付番済番号
-      sbSQL.append(" ,UPDDT= current timestamp"); // F5 : 更新日
+    sbSQL.append("REPLACE INTO " + szTable + " (");
+    sbSQL.append("  SUMINO,UPDDT ");
+    sbSQL.append(" ) VALUE ( ");
+    sbSQL.append("  case when SUMINO+1 <=ENDNO then SUMINO+1 else SUMINO end"); // F4 : 付番済番号
+    sbSQL.append(" , current_timestamp"); // F5 : 更新日
+    sbSQL.append(") ");
 
-    }
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -5968,7 +6103,6 @@ public class Reportx002Dao extends ItemDao {
 
     sbSQL.append("   URICD"); // F1 : 販売コード
     sbSQL.append(" , USEFLG"); // F2 : 使用済フラグ
-    sbSQL.append(" , UPDDT"); // F3 : 更新日
 
     sbSQL.append(" )VALUES (" + values + ")");
 

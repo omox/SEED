@@ -1207,7 +1207,7 @@ public class ItemDao implements ItemInterface {
   public boolean checkExistUpddt(String targetTable) {
     // 新規の場合
     ItemList iL = new ItemList();
-    String sqlcommand = "select NAME from SYSIBM.SYSCOLUMNS where TBCREATOR = ? and TBNAME = ? order by COLNO";
+    String sqlcommand = "select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = ? and TABLE_NAME = ? order by COLNO";
     ArrayList<String> targetParam = new ArrayList<String>();
     String[] tableInfo = targetTable.split("\\.");
 
