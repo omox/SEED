@@ -5420,7 +5420,7 @@ public class DefineReport {
   public final static String ID_SQL_MOYO = DefineReport.ID_SQL_CMN_WEEK
       + "select MOYKN as F2,DATE_FORMAT(DATE_FORMAT(NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNSTDT, '%Y%m%d')))    ||'～'||    DATE_FORMAT(DATE_FORMAT(NNEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNEDDT, '%Y%m%d'))) as F3, NNSTDT as F4, NNEDDT as F5 from INATK.TOKMOYCD where MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
   public final static String ID_SQL_MOYSCD2 = DefineReport.ID_SQL_CMN_WEEK
-      + "select MOYKN as F2,DATE_FORMAT(DATE_FORMAT(NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(NNSTDT, '%Y%m%d')))    ||'～'||    DATE_FORMAT(DATE_FORMAT(NNEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNEDDT, '%Y%m%d'))) as F3"
+      + "select MOYKN as F2,DATE_FORMAT(DATE_FORMAT(NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNSTDT, '%Y%m%d')))    ||'～'||    DATE_FORMAT(DATE_FORMAT(NNEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(NNEDDT, '%Y%m%d'))) as F3"
       + ",DATE_FORMAT(DATE_FORMAT(HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(HBSTDT, '%Y%m%d'))) as F4"
       + ",DATE_FORMAT(DATE_FORMAT(HBEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(HBEDDT, '%Y%m%d'))) as F5"
       + ",DATE_FORMAT(DATE_FORMAT(PLUSDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(PLUSDDT, '%Y%m%d'))) as F6,PLUSFLG as F7, PLUSDDT as F8"
