@@ -9191,7 +9191,7 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOK_CMN_BMN_DEL(String userId, JSONObject data, SqlType sql, boolean isTOKTG) {
     JSONObject result = new JSONObject();
 
-    String szTableBmn = isTOKTG ? "INATK.TOKTG_BMN" : "INATK.TOKSP_BMN";// update
+    String szTableBmn = isTOKTG ? "INATK.TOKTG_BMN" : "INATK.TOKSP_BMN";
     String szTableShn = isTOKTG ? "INATK.TOKTG_SHN" : "INATK.TOKSP_SHN";
 
     // 更新情報
@@ -9199,25 +9199,31 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + szTableBmn + " as T");
-    sbSQL.append(" using (select ");
-    sbSQL.append("   T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN,T1.BMNCD,sum(case when T1.KANRINO = " + data.optString(TOK_CMNLayout.KANRINO.getId()) + " then 0 else 1 end) as CNT");
-    sbSQL.append("  from " + szTableShn + " T1 where ");
-    sbSQL.append("   T1.MOYSKBN  = " + data.optString(TOK_CMNLayout.MOYSKBN.getId()) + "");
-    sbSQL.append("   and T1.MOYSSTDT = " + data.optString(TOK_CMNLayout.MOYSSTDT.getId()) + "");
-    sbSQL.append("   and T1.MOYSRBAN = " + data.optString(TOK_CMNLayout.MOYSRBAN.getId()) + "");
-    sbSQL.append("   and T1.BMNCD    = " + data.optString(TOK_CMNLayout.BMNCD.getId()) + "");
-    sbSQL.append("  group by T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN,T1.BMNCD");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN and T.BMNCD = RE.BMNCD and CNT = 0");
-    sbSQL.append(")");
-    sbSQL.append(" when matched then ");
-    sbSQL.append(" update set");
-    sbSQL.append("  UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal()); // 更新区分
-    sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
-    sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
-    // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-    sbSQL.append(" ,UPDDT=current timestamp"); // 更新日
+    sbSQL.append("with VAL as (  ");
+    sbSQL.append("select ");
+    sbSQL.append("MOYSKBN,MOYSSTDT,MOYSRBAN,BMNCD ");
+    sbSQL.append(",sum(case when KANRINO = " + data.optString(TOK_CMNLayout.KANRINO.getId()) + " then 0 else 1 end) as CNT ");
+    sbSQL.append("from " + szTableShn + "  where ");
+    sbSQL.append("MOYSKBN  = " + data.optString(TOK_CMNLayout.MOYSKBN.getId()) + " ");
+    sbSQL.append("and MOYSSTDT = " + data.optString(TOK_CMNLayout.MOYSSTDT.getId()) + " ");
+    sbSQL.append("and MOYSRBAN = " + data.optString(TOK_CMNLayout.MOYSRBAN.getId()) + " ");
+    sbSQL.append("and BMNCD    = " + data.optString(TOK_CMNLayout.BMNCD.getId()) + " ");
+    sbSQL.append("group by MOYSKBN,MOYSSTDT,MOYSRBAN,BMNCD ) ");
+
+    sbSQL.append("update " + szTableBmn + " as MT ");
+    sbSQL.append(",VAL as T1 ");
+    sbSQL.append("set ");
+    sbSQL.append("UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + " "); // 更新区分
+    sbSQL.append(",SENDFLG = " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信フラグ
+    sbSQL.append(",OPERATOR= '" + userId + "' "); // オペレータ
+    sbSQL.append(",UPDDT = current_timestamp "); // 更新日
+    sbSQL.append("where ");
+    sbSQL.append("MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and T1.CNT = 0 ");
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -9535,43 +9541,38 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOK_CMN_SHN_DEL(String userId, JSONObject data, SqlType sql, boolean isTOKTG) {
     JSONObject result = new JSONObject();
 
-    TOKTG_SHNLayout.UPDKBN.getId();
-    TOKTG_SHNLayout.SENDFLG.getId();
-    TOKTG_SHNLayout.OPERATOR.getId();
-    TOKTG_SHNLayout.ADDDT.getId();
-    TOKTG_SHNLayout.UPDDT.getId();
-
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
 
     String szTableShn = isTOKTG ? "INATK.TOKTG_SHN" : "INATK.TOKSP_SHN";
 
-
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO " + szTableShn + " ");
-    sbSQL.append("( ");
+    sbSQL.append("with VAL as ( ");
+    sbSQL.append("select ");
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append(itm.getCol());
+      sbSQL.append("cast(" + data.optString(itm.getId()) + " as " + itm.getTyp() + ") as " + itm.getCol() + " ");
     }
-    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
-    sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO ");
-    sbSQL.append(" )");
+    sbSQL.append(") ");
+    sbSQL.append("update " + szTableShn + " as MT ");
+    sbSQL.append(",VAL as T1 ");
+    sbSQL.append("set ");
     if (SqlType.DEL.getVal() == sql.getVal()) {
-      sbSQL.append(" when matched then ");
-      sbSQL.append(" update set");
-      sbSQL.append("  UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal()); // 更新区分
-      sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
-      sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
-      // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-      sbSQL.append(" ,UPDDT=current timestamp"); // 更新日
+      sbSQL.append("UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + " "); // 更新区分
+      sbSQL.append(",SENDFLG = " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信フラグ
+      sbSQL.append(",OPERATOR = '" + userId + "' "); // オペレータ
+      sbSQL.append(",UPDDT = current_timestamp "); // 更新日
     }
+    sbSQL.append("where ");
+    sbSQL.append("MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and MT.KANRINO = T1.KANRINO ");
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -10205,7 +10206,7 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + szTable + " as T");
+    sbSQL.append("merge into " + szTable + " as T ");
     sbSQL.append(" using (select ");
     // キー情報はロックのため後で追加する
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
@@ -10247,21 +10248,31 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + szTable + " as T");
-    sbSQL.append(" using (select ");
+    sbSQL.append("with VAL as ( ");
+    sbSQL.append("select ");
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append("cast(" + data.optString(itm.getId()) + " as " + itm.getTyp() + ") as " + itm.getCol());
+      sbSQL.append("cast( " + data.optString(itm.getId()) + " as " + itm.getTyp() + ") as " + itm.getCol() + " ");
     }
-    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
-    sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO");
-    sbSQL.append(" )");
-    sbSQL.append(" when matched then ");
-    sbSQL.append(" delete");
+    sbSQL.append(") ");
+
+    sbSQL.append("delete MT from " + szTable + " as MT ");
+    sbSQL.append("left join VAL as T1  ");
+    sbSQL.append("on ");
+    sbSQL.append("MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and MT.KANRINO = T1.KANRINO ");
+    sbSQL.append("where ");
+    sbSQL.append("MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and MT.KANRINO = T1.KANRINO ");
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -10569,19 +10580,21 @@ public class ReportTG016Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     String[] notTarget = new String[] {TOK_CMN_SHNNNDTLayout.OPERATOR.getId(), TOK_CMN_SHNNNDTLayout.ADDDT.getId(), TOK_CMN_SHNNNDTLayout.UPDDT.getId()};
+    String[] notwhere = new String[] {TOK_CMN_SHNNNDTLayout.MOYCD_ARR.getId(), TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getId(), TOK_CMN_SHNNNDTLayout.OPERATOR.getId(), TOK_CMN_SHNNNDTLayout.ADDDT.getId(),
+        TOK_CMN_SHNNNDTLayout.UPDDT.getId()};
+
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
-    String values = "", names = "", rows = "";
+    String values = "", rows = "";
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
-      names = "";
       for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
         if (ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
 
-        String col = itm.getCol();
+        itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
         if (itm.getId().equals(TOK_CMN_SHNNNDTLayout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getId())) {
           val = dataArray.optJSONObject(j).optString(itm.getId());
@@ -10592,69 +10605,47 @@ public class ReportTG016Dao extends ItemDao {
           prmData.add(val);
           values += ", cast(? as char(" + MessageUtility.getDefByteLen(val) + "))";
         }
-        names += ", " + col;
       }
+      values += ",'" + userId + "' ";
+      values += ",(select * from (select case when count(*) = 0 or ifnull(ADDDT,'0') = 0 then current_timestamp ";
+      values += "else ADDDT end as ADDDT ";
+      values += "from " + szTable + " ";
+
+      for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+        if (ArrayUtils.contains(notwhere, itm.getId())) {
+          continue;
+        }
+        String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
+        if (itm.getNo() == 1) {
+          values += "where ";
+        } else {
+          values += "and ";
+        }
+        values += itm.getCol() + " = ? ";
+        prmData.add(val);
+      }
+
+      values += ") as T1 ) ";
+      values += ",current_timestamp ";
+
       rows += ",(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
-    names = StringUtils.removeStart(names, ",");
 
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + szTable + " as T");
-    sbSQL.append(" using (select ");
+    sbSQL.append("replace into " + szTable + " ( ");
     for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      if (itm.getNo() == 1) {
-        sbSQL.append("cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
-      } else {
-        sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
       }
+      sbSQL.append(itm.getCol() + " ");
     }
-    sbSQL.append("  from (values" + rows + ") as T1(" + names + ")");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.SHNCD = RE.SHNCD and T.BINKBN = RE.BINKBN and T.NNDT = RE.NNDT ");
-    sbSQL.append(" )");
-    if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when not matched then ");
-      sbSQL.append(" insert (");
-      for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append(itm.getCol());
-      }
-      sbSQL.append(")values(");
-      for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
-        if (ArrayUtils.contains(notTarget, itm.getId())) {
-          continue;
-        } // パラメータ不要
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append("RE." + itm.getCol());
-      }
-      sbSQL.append(" ,'" + userId + "'"); // オペレータ
-      sbSQL.append(" ,current timestamp"); // 登録日
-      sbSQL.append(" ,current timestamp"); // 更新日
-      sbSQL.append(")");
-    }
-    if (SqlType.UPD.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when matched then");
-      sbSQL.append(" update set");
-      sbSQL.append(" MOYCD_ARR=RE.MOYCD_ARR"); // F4 : 催しコード配列
-      sbSQL.append(" ,KANRINO_ARR=RE.KANRINO_ARR"); // F5 : 管理番号配列
-      sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
-      // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-      sbSQL.append(" ,UPDDT=current timestamp"); // 更新日
-      // sbSQL.append(" ,bat_ctlflg01=RE.bat_ctlflg01"); // F20: batch用制御フラグ01
-    }
+    sbSQL.append(") values" + rows + " ");
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
-
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
     lblList.add("全特(アンケート無)_商品納入日");
@@ -10889,8 +10880,7 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + szTable + " as T");
-    sbSQL.append(" using (");
+    sbSQL.append("with VAL as  (");
     sbSQL.append("  select T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN,T1.BMNCD,sum(T1.CNT) as CNT");
     sbSQL.append("  from (");
     for (int j = 0; j < 2; j++) {
@@ -10913,11 +10903,22 @@ public class ReportTG016Dao extends ItemDao {
     }
     sbSQL.append("  ) T1");
     sbSQL.append("  group by T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN,T1.BMNCD");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN and T.BMNCD = RE.BMNCD and CNT = 0");
-    sbSQL.append(")");
-    sbSQL.append(" when matched then ");
-    sbSQL.append(" delete");
+    sbSQL.append(" ) ");
+    sbSQL.append("delete MT from " + szTable + " as MT ");
+    sbSQL.append("left join VAL as T1 ");
+    sbSQL.append("on ");
+    sbSQL.append("MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and T1.CNT = 0 ");
+    sbSQL.append("where ");
+    sbSQL.append("MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and T1.CNT = 0 ");
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
