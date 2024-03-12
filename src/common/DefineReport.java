@@ -5378,8 +5378,8 @@ public class DefineReport {
   // SQL：処理日付 TODO:本当に取り方これでいいのか確認？
   public final static String ID_SQLSHORIDT = "select SHORIDT as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
   public final static String ID_SQLSHORIDT2 = "select SUBSTR(SHORIDT,3) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
-  public final static String ID_SQLSHORIDT3 =
-      "select SHORIDT as " + VAL + "2,TO_CHAR(TO_DATE(SHORIDT,'yyyymmdd') +1 year,'yyyymmdd') as " + VAL + "3 from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
+  public final static String ID_SQLSHORIDT3 = "select SHORIDT as " + VAL + "2,DATE_FORMAT(DATE_FORMAT(SHORIDT,'%Y%m%d') + INTERVAL 1 YEAR,'%Y%m%d') as " + VAL
+      + "3 from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
 
   // SQL：処理日付曜日
   public final static String ID_SQLSHORIDTWEEK = "select DAYOFWEEK(TO_DATE(SHORIDT,'YYYYMMDD')) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
@@ -5443,9 +5443,9 @@ public class DefineReport {
   /** 共通（INAAD.MCALTT） */
   // SQL：期間(月)TO
   public final static String ID_SQL_SHUNO = " select RIGHT('0000'||T1.SHUNO,4) as " + VAL
-      + ", RIGHT('0000'||T1.SHUNO,4)||'-'||TO_CHAR(TO_DATE(T1.STARTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STARTDT, 'YYYYMMDD')))"
-      + "||'～'||TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) as " + TXT + "@C" + " from INAAD.SYSSHUNO T1"
-      + " @T";
+      + ", RIGHT('0000'||T1.SHUNO,4)||'-'||DATE_FORMAT(DATE_FORMAT(T1.STARTDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.STARTDT, '%Y%m%d')))"
+      + "||'～'||DATE_FORMAT(DATE_FORMAT(T1.ENDDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.ENDDT, '%Y%m%d'))) as " + TXT + "@C"
+      + " from INAAD.SYSSHUNO T1" + " @T";
   public final static String ID_SQL_TOKSHUNO = " select RIGHT('0000'||T2.SHUNO,4) as " + VAL
       + ", CASE WHEN T1.STARTDT IS NULL AND T1.ENDDT IS NULL THEN RIGHT ('0000' || T2.SHUNO, 4) || '-' ELSE RIGHT('0000'||T2.SHUNO,4)||'-'||TO_CHAR(TO_DATE(T1.STARTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STARTDT, 'YYYYMMDD')))"
       + "||'～'||TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) END as " + TXT + "@C"
