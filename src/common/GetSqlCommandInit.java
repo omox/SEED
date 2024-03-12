@@ -1973,7 +1973,7 @@ public class GetSqlCommandInit {
         for (int i = 0; i < prm.size(); i++) {
           paramData.add(prm.optString(i));
         }
-        sqlcommand += "select T2.* from T1 left outer join (" + inf.optString("SQL") + ") T2 on T1.IDX = T2.IDX order by T2.MOYSKBN,T2.MOYSSTDT,T2.MOYSSTDT";
+        sqlcommand += "select T2.* from T1 left outer join (" + inf.optString("SQL") + ") T2 on T1.IDX = T2.IDX order by T2.MOYSKBN DESC,T2.MOYSSTDT,T2.MOYSSTDT";
       } else {
         sqlcommand += " select IDX from T1";
       }
