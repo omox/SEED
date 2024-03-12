@@ -3796,7 +3796,7 @@ public class Reportx002Dao extends ItemDao {
       // 販売コード付番管理テーブルからデータを取得し、登録を行う。
       paramData = new ArrayList<String>();
       sqlcommand2 = "update INAAD.SYSURICD_FU set SUMINO = SUMINO + 1 where ENDNO > SUMINO";
-      sqlcommand = "select SUMINO as value from INAAD.SYSURICD_FU  where ENDNO > SUMINO)";
+      sqlcommand = "select SUMINO as VALUE from INAAD.SYSURICD_FU  where ENDNO > SUMINO)";
 
       @SuppressWarnings("static-access")
       JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
@@ -4287,14 +4287,13 @@ public class Reportx002Dao extends ItemDao {
           val = csvshn_add_data[i - mstshn_col_num - 1];
         }
       }
-
       if (TblType.CSV.getVal() == tbl.getVal() && (i == 120) && StringUtils.isEmpty(val)) {
         values += ", COALESCE(null,0)";
       } else if (TblType.JNL.getVal() == tbl.getVal() && (i == 122) && StringUtils.isEmpty(val)) {
         values += ", COALESCE(null,0)";
-      } else if (TblType.JNL.getVal() == tbl.getVal() && (i == 123 || i == 114 || i == 115)) {
+      } else if (TblType.CSV.getVal() == tbl.getVal() && (i == 113)) {
         values += ", current_timestamp";
-      } else if (TblType.CSV.getVal() == tbl.getVal() && i == 113) {
+      } else if (TblType.CSV.getVal() != tbl.getVal() && (i == 123 || i == 114 || i == 115)) {
         values += ", current_timestamp";
       } else if (StringUtils.isEmpty(val)) {
         values += ", null";
@@ -4664,6 +4663,12 @@ public class Reportx002Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
+      if (j == 1) {
+        values += "( ";
+      } else {
+        values += ",( ";
+
+      }
       for (int i = 1; i <= colNum; i++) {
         String col = "F" + i;
         String val = dataArray.optJSONObject(j).optString(col);
@@ -4687,11 +4692,16 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        System.out.println(StringUtils.isEmpty(val));
         if ((i == 1) && StringUtils.isEmpty(val)) {
-          values += ", COALESCE(null,0)";
+          values += " COALESCE(null,0)";
+        } else if ((i == 1) && !StringUtils.isEmpty(val)) {
+          prmData.add(val);
+          values += " ? ";
         } else if ((i == 2) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
+        } else if ((i == 3) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
+          values += ", COALESCE(null,0)";
+
         } else if ((i == 11) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 9 || i == 10)) {
@@ -4708,6 +4718,7 @@ public class Reportx002Dao extends ItemDao {
         }
         names += "," + col;
       }
+      values += ") ";
       rows += "," + "" + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
@@ -4765,17 +4776,15 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,ADDDT"); // F9 : 登録日
     sbSQL.append(" ,UPDDT"); // F10: 更新日
     if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // SEQ
+      sbSQL.append(" ,SEQ"); // SEQ
       sbSQL.append(" ,RENNO"); // RENNO
-      sbSQL.append(" ,");
     }
     if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      sbSQL.append(" ,");
     }
-    sbSQL.append(" )VALUES (" + values + ")");
+    sbSQL.append(" )VALUES " + values + "");
 
     return sbSQL.toString();
   }
@@ -4805,6 +4814,12 @@ public class Reportx002Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
+      if (j == 1) {
+        values += "( ";
+      } else {
+        values += ",( ";
+
+      }
       for (int i = 1; i <= colNum; i++) {
         String col = "F" + i;
         String val = dataArray.optJSONObject(j).optString(col);
@@ -4829,8 +4844,13 @@ public class Reportx002Dao extends ItemDao {
           }
         }
         if ((i == 1) && StringUtils.isEmpty(val)) {
-          values += ", COALESCE(null,0)";
+          values += " COALESCE(null,0)";
+        } else if ((i == 1) && !StringUtils.isEmpty(val)) {
+          prmData.add(val);
+          values += " ? ";
         } else if ((i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 3) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
           values += ", COALESCE(null,0)";
         } else if (i == 12 && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
@@ -4844,6 +4864,7 @@ public class Reportx002Dao extends ItemDao {
         }
         names += ", " + col;
       }
+      values += ") ";
       rows += "," + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
@@ -4909,7 +4930,7 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
     }
-    sbSQL.append(" )VALUES (" + values + ")");
+    sbSQL.append(" )VALUES " + values + "");
     return sbSQL.toString();
   }
 
@@ -4937,10 +4958,6 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.CSV.getVal() == tbl.getVal()) {
       colNum += CSVCMNLayout.values().length;
     }
-    System.out.println(dataArray.size());
-    System.out.println("↑j ");
-    System.out.println(colNum);
-    System.out.println("↑i ");
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
@@ -4984,6 +5001,8 @@ public class Reportx002Dao extends ItemDao {
           prmData.add(val);
           values += " ? ";
         } else if ((i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 3) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
           values += ", COALESCE(null,0)";
         } else if ((i == 12 || i == 13 || i == 14) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
@@ -5129,6 +5148,8 @@ public class Reportx002Dao extends ItemDao {
         }
         if ((i == 1 || i == 2 || i == 3) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
+        } else if ((i == 4) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
+          values += ", COALESCE(null,0)";
         } else if ((i == 9) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 7 || i == 8)) {
@@ -5263,6 +5284,8 @@ public class Reportx002Dao extends ItemDao {
         }
         if ((i == 1 || i == 2) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
+        } else if ((i == 3) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
+          values += ", COALESCE(null,0)";
         } else if ((i == 10) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
         } else if ((i == 8 || i == 9)) {
@@ -5373,6 +5396,12 @@ public class Reportx002Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
+      if (j == 1) {
+        values += "( ";
+      } else {
+        values += ",( ";
+
+      }
       for (int i = 1; i <= colNum; i++) {
         String col = "F" + i;
         String val = dataArray.optJSONObject(j).optString(col);
@@ -5396,7 +5425,14 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        if ((i == 1 || i == 2 || i == 3) && StringUtils.isEmpty(val)) {
+        if ((i == 1) && StringUtils.isEmpty(val)) {
+          values += " COALESCE(null,0)";
+        } else if ((i == 1) && !StringUtils.isEmpty(val)) {
+          prmData.add(val);
+          values += " ? ";
+        } else if ((i == 2 || i == 3) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 4) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
           values += ", COALESCE(null,0)";
         } else if ((i == 11 || i == 12 || i == 13) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
@@ -5414,6 +5450,7 @@ public class Reportx002Dao extends ItemDao {
         }
         names += ", " + col;
       }
+      values += ") ";
       rows += "," + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
@@ -5478,7 +5515,7 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
       sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
     }
-    sbSQL.append(" )VALUES (" + values + ")");
+    sbSQL.append(" )VALUES " + values + "");
     return sbSQL.toString();
   }
 
@@ -5567,7 +5604,9 @@ public class Reportx002Dao extends ItemDao {
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "", names = "", rows = "";
-    int colNum = 8; // テーブル列数
+    int colNum = MSTGRPLayout.values().length; // テーブル列数
+    System.out.println(MSTGRPLayout.values());
+    System.out.println(MSTGRPLayout.values().length);
     if (TblType.JNL.getVal() == tbl.getVal()) {
       colNum += 2;
     }
@@ -5601,6 +5640,8 @@ public class Reportx002Dao extends ItemDao {
           }
         }
         if ((i == 1 || i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 3) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
           values += ", COALESCE(null,0)";
         } else if ((i == 9 || i == 10) && StringUtils.isEmpty(val) && (TblType.JNL.getVal() == tbl.getVal() || TblType.CSV.getVal() == tbl.getVal())) {
           values += ", COALESCE(null,0)";
@@ -5735,6 +5776,8 @@ public class Reportx002Dao extends ItemDao {
           }
         }
         if ((i == 1 || i == 2) && StringUtils.isEmpty(val)) {
+          values += ", COALESCE(null,0)";
+        } else if ((i == 3) && StringUtils.isEmpty(val) && TblType.YYK.getVal() == tbl.getVal()) {
           values += ", COALESCE(null,0)";
         } else if ((i == 9 || i == 10 || i == 11) && StringUtils.isEmpty(val)) {
           values += ", COALESCE(null,0)";
