@@ -4293,7 +4293,9 @@ public class Reportx002Dao extends ItemDao {
         values += ", COALESCE(null,0)";
       } else if (TblType.CSV.getVal() == tbl.getVal() && (i == 113)) {
         values += ", current_timestamp";
-      } else if (TblType.CSV.getVal() != tbl.getVal() && (i == 123 || i == 114 || i == 115)) {
+      } else if (TblType.CSV.getVal() != tbl.getVal() && i == 114) {
+        values += ", current_timestamp";
+      } else if (TblType.CSV.getVal() != tbl.getVal() && (i == 123 || i == 115)) {
         values += ", current_timestamp";
       } else if (StringUtils.isEmpty(val)) {
         values += ", null";
@@ -5604,9 +5606,7 @@ public class Reportx002Dao extends ItemDao {
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "", names = "", rows = "";
-    int colNum = MSTGRPLayout.values().length; // テーブル列数
-    System.out.println(MSTGRPLayout.values());
-    System.out.println(MSTGRPLayout.values().length);
+    int colNum = 8; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
       colNum += 2;
     }
