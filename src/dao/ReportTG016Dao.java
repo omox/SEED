@@ -131,6 +131,7 @@ public class ReportTG016Dao extends ItemDao {
 
     JSONObject objset = this.check(map, userInfo, sysdate);
     JSONArray msgList = objset.optJSONArray("MSG");
+    System.out.print("msglist : " + msgList + "\n");
     if (msgList.size() == 0) {
       // 更新処理
       try {
@@ -2206,7 +2207,7 @@ public class ReportTG016Dao extends ItemDao {
         this.createSqlTOKTG_SHN(userId, data, SqlType.MRG);
         // 全店特売（アンケート有）_対象除外店
         if (dataArrayTJTEN.size() > 0) {
-          this.createSqlTOK_CMN_DELINS("INATK.TOKTG_TJTEN");
+          this.createSqlTOK_CMN_DELINS(dataArrayTJTEN, "INATK.TOKTG_TJTEN");
           this.createSqlTOK_CMN_TJTEN(userId, dataArrayTJTEN, SqlType.MRG, isTOKTG);
         }
         // 全店特売（アンケート有）_納入日（店変更フラグ配列に400店分1:更新をセット）
@@ -2222,7 +2223,7 @@ public class ReportTG016Dao extends ItemDao {
         this.createSqlTOKSP_SHN(userId, data, SqlType.MRG);
         // 全店特売（アンケート無）_対象除外店
         if (dataArrayTJTEN.size() > 0) {
-          this.createSqlTOK_CMN_DELINS("INATK.TOKSP_TJTEN");
+          this.createSqlTOK_CMN_DELINS(dataArrayTJTEN, "INATK.TOKSP_TJTEN");
           this.createSqlTOK_CMN_TJTEN(userId, dataArrayTJTEN, SqlType.MRG, isTOKTG);
         }
         // 全店特売（アンケート無）_納入日
@@ -10222,31 +10223,45 @@ public class ReportTG016Dao extends ItemDao {
    *
    * @throws Exception
    */
-  private JSONObject createSqlTOK_CMN_DELINS(String szTable) {
+  private JSONObject createSqlTOK_CMN_DELINS(JSONArray data, String szTable) {
     JSONObject result = new JSONObject();
+    String values = "", rows = "";
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
 
+    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+      String val = data.optJSONObject(0).optString(itm.getId());
+      if (StringUtils.isEmpty(val)) {
+        values += ",null";
+      } else {
+        values += ",cast( ? as SIGNED) as " + itm.getCol();
+        prmData.add(val);
+      }
+    }
+    rows = StringUtils.removeStart(values, ",");
+
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + szTable + " as T ");
-    sbSQL.append(" using (select ");
-    // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
-      if (itm.getNo() > 1) {
-        sbSQL.append(",");
-      }
-      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
-    }
-    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
-    sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO");
-    sbSQL.append(" )");
-    sbSQL.append(" when matched then ");
-    sbSQL.append(" delete");
+    sbSQL.append("with VAL as ( ");
+    sbSQL.append("select " + rows + " ) ");
+    sbSQL.append("delete MT ");
+    sbSQL.append("from " + szTable + " as MT ");
+    sbSQL.append("left join VAL as T1 ");
+    sbSQL.append("on MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and MT.KANRINO = T1.KANRINO ");
+    sbSQL.append("where ");
+    sbSQL.append("MT.MOYSKBN = T1.MOYSKBN ");
+    sbSQL.append("and MT.MOYSSTDT = T1.MOYSSTDT ");
+    sbSQL.append("and MT.MOYSRBAN = T1.MOYSRBAN ");
+    sbSQL.append("and MT.BMNCD = T1.BMNCD ");
+    sbSQL.append("and MT.KANRINO = T1.KANRINO ");
+
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
