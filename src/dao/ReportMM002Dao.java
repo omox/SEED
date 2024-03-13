@@ -155,9 +155,7 @@ public class ReportMM002Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" select");
     sbSQL.append(" right('000'||" + szTencd + ", 3) as F1"); // F1 : 店コード
-    // sbSQL.append(" ,T1.MOYSKBN || ,T1.MOYSSTDT || ,T1.MOYSRBAN AS F2 "); // F2 : 催しコード
     sbSQL.append(" ,right('0'||T1.MOYSKBN, 1)||'-'||right('000000'||T1.MOYSSTDT, 6)||'-'||right('000'||T1.MOYSRBAN, 3) as F2"); // F2 : 催しコード
-    // sbSQL.append(" ,"+szBmncd+" as F3"); // F3 : 部門コード
     sbSQL.append(" ,right('00'||" + szBmncd + ", 2) as F3"); // F3 : 部門コード
     sbSQL.append(" from INATK.TOKMM T1");
     sbSQL.append(" where T1.MOYSKBN=" + StringUtils.substring(szMoyscd, 0, 1));
