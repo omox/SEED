@@ -581,7 +581,7 @@ public class GetSqlCommandChange {
           paramData.add(rankNoDel);
 
           sqlSelect += "||'_'||DEL.TENRANK_ARR ";
-          sqlTableDel = ",(" + sqlTableDel + ") AS DEL WHERE ADD.BMNCD=DEL.BMNCD ";
+          sqlTableDel = ",(" + sqlTableDel + ") AS DEL WHERE ADD1.BMNCD=DEL.BMNCD ";
         }
       }
 
