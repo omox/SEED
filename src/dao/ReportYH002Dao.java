@@ -587,7 +587,6 @@ public class ReportYH002Dao extends ItemDao {
       if (!dataT.isEmpty()) {
         for (int k = 1; k <= maxField; k++) {
           String key = "F" + String.valueOf(k);
-          System.out.println(k);
           if (k == 1) {
             // values += String.valueOf(0 + 1);
             // 配送グループコードを追加
