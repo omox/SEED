@@ -92,7 +92,7 @@ public class ReportBM015Dao extends ItemDao {
     String szTenRank_Arr = getMap().get("TENRANK_ARR");
 
     // 重複チェック用
-    Set<Integer> tencds = new TreeSet<Integer>();
+    Set<Integer> tencds = new TreeSet<>();
     if (!StringUtils.isEmpty(szTenRank_Arr)) {
       tencds = getTenCdAddArr(szTenRank_Arr, szTjTenAdd, szTjTenDel);
     } else {
@@ -103,11 +103,17 @@ public class ReportBM015Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     sbSQL = new StringBuffer();
     sbSQL.append("SELECT  ");
-    sbSQL.append("MAX(ROWNUMBER() OVER ()) OVER () AS TENPOSU ");
+    sbSQL.append("MAX(M.TENPOSU) OVER () AS TENPOSU ");
+    sbSQL.append(",M.TENCD ");
+    sbSQL.append(",M.TENKN ");
+    sbSQL.append(",M.AREACD ");
+    sbSQL.append("FROM( ");
+    sbSQL.append("SELECT  ");
+    sbSQL.append("ROW_NUMBER() OVER () AS TENPOSU ");
     sbSQL.append(",T.TENCD ");
     sbSQL.append(",T.TENKN ");
     sbSQL.append(",B.AREACD ");
@@ -115,9 +121,9 @@ public class ReportBM015Dao extends ItemDao {
     Iterator<Integer> ten = tencds.iterator();
     sbSQL.append("(values ");
     for (int i = 0; i < tencds.size(); i++) {
-      sbSQL.append("(" + szBmnCd + "," + ten.next() + "),");
+      sbSQL.append("row(" + szBmnCd + "," + ten.next() + "),");
     }
-    sbSQL.append("(null,null)) AS BT(BMNCD,TENCD) LEFT JOIN ");
+    sbSQL.append("row(null,null)) AS BT(BMNCD,TENCD) LEFT JOIN ");
     sbSQL.append(" INAMS.MSTTEN T ON BT.TENCD=T.TENCD LEFT JOIN ");
     sbSQL.append(" INAMS.MSTTENBMN B ON BT.TENCD=B.TENCD AND BT.BMNCD=B.BMNCD ");
     sbSQL.append("WHERE BT.TENCD IS NOT NULL ");
@@ -128,7 +134,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append("ORDER BY ");
     sbSQL.append("T.TENCD ");
     sbSQL.append(",T.TENKN ");
-    sbSQL.append(",B.AREACD ");
+    sbSQL.append(",B.AREACD )M");
 
     // オプション情報（タイトル）設定
     JSONObject option = new JSONObject();
@@ -148,7 +154,7 @@ public class ReportBM015Dao extends ItemDao {
 
     // 保存用 List (検索情報)作成
     setWhere(new ArrayList<List<String>>());
-    List<String> cells = new ArrayList<String>();
+    List<String> cells = new ArrayList<>();
 
     // タイトル名称
     cells.add("催し別送信情報");// jad.getJSONText(DefineReport.ID_HIDDEN_REPORT_NAME));
@@ -159,13 +165,13 @@ public class ReportBM015Dao extends ItemDao {
   // 対象店取得処理
   public Set<Integer> getTenCdAdd(String bmnCd, String moysKbn, String moysStDt, String moysRban, String rankNoAdd, String rankNoDel, JSONArray tenCdAdds, JSONArray tenCdDels) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKRANK ";
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     JSONObject data = new JSONObject();
     String[] taisyoTen = new String[] {};
@@ -226,7 +232,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append(sqlWhere);
     sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (dbDatas.size() > 0) {
       data = dbDatas.getJSONObject(0);
@@ -236,7 +242,7 @@ public class ReportBM015Dao extends ItemDao {
     if (!StringUtils.isEmpty(rankNoDel)) {
       sqlFrom = "INATK.TOKRANK ";
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       // 部門コード
       sqlWhere += "BMNCD=? AND ";
@@ -263,7 +269,7 @@ public class ReportBM015Dao extends ItemDao {
       sqlWhere += "RANKNO=? AND ";
       paramData.add(rankNoDel);
 
-      iL = new ItemList();
+      new ItemList();
       sbSQL = new StringBuffer();
       dbDatas = new JSONArray();
       data = new JSONObject();
@@ -275,7 +281,7 @@ public class ReportBM015Dao extends ItemDao {
       sbSQL.append(sqlWhere);
       sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
       if (dbDatas.size() > 0) {
         data = dbDatas.getJSONObject(0);
         jyogaiTen = data.optString("TENRANK_ARR").split("");
@@ -302,7 +308,7 @@ public class ReportBM015Dao extends ItemDao {
 
   public Set<Integer> getTenCds(String[] taisyoTen, String[] jyogaiTen, JSONArray tenCdAdds, JSONArray tenCdDels) {
 
-    Set<Integer> tencds = new TreeSet<Integer>();
+    Set<Integer> tencds = new TreeSet<>();
 
     for (int i = 0; i < taisyoTen.length; i++) {
       if (jyogaiTen.length <= i) {
@@ -340,18 +346,18 @@ public class ReportBM015Dao extends ItemDao {
   // 対象店配列作成
   public ArrayList<String> getTenrankArray(String bmnCd, String moysKbn, String moysStDt, String moysRban, String rankNoAdd, String rankNoDel, JSONArray tenCdAdds, JSONArray rankAdds,
       JSONArray tenCdDels, String saveTenrankArr) {
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKRANK ";
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     JSONObject data = new JSONObject();
     String[] taisyoTen = new String[] {};
     String[] jyogaiTen = new String[] {};
-    ArrayList<String> tenranks = new ArrayList<String>();
+    ArrayList<String> tenranks = new ArrayList<>();
 
     // １.ランクNo展開配列作成機能
     // 保存済みのランクNo.展開配列がある場合（※TG016の変更モード）
@@ -417,7 +423,7 @@ public class ReportBM015Dao extends ItemDao {
       sbSQL.append(sqlWhere);
       sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() > 0) {
         data = dbDatas.getJSONObject(0);
@@ -427,7 +433,7 @@ public class ReportBM015Dao extends ItemDao {
       if (!StringUtils.isEmpty(rankNoDel)) {
         sqlFrom = "INATK.TOKRANK ";
         sqlWhere = "";
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
 
         // 部門コード
         sqlWhere += "BMNCD=? AND ";
@@ -454,7 +460,7 @@ public class ReportBM015Dao extends ItemDao {
         sqlWhere += "RANKNO=? AND ";
         paramData.add(rankNoDel);
 
-        iL = new ItemList();
+        new ItemList();
         sbSQL = new StringBuffer();
         dbDatas = new JSONArray();
         data = new JSONObject();
@@ -466,7 +472,7 @@ public class ReportBM015Dao extends ItemDao {
         sbSQL.append(sqlWhere);
         sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
 
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
         if (dbDatas.size() > 0) {
           data = dbDatas.getJSONObject(0);
           jyogaiTen = data.optString("TENRANK_ARR").split("");
@@ -512,7 +518,7 @@ public class ReportBM015Dao extends ItemDao {
 
   // 対象店配列からランクごとの店舗数配列取得
   public TreeMap<String, Integer> getTenrankCount(ArrayList<String> tenranks) {
-    TreeMap<String, Integer> map = new TreeMap<String, Integer>();
+    TreeMap<String, Integer> map = new TreeMap<>();
 
     String[] ranks = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     for (String rank : ranks) {
@@ -532,18 +538,18 @@ public class ReportBM015Dao extends ItemDao {
   // 対象店取得処理
   public String checkTenCdAdd(String bmnCd, String moysKbn, String moysStDt, String moysRban, String rankNoAdd, String rankNoDel, JSONArray tenCdAdds, JSONArray tenCdDels) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKRANK ";
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     JSONObject data = new JSONObject();
     String[] taisyoTen = new String[] {};
     String[] jyogaiTen = new String[] {};
-    Set<Integer> tencds = new TreeSet<Integer>();
+    Set<Integer> tencds = new TreeSet<>();
     new JSONArray();
 
     // 部門コード
@@ -600,7 +606,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append(sqlWhere);
     sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (dbDatas.size() > 0) {
       data = dbDatas.getJSONObject(0);
@@ -612,7 +618,7 @@ public class ReportBM015Dao extends ItemDao {
     if (!StringUtils.isEmpty(rankNoDel)) {
       sqlFrom = "INATK.TOKRANK ";
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       // 部門コード
       if (StringUtils.isEmpty(bmnCd)) {
@@ -659,7 +665,7 @@ public class ReportBM015Dao extends ItemDao {
         paramData.add(rankNoDel);
       }
 
-      iL = new ItemList();
+      new ItemList();
       sbSQL = new StringBuffer();
       dbDatas = new JSONArray();
       data = new JSONObject();
@@ -671,7 +677,7 @@ public class ReportBM015Dao extends ItemDao {
       sbSQL.append(sqlWhere);
       sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
       if (dbDatas.size() > 0) {
         data = dbDatas.getJSONObject(0);
         jyogaiTen = data.optString("TENRANK_ARR").split("");
@@ -703,8 +709,8 @@ public class ReportBM015Dao extends ItemDao {
         tencds.add(tenCdAdds.getInt(i));
       } else if (!tenCdAdds.getString(i).equals("") && tencds.contains(tenCdAdds.getInt(i))) {
 
-        for (int j = 0; j < jyogaiTen.length; j++) {
-          if (jyogaiTen[j].equals(tenCdAdds.getInt(i))) {
+        for (String element : jyogaiTen) {
+          if (element.equals(tenCdAdds.getInt(i))) {
             tencds.add(tenCdAdds.getInt(i));
             errFlg = false;
             break;
@@ -739,7 +745,7 @@ public class ReportBM015Dao extends ItemDao {
     // 格納用変数
     String[] taisyoTen = new String[] {};
     String[] jyogaiTen = new String[] {};
-    Set<Integer> tencds = new TreeSet<Integer>();
+    Set<Integer> tencds = new TreeSet<>();
 
     if (tenAtuk_Arr.split("_").length >= 2) {
       taisyoTen = tenAtuk_Arr.split("_")[1].split("");
@@ -768,8 +774,8 @@ public class ReportBM015Dao extends ItemDao {
         tencds.add(tenCdAdds.getInt(i));
       } else if (!tenCdAdds.getString(i).equals("") && tencds.contains(tenCdAdds.getInt(i))) {
 
-        for (int j = 0; j < jyogaiTen.length; j++) {
-          if (jyogaiTen[j].equals(tenCdAdds.getInt(i))) {
+        for (String element : jyogaiTen) {
+          if (element.equals(tenCdAdds.getInt(i))) {
             tencds.add(tenCdAdds.getInt(i));
             errFlg = false;
             break;
@@ -812,17 +818,17 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKSRPTN "; // 数量パターン
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     // 初期化
     sqlWhere = "";
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     dbDatas = new JSONArray();
 
     // 商品コードより部門コードを取得
@@ -879,7 +885,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append(sqlWhere);
     sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal());
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (dbDatas.size() == 0) {
       return "EX1079";
@@ -902,16 +908,16 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKSRYRANK "; // 数量ランク
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
-    ArrayList<String> calcList = new ArrayList<String>();
-    HashMap<String, String> arrMap = new HashMap<String, String>();
+    ArrayList<String> calcList = new ArrayList<>();
+    HashMap<String, String> arrMap = new HashMap<>();
 
     int tenhtsukei = 0;
     int tensu = 0;
@@ -928,7 +934,7 @@ public class ReportBM015Dao extends ItemDao {
       // 初期化
       sqlWhere = "";
       sqlFrom = "INATK.TOKSRYRANK "; // 数量ランク
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       dbDatas = new JSONArray();
 
       // 商品コードより部門コードを取得
@@ -988,7 +994,7 @@ public class ReportBM015Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere);
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       int suryo = 0;
       if (dbDatas.size() != 0) {
@@ -1049,14 +1055,14 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKRTPTN "; // 通常率パターン
     String sqlSelect = "TENRT_ARR AS ARR ";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     // 部門コード
     if (StringUtils.isEmpty(bmncd)) {
@@ -1128,7 +1134,7 @@ public class ReportBM015Dao extends ItemDao {
       sbSQL.append(" AND UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal());
     }
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     // データが存在する場合、配列の展開を実施
     if (dbDatas.size() == 0) {
@@ -1160,19 +1166,19 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKRTPTN "; // 通常率パターン
     String sqlSelect = "TENRT_ARR AS ARR ";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
-    HashMap<String, String> getRitsuMap = new HashMap<String, String>();
-    HashMap<String, String> arrMap = new HashMap<String, String>();
-    HashMap<String, Integer> htsuMap = new HashMap<String, Integer>();
-    ArrayList<String> calcList = new ArrayList<String>();
+    HashMap<String, String> getRitsuMap = new HashMap<>();
+    HashMap<String, String> arrMap = new HashMap<>();
+    HashMap<String, Integer> htsuMap = new HashMap<>();
+    ArrayList<String> calcList = new ArrayList<>();
     int digit = 5;
 
     // 部門コード
@@ -1244,7 +1250,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     // データが存在する場合、配列の展開を実施
     if (dbDatas.size() != 0) {
@@ -1335,7 +1341,7 @@ public class ReportBM015Dao extends ItemDao {
       plus = -1;
     }
 
-    LinkedHashMap<String, Integer> sortArrMap = new LinkedHashMap<String, Integer>();
+    LinkedHashMap<String, Integer> sortArrMap = new LinkedHashMap<>();
     while (sortArrMap.size() != htsuMap.size()) {
 
       String azKey = "";
@@ -1375,7 +1381,7 @@ public class ReportBM015Dao extends ItemDao {
     }
 
     // key:店 val:発注数を格納(上のMapを初期化して使いまわす)
-    arrMap = new HashMap<String, String>();
+    arrMap = new HashMap<>();
     if (htasu == 0) {
       for (HashMap.Entry<String, Integer> htsu : sortArrMap.entrySet()) {
         String key = htsu.getKey(); // 店
@@ -1473,7 +1479,7 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
 
     // DB検索用パラメータ
     String sqlWhere = "";
@@ -1485,7 +1491,7 @@ public class ReportBM015Dao extends ItemDao {
       sqlFrom = " INATK.TOKTG_SHN T1, INATK.TOKTG_NNDT T2 ";
     }
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     bmncd = String.valueOf(Integer.valueOf(bmncd));
 
@@ -1617,7 +1623,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append(" AND T1.KANRIENO=T2.KANRIENO ");
     sbSQL.append(" AND " + sqlWhereNndt);
 
-    return iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    return ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
   }
 
   /**
@@ -1635,7 +1641,7 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
@@ -1647,7 +1653,7 @@ public class ReportBM015Dao extends ItemDao {
       sqlFrom = " INATK.TOKTG_TJTEN T1 ";
     }
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     bmncd = String.valueOf(Integer.valueOf(bmncd));
 
@@ -1713,7 +1719,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append(sqlFrom);
     sbSQL.append(" WHERE " + sqlWhere);
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return dbDatas.size();
   }
@@ -1751,7 +1757,7 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
 
     // DB検索用パラメータ
     String sqlWhere = "";
@@ -1762,7 +1768,7 @@ public class ReportBM015Dao extends ItemDao {
       sqlFrom = " INATK.TOKTG_NNDT T1 ";
     }
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     bmncd = String.valueOf(Integer.valueOf(bmncd));
 
@@ -1820,7 +1826,7 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append(sqlFrom);
     sbSQL.append(" WHERE " + sqlWhere);
 
-    return iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    return ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
   }
 
 
@@ -1880,8 +1886,8 @@ public class ReportBM015Dao extends ItemDao {
   public ArrayList<String> getCalcList(JSONArray dbDatas) {
     // データが存在する場合、配列の展開を実施
     String arr = "";
-    HashMap<String, String> htsuMap = new HashMap<String, String>();
-    ArrayList<String> calcList = new ArrayList<String>();
+    HashMap<String, String> htsuMap = new HashMap<>();
+    ArrayList<String> calcList = new ArrayList<>();
     int digit = 5;
 
     if (dbDatas.size() != 0) {
@@ -1921,12 +1927,12 @@ public class ReportBM015Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     sbSQL.append("SELECT ");
     sbSQL.append("T2.ZEIRT ");
@@ -1962,15 +1968,15 @@ public class ReportBM015Dao extends ItemDao {
     sbSQL.append("T1.BMNCD = T2.BMNCD ");
     sbSQL.append(") T1 LEFT JOIN INAMS.MSTZEIRT T2 ON T1.ZEIRTKBN = T2.ZEIRTKBN");
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return dbDatas;
   }
 
   public String getArrMap(HashMap<String, String> map) {
 
-    ArrayList<String> calcList = new ArrayList<String>();
-    ArrayList<String> nndtList = new ArrayList<String>();
+    ArrayList<String> calcList = new ArrayList<>();
+    ArrayList<String> nndtList = new ArrayList<>();
     String sqlcommand = "SELECT '' AS F1,'' AS F2,'' AS F3 ";
     int col = 0;
 
@@ -2035,7 +2041,7 @@ public class ReportBM015Dao extends ItemDao {
           String shuno = ptnNo; // 週№
 
           // 対象店を取得
-          Set<Integer> tencds = new TreeSet<Integer>();
+          Set<Integer> tencds = new TreeSet<>();
           if (StringUtils.isEmpty(saveTenrankArr)) {
             tencds = getTenCdAdd(bmncd // 部門コード
                 , moysKbn // 催し区分
@@ -2060,9 +2066,9 @@ public class ReportBM015Dao extends ItemDao {
 
       if (calcList.size() != 0 && nndtList.size() != 0) {
 
-        HashMap<String, String> nndtListMap = new HashMap<String, String>();
-        HashMap<String, String> calcListMap = new HashMap<String, String>();
-        HashMap<String, String> mergeMap = new HashMap<String, String>();
+        HashMap<String, String> nndtListMap = new HashMap<>();
+        HashMap<String, String> calcListMap = new HashMap<>();
+        HashMap<String, String> mergeMap = new HashMap<>();
 
         // ①納入日テーブルの発注数配列を元に作成したもの
         nndtListMap = new ReportJU012Dao(JNDIname).getDigitMap(nndtList.get(0), 5, "1");
