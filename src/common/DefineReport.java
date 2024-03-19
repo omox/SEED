@@ -5434,7 +5434,7 @@ public class DefineReport {
   public final static String ID_SQL_NEWDEPLICATECHEACK = "SELECT COUNT as " + VAL + " FROM INATK.TOKBT_KKK" + " WHERE MOYSKBN =? AND MOYSSTDT =? AND BMNCD =? AND DAICD =?";
 
   // SQL 分類割引 重複チェック 中分類含む場合
-  public final static String ID_SQL_NEWDEPLICATECHEACK_C = "SELECT COUNT as " + VAL + " from INATK.TOKBT_KKK" + " WHERE MOYSKBN =? AND MOYSSTDT =? AND BMNCD =? AND DAICD =? AND CHUCD =?";
+  public final static String ID_SQL_NEWDEPLICATECHEACK_C = "SELECT COUNT(*) as " + VAL + " from INATK.TOKBT_KKK" + " WHERE MOYSKBN =? AND MOYSSTDT =? AND BMNCD =? AND DAICD =? AND CHUCD =?";
 
   /** 分類割引_企画（INATK.TOKBT_KKK） */
   // SQL 販売期間_終了日
