@@ -5562,7 +5562,7 @@ public class DefineReport {
 
   // SQL：店確認
   public final static String ID_SQL_ADTEN =
-      "with T1(IDX) as (select 1 from SYSIBM.SYSDUMMY1 union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENCD as ADDTEN, T3.TENCD as DELTEN from T1 left join (select ROW_NUMBER() over (order by KKKNO, TENCD) as IDX, TENCD from INATK.TOKBT_ADTEN where ADDDELFLG = 1 and KKKNO = ? ) T2 on T1.IDX = T2.IDX left join (select ROW_NUMBER() over (order by KKKNO, TENCD) as IDX, TENCD from INATK.TOKBT_ADTEN where ADDDELFLG = 0 and KKKNO = ? ) T3 on T1.IDX = T3.IDX order by T1.IDX";
+      "with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < @M) select T1.IDX, T2.TENCD as ADDTEN, T3.TENCD as DELTEN from T1 left join (select ROW_NUMBER() over (order by KKKNO, TENCD) as IDX, TENCD from INATK.TOKBT_ADTEN where ADDDELFLG = 1 and KKKNO = ? ) T2 on T1.IDX = T2.IDX left join (select ROW_NUMBER() over (order by KKKNO, TENCD) as IDX, TENCD from INATK.TOKBT_ADTEN where ADDDELFLG = 0 and KKKNO = ? ) T3 on T1.IDX = T3.IDX order by T1.IDX";
 
   // SQL：本部ユーザ初回利用時の店舗（関連情報の最小公約店コード）
   public final static String ID_SQL_TENPO_MIN_CD = "SELECT MIN(T0.TENCD) FROM INAMS.MSTTEN T0 "
