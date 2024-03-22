@@ -116,9 +116,9 @@ public class ReportTG012Dao extends ItemDao {
     sbSQL.append(" SELECT ");
     sbSQL.append(" CONCAT(CONCAT(TTKH.MOYSKBN,'-'),CONCAT(TTKH.MOYSSTDT,CONCAT('-',right ('000' || RTRIM(CHAR (TTKH.MOYSRBAN)), 3)))) as MOYOOSI ");
     sbSQL.append(" ,TMYD.MOYKN ");
-    sbSQL.append(" , DATE_FORMAT(DATE_FORMAT(TMYD.HBSTDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(TMYD.HBSTDT, '%Y%m%d'))) ");
+    sbSQL.append(" , DATE_FORMAT(DATE_FORMAT(TMYD.HBSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(TMYD.HBSTDT, '%Y%m%d'))) ");
     sbSQL.append(" ||'～'|| ");
-    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(TMYD.HBEDDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(TMYD.HBEDDT, '%Y%m%d'))) as KIKAN ");
+    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(TMYD.HBEDDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(TMYD.HBEDDT, '%Y%m%d'))) as KIKAN ");
     sbSQL.append(" , CASE ");
     sbSQL.append(" WHEN T1.ZEN = 0 ");
     sbSQL.append(" THEN '○' ");
