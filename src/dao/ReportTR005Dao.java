@@ -50,6 +50,7 @@ public class ReportTR005Dao extends ItemDao {
    *
    * @return
    */
+  @Override
   public boolean selectBy() {
 
     // 検索コマンド生成
@@ -390,16 +391,16 @@ public class ReportTR005Dao extends ItemDao {
       sbSQL = new StringBuffer();
       sbSQL.append("WITH SHORI AS (  ");
       sbSQL.append("SELECT ");
-      sbSQL.append("DAYOFWEEK(TO_DATE(VALUE, 'YYYYMMDD')) AS DT ");
-      sbSQL.append(",TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD'), 'YYYYMMDD') AS N ");
-      sbSQL.append(",TO_CHAR(TO_DATE(VALUE, 'YYYYMMDD') + 7 DAY, 'YYYYMMDD') AS N1 ");
+      sbSQL.append("DAYOFWEEK(DATE_FORMAT(VALUE, '%Y%m%d')) AS DT ");
+      sbSQL.append(",DATE_FORMAT(DATE_FORMAT(VALUE, '%Y%m%d'), '%Y%m%d') AS N ");
+      sbSQL.append(",DATE_FORMAT(DATE_FORMAT(VALUE, '%Y%m%d') + INTERVAL 7 DAY, '%Y%m%d') AS N1 ");
       sbSQL.append("FROM(  ");
       sbSQL.append("SELECT ");
       sbSQL.append("SHORIDT as VALUE  ");
       sbSQL.append("FROM ");
       sbSQL.append("INAAD.SYSSHORIDT  ");
       sbSQL.append("WHERE ");
-      sbSQL.append("NVL(UPDKBN, 0) <> 1  ");
+      sbSQL.append("COALESCE(UPDKBN, 0) <> 1  ");
       sbSQL.append("ORDER BY ");
       sbSQL.append("ID desc fetch first 1 rows only)) ");
       sbSQL.append("SELECT ");
@@ -725,12 +726,13 @@ public class ReportTR005Dao extends ItemDao {
     sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal() + ",");
     sbSQL.append("SENDFLG=0,");// 2022/04/19 追加
     sbSQL.append("OPERATOR='" + userId + "'");
-    sbSQL.append(",UPDDT=current timestamp ");
+    sbSQL.append(",UPDDT=CURRENT_TIMESTAMP ");
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -744,12 +746,13 @@ public class ReportTR005Dao extends ItemDao {
     sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal() + ",");
     sbSQL.append("SENDFLG=0,");// 2022/04/19 追加
     sbSQL.append("OPERATOR='" + userId + "'");
-    sbSQL.append(",UPDDT=current timestamp ");
+    sbSQL.append(",UPDDT=CURRENT_TIMESTAMP ");
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -781,68 +784,29 @@ public class ReportTR005Dao extends ItemDao {
     for (int k = 1; k <= maxField; k++) {
       String key = "F" + String.valueOf(k);
 
-      if (k == 1) {
-        values += String.valueOf(0 + 1);
-      }
-
       if (!ArrayUtils.contains(new String[] {"F2"}, key)) {
         String val = data.optString(key);
         if (StringUtils.isEmpty(val)) {
-          values += ", null";
+          values += "null ,";
         } else {
-          values += ", ?";
+          values += "? ,";
           prmData.add(val);
         }
       }
 
       if (k == maxField) {
+        values += DefineReport.ValUpdkbn.NML.getVal();
+        values += ",0";
+        values += ", '" + userId + "' ";
+        values += ",CURRENT_TIMESTAMP ";
+        values += ",CURRENT_TIMESTAMP ";
         valueData = ArrayUtils.add(valueData, "(" + values + ")");
         values = "";
       }
     }
 
     // 正規定量_商品の登録・更新
-    sbSQL.append("MERGE INTO INATK.HATSTR_SHN AS T USING (SELECT ");
-    sbSQL.append("SHNCD"); // 商品コード
-    sbSQL.append(",BINKBN"); // 便区分
-    sbSQL.append(",TSKBN_MON"); // 訂正区分_月
-    sbSQL.append(",TSKBN_TUE"); // 訂正区分_火
-    sbSQL.append(",TSKBN_WED"); // 訂正区分_水
-    sbSQL.append(",TSKBN_THU"); // 訂正区分_木
-    sbSQL.append(",TSKBN_FRI"); // 訂正区分_金
-    sbSQL.append(",TSKBN_SAT"); // 訂正区分_土
-    sbSQL.append(",TSKBN_SUN"); // 訂正区分_日
-    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
-    sbSQL.append(", 0 AS SENDFLG "); // 送信区分：未送信
-    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
-    sbSQL.append(", current timestamp AS ADDDT "); // 登録日：
-    sbSQL.append(", current timestamp AS UPDDT "); // 更新日：
-    sbSQL.append(" FROM (values " + StringUtils.join(valueData, ",") + ") as T1(NUM");
-    sbSQL.append(",SHNCD "); // F1 : 商品コード
-    sbSQL.append(",BINKBN "); // F3 : 便区分
-    sbSQL.append(",TSKBN_MON"); // F4 :訂正区分_月
-    sbSQL.append(",TSKBN_TUE"); // F5 :訂正区分_火
-    sbSQL.append(",TSKBN_WED"); // F6 :訂正区分_水
-    sbSQL.append(",TSKBN_THU"); // F7 :訂正区分_木
-    sbSQL.append(",TSKBN_FRI"); // F8 :訂正区分_金
-    sbSQL.append(",TSKBN_SAT"); // F9 :訂正区分_土
-    sbSQL.append(",TSKBN_SUN"); // F10 :訂正区分_日
-    sbSQL.append(")) as RE on (");
-    sbSQL.append("T.SHNCD = RE.SHNCD AND ");
-    sbSQL.append("T.BINKBN = RE.BINKBN ");
-    sbSQL.append(") WHEN MATCHED THEN UPDATE SET ");
-    sbSQL.append("TSKBN_MON=RE.TSKBN_MON");
-    sbSQL.append(",TSKBN_TUE=RE.TSKBN_TUE");
-    sbSQL.append(",TSKBN_WED=RE.TSKBN_WED");
-    sbSQL.append(",TSKBN_THU=RE.TSKBN_THU");
-    sbSQL.append(",TSKBN_FRI=RE.TSKBN_FRI");
-    sbSQL.append(",TSKBN_SAT=RE.TSKBN_SAT");
-    sbSQL.append(",TSKBN_SUN=RE.TSKBN_SUN");
-    sbSQL.append(",UPDKBN=RE.UPDKBN");
-    sbSQL.append(",SENDFLG=RE.SENDFLG");
-    sbSQL.append(",OPERATOR=RE.OPERATOR");
-    sbSQL.append(",UPDDT=RE.UPDDT ");
-    sbSQL.append("WHEN NOT MATCHED THEN INSERT(");
+    sbSQL.append("INSERT INTO INATK.HATSTR_SHN ( ");
     sbSQL.append("SHNCD"); // 商品コード
     sbSQL.append(",BINKBN"); // 便区分
     sbSQL.append(",TSKBN_MON"); // 訂正区分_月
@@ -857,25 +821,26 @@ public class ReportTR005Dao extends ItemDao {
     sbSQL.append(",OPERATOR");
     sbSQL.append(",ADDDT");
     sbSQL.append(",UPDDT");
-    sbSQL.append(") VALUES (");
-    sbSQL.append("RE.SHNCD"); // 商品コード
-    sbSQL.append(",RE.BINKBN"); // 便区分
-    sbSQL.append(",RE.TSKBN_MON"); // 訂正区分_月
-    sbSQL.append(",RE.TSKBN_TUE"); // 訂正区分_火
-    sbSQL.append(",RE.TSKBN_WED"); // 訂正区分_水
-    sbSQL.append(",RE.TSKBN_THU"); // 訂正区分_木
-    sbSQL.append(",RE.TSKBN_FRI"); // 訂正区分_金
-    sbSQL.append(",RE.TSKBN_SAT"); // 訂正区分_土
-    sbSQL.append(",RE.TSKBN_SUN"); // 訂正区分_日
-    sbSQL.append(",RE.UPDKBN");
-    sbSQL.append(",RE.SENDFLG");
-    sbSQL.append(",RE.OPERATOR");
-    sbSQL.append(",RE.ADDDT");
-    sbSQL.append(",RE.UPDDT");
-    sbSQL.append(")");
+    sbSQL.append(") VALUES ");
+    sbSQL.append(StringUtils.join(valueData, ","));
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("SHNCD = VALUES(SHNCD)"); // 商品コード
+    sbSQL.append(",BINKBN = VALUES(BINKBN)"); // 便区分
+    sbSQL.append(",TSKBN_MON = VALUES(TSKBN_MON)"); // 訂正区分_月
+    sbSQL.append(",TSKBN_TUE = VALUES(TSKBN_TUE)"); // 訂正区分_火
+    sbSQL.append(",TSKBN_WED = VALUES(TSKBN_WED)"); // 訂正区分_水
+    sbSQL.append(",TSKBN_THU = VALUES(TSKBN_THU)"); // 訂正区分_木
+    sbSQL.append(",TSKBN_FRI = VALUES(TSKBN_FRI)"); // 訂正区分_金
+    sbSQL.append(",TSKBN_SAT = VALUES(TSKBN_SAT)"); // 訂正区分_土
+    sbSQL.append(",TSKBN_SUN = VALUES(TSKBN_SUN)"); // 訂正区分_日
+    sbSQL.append(",UPDKBN = VALUES(UPDKBN)");
+    sbSQL.append(",SENDFLG = VALUES(SENDFLG)");
+    sbSQL.append(",OPERATOR = VALUES(OPERATOR)");
+    sbSQL.append(",UPDDT = VALUES(UPDDT)");
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
@@ -895,9 +860,9 @@ public class ReportTR005Dao extends ItemDao {
           String key = "F" + String.valueOf(k);
 
           if (k == 1) {
-            values += String.valueOf(i + 1);
+
             // 配送グループコードを追加
-            values += ", ?, ?";
+            values += "?, ?";
             prmData.add(data.optString("F1"));
             prmData.add(data.optString("F3"));
           }
@@ -913,6 +878,11 @@ public class ReportTR005Dao extends ItemDao {
           }
 
           if (k == maxField) {
+            values += ", " + DefineReport.ValUpdkbn.NML.getVal();
+            values += ",0";
+            values += ", '" + userId + "' ";
+            values += ",CURRENT_TIMESTAMP ";
+            values += ",CURRENT_TIMESTAMP ";
             valueData = ArrayUtils.add(valueData, "(" + values + ")");
             values = "";
           }
@@ -921,50 +891,7 @@ public class ReportTR005Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append("MERGE INTO INATK.HATSTR_TEN AS T USING (SELECT ");
-        sbSQL.append("SHNCD"); // 商品コード
-        sbSQL.append(",BINKBN"); // 便区分
-        sbSQL.append(",TENCD"); // 店コード
-        sbSQL.append(",SURYO_MON"); // 店別数量_月
-        sbSQL.append(",SURYO_TUE"); // 店別数量_火
-        sbSQL.append(",SURYO_WED"); // 店別数量_水
-        sbSQL.append(",SURYO_THU"); // 店別数量_木
-        sbSQL.append(",SURYO_FRI"); // 店別数量_金
-        sbSQL.append(",SURYO_SAT"); // 店別数量_土
-        sbSQL.append(",SURYO_SUN"); // 店別数量_日
-        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
-        sbSQL.append(", 0 AS SENDFLG "); // 送信区分：未送信
-        sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
-        sbSQL.append(", current timestamp AS ADDDT "); // 登録日：
-        sbSQL.append(", current timestamp AS UPDDT "); // 更新日：
-        sbSQL.append(" FROM (values " + StringUtils.join(valueData, ",") + ") as T1(NUM");
-        sbSQL.append(",SHNCD"); // F1 :商品コード
-        sbSQL.append(",BINKBN"); // F2 :便区分
-        sbSQL.append(",TENCD"); // F3 :店コード
-        sbSQL.append(",SURYO_MON"); // F4 :店別数量_月
-        sbSQL.append(",SURYO_TUE"); // F5 :店別数量_火
-        sbSQL.append(",SURYO_WED"); // F6 :店別数量_水
-        sbSQL.append(",SURYO_THU"); // F7 :店別数量_木
-        sbSQL.append(",SURYO_FRI"); // F8 :店別数量_金
-        sbSQL.append(",SURYO_SAT"); // F9 :店別数量_土
-        sbSQL.append(",SURYO_SUN"); // F10 :店別数量_日
-        sbSQL.append(")) as RE on (");
-        sbSQL.append("T.SHNCD = RE.SHNCD AND ");
-        sbSQL.append("T.BINKBN = RE.BINKBN AND ");
-        sbSQL.append("T.TENCD = RE.TENCD ");
-        sbSQL.append(") WHEN MATCHED THEN UPDATE SET ");
-        sbSQL.append("SURYO_MON=RE.SURYO_MON");
-        sbSQL.append(",SURYO_TUE=RE.SURYO_TUE");
-        sbSQL.append(",SURYO_WED=RE.SURYO_WED");
-        sbSQL.append(",SURYO_THU=RE.SURYO_THU");
-        sbSQL.append(",SURYO_FRI=RE.SURYO_FRI");
-        sbSQL.append(",SURYO_SAT=RE.SURYO_SAT");
-        sbSQL.append(",SURYO_SUN=RE.SURYO_SUN");
-        sbSQL.append(",UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
-        sbSQL.append(",SENDFLG=RE.SENDFLG");
-        sbSQL.append(",OPERATOR=RE.OPERATOR ");
-        sbSQL.append(",UPDDT=RE.UPDDT");
-        sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
+        sbSQL.append("INSERT INTO INATK.HATSTR_TEN ( ");
         sbSQL.append("SHNCD"); // 商品コード
         sbSQL.append(",BINKBN"); // 便区分
         sbSQL.append(",TENCD"); // 店コード
@@ -980,26 +907,27 @@ public class ReportTR005Dao extends ItemDao {
         sbSQL.append(",OPERATOR");
         sbSQL.append(",ADDDT");
         sbSQL.append(",UPDDT");
-        sbSQL.append(") VALUES (");
-        sbSQL.append("RE.SHNCD"); // 商品コード
-        sbSQL.append(",RE.BINKBN"); // 便区分
-        sbSQL.append(",RE.TENCD"); // 店コード
-        sbSQL.append(",RE.SURYO_MON"); // 店別数量_月
-        sbSQL.append(",RE.SURYO_TUE"); // 店別数量_火
-        sbSQL.append(",RE.SURYO_WED"); // 店別数量_水
-        sbSQL.append(",RE.SURYO_THU"); // 店別数量_木
-        sbSQL.append(",RE.SURYO_FRI"); // 店別数量_金
-        sbSQL.append(",RE.SURYO_SAT"); // 店別数量_土
-        sbSQL.append(",RE.SURYO_SUN"); // 店別数量_日
-        sbSQL.append(",RE.UPDKBN");
-        sbSQL.append(",RE.SENDFLG");
-        sbSQL.append(",RE.OPERATOR");
-        sbSQL.append(",RE.ADDDT");
-        sbSQL.append(",RE.UPDDT");
-        sbSQL.append(")");
+        sbSQL.append(") VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ","));
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("SHNCD = VALUES(SHNCD)"); // 商品コード
+        sbSQL.append(",BINKBN = VALUES(BINKBN)"); // 便区分
+        sbSQL.append(",TENCD = VALUES(TENCD)"); // 店コード
+        sbSQL.append(",SURYO_MON = VALUES(SURYO_MON)"); // 店別数量_月
+        sbSQL.append(",SURYO_TUE = VALUES(SURYO_TUE)"); // 店別数量_火
+        sbSQL.append(",SURYO_WED = VALUES(SURYO_WED)"); // 店別数量_水
+        sbSQL.append(",SURYO_THU = VALUES(SURYO_THU)"); // 店別数量_木
+        sbSQL.append(",SURYO_FRI = VALUES(SURYO_FRI)"); // 店別数量_金
+        sbSQL.append(",SURYO_SAT = VALUES(SURYO_SAT)"); // 店別数量_土
+        sbSQL.append(",SURYO_SUN = VALUES(SURYO_SUN)"); // 店別数量_日
+        sbSQL.append(",UPDKBN = VALUES(UPDKBN)");
+        sbSQL.append(",SENDFLG = VALUES(SENDFLG)");
+        sbSQL.append(",OPERATOR = VALUES(OPERATOR)");
+        sbSQL.append(",UPDDT = VALUES(UPDDT)");
 
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        if (DefineReport.ID_DEBUG_MODE) {
+          System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
@@ -1048,21 +976,22 @@ public class ReportTR005Dao extends ItemDao {
         for (int k = 1; k <= maxField; k++) {
           String key = "F" + String.valueOf(k);
 
-          if (k == 1) {
-            values += String.valueOf(i + 1);
-          }
-
           if (!ArrayUtils.contains(new String[] {"F4"}, key)) {
             String val = dataT.optString(key);
             if (StringUtils.isEmpty(val)) {
-              values += ", null";
+              values += "null ,";
             } else {
-              values += ", ?";
+              values += "? ,";
               prmData.add(val);
             }
           }
 
           if (k == maxField) {
+            values += DefineReport.ValUpdkbn.NML.getVal();
+            values += ",0 ";
+            values += ", '" + userId + "' ";
+            values += ", CURRENT_TIMESTAMP ";
+            values += ", CURRENT_TIMESTAMP ";
             valueData = ArrayUtils.add(valueData, "(" + values + ")");
             values = "";
           }
@@ -1071,49 +1000,7 @@ public class ReportTR005Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append("MERGE INTO INATK.HATSTR_TEN AS T USING (SELECT ");
-        sbSQL.append("SHNCD"); // 商品コード
-        sbSQL.append(",BINKBN"); // 便区分
-        sbSQL.append(",TENCD"); // 店コード
-        sbSQL.append(",SURYO_MON"); // 店別数量_月
-        sbSQL.append(",SURYO_TUE"); // 店別数量_火
-        sbSQL.append(",SURYO_WED"); // 店別数量_水
-        sbSQL.append(",SURYO_THU"); // 店別数量_木
-        sbSQL.append(",SURYO_FRI"); // 店別数量_金
-        sbSQL.append(",SURYO_SAT"); // 店別数量_土
-        sbSQL.append(",SURYO_SUN"); // 店別数量_日
-        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
-        sbSQL.append(", 0 AS SENDFLG "); // 送信区分：未送信
-        sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
-        sbSQL.append(", current timestamp AS ADDDT "); // 登録日：
-        sbSQL.append(", current timestamp AS UPDDT "); // 更新日：
-        sbSQL.append(" FROM (values " + StringUtils.join(valueData, ",") + ") as T1(NUM");
-        sbSQL.append(",SHNCD"); // F1 :商品コード
-        sbSQL.append(",BINKBN"); // F2 :便区分
-        sbSQL.append(",TENCD"); // F3 :店コード
-        sbSQL.append(",SURYO_MON"); // F4 :店別数量_月
-        sbSQL.append(",SURYO_TUE"); // F5 :店別数量_火
-        sbSQL.append(",SURYO_WED"); // F6 :店別数量_水
-        sbSQL.append(",SURYO_THU"); // F7 :店別数量_木
-        sbSQL.append(",SURYO_FRI"); // F8 :店別数量_金
-        sbSQL.append(",SURYO_SAT"); // F9 :店別数量_土
-        sbSQL.append(",SURYO_SUN"); // F10 :店別数量_日
-        sbSQL.append(")) as RE on (");
-        sbSQL.append("T.SHNCD = RE.SHNCD AND ");
-        sbSQL.append("T.BINKBN = RE.BINKBN AND ");
-        sbSQL.append("T.TENCD = RE.TENCD ");
-        sbSQL.append(") WHEN MATCHED THEN UPDATE SET ");
-        sbSQL.append("SURYO_MON=RE.SURYO_MON");
-        sbSQL.append(",SURYO_TUE=RE.SURYO_TUE");
-        sbSQL.append(",SURYO_WED=RE.SURYO_WED");
-        sbSQL.append(",SURYO_THU=RE.SURYO_THU");
-        sbSQL.append(",SURYO_FRI=RE.SURYO_FRI");
-        sbSQL.append(",SURYO_SAT=RE.SURYO_SAT");
-        sbSQL.append(",SURYO_SUN=RE.SURYO_SUN");
-        sbSQL.append(",UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
-        sbSQL.append(",OPERATOR=RE.OPERATOR ");
-        sbSQL.append(",UPDDT=RE.UPDDT");
-        sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
+        sbSQL.append("INSERT INTO INATK.HATSTR_TEN ( ");
         sbSQL.append("SHNCD"); // 商品コード
         sbSQL.append(",BINKBN"); // 便区分
         sbSQL.append(",TENCD"); // 店コード
@@ -1129,26 +1016,27 @@ public class ReportTR005Dao extends ItemDao {
         sbSQL.append(",OPERATOR");
         sbSQL.append(",ADDDT");
         sbSQL.append(",UPDDT");
-        sbSQL.append(") VALUES (");
-        sbSQL.append("RE.SHNCD"); // 商品コード
-        sbSQL.append(",RE.BINKBN"); // 便区分
-        sbSQL.append(",RE.TENCD"); // 店コード
-        sbSQL.append(",RE.SURYO_MON"); // 店別数量_月
-        sbSQL.append(",RE.SURYO_TUE"); // 店別数量_火
-        sbSQL.append(",RE.SURYO_WED"); // 店別数量_水
-        sbSQL.append(",RE.SURYO_THU"); // 店別数量_木
-        sbSQL.append(",RE.SURYO_FRI"); // 店別数量_金
-        sbSQL.append(",RE.SURYO_SAT"); // 店別数量_土
-        sbSQL.append(",RE.SURYO_SUN"); // 店別数量_日
-        sbSQL.append(",RE.UPDKBN");
-        sbSQL.append(",RE.SENDFLG");
-        sbSQL.append(",RE.OPERATOR");
-        sbSQL.append(",RE.ADDDT");
-        sbSQL.append(",RE.UPDDT");
-        sbSQL.append(")");
+        sbSQL.append(") VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ","));
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("SHNCD = VALUES(SHNCD)"); // 商品コード
+        sbSQL.append(",BINKBN = VALUES(BINKBN)"); // 便区分
+        sbSQL.append(",TENCD = VALUES(TENCD)"); // 店コード
+        sbSQL.append(",SURYO_MON = VALUES(SURYO_MON)"); // 店別数量_月
+        sbSQL.append(",SURYO_TUE = VALUES(SURYO_TUE)"); // 店別数量_火
+        sbSQL.append(",SURYO_WED = VALUES(SURYO_WED)"); // 店別数量_水
+        sbSQL.append(",SURYO_THU = VALUES(SURYO_THU)"); // 店別数量_木
+        sbSQL.append(",SURYO_FRI = VALUES(SURYO_FRI)"); // 店別数量_金
+        sbSQL.append(",SURYO_SAT = VALUES(SURYO_SAT)"); // 店別数量_土
+        sbSQL.append(",SURYO_SUN = VALUES(SURYO_SUN)"); // 店別数量_日
+        sbSQL.append(",UPDKBN = VALUES(UPDKBN)");
+        sbSQL.append(",SENDFLG = VALUES(SENDFLG)");
+        sbSQL.append(",OPERATOR = VALUES(OPERATOR)");
+        sbSQL.append(",UPDDT = VALUES(UPDDT)");
 
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        if (DefineReport.ID_DEBUG_MODE) {
+          System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
@@ -1168,21 +1056,21 @@ public class ReportTR005Dao extends ItemDao {
         for (int k = 1; k <= maxField; k++) {
           String key = "F" + String.valueOf(k);
 
-          if (k == 1) {
-            values += String.valueOf(i + 1);
-          }
-
           if (!ArrayUtils.contains(new String[] {}, key)) {
             String val = dataT.optString(key);
             if (StringUtils.isEmpty(val)) {
-              values += ", null";
+              values += "null ,";
             } else {
-              values += ", ?";
+              values += "? ,";
               prmData.add(val);
             }
           }
 
           if (k == maxField) {
+            values += "0 ";
+            values += ", '" + userId + "' ";
+            values += ", CURRENT_TIMESTAMP ";
+            values += ", CURRENT_TIMESTAMP ";
             valueData = ArrayUtils.add(valueData, "(" + values + ")");
             values = "";
           }
@@ -1191,50 +1079,7 @@ public class ReportTR005Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append("MERGE INTO INATK.HATJTR_TEN AS T USING (SELECT ");
-        sbSQL.append("SHNCD"); // 商品コード
-        sbSQL.append(",BINKBN"); // 便区分
-        sbSQL.append(",TENCD"); // 店コード
-        sbSQL.append(",SHUNO"); // 週№
-        sbSQL.append(",SURYO_MON"); // 店別数量_月
-        sbSQL.append(",SURYO_TUE"); // 店別数量_火
-        sbSQL.append(",SURYO_WED"); // 店別数量_水
-        sbSQL.append(",SURYO_THU"); // 店別数量_木
-        sbSQL.append(",SURYO_FRI"); // 店別数量_金
-        sbSQL.append(",SURYO_SAT"); // 店別数量_土
-        sbSQL.append(",SURYO_SUN"); // 店別数量_日
-        sbSQL.append(", 0 AS SENDFLG "); // 送信区分：未送信
-        sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
-        sbSQL.append(", current timestamp AS ADDDT "); // 登録日：
-        sbSQL.append(", current timestamp AS UPDDT "); // 更新日：
-        sbSQL.append(" FROM (values " + StringUtils.join(valueData, ",") + ") as T1(NUM");
-        sbSQL.append(",SHNCD"); // F1 :商品コード
-        sbSQL.append(",BINKBN"); // F2 :便区分
-        sbSQL.append(",TENCD"); // F3 :店コード
-        sbSQL.append(",SHUNO"); // F4 :週№
-        sbSQL.append(",SURYO_MON"); // F5 :店別数量_月
-        sbSQL.append(",SURYO_TUE"); // F6 :店別数量_火
-        sbSQL.append(",SURYO_WED"); // F7 :店別数量_水
-        sbSQL.append(",SURYO_THU"); // F8 :店別数量_木
-        sbSQL.append(",SURYO_FRI"); // F9 :店別数量_金
-        sbSQL.append(",SURYO_SAT"); // F10 :店別数量_土
-        sbSQL.append(",SURYO_SUN"); // F11 :店別数量_日
-        sbSQL.append(")) as RE on (");
-        sbSQL.append("T.SHNCD = RE.SHNCD AND ");
-        sbSQL.append("T.BINKBN = RE.BINKBN AND ");
-        sbSQL.append("T.TENCD = RE.TENCD AND ");
-        sbSQL.append("T.SHUNO = RE.SHUNO ");
-        sbSQL.append(") WHEN MATCHED THEN UPDATE SET ");
-        sbSQL.append("SURYO_MON=RE.SURYO_MON");
-        sbSQL.append(",SURYO_TUE=RE.SURYO_TUE");
-        sbSQL.append(",SURYO_WED=RE.SURYO_WED");
-        sbSQL.append(",SURYO_THU=RE.SURYO_THU");
-        sbSQL.append(",SURYO_FRI=RE.SURYO_FRI");
-        sbSQL.append(",SURYO_SAT=RE.SURYO_SAT");
-        sbSQL.append(",SURYO_SUN=RE.SURYO_SUN");
-        sbSQL.append(",OPERATOR=RE.OPERATOR ");
-        sbSQL.append(",UPDDT=RE.UPDDT");
-        sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
+        sbSQL.append("INSERT INTO INATK.HATJTR_TEN ( ");
         sbSQL.append("SHNCD"); // 商品コード
         sbSQL.append(",BINKBN"); // 便区分
         sbSQL.append(",TENCD"); // 店コード
@@ -1250,26 +1095,27 @@ public class ReportTR005Dao extends ItemDao {
         sbSQL.append(",OPERATOR");
         sbSQL.append(",ADDDT");
         sbSQL.append(",UPDDT");
-        sbSQL.append(") VALUES (");
-        sbSQL.append("RE.SHNCD"); // 商品コード
-        sbSQL.append(",RE.BINKBN"); // 便区分
-        sbSQL.append(",RE.TENCD"); // 店コード
-        sbSQL.append(",RE.SHUNO"); // 週№
-        sbSQL.append(",RE.SURYO_MON"); // 店別数量_月
-        sbSQL.append(",RE.SURYO_TUE"); // 店別数量_火
-        sbSQL.append(",RE.SURYO_WED"); // 店別数量_水
-        sbSQL.append(",RE.SURYO_THU"); // 店別数量_木
-        sbSQL.append(",RE.SURYO_FRI"); // 店別数量_金
-        sbSQL.append(",RE.SURYO_SAT"); // 店別数量_土
-        sbSQL.append(",RE.SURYO_SUN"); // 店別数量_日
-        sbSQL.append(",RE.SENDFLG");
-        sbSQL.append(",RE.OPERATOR");
-        sbSQL.append(",RE.ADDDT");
-        sbSQL.append(",RE.UPDDT");
-        sbSQL.append(")");
+        sbSQL.append(") VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ","));
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("SHNCD = VALUES(SHNCD)"); // 商品コード
+        sbSQL.append(",BINKBN = VALUES(BINKBN)"); // 便区分
+        sbSQL.append(",TENCD = VALUES(TENCD)"); // 店コード
+        sbSQL.append(",SHUNO = VALUES(SHUNO)"); // 週№
+        sbSQL.append(",SURYO_MON = VALUES(SURYO_MON)"); // 店別数量_月
+        sbSQL.append(",SURYO_TUE = VALUES(SURYO_TUE)"); // 店別数量_火
+        sbSQL.append(",SURYO_WED = VALUES(SURYO_WED)"); // 店別数量_水
+        sbSQL.append(",SURYO_THU = VALUES(SURYO_THU)"); // 店別数量_木
+        sbSQL.append(",SURYO_FRI = VALUES(SURYO_FRI)"); // 店別数量_金
+        sbSQL.append(",SURYO_SAT = VALUES(SURYO_SAT)"); // 店別数量_土
+        sbSQL.append(",SURYO_SUN = VALUES(SURYO_SUN)"); // 店別数量_日
+        sbSQL.append(",SENDFLG = VALUES(SENDFLG)");
+        sbSQL.append(",OPERATOR = VALUES(OPERATOR)");
+        sbSQL.append(",UPDDT = VALUES(UPDDT)");
 
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        if (DefineReport.ID_DEBUG_MODE) {
+          System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
@@ -1330,9 +1176,9 @@ public class ReportTR005Dao extends ItemDao {
     sbSQL.append(",replace(SHN.TSKBN_SAT, '0', '')"); // F9 : 訂正区分＿土
     sbSQL.append(",replace(SHN.TSKBN_SUN, '0', '')"); // F10 : 訂正区分＿日
     sbSQL.append(",SHN.OPERATOR "); // F11 : オペレーター
-    sbSQL.append(",TO_CHAR(SHN.ADDDT,'YY/MM/DD') AS ADDDT "); // F12 : 登録日
-    sbSQL.append(",TO_CHAR(SHN.UPDDT,'YY/MM/DD') AS UPDDT "); // F13 : 更新日
-    sbSQL.append(",TO_CHAR(SHN.UPDDT,'YYYYMMDDHH24MISSNNNNNN') as HDN_UPDDT "); // F14 : 更新日時
+    sbSQL.append(",DATE_FORMAT(SHN.ADDDT,'%y/%m/%d') AS ADDDT "); // F12 : 登録日
+    sbSQL.append(",DATE_FORMAT(SHN.UPDDT,'%y/%m/%d') AS UPDDT "); // F13 : 更新日
+    sbSQL.append(",DATE_FORMAT(SHN.UPDDT,'%Y%m%d%H%i%s%f') as HDN_UPDDT "); // F14 : 更新日時
     sbSQL.append("FROM ");
     sbSQL.append("INATK.HATSTR_SHN SHN LEFT JOIN INAMS.MSTSHN MST ON SHN.SHNCD=MST.SHNCD ");
     sbSQL.append("WHERE ");
@@ -1347,8 +1193,9 @@ public class ReportTR005Dao extends ItemDao {
     // DB検索用パラメータ設定
     setParamData(paramData);
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + getClass().getSimpleName() + "[sql]*/ " + sbSQL.toString());
+    }
     return sbSQL.toString();
   }
 
@@ -1402,16 +1249,19 @@ public class ReportTR005Dao extends ItemDao {
     }
 
     /** @return col 列番号 */
+    @Override
     public Integer getNo() {
       return no;
     }
 
     /** @return tbl 列名 */
+    @Override
     public String getCol() {
       return col;
     }
 
     /** @return tbl 列型 */
+    @Override
     public String getTyp() {
       return typ;
     }
@@ -1422,11 +1272,13 @@ public class ReportTR005Dao extends ItemDao {
     }
 
     /** @return col Id */
+    @Override
     public String getId() {
       return "F" + Integer.toString(no);
     }
 
     /** @return datatype データ型のみ */
+    @Override
     public DataType getDataType() {
       if (typ.indexOf("INT") != -1) {
         return DefineReport.DataType.INTEGER;
@@ -1441,6 +1293,7 @@ public class ReportTR005Dao extends ItemDao {
     }
 
     /** @return boolean */
+    @Override
     public boolean isText() {
       return getDataType() == DefineReport.DataType.TEXT;
     }
