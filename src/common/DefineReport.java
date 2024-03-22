@@ -5460,7 +5460,7 @@ public class DefineReport {
 
   // SQL：週№(処理日付を基準日とした、翌週、翌々週以降のデータ)
   public final static String ID_SQL_SHUN_TR007 = DefineReport.ID_SQL_CMN_WEEK + " select * from (select VALUE, TEXT from (values ROW('-1', '　')) as X(value, TEXT)"
-      + " union all select right ('0000' || T1.SHUNO, 4) as value, right ('0000' || T1.SHUNO, 4) || '-' || TO_CHAR(TO_DATE(T1.STARTDT, 'YYYYMMDD'), 'YY/MM/DD') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STARTDT, 'YYYYMMDD'))) || '～' || TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) as TEXT from INAAD.SYSSHUNO T1 inner join (select distinct SHUNO from INATK.HATTR_CSV where COALESCE(UPDKBN, 0) <> 1) T2 on T1.SHUNO = T2.SHUNO"
+      + " union all select right ('0000' || T1.SHUNO, 4) as value, right ('0000' || T1.SHUNO, 4) || '-' || DATE_FORMAT(DATE_FORMAT(T1.STARTDT, '%y/%m/%d'), '%y/%m/%d') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.STARTDT, '%Y%m%d'))) || '～' || DATE_FORMAT(DATE_FORMAT(T1.ENDDT, '%y/%m/%d'), '%y/%m/%d') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.ENDDT, '%Y%m%d'))) as TEXT from INAAD.SYSSHUNO T1 inner join (select distinct SHUNO from INATK.HATTR_CSV where COALESCE(UPDKBN, 0) <> 1) T2 on T1.SHUNO = T2.SHUNO"
       + " ) T order by replace (value, '-1', '9999') desc";
 
   public final static String ID_SQL_SHUNO_HEAD = "select VALUE, TEXT from (values ROW('" + Values.NONE.getVal() + "', '　')) as X(value, TEXT) union all ";
