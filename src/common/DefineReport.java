@@ -5382,13 +5382,13 @@ public class DefineReport {
       + "3 from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
 
   // SQL：処理日付曜日
-  public final static String ID_SQLSHORIDTWEEK = "select DAYOFWEEK(TO_DATE(SHORIDT,'YYYYMMDD')) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
+  public final static String ID_SQLSHORIDTWEEK = "select DAYOFWEEK(DATE_FORMAT(SHORIDT,'%Y%m%d')) as " + VAL + " from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1 order by ID desc limit 1 ";
 
   // SQL：週№期間を取得
-  public final static String ID_SQLSHUNOPERIOD = DefineReport.ID_SQL_CMN_WEEK + ",SHORI as(SELECT CASE WHEN DAYOFWEEK(TO_DATE(" + VAL + ",'YYYYMMDD')) = 2 OR DAYOFWEEK(TO_DATE(" + VAL
-      + ",'YYYYMMDD')) = 3 THEN TO_CHAR(TO_DATE(" + VAL + ",'YYYYMMDD') + 7 DAY,'YYYYMMDD') ELSE TO_CHAR(TO_DATE(" + VAL + ",'YYYYMMDD') + 14 DAY,'yyyymmdd') END AS DT FROM("
-      + DefineReport.ID_SQLSHORIDT + ")) "
-      + "SELECT TO_CHAR(TO_DATE(SHUNO.STARTDT,'YYYYMMDD'),'YYYY/MM/DD') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(TO_DATE(SHUNO.STARTDT,'YYYYMMDD'))) || '～' || TO_CHAR(TO_DATE(SHUNO.ENDDT,'YYYYMMDD'),'yyyy/mm/dd') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(TO_DATE(SHUNO.ENDDT,'YYYYMMDD'))) AS "
+  public final static String ID_SQLSHUNOPERIOD = DefineReport.ID_SQL_CMN_WEEK + ",SHORI as(SELECT CASE WHEN DAYOFWEEK(DATE_FORMAT(" + VAL + ",'%Y%m%d')) = 2 OR DAYOFWEEK(DATE_FORMAT(" + VAL
+      + ",'%Y%m%d')) = 3 THEN DATE_FORMAT(DATE_ADD(DATE_FORMAT(" + VAL + ",'%Y%m%d'), INTERVAL 7 DAY),'%Y%m%d') ELSE DATE_FORMAT(DATE_ADD(DATE_FORMAT(" + VAL
+      + ",'%Y%m%d') , INTERVAL 14 DAY),'%y/%m/%d') END AS DT FROM(" + DefineReport.ID_SQLSHORIDT + ")T1) "
+      + "SELECT DATE_FORMAT(DATE_FORMAT(SHUNO.STARTDT,'%Y%m%d'),'%Y%m%d') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(DATE_FORMAT(SHUNO.STARTDT,'%Y%m%d'))) || '～' || DATE_FORMAT(DATE_FORMAT(SHUNO.ENDDT,'%Y%m%d'),'%y/%m/%d') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(DATE_FORMAT(SHUNO.ENDDT,'%Y%m%d'))) AS "
       + VAL + " FROM INAAD.SYSSHUNO AS SHUNO, SHORI WHERE SHORI.DT BETWEEN SHUNO.STARTDT AND SHUNO.ENDDT";
   // SQL：期間(初期表示用)
   public final static String ID_SQL_KIKAN_DAY_INIT = "select max(COMTOB) as DT1, max(COMTOB) as DT2 from INAYS.MCALTT";
