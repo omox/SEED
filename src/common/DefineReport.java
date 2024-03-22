@@ -5447,8 +5447,8 @@ public class DefineReport {
       + "||'～'||DATE_FORMAT(DATE_FORMAT(T1.ENDDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.ENDDT, '%Y%m%d'))) as " + TXT + "@C"
       + " from INAAD.SYSSHUNO T1" + " @T";
   public final static String ID_SQL_TOKSHUNO = " select RIGHT('0000'||T2.SHUNO,4) as " + VAL
-      + ", CASE WHEN T1.STARTDT IS NULL AND T1.ENDDT IS NULL THEN RIGHT ('0000' || T2.SHUNO, 4) || '-' ELSE RIGHT('0000'||T2.SHUNO,4)||'-'||TO_CHAR(TO_DATE(T1.STARTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STARTDT, 'YYYYMMDD')))"
-      + "||'～'||TO_CHAR(TO_DATE(T1.ENDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.ENDDT, 'YYYYMMDD'))) END as " + TXT + "@C"
+      + ", CASE WHEN T1.STARTDT IS NULL AND T1.ENDDT IS NULL THEN RIGHT ('0000' || T2.SHUNO, 4) || '-' ELSE RIGHT('0000'||T2.SHUNO,4)||'-'||DATE_FORMAT(DATE_FORMAT(T1.STARTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.STARTDT, '%Y/%m/%d')))"
+      + "||'～'||DATE_FORMAT(DATE_FORMAT(T1.ENDDT, '%Y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.ENDDT, '%Y/%m/%d'))) END as " + TXT + "@C"
       + " from INATK.TOKMOYSYU T2 LEFT JOIN INAAD.SYSSHUNO T1 ON T1.SHUNO = T2.SHUNO where T2.UPDKBN = 0 " + " @T";
   // SQL：週№(処理日付を基準日とした週、翌週、翌々週のデータ)
   public final static String ID_SQL_SHUNO2 = DefineReport.ID_SQL_CMN_WEEK
