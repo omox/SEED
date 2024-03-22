@@ -309,7 +309,7 @@ public class ReportTG020Dao extends ItemDao {
     } else {
       sbSQL.append(" '     ' AS F1");
     }
-    sbSQL.append(" FROM (SELECT 1 FROM (SLECT 1 AS DUMMY) DUMMY)");
+    sbSQL.append(" FROM (SELECT 1 FROM (SELECT 1 AS DUMMY) DUMMY) MT");
 
     return sbSQL.toString();
   }
