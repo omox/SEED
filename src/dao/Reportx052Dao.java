@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+
 import authentication.bean.User;
 import common.DefineReport;
 import common.Defines;
@@ -148,7 +151,7 @@ public class Reportx052Dao extends ItemDao {
     if (DefineReport.Button.SEL_CHANGE.getObj().equals(sendBtnid) || DefineReport.Button.SEL_REFER.getObj().equals(sendBtnid)) {
 
       sbSQL.append("select");
-      sbSQL.append(" MAK1.MAKERCD"); // F1 ：メーカーコード
+      sbSQL.append(" MAK1.MAKERCD"); // F1 ： メーカーコード
       sbSQL.append(", MAK1.MAKERAN"); // F2 ：メーカー名（ｶﾅ）
       sbSQL.append(", MAK1.MAKERKN"); // F3 ：メーカー名（漢字）
       sbSQL.append(", MAK1.JANCD"); // F4 ：JANコード
