@@ -61,7 +61,7 @@ public class GetSqlCommandCheck {
     }
 
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
     String json = "";
 
@@ -486,7 +486,8 @@ public class GetSqlCommandCheck {
         paramData.add(id);
 
         if (outobj.equals("txt_pass_new")) {
-          szWhere += " and NVL(PASSWORDS,'0')<>? and NVL(PASSWORDS_1,'0')<>? and NVL(PASSWORDS_2,'0')<>? and NVL(PASSWORDS_3,'0')<>? and NVL(PASSWORDS_4,'0')<>? and NVL(PASSWORDS_5,'0')<>? ";
+          szWhere +=
+              " and COALESCE(PASSWORDS,'0')<>? and COALESCE(PASSWORDS_1,'0')<>? and COALESCE(PASSWORDS_2,'0')<>? and COALESCE(PASSWORDS_3,'0')<>? and COALESCE(PASSWORDS_4,'0')<>? and COALESCE(PASSWORDS_5,'0')<>? ";
           paramData.add(pass);
           paramData.add(pass);
           paramData.add(pass);
@@ -528,7 +529,7 @@ public class GetSqlCommandCheck {
       sqlcommand += " FTAIECD = ? and FTAISHUKBN = ?";
     }
     if (StringUtils.equals(key, "MST_CNT") && DefineReport.ID_PAGE_ST008.equals(outpage)) {
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       paramData.add(obj.optString("value1"));
       paramData.add(obj.optString("value2"));
@@ -573,7 +574,7 @@ public class GetSqlCommandCheck {
       }
 
       if (outobj.equals(DefineReport.InpText.MOYSSTDT.getObj())) {
-        HashMap<String, String> hmap = new HashMap<String, String>();
+        HashMap<String, String> hmap = new HashMap<>();
         hmap.put("KEY", obj.optString("KEY"));
         hmap.put("MOYSKBN", obj.optString("MOYSKBN"));
         hmap.put("MOYSSTDT", obj.optString("MOYSSTDT"));
@@ -792,7 +793,7 @@ public class GetSqlCommandCheck {
     // 店舗部門マスタ用
     if (outobj.equals("MSTTENBMN") && DefineReport.ID_PAGE_X122.equals(outpage)) {
       // 店舗コードを取得
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       String tbl = "INAMS.MSTTENBMN";
       sqlcommand = DefineReport.ID_SQL_CHK_TBL_MULTI.replace("@T", tbl);
       paramData.add(obj.optString("TENCD"));
@@ -953,7 +954,7 @@ public class GetSqlCommandCheck {
 
       int len = value.length();
       String newValue = len != 0 ? "" : value;
-      ArrayList<String> dummy = new ArrayList<String>();
+      ArrayList<String> dummy = new ArrayList<>();
 
       for (int i = 0; i < len; i++) {
         sqlcommand = "select * from (values ROW('" + value.substring(i, (i + 1)) + "')) as T1(" + DefineReport.VAL + ")";
