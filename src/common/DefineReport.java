@@ -5600,7 +5600,7 @@ public class DefineReport {
   public final static String ID_SQL_BUMON_UNSELECTED =
       " select VALUE, TEXT, TEXT as TEXT2 from (values ROW(- 1, '')) as X(value, TEXT) union all select BMNCD as value, right ('0' || BMNCD, 2) || '-' || RTRIM(RTRIM(MAX(BMNKN)), '　') as TEXT, RTRIM(RTRIM(MAX(BMNKN)), '　') as TEXT2 from INAMS.MSTBMN group by BMNCD order by value";
   public final static String ID_SQL_BUMON_ZIZEN =
-      " select VALUE , TEXT , TEXT as TEXT2 from (values ROW('-1', '　')) as X(value, TEXT) union all select right ('0' || T1.BMNCD, 2) as VALUE , right ('0' || T1.BMNCD, 2) || '-' || rtrim(rtrim(max(T1.BMNKN)), '　') as TEXT , rtrim(rtrim(max(T1.BMNKN)), '　') as TEXT2  from INAMS.MSTBMN T1 left join INATK.TOKTJ_TEN T2 on T2.TENCD = ? and T2.BMNCD = T1.BMNCD where T2.LSTNO = ? and T2.TENCD = ? and T2.BMNCD = T1.BMNCD group by   T1.BMNCD order by VALUE";// TODO
+      " select VALUE , TEXT , TEXT as TEXT2 from (values ROW('-1', '　')) as X(value, TEXT) union all select right ('0' || T1.BMNCD, 2) as VALUE , right ('0' || T1.BMNCD, 2) || '-' || rtrim(max(T1.BMNKN)) as TEXT ,rtrim(max(T1.BMNKN)) as TEXT2  from INAMS.MSTBMN T1 left join INATK.TOKTJ_TEN T2 on T2.TENCD = ? and T2.BMNCD = T1.BMNCD where T2.LSTNO = ? and T2.TENCD = ? and T2.BMNCD = T1.BMNCD group by   T1.BMNCD order by VALUE";// TODO
   // 定数を入れている為後で修正
 
   // SQL：大分類
