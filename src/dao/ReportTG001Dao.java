@@ -560,37 +560,7 @@ public class ReportTG001Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.TOKTG_KHN as T");
-    sbSQL.append(" using (select ");
-    for (TOKTG_KHNLayout itm : TOKTG_KHNLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      if (itm.getNo() > 1) {
-        sbSQL.append(",");
-      }
-      if (data.containsKey(itm.getId())) {
-        String value = StringUtils.strip(data.optString(itm.getId()));
-        if (StringUtils.equals(itm.getId(), TOKTG_KHNLayout.QADEVSTDT.getCol())) {
-          value = StringUtils.defaultIfEmpty(value, "0");
-        }
-        if (StringUtils.isNotEmpty(value)) {
-          prmData.add(value);
-          sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
-        } else {
-          sbSQL.append("cast(null as " + itm.getTyp() + ") as " + itm.getCol());
-        }
-      } else {
-        sbSQL.append("null as " + itm.getCol());
-      }
-    }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN");
-    sbSQL.append(" and T.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
-    sbSQL.append(" )");
-    sbSQL.append(" when not matched then ");
-    sbSQL.append(" insert (");
+    sbSQL.append("replace into INATK.TOKTG_KHN ( ");
     sbSQL.append("  MOYSKBN"); // F1 : 催し区分
     sbSQL.append(" ,MOYSSTDT"); // F2 : 催し開始日
     sbSQL.append(" ,MOYSRBAN"); // F3 : 催し連番
@@ -617,56 +587,34 @@ public class ReportTG001Dao extends ItemDao {
     sbSQL.append(" ,ADDDT"); // F24: 登録日
     sbSQL.append(" ,UPDDT"); // F25: 更新日
     sbSQL.append(")values(");
-    sbSQL.append("  RE.MOYSKBN"); // F1 : 催し区分
-    sbSQL.append(" ,RE.MOYSSTDT"); // F2 : 催し開始日
-    sbSQL.append(" ,RE.MOYSRBAN"); // F3 : 催し連番
-    sbSQL.append(" ,RE.HBOKUREFLG"); // F4 : 販売日1日遅許可フラグ
-    sbSQL.append(" ,RE.GTSIMEDT"); // F5 : 月締日
-    sbSQL.append(" ,RE.GTSIMEFLG"); // F6 : 月締フラグ
-    sbSQL.append(" ,RE.LSIMEDT"); // F7 : 最終締日
-    sbSQL.append(" ,RE.QAYYYYMM"); // F8 : アンケート月度
-    sbSQL.append(" ,RE.QAENO"); // F9 : アンケート月度枝番
-    sbSQL.append(" ,RE.QACREDT"); // F10: アンケート作成日
-    sbSQL.append(" ,RE.QARCREDT"); // F11: アンケート再作成日
-    sbSQL.append(" ,RE.JLSTCREFLG"); // F12: 事前発注リスト作成済フラグ
-    sbSQL.append(" ,RE.HNCTLFLG"); // F13: 本部コントロールフラグ
-    sbSQL.append(" ,RE.TPNG1FLG"); // F14: 店不採用禁止フラグ
-    sbSQL.append(" ,RE.TPNG2FLG"); // F15: 店売価選択禁止フラグ
-    sbSQL.append(" ,RE.TPNG3FLG"); // F16: 店商品選択禁止フラグ
-    sbSQL.append(" ,RE.SIMEFLG1_LD"); // F17: 仮締フラグ_リーダー店
-    sbSQL.append(" ,RE.SIMEFLG2_LD"); // F18: 本締フラグ_リーダー店
-    sbSQL.append(" ,RE.SIMEFLG_MB"); // F19: 本締フラグ_各店
-    sbSQL.append(" ,RE.QADEVSTDT"); // F20: アンケート取込開始日
+    for (TOKTG_KHNLayout itm : TOKTG_KHNLayout.values()) {
+      if (ArrayUtils.contains(notTarget, itm.getId())) {
+        continue;
+      } // パラメータ不要
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      if (data.containsKey(itm.getId())) {
+        String value = StringUtils.strip(data.optString(itm.getId()));
+        if (StringUtils.equals(itm.getId(), TOKTG_KHNLayout.QADEVSTDT.getCol())) {
+          value = StringUtils.defaultIfEmpty(value, "0");
+        }
+        if (StringUtils.isNotEmpty(value)) {
+          prmData.add(value);
+          sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+        } else {
+          sbSQL.append("cast(null as " + itm.getTyp() + ") as " + itm.getCol());
+        }
+      } else {
+        sbSQL.append("null as " + itm.getCol());
+      }
+    }
     sbSQL.append(" ," + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
     sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
     sbSQL.append(" ,'" + userId + "'"); // F23: オペレータ
-    sbSQL.append(" ,current timestamp"); // F24: 登録日
-    sbSQL.append(" ,current timestamp"); // F25: 更新日
+    sbSQL.append(" ,current_timestamp"); // F24: 登録日
+    sbSQL.append(" ,current_timestamp"); // F25: 更新日
     sbSQL.append(" )");
-    sbSQL.append(" when matched then ");
-    sbSQL.append(" update set");
-    sbSQL.append("  HBOKUREFLG=RE.HBOKUREFLG"); // F4 : 販売日1日遅許可フラグ
-    sbSQL.append(" ,GTSIMEDT=RE.GTSIMEDT"); // F5 : 月締日
-    sbSQL.append(" ,GTSIMEFLG=RE.GTSIMEFLG"); // F6 : 月締フラグ
-    sbSQL.append(" ,LSIMEDT=RE.LSIMEDT"); // F7 : 最終締日
-    sbSQL.append(" ,QAYYYYMM=RE.QAYYYYMM"); // F8 : アンケート月度
-    sbSQL.append(" ,QAENO=RE.QAENO"); // F9 : アンケート月度枝番
-    sbSQL.append(" ,QACREDT=RE.QACREDT"); // F10: アンケート作成日
-    sbSQL.append(" ,QARCREDT=RE.QARCREDT"); // F11: アンケート再作成日
-    sbSQL.append(" ,JLSTCREFLG=RE.JLSTCREFLG"); // F12: 事前発注リスト作成済フラグ
-    sbSQL.append(" ,HNCTLFLG=RE.HNCTLFLG"); // F13: 本部コントロールフラグ
-    sbSQL.append(" ,TPNG1FLG=RE.TPNG1FLG"); // F14: 店不採用禁止フラグ
-    sbSQL.append(" ,TPNG2FLG=RE.TPNG2FLG"); // F15: 店売価選択禁止フラグ
-    sbSQL.append(" ,TPNG3FLG=RE.TPNG3FLG"); // F16: 店商品選択禁止フラグ
-    sbSQL.append(" ,SIMEFLG1_LD=RE.SIMEFLG1_LD"); // F17: 仮締フラグ_リーダー店
-    sbSQL.append(" ,SIMEFLG2_LD=RE.SIMEFLG2_LD"); // F18: 本締フラグ_リーダー店
-    sbSQL.append(" ,SIMEFLG_MB=RE.SIMEFLG_MB"); // F19: 本締フラグ_各店
-    sbSQL.append(" ,QADEVSTDT=RE.QADEVSTDT"); // F20: アンケート取込開始日
-    sbSQL.append(" ,UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
-    sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
-    sbSQL.append(" ,OPERATOR='" + userId + "'"); // F23: オペレータ
-    // sbSQL.append(" ,ADDDT=RE.ADDDT"); // F24: 登録日
-    sbSQL.append(" ,UPDDT=current timestamp"); // F25: 更新日
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -733,7 +681,7 @@ public class ReportTG001Dao extends ItemDao {
     sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
     sbSQL.append(" ,OPERATOR='" + userId + "'"); // F23: オペレータ
     // sbSQL.append(" ,ADDDT=RE.ADDDT"); // F24: 登録日
-    sbSQL.append(" ,UPDDT=current timestamp"); // F25: 更新日
+    sbSQL.append(" ,UPDDT=current_timestamp"); // F25: 更新日
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());

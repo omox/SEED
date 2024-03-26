@@ -216,7 +216,7 @@ public class Reportx161Dao extends ItemDao {
         sbSQL = new StringBuffer();
         sbSQL.append("select");
         sbSQL.append(" case");
-        sbSQL.append(" when UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + " then 'current timestamp'");
+        sbSQL.append(" when UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + " then 'current_timestamp'");
         sbSQL.append(" when UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " then DATE_FORMAT(DATE_FORMAT(ADDDT, '%Y%m%d'),%y-%m-%d) end ");
         sbSQL.append(" from INAMS.MSTFUKUSUSIR_T");
         sbSQL.append(" where SIRCD = " + sircd + " and TENCD = " + tencd);
@@ -224,7 +224,7 @@ public class Reportx161Dao extends ItemDao {
         if (dbDatas.size() > 0) {
           adddt = dbDatas.getJSONObject(0).getString("1") + ",";
         } else {
-          adddt = "current timestamp,";
+          adddt = "current_timestamp,";
         }
 
         values += StringUtils.defaultIfEmpty("'" + data.optString("F1") + "'", "null") + ",";
@@ -236,7 +236,7 @@ public class Reportx161Dao extends ItemDao {
         values += "null,";
         values += "'" + userId + "',";
         values += adddt;
-        values += "current timestamp";
+        values += "current_timestamp";
 
       } else {
         for (int j = 0; j < data.size(); j++) {
@@ -347,7 +347,7 @@ public class Reportx161Dao extends ItemDao {
         sbSQL = new StringBuffer();
         sbSQL.append("select");
         sbSQL.append(" case");
-        sbSQL.append(" when UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + " then 'current timestamp'");
+        sbSQL.append(" when UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + " then 'current_timestamp'");
         sbSQL.append(" when UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " then DATE_FORMAT(DATE_FORMAT(ADDDT, '%Y%m%d'),%y-%m-%d) end");
         sbSQL.append(" from INAMS.MSTFUKUSUSIR_R");
         sbSQL.append(" where RSIRCD = " + rsircd + " and SEQNO = " + seqno);
@@ -355,7 +355,7 @@ public class Reportx161Dao extends ItemDao {
         if (dbDatas.size() > 0) {
           adddt = dbDatas.getJSONObject(0).getString("1") + ",";
         } else {
-          adddt = "current timestamp,";
+          adddt = "current_timestamp,";
         }
 
         values += StringUtils.defaultIfEmpty(data.optString("F1"), "null") + ",";
@@ -365,7 +365,7 @@ public class Reportx161Dao extends ItemDao {
         values += "null,";
         values += "'" + userId + "',";
         values += adddt;
-        values += "current timestamp";
+        values += "current_timestamp";
 
       } else {
         for (int j = 0; j < data.size(); j++) {

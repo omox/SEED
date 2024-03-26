@@ -434,11 +434,11 @@ public class ReportTG008Dao extends ItemDao {
           values += ", null";
         } else {
           prmData.add(val);
-          values += ", cast(? as varchar(" + MessageUtility.getDefByteLen(val) + "))";
+          values += ", cast(? as char(" + MessageUtility.getDefByteLen(val) + "))";
         }
         names += ", " + col;
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += "," + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -446,35 +446,19 @@ public class ReportTG008Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.TOKTG_SHN as T");
-    sbSQL.append(" using (select ");
+    sbSQL.append("REPLACE INTO INATK.TOKTG_SHN ( ");
     for (TOKTG_SHNLayout itm : target) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append("cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
+      sbSQL.append(itm.getCol());
     }
-    sbSQL.append("  from (values" + rows + ") as T1(" + names + ")");
-    sbSQL.append(" ) as RE on ( ");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
-    sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO ");
-    if (isBase) {
-      sbSQL.append(" and T.KANRIENO = RE.KANRIENO ");
-    } else {
-      sbSQL.append(" and not(T.KANRIENO = RE.KANRIENO) and RE.GTSIMECHGKBN = 3 ");
-    }
-    sbSQL.append(" and T.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
-    sbSQL.append(" )");
-    sbSQL.append(" when matched then ");
-    sbSQL.append(" update set");
-    sbSQL.append("  UPDKBN=case when RE.GTSIMECHGKBN = 3 then " + DefineReport.ValUpdkbn.DEL.getVal() + " else " + DefineReport.ValUpdkbn.NML.getVal() + " end"); // 更新区分
-    if (isBase) {
-      sbSQL.append(" ,GTSIMEOKFLG=RE.GTSIMEOKFLG"); // 月締変更許可フラグ
-    }
+    sbSQL.append("  )values(" + rows + " ");
     sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
     sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
     // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-    sbSQL.append(" ,UPDDT=current timestamp"); // 更新日
+    sbSQL.append(" ,UPDDT=current_timestamp"); // 更新日
+    sbSQL.append(") ");
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());

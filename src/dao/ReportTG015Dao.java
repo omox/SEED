@@ -508,7 +508,7 @@ public class ReportTG015Dao extends ItemDao {
     // 基本INSERT/UPDATE文
     StringBuffer sbSQL = new StringBuffer();;
 
-    sbSQL.append("MERGE INTO INATK.TOKTG_QATEN AS T USING (SELECT ");
+    sbSQL.append("REPLACE INTO INATK.TOKTG_QATEN ( ");
     sbSQL.append("  MOYSKBN"); // 催し区分：
     sbSQL.append(", MOYSSTDT"); // 催し開始日：
     sbSQL.append(", MOYSRBAN"); // 催し連番：

@@ -448,7 +448,6 @@ public class ReportTG040Dao extends ItemDao {
 
     // 更新列設定
     TOKTG_TENGPLayout[] notTarget = new TOKTG_TENGPLayout[] {TOKTG_TENGPLayout.UPDKBN, TOKTG_TENGPLayout.SENDFLG, TOKTG_TENGPLayout.OPERATOR, TOKTG_TENGPLayout.ADDDT, TOKTG_TENGPLayout.UPDDT};
-    String szWhere = "T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT= RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN and T.TENGPCD = RE.TENGPCD";
     String sendflg = DefineReport.Values.SENDFLG_UN.getVal();
     String updkbn = DefineReport.ValUpdkbn.NML.getVal();
     if (SqlType.DEL.getVal() == sql.getVal()) {
@@ -462,7 +461,7 @@ public class ReportTG040Dao extends ItemDao {
         continue;
       } // パラメータ不要
       names += "," + itm.getId();
-      cols += ", cast(" + itm.getId() + " as " + itm.getTyp() + ") as " + itm.getCol();
+      cols += ", " + itm.getCol();
     }
     names = StringUtils.removeStart(names, ",");
     cols = StringUtils.removeStart(cols, ",");
@@ -482,7 +481,7 @@ public class ReportTG040Dao extends ItemDao {
           values += ", cast(? as varchar(" + MessageUtility.getDefByteLen(val) + "))";
         }
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += "," + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
 
@@ -490,55 +489,21 @@ public class ReportTG040Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.TOKTG_TENGP as T");
-    sbSQL.append(" using (");
-    sbSQL.append("  select " + cols + " from (values" + rows + ") as T1(" + names + ")");
-    sbSQL.append(" ) as RE on (" + szWhere + ") ");
-    sbSQL.append(" WHEN MATCHED THEN UPDATE SET ");
-    sbSQL.append("TENGPKN=RE.TENGPKN");
-    sbSQL.append(",KYOSEIFLG=RE.KYOSEIFLG");
-    sbSQL.append(",QASYUKBN=RE.QASYUKBN");
-    sbSQL.append(",QACREDT_K=RE.QACREDT_K");
-    sbSQL.append(",QARCREDT_K=RE.QARCREDT_K");
-    sbSQL.append(",UPDKBN=" + updkbn);
-    sbSQL.append(",SENDFLG=" + sendflg);
-    sbSQL.append(",OPERATOR='" + userId + "'");
-    sbSQL.append(",ADDDT=current timestamp ");
-    sbSQL.append(",UPDDT=current timestamp ");
-    if (SqlType.INS.getVal() == sql.getVal()) {
-      sbSQL.append(" when not matched then ");
-      sbSQL.append(" insert (");
-      sbSQL.append("  MOYSKBN"); // F1 : 催し区分
-      sbSQL.append(" ,MOYSSTDT"); // F2 : 催し開始日
-      sbSQL.append(" ,MOYSRBAN"); // F3 : 催し連番
-      sbSQL.append(" ,TENGPCD"); // F4 : 店グループ
-      sbSQL.append(" ,TENGPKN"); // F5 : 店グループ名称
-      sbSQL.append(" ,KYOSEIFLG"); // F6 : 強制グループフラグ
-      sbSQL.append(" ,QASYUKBN"); // F7 : アンケート種類
-      sbSQL.append(" ,QACREDT_K"); // F8 : アンケート作成日_強制
-      sbSQL.append(" ,QARCREDT_K"); // F9 : アンケート再作成日_強制
-      sbSQL.append(" ,UPDKBN"); // F10: 更新区分
-      sbSQL.append(" ,SENDFLG"); // F11: 送信フラグ
-      sbSQL.append(" ,OPERATOR"); // F12: オペレータ
-      sbSQL.append(" ,ADDDT"); // F13: 登録日
-      sbSQL.append(" ,UPDDT"); // F14: 更新日
-      sbSQL.append(")values(");
-      sbSQL.append("  RE.MOYSKBN"); // F1 : 催し区分
-      sbSQL.append(" ,RE.MOYSSTDT"); // F2 : 催し開始日
-      sbSQL.append(" ,RE.MOYSRBAN"); // F3 : 催し連番
-      sbSQL.append(" ,RE.TENGPCD"); // F4 : 店グループ
-      sbSQL.append(" ,RE.TENGPKN"); // F5 : 店グループ名称
-      sbSQL.append(" ,RE.KYOSEIFLG"); // F6 : 強制グループフラグ
-      sbSQL.append(" ,RE.QASYUKBN"); // F7 : アンケート種類
-      sbSQL.append(" ,RE.QACREDT_K"); // F8 : アンケート作成日_強制
-      sbSQL.append(" ,RE.QARCREDT_K"); // F9 : アンケート再作成日_強制
-      sbSQL.append(" ," + updkbn); // F10: 更新区分
-      sbSQL.append(" ," + sendflg); // F11: 送信フラグ
-      sbSQL.append(" ,'" + userId + "'"); // F12: オペレータ
-      sbSQL.append(" ,current timestamp"); // F13: 登録日
-      sbSQL.append(" ,current timestamp"); // F14: 更新日
-      sbSQL.append(" )");
-    }
+    sbSQL.append("REPLACE INTO INATK.TOKTG_TENGP ( ");
+    sbSQL.append(" " + cols + " ");
+    sbSQL.append(" ,UPDKBN"); // F10: 更新区分
+    sbSQL.append(" ,SENDFLG"); // F11: 送信フラグ
+    sbSQL.append(" ,OPERATOR"); // F12: オペレータ
+    sbSQL.append(" ,ADDDT"); // F13: 登録日
+    sbSQL.append(" ,UPDDT"); // F14: 更新日
+    sbSQL.append(" )values (" + rows + "");
+    sbSQL.append(" ," + updkbn); // F10: 更新区分
+    sbSQL.append(" ," + sendflg); // F11: 送信フラグ
+    sbSQL.append(" ,'" + userId + "'"); // F12: オペレータ
+    sbSQL.append(" ,current_timestamp"); // F13: 登録日
+    sbSQL.append(" ,current_timestamp"); // F14: 更新日
+    sbSQL.append(" )");
+
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -567,7 +532,7 @@ public class ReportTG040Dao extends ItemDao {
     // 更新列設定
     TOKTG_TENGPLayout[] keys = new TOKTG_TENGPLayout[] {TOKTG_TENGPLayout.MOYSKBN, TOKTG_TENGPLayout.MOYSSTDT, TOKTG_TENGPLayout.MOYSRBAN, TOKTG_TENGPLayout.TENGPCD};
 
-    String values = "", names = "", rows = "", cols = "";
+    String values = "", names = "", rows = "";
     // 列別名設定
     String szWhereIn = "";
     for (TOKTG_TENGPLayout itm : keys) {
@@ -583,70 +548,38 @@ public class ReportTG040Dao extends ItemDao {
       for (TOKTG_TENGPLayout itm : keys) {
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
         prmData.add(val);
-        values += ", cast(? as varchar(" + MessageUtility.getDefByteLen(val) + "))";
+        values += ", cast(? as char(" + MessageUtility.getDefByteLen(val) + "))";
         String valc = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId() + "C"));
         prmData.add(valc);
-        values += ", cast(? as varchar(" + MessageUtility.getDefByteLen(val) + "))";
+        values += ", cast(? as char(" + MessageUtility.getDefByteLen(val) + "))";
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += "," + StringUtils.removeStart(values, ",") + "";
     }
     rows = StringUtils.removeStart(rows, ",");
 
-    String szWhere = "T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT= RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN and T.TENCD = RE.TENCD and T.KYOSEIFLG = RE.KYOSEIFLG ";
     String sendflg = DefineReport.Values.SENDFLG_UN.getVal();
 
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.TOKTG_TEN as T");
-    sbSQL.append(" using (");
-    sbSQL.append("  select " + cols + "");
-    sbSQL.append("  cast(T1." + TOKTG_TENGPLayout.MOYSKBN.getId() + " as " + TOKTG_TENGPLayout.MOYSKBN.getTyp() + ") as " + TOKTG_TENGPLayout.MOYSKBN.getCol());
-    sbSQL.append(" ,cast(T1." + TOKTG_TENGPLayout.MOYSSTDT.getId() + " as " + TOKTG_TENGPLayout.MOYSSTDT.getTyp() + ") as " + TOKTG_TENGPLayout.MOYSSTDT.getCol());
-    sbSQL.append(" ,cast(T1." + TOKTG_TENGPLayout.MOYSRBAN.getId() + " as " + TOKTG_TENGPLayout.MOYSRBAN.getTyp() + ") as " + TOKTG_TENGPLayout.MOYSRBAN.getCol());
-    sbSQL.append(" ,T2.TENCD"); // F4 : 店コード
-    sbSQL.append(" ,T2.KYOSEIFLG"); // F5 : 強制グループフラグ
-    sbSQL.append(" ,T2.TENGPCD"); // F6 : 店グループ
-    sbSQL.append(" ,T2.LDTENKBN"); // F7 : リーダー店区分
-    sbSQL.append(" ,T2.SENDFLG"); // F8 : 送信フラグ
-    sbSQL.append("  from (values" + rows + ") as T1(" + names + ")");
-    sbSQL.append("  inner join INATK.TOKTG_TEN T2 on " + szWhereIn);
-    sbSQL.append(" ) as RE on (" + szWhere + ") ");
-    sbSQL.append(" WHEN MATCHED THEN UPDATE SET ");
-    sbSQL.append("TENGPCD=RE.TENGPCD");
-    sbSQL.append(",LDTENKBN=RE.LDTENKBN");
-    sbSQL.append(",SENDFLG=" + sendflg);
-    sbSQL.append(",OPERATOR='" + userId + "'");
-    sbSQL.append(",ADDDT=current timestamp ");
-    sbSQL.append(",UPDDT=current timestamp ");
-    if (SqlType.INS.getVal() == sql.getVal()) {
-      sbSQL.append(" when not matched then ");
-      sbSQL.append(" insert (");
-      sbSQL.append("  MOYSKBN"); // F1 : 催し区分
-      sbSQL.append(" ,MOYSSTDT"); // F2 : 催し開始日
-      sbSQL.append(" ,MOYSRBAN"); // F3 : 催し連番
-      sbSQL.append(" ,TENCD"); // F4 : 店コード
-      sbSQL.append(" ,KYOSEIFLG"); // F5 : 強制グループフラグ
-      sbSQL.append(" ,TENGPCD"); // F6 : 店グループ
-      sbSQL.append(" ,LDTENKBN"); // F7 : リーダー店区分
-      sbSQL.append(" ,SENDFLG"); // F8 : 送信フラグ
-      sbSQL.append(" ,OPERATOR"); // F9 : オペレータ
-      sbSQL.append(" ,ADDDT"); // F10: 登録日
-      sbSQL.append(" ,UPDDT"); // F11: 更新日
-      sbSQL.append(")values(");
-      sbSQL.append("  RE.MOYSKBN"); // F1 : 催し区分
-      sbSQL.append(" ,RE.MOYSSTDT"); // F2 : 催し開始日
-      sbSQL.append(" ,RE.MOYSRBAN"); // F3 : 催し連番
-      sbSQL.append(" ,RE.TENCD"); // F4 : 店コード
-      sbSQL.append(" ,RE.KYOSEIFLG"); // F5 : 強制グループフラグ
-      sbSQL.append(" ,RE.TENGPCD"); // F6 : 店グループ
-      sbSQL.append(" ,RE.LDTENKBN"); // F7 : リーダー店区分
-      sbSQL.append(" ," + sendflg); // F8 : 送信フラグ
-      sbSQL.append(" ,'" + userId + "'"); // F9 : オペレータ
-      sbSQL.append(" ,current timestamp"); // F10: 登録日
-      sbSQL.append(" ,current timestamp"); // F11: 更新日
-      sbSQL.append(" )");
-    }
+    sbSQL.append("REPLACE INTO INATK.TOKTG_TEN ( ");
+    sbSQL.append("  MOYSKBN"); // F1 : 催し区分
+    sbSQL.append(" ,MOYSSTDT"); // F2 : 催し開始日
+    sbSQL.append(" ,MOYSRBAN"); // F3 : 催し連番
+    sbSQL.append(" ,TENCD"); // F4 : 店コード
+    sbSQL.append(" ,KYOSEIFLG"); // F5 : 強制グループフラグ
+    sbSQL.append(" ,TENGPCD"); // F6 : 店グループ
+    sbSQL.append(" ,LDTENKBN"); // F7 : リーダー店区分
+    sbSQL.append(" ,SENDFLG"); // F8 : 送信フラグ
+    sbSQL.append(" ,OPERATOR"); // F9 : オペレータ
+    sbSQL.append(" ,ADDDT"); // F10: 登録日
+    sbSQL.append(" ,UPDDT"); // F11: 更新日
+    sbSQL.append("   )values(" + rows + "");
+    sbSQL.append(" ," + sendflg); // F8 : 送信フラグ
+    sbSQL.append(" ,'" + userId + "'"); // F9 : オペレータ
+    sbSQL.append(" ,current_timestamp"); // F10: 登録日
+    sbSQL.append(" ,current_timestamp"); // F11: 更新日
+    sbSQL.append(" )");
 
 
     if (DefineReport.ID_DEBUG_MODE)

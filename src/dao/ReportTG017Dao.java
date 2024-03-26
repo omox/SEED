@@ -392,10 +392,10 @@ public class ReportTG017Dao extends ItemDao {
       // 月締後登録データの出力有無を判断するワークテーブルの追加
       /*
        * 月締変更理由:GTSIMECHGKBN 0：通常 1：追加 2：変更 3：削除 4：差替
-       * 
+       *
        * アンケート有りの月締後変更が行われている商品において、 ・未承認の場合（(月締変更許可フラグ[GTSIMEOKFLG] = 0:未許可 or NULL) AND
        * 月締変更理由[GTSIMECHGKBN]<>0） 削除商品：出力する 新規商品：出力しない 差替商品：旧商品（枝番-1）で出力する 変更商品：旧商品（枝番-1）で出力する
-       * 
+       *
        * ・承認済みの場合（(月締変更許可フラグ[GTSIMEOKFLG] = 1:許可) AND 月締変更理由[GTSIMECHGKBN]<>0）（修正無し） 削除商品：出力しない 新規商品：出力する
        * 差替商品：新商品（MAX枝番）で出力する 変更商品：新商品（MAX枝番）で出力する
        */
@@ -1032,8 +1032,8 @@ public class ReportTG017Dao extends ItemDao {
     if (containHeadSql) {
       sbSQL.append(" select ");
       sbSQL.append(" 0 as RNO,0 as MOYCD,");
-      sbSQL.append(
-          " rpad('H1'||left(rpad('" + cfi.getFnm() + "', 8, ' '),8)||left(rpad('" + userId + "', 20, ' '),20)||to_char(current timestamp,'YYYYMMDDHH24MISS'), " + cfi.getDataLen() + ", ' ')  as REC");
+      sbSQL.append(" rpad('H1'||left(rpad('" + cfi.getFnm() + "', 8, ' '),8)||left(rpad('" + userId + "', 20, ' '),20)||DATE_FORMAT(current_timestamp,'%Y%m%d%H%i%s%f'), " + cfi.getDataLen()
+          + ", ' ')  as REC");
       sbSQL.append(" from sysibm.sysdummy1");
       sbSQL.append(" union all ");
     }
