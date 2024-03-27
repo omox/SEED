@@ -516,7 +516,7 @@ public class GetSqlCommandCheck {
         // 部門コード
         paramData.add(obj.optString("value2"));
         sqlcommand = DefineReport.ID_SQL_CHK_TBL_MULTI.replace("@T", tbl);
-        sqlcommand += " nvl(UPDKBN, 0) = 0 and shncd = ? and BMNCD = ? and IRYOREFLG = 0 and SHNKBN <> 5 ";
+        sqlcommand += " COALESCE(UPDKBN, 0) = 0 and shncd = ? and BMNCD = ? and IRYOREFLG = 0 and SHNKBN <> 5 ";
       }
     }
     if (StringUtils.equals(key, "MST_CNT") && outobj.equals(DefineReport.MeisyoSelect.KBN617.getObj())) {
