@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.apache.commons.lang.StringUtils;
 import authentication.bean.User;
 import common.DefineReport;
 import common.Defines;
@@ -716,6 +717,8 @@ public class ReportTJ011Dao extends ItemDao {
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
+    String yobi2 = "";
+
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" SELECT YOBI_2 FROM KEYSYS.SYS_USERS WHERE CD_USER =" + userInfo.getCD_user());
     ItemList iL = new ItemList();
@@ -723,7 +726,7 @@ public class ReportTJ011Dao extends ItemDao {
     JSONArray susUsers = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (susUsers.size() != 0) {
-      susUsers.getJSONObject(0).getString("YOBI_2");
+      yobi2 = susUsers.getJSONObject(0).getString("YOBI_2");
     }
 
     String szLstno = getMap().get("LSTNO"); // リスト№
@@ -760,13 +763,13 @@ public class ReportTJ011Dao extends ItemDao {
     sbSQL.append(", DATE_FORMAT(T2.ADDDT, '%y/%m/%d') as F7"); // F7 ： 登録日
     sbSQL.append(", DATE_FORMAT(T2.UPDDT, '%y/%m/%d') as F8"); // F8 ： 更新日
     sbSQL.append(", T2.OPERATOR as F9"); // F9 ： オペレータ
-    /*
-     * sbSQL.append(", (SELECT SHORIDT FROM INAAD.SYSSHORIDT) > "); // 予備2が空なら本部 if
-     * (StringUtils.isEmpty(yobi2)) { sbSQL.
-     * append(" CAST(DATE_FORMAT(DATE_FORMAT(T1.SNDSIMEDT,'%Y%m%d') + INTERVAL 1 DAY,'%Y%m%d') AS SIGNED) as F10"
-     * ); } else { sbSQL.append(" CAST(T1.SNDSIMEDT AS SIGNED) as F10"); }
-     */
-    sbSQL.append(",0 AS F10 ");
+    sbSQL.append(", (SELECT SHORIDT FROM INAAD.SYSSHORIDT) > ");
+    // 予備2が空なら本部
+    if (StringUtils.isEmpty(yobi2)) {
+      sbSQL.append(" CAST(DATE_FORMAT(DATE_FORMAT(T1.SNDSIMEDT,'%Y%m%d') + INTERVAL 1 DAY,'%Y%m%d') AS SIGNED) as F10");
+    } else {
+      sbSQL.append(" CAST(T1.SNDSIMEDT AS SIGNED) as F10");
+    }
     sbSQL.append("  from");
     sbSQL.append("  INATK.TOKTJ T1");
     sbSQL.append(" left join (");
