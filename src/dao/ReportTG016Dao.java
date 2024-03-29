@@ -9206,9 +9206,14 @@ public class ReportTG016Dao extends ItemDao {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      System.out.println(value);
-      prmData.add(value);
-      sbSQL.append("cast(? as " + itm.getTyp() + ") ");
+      if (StringUtils.isNotEmpty(value)) {
+        prmData.add(value);
+        sbSQL.append("cast(? as " + itm.getTyp() + ") ");
+      } else if ((itm.getNo() == 5 || itm.getNo() == 6) && !StringUtils.isNotEmpty(value)) {
+        sbSQL.append("0 ");
+      } else {
+        sbSQL.append("null ");
+      }
     }
     for (TOKTG_SHNLayout itm : TOKTG_SHNLayout.values()) {
       if (ArrayUtils.contains(notTarget, itm.getId())) {
@@ -9231,14 +9236,8 @@ public class ReportTG016Dao extends ItemDao {
         if (StringUtils.isNotEmpty(value)) {
           prmData.add(value);
           sbSQL.append(",cast(? as " + itm.getTyp() + ") ");
-          System.out.print(itm.getCol());
-          System.out.print("= ");
-          System.out.println(StringUtils.isNotEmpty(value));
         } else {
           sbSQL.append(",null ");
-          System.out.print(itm.getCol());
-          System.out.print("= ");
-          System.out.println(StringUtils.isNotEmpty(value));
         }
       } else {
         sbSQL.append(",null ");
@@ -9448,7 +9447,9 @@ public class ReportTG016Dao extends ItemDao {
           continue;
         } // パラメータ不要
         String val = data.optJSONObject(j).optString(itm.getId());
-        if (StringUtils.isEmpty(val.trim())) {
+        if (StringUtils.isEmpty(val.trim()) && j <= 7) {
+          values += ",0";
+        } else if (StringUtils.isEmpty(val.trim()) && j >= 8) {
           values += ",null";
         } else {
           values += ",cast(? as " + itm.getTyp() + " ) ";
@@ -9489,6 +9490,7 @@ public class ReportTG016Dao extends ItemDao {
         if (itm.getId().equals(TOK_CMN_TJTENLayout.UPDDT.getId())) {
           values += ",current_timestamp";
         }
+
       }
       rows += ",( " + StringUtils.removeStart(values, ",") + " ) ";
     }
@@ -9597,84 +9599,29 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.TOKTG_NNDT as T");
-    sbSQL.append(" using (select ");
-    // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
-      if (itm.getNo() > 1) {
-        sbSQL.append(",");
-      }
-      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
-    }
+    sbSQL.append("replace into INATK.TOKTG_NNDT ( ");
+
     for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
       if (ArrayUtils.contains(notUse, itm.getId())) {
         continue;
       } // 不要
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      if (ArrayUtils.contains(keys, itm.getId())) {
-        continue;
-      } // 上記で実施
-      sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
-    }
-    sbSQL.append("  from (values" + rows + ") as T1(" + names + ")");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
-    sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO and T.KANRIENO = RE.KANRIENO ");
-    sbSQL.append(" and T.NNDT = RE.NNDT ");
-    sbSQL.append(" )");
-    if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when not matched AND RE.SENDFLG = '1' then ");
-      sbSQL.append(" insert (");
-      for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
-        if (ArrayUtils.contains(notUse, itm.getId())) {
-          continue;
-        } // 不要
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append(itm.getCol());
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
       }
-      sbSQL.append(")values(");
-      for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
-        if (ArrayUtils.contains(notUse, itm.getId())) {
-          continue;
-        } // 不要
-        if (ArrayUtils.contains(notTarget, itm.getId())) {
-          continue;
-        } // パラメータ不要
-        if (itm.getId().equals(TOKTG_NNDTLayout.SENDFLG.getId())) {
-          continue;
-        } // パラメータ不要
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append("RE." + itm.getCol());
+      sbSQL.append(itm.getCol());
+    }
+    sbSQL.append(")values(");
+    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
       }
-      sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
-      sbSQL.append(" ,'" + userId + "'"); // オペレータ
-      sbSQL.append(" ,current_timestamp"); // 登録日
-      sbSQL.append(" ,current_timestamp"); // 更新日
-      sbSQL.append(")");
+      sbSQL.append("cast(? as " + itm.getTyp() + ") ");
     }
-    if (SqlType.UPD.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when matched AND RE.SENDFLG = '1' then");
-      sbSQL.append(" update set");
-      sbSQL.append("  TENHTSU_ARR=RE.TENHTSU_ARR"); // F8 : 店発注数配列
-      sbSQL.append(" ,TENCHGFLG_ARR=RE.TENCHGFLG_ARR"); // F9 : 店変更フラグ配列
-      sbSQL.append(" ,HTASU=RE.HTASU"); // F10: 発注総数
-      sbSQL.append(" ,PTNNO=RE.PTNNO"); // F11: パターン№
-      sbSQL.append(" ,TSEIKBN=RE.TSEIKBN"); // F12: 訂正区分
-      sbSQL.append(" ,TPSU=RE.TPSU"); // F13: 店舗数
-      sbSQL.append(" ,TENKAISU=RE.TENKAISU"); // F14: 展開数
-      sbSQL.append(" ,ZJSKFLG=RE.ZJSKFLG"); // F15: 前年実績フラグ
-      sbSQL.append(" ,WEEKHTDT=RE.WEEKHTDT"); // F16: 週間発注処理日
-      sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
-      sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
-      sbSQL.append(" ,UPDDT=current_timestamp"); // 更新日
-      sbSQL.append(" when matched AND RE.SENDFLG <> '1' then DELETE");
-    }
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
+    sbSQL.append(" ,'" + userId + "'"); // オペレータ
+    sbSQL.append(" ,current_timestamp"); // 登録日
+    sbSQL.append(" ,current_timestamp"); // 更新日
+    sbSQL.append(")");
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -10134,6 +10081,9 @@ public class ReportTG016Dao extends ItemDao {
         }
         names += ", " + col;
       }
+      values += " ,'" + userId + "'"; // オペレータ
+      values += " ,current_timestamp"; // 登録日
+      values += " ,current_timestamp"; // 更新日
       rows += ",(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
@@ -10142,59 +10092,17 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into " + table + " as T");
-    sbSQL.append(" using (select ");
+    sbSQL.append("replace into " + table + " ( ");
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+      sbSQL.append(itm.getCol());
     }
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
-    }
-    sbSQL.append("  from (values" + rows + ") as T1(" + names + ")");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.SHNCD = RE.SHNCD and T.HBDT = RE.HBDT");
-    sbSQL.append(" )");
-    if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when not matched then ");
-      sbSQL.append(" insert (");
-      for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append(itm.getCol());
-      }
-      sbSQL.append(")values(");
-      for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
-        if (ArrayUtils.contains(notTarget, itm.getId())) {
-          continue;
-        } // パラメータ不要
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append("RE." + itm.getCol());
-      }
-      sbSQL.append(" ,'" + userId + "'"); // オペレータ
-      sbSQL.append(" ,current_timestamp"); // 登録日
-      sbSQL.append(" ,current_timestamp"); // 更新日
-      sbSQL.append(")");
-    }
-    if (SqlType.UPD.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when matched AND RE.MOYCD_ARR IS NOT NULL then");
-      sbSQL.append(" update set");
-      sbSQL.append("  MOYCD_ARR=RE.MOYCD_ARR"); // F3 : 催しコード配列
-      sbSQL.append(" ,KANRINO_ARR=RE.KANRINO_ARR"); // F4 : 管理番号配列
-      sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
-      // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-      sbSQL.append(" ,UPDDT=current_timestamp"); // 更新日
-      sbSQL.append(" when matched AND RE.MOYCD_ARR IS NULL then DELETE");
-    }
+    sbSQL.append("  )values" + rows + " ");
+
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -10450,6 +10358,7 @@ public class ReportTG016Dao extends ItemDao {
     new ArrayList<String>();
 
     StringBuffer sbSQL = new StringBuffer();
+
     sbSQL.append("  select");
     sbSQL.append("  T1.MOYSKBN"); // F1 : 催し区分
     sbSQL.append(" ,T1.MOYSSTDT"); // F2 : 催し開始日
@@ -10462,9 +10371,12 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("   and T1.MOYSSTDT = " + szMoysstdt + "");
     sbSQL.append("   and T1.MOYSRBAN = " + szMoysrban + "");
     sbSQL.append("   and T1.BMNCD    = " + szBmncd + "");
-    sbSQL.append(" for update with rs");
+    sbSQL.append(" LIMIT 1 ");
+    sbSQL.append(" for update ");
 
     sqlList0.add(sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE)
+      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
     return result;
   }
 
@@ -10479,60 +10391,65 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlSYSMOYBMN(String userId, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    new ArrayList<String>();
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.SYSMOYBMN as T");
-    sbSQL.append(" using (select ");
-    // キー情報はロックのため後で追加する
+    sbSQL.append("replace into INATK.SYSMOYBMN ( ");
+    String szMoyskbn = data.optString(TOK_CMNLayout.MOYSKBN.getId()); // 催し区分
+    String szMoysstdt = data.optString(TOK_CMNLayout.MOYSSTDT.getId()); // 催しコード（催し開始日）
+    String szMoysrban = data.optString(TOK_CMNLayout.MOYSRBAN.getId()); // 催し連番
+    String szBmncd = data.optString(TOK_CMNLayout.BMNCD.getId()); // 部門コード
+    for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+    }
+    sbSQL.append(")values(");
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
-    }
-    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
-    sbSQL.append(" and T.BMNCD = RE.BMNCD");
-    sbSQL.append(" )");
-    if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when not matched then ");
-      sbSQL.append(" insert (");
-      for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append(itm.getCol());
+      switch (itm.getNo()) {
+        case 1:
+          sbSQL.append("cast(" + szMoyskbn + " as " + itm.getTyp() + ") ");
+          break;
+        case 2:
+          sbSQL.append("cast(" + szMoysstdt + " as " + itm.getTyp() + ") ");
+          break;
+        case 3:
+          sbSQL.append("cast(" + szMoysrban + " as " + itm.getTyp() + ") ");
+          break;
+        case 4:
+          sbSQL.append("cast(" + szBmncd + " as " + itm.getTyp() + ") ");
+          break;
+        case 5:
+          sbSQL.append("cast(");
+          sbSQL.append("(SELECT SUMI_KANRINO+1 FROM INATK.SYSMOYBMN AS MT ");
+          sbSQL.append(" where MOYSKBN  = " + szMoyskbn + "");
+          sbSQL.append("   and MOYSSTDT = " + szMoysstdt + "");
+          sbSQL.append("   and MOYSRBAN = " + szMoysrban + "");
+          sbSQL.append("   and BMNCD    = " + szBmncd + "");
+          sbSQL.append(" ) ");
+          sbSQL.append(" as " + itm.getTyp() + ") ");
+          break;
+        case 6:
+          sbSQL.append(" null"); // F6 : 付番済表示順番
+          break;
       }
-      sbSQL.append(")values(");
-      sbSQL.append("  RE.MOYSKBN"); // F1 : 催し区分
-      sbSQL.append(" ,RE.MOYSSTDT"); // F2 : 催し開始日
-      sbSQL.append(" ,RE.MOYSRBAN"); // F3 : 催し連番
-      sbSQL.append(" ,RE.BMNCD"); // F4 : 部門
-      sbSQL.append(" ,RE.KANRINO"); // F5 : 付番済管理番号
-      sbSQL.append(" ,null"); // F6 : 付番済表示順番
-      sbSQL.append(" ,'" + userId + "'"); // オペレータ
-      sbSQL.append(" ,current_timestamp"); // 登録日
-      sbSQL.append(" ,current_timestamp"); // 更新日
-      sbSQL.append(")");
+
     }
-    if (SqlType.UPD.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when matched then");
-      sbSQL.append(" update set");
-      sbSQL.append("  SUMI_KANRINO=RE.KANRINO"); // F5 : 付番済管理番号
-      sbSQL.append(" ,SUMI_HYOSEQNO=null"); // F6 : 付番済表示順番
-      sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
-      // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-      sbSQL.append(" ,UPDDT=current_timestamp"); // 更新日
-    }
+
+    sbSQL.append(" ,'" + userId + "'"); // オペレータ
+    sbSQL.append(" ,current_timestamp"); // 登録日
+    sbSQL.append(" ,current_timestamp"); // 更新日
+    sbSQL.append(")");
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
     sqlList.add(sbSQL.toString());
-    prmList.add(prmData);
+    // prmList.add(prmData);
     lblList.add("催し部門内部管理");
     return result;
   }
@@ -10568,7 +10485,8 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("   and T1.MOYSRBAN = " + szMoysrban + "");
     sbSQL.append("   and T1.BMNCD    = " + szBmncd + "");
     sbSQL.append("   and T1.KANRINO  = " + szKanrino + "");
-    sbSQL.append(" for update with rs");
+    sbSQL.append(" LIMIT 1 ");
+    sbSQL.append(" for update ");
 
     sqlList0.add(sbSQL.toString());
     return result;
@@ -10590,49 +10508,24 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.SYSMOYKANRIENO as T");
-    sbSQL.append(" using (select ");
-    // キー情報はロックのため後で追加する
+    sbSQL.append("replace into INATK.SYSMOYKANRIENO ( ");
+    for (SYSMOYKANRIENOLayout itm : SYSMOYKANRIENOLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+    }
+    sbSQL.append(")values(");
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+      sbSQL.append("cast(? as " + itm.getTyp() + ") ");
     }
-    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
-    sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO");
-    sbSQL.append(" )");
-    if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when not matched then ");
-      sbSQL.append(" insert (");
-      for (SYSMOYKANRIENOLayout itm : SYSMOYKANRIENOLayout.values()) {
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append(itm.getCol());
-      }
-      sbSQL.append(")values(");
-      sbSQL.append("  RE.MOYSKBN"); // F1 : 催し区分
-      sbSQL.append(" ,RE.MOYSSTDT"); // F2 : 催し開始日
-      sbSQL.append(" ,RE.MOYSRBAN"); // F3 : 催し連番
-      sbSQL.append(" ,RE.BMNCD"); // F4 : 部門
-      sbSQL.append(" ,RE.KANRINO"); // F5 : 管理番号
-      sbSQL.append(" ,RE.KANRIENO"); // F6 : 付番済枝番
-      sbSQL.append(" ,'" + userId + "'"); // オペレータ
-      sbSQL.append(" ,current_timestamp"); // 登録日
-      sbSQL.append(" ,current_timestamp"); // 更新日
-      sbSQL.append(")");
-    }
-    if (SqlType.UPD.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      sbSQL.append(" when matched then");
-      sbSQL.append(" update set");
-      sbSQL.append("  SUMI_KANRIENO=RE.KANRIENO"); // F6 : 付番済枝番
-      sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
-      // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-      sbSQL.append(" ,UPDDT=current_timestamp"); // 更新日
-    }
+    sbSQL.append(" ,'" + userId + "'"); // オペレータ
+    sbSQL.append(" ,current_timestamp"); // 登録日
+    sbSQL.append(" ,current_timestamp"); // 更新日
+    sbSQL.append(")");
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -11551,11 +11444,11 @@ public class ReportTG016Dao extends ItemDao {
     /** 対象除外フラグ */
     TJFLG(8, "TJFLG", "SIGNED", "対象除外フラグ"),
     /** 店ランク */
-    TENRANK(9, "TENRANK", "CHAR(1)", "店ランク"),
+    TENRANK(9, "TENRANK", "CHAR", "店ランク"),
     /** 送信フラグ */
     SENDFLG(10, "SENDFLG", "SIGNED", "送信フラグ"),
     /** オペレータ */
-    OPERATOR(11, "OPERATOR", "CHAR(20)", "オペレータ"),
+    OPERATOR(11, "OPERATOR", "CHAR", "オペレータ"),
     /** 登録日 */
     ADDDT(12, "ADDDT", "TIMESTAMP", "登録日"),
     /** 更新日 */

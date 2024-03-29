@@ -6219,10 +6219,10 @@ public class DefineReport {
           + " else @BAIKA end";
 
   public final static String ID_SQL_TOKBAIKA_COL_HON2 =
-      " case when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M2.ZEIRT) / 100, 0))"
-          + " when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M3.ZEIRT) / 100, 0))"
-          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M4.ZEIRT) / 100, 0))"
-          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(double (@BAIKA) / NULLIF(1 + decimal (M5.ZEIRT) / 100, 0))"
+      " case when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(cast(@BAIKA as double) / NULLIF(1 + cast(M2.ZEIRT as decimal(15,0)) / 100, 0))"
+          + " when M0.ZEIKBN = 0 and COALESCE(SUBSTR(M0.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(cast(@BAIKA as double) / NULLIF(1 + cast(M3.ZEIRT as decimal(15,0)) / 100, 0))"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) <= COALESCE(@DT, 0) then CEILING(cast(@BAIKA as double) / NULLIF(1 + cast(M4.ZEIRT as decimal(15,0)) / 100, 0))"
+          + " when M0.ZEIKBN = 3 and M1.ZEIKBN = 0 and COALESCE(SUBSTR(M1.ZEIRTHENKODT, 3, 6), 0) >  COALESCE(@DT, 0) then CEILING(cast(@BAIKA as double) / NULLIF(1 + cast(M5.ZEIRT as decimal(15,0)) / 100, 0))"
           + " else @BAIKA end";
 
   public final static String ID_SQL_TOKBAIKA_JOIN = " left outer join INAMS.MSTSHN M0 on M0.SHNCD = @SHNCD   and COALESCE(M0.UPDKBN, 0) <> 1 "

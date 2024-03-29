@@ -170,7 +170,7 @@ public class ReportST016Dao extends ItemDao {
         sbSQL.append(" and BMNCD || KANRINO in (" + StringUtils.removeEnd(StringUtils.replace(StringUtils.replace(shnData.join(","), "\"0", "\""), "\"", ""), ",") + ")");
       }
 
-      sbSQL.append(" and NVL(UPDKBN, 0) <> 1)");
+      sbSQL.append(" and COALESCE(UPDKBN, 0) <> 1)");
       sbSQL.append(", WK as (select");
       sbSQL.append(" MOYSKBN");
       sbSQL.append(", MOYSSTDT");
@@ -219,7 +219,7 @@ public class ReportST016Dao extends ItemDao {
       sbSQL.append(", TENCD");
       sbSQL.append(", TJFLG");
       sbSQL.append(", TENRANK");
-      sbSQL.append(" from " + szTableTJTEN + ")");
+      sbSQL.append(" from " + szTableTJTEN + ") AS MT ");
       sbSQL.append(" group by MOYSKBN, MOYSSTDT, MOYSRBAN, BMNCD, KANRINO, KANRIENO)");
       sbSQL.append(", CAL2 as (select");
       sbSQL.append(" T1.MOYSKBN");
@@ -463,7 +463,7 @@ public class ReportST016Dao extends ItemDao {
       sbSQL.append(", case when CAL2.NDT7 is not null or CAST(CAL.DT7 AS signed) between T4.HBSTDT and T4.HBEDDT then CAL2.TSK7 end as 訂正区分7"); // F142 : 訂正区分7
       sbSQL.append(", case when CAL2.NDT8 is not null or CAST(CAL.DT8 AS signed) between T4.HBSTDT and T4.HBEDDT then CAL2.TSK8 end as 訂正区分8"); // F143 : 訂正区分8
       sbSQL.append(", case when CAL2.NDT9 is not null or CAST(CAL.DT9 AS signed) between T4.HBSTDT and T4.HBEDDT then CAL2.TSK9 end as 訂正区分9"); // F144 : 訂正区分9
-      sbSQL.append(", case when CAL2.NDT10 is not null or int(CAL.DT10 AS signed) between T4.HBSTDT and T4.HBEDDT then CAL2.TSK10 end as 訂正区分10"); // F145 : 訂正区分10
+      sbSQL.append(", case when CAL2.NDT10 is not null or CAST(CAL.DT10 AS signed) between T4.HBSTDT and T4.HBEDDT then CAL2.TSK10 end as 訂正区分10"); // F145 : 訂正区分10
       sbSQL.append(", WK.ADT1 as 追加店1, WK.ADT2 as 追加店2, WK.ADT3 as 追加店3, WK.ADT4 as 追加店4, WK.ADT5 as 追加店5, WK.ADT6 as 追加店6, WK.ADT7 as 追加店7, WK.ADT8 as 追加店8, WK.ADT9 as 追加店9, WK.ADT10 as 追加店10"); // F146~F155
                                                                                                                                                                                                     // :
                                                                                                                                                                                                     // 追加店1~10
