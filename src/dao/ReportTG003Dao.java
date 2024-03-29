@@ -383,10 +383,13 @@ public class ReportTG003Dao extends ItemDao {
     }
 
     // --- 02.全店特売(アンケート有)_店
-    if (dataArrayDel.size() > 0) {
-      this.createSqlTOKTG_TEN(userId, dataArrayDel, SqlType.DEL);
-    }
+    this.createDeleteSql(map, userInfo);
     if (dataArrayTENCD.size() > 0) {
+      System.out.println(dataArrayTENCD.size() > 0);
+      System.out.println(userId);
+      System.out.println(dataArrayTENCD);
+      System.out.println(SqlType.MRG);
+      System.out.println("下");
       this.createSqlTOKTG_TEN(userId, dataArrayTENCD, SqlType.MRG);
     }
 
@@ -771,6 +774,43 @@ public class ReportTG003Dao extends ItemDao {
     prmList.add(prmData);
     lblList.add("全店特売(アンケート有)_店舗");
     return result;
+  }
+
+  /**
+   * INATK.TOKTG_TEN DELETE処理
+   *
+   * @param dataArray
+   * @param map
+   * @param userInfo
+   */
+  public String createDeleteSql(HashMap<String, String> map, User userInfo) {
+    // 更新情報
+    ArrayList<String> prmData = new ArrayList<String>();
+
+    userInfo.getId();
+
+    JSONArray dataArray = JSONArray.fromObject(map.get("DATA")); // 店グループ
+    JSONObject data = dataArray.getJSONObject(0);
+    String szMoysstdt = data.optString(TOKTG_TENGPLayout.MOYSSTDT.getId()); // 催しコード（催し開始日）
+    String szTengpcd = data.optString(TOKTG_TENGPLayout.TENGPCD.getId()); // 店グループ
+
+    StringBuffer sbSQL;
+
+    sbSQL = new StringBuffer();
+    prmData = new ArrayList<String>();
+    sbSQL.append("delete from INATK.TOKTG_TEN where MOYSSTDT = ? AND TENGPCD = ?");
+    prmData.add(szMoysstdt);
+    prmData.add(szTengpcd);
+
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + " */ " + sbSQL.toString());
+    }
+
+    sqlList.add(sbSQL.toString());
+    prmList.add(prmData);
+    lblList.add("全店特売(アンケート有)_店舗");
+
+    return sbSQL.toString();
   }
 
 

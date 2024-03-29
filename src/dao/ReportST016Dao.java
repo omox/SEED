@@ -129,35 +129,35 @@ public class ReportST016Dao extends ItemDao {
       sbSQL.append(", KANRINO");
       sbSQL.append(", KANRIENO");
       sbSQL.append(", (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d'), '%Y%m%d')) as DT1");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 DAYS, '%Y%m%d') as DT2");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 DAYS, '%Y%m%d') as DT3");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 DAYS, '%Y%m%d') as DT4");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 DAYS, '%Y%m%d') as DT5");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 DAYS, '%Y%m%d') as DT6");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 DAYS, '%Y%m%d') as DT7");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 DAYS, '%Y%m%d') as DT8");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 DAYS, '%Y%m%d') as DT9");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 DAYS, '%Y%m%d') as DT10");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 , '%Y%m%d') as DT2");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 , '%Y%m%d') as DT3");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 , '%Y%m%d') as DT4");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 , '%Y%m%d') as DT5");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 , '%Y%m%d') as DT6");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 , '%Y%m%d') as DT7");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 , '%Y%m%d') as DT8");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 , '%Y%m%d') as DT9");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 , '%Y%m%d') as DT10");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 0 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 0 DAYS, '%Y%m%d')) end as NDT1");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 0 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 0 , '%Y%m%d')) end as NDT1");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 DAYS, '%Y%m%d')) end as NDT2");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 , '%Y%m%d')) end as NDT2");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 DAYS, '%Y%m%d')) end as NDT3");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 , '%Y%m%d')) end as NDT3");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 DAYS, '%Y%m%d')) end as NDT4");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 , '%Y%m%d')) end as NDT4");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 DAYS, '%Y%m%d')) end as NDT5");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 , '%Y%m%d')) end as NDT5");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 DAYS, '%Y%m%d')) end as NDT6");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 , '%Y%m%d')) end as NDT6");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 DAYS, '%Y%m%d')) end as NDT7");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 , '%Y%m%d')) end as NDT7");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 DAYS, '%Y%m%d')) end as NDT8");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 , '%Y%m%d')) end as NDT8");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 DAYS, '%Y%m%d')) end as NDT9");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 , '%Y%m%d')) end as NDT9");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 DAYS, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 DAYS, '%Y%m%d')) end as NDT10");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 , '%Y%m%d')) end as NDT10");
       sbSQL.append(" from " + szTableSHN);
       sbSQL.append(" where MOYSKBN = " + szMoyskbn);
       sbSQL.append(" and MOYSSTDT = " + szMoysstdt);
@@ -496,18 +496,19 @@ public class ReportST016Dao extends ItemDao {
 
       sbSQL.append(" from INATK.TOKMOYCD T1");
       if (isTOKTG) {
-        sbSQL.append(" inner join INATK.TOKTG_KHN T2 on T2.MOYSKBN = T1.MOYSKBN and T2.MOYSSTDT = T1.MOYSSTDT and T2.MOYSRBAN = T1.MOYSRBAN and NVL(T2.UPDKBN, 0) <> 1");
+        sbSQL.append(" inner join INATK.TOKTG_KHN T2 on T2.MOYSKBN = T1.MOYSKBN and T2.MOYSSTDT = T1.MOYSSTDT and T2.MOYSRBAN = T1.MOYSRBAN and COALESCE(T2.UPDKBN, 0) <> 1");
       }
-      sbSQL.append(" inner join " + szTableBMN + " T3 on T3.MOYSKBN = T1.MOYSKBN and T3.MOYSSTDT = T1.MOYSSTDT and T3.MOYSRBAN = T1.MOYSRBAN and NVL(T3.UPDKBN, 0) <> 1 and NVL(T1.UPDKBN, 0) <> 1");
+      sbSQL.append(
+          " inner join " + szTableBMN + " T3 on T3.MOYSKBN = T1.MOYSKBN and T3.MOYSSTDT = T1.MOYSSTDT and T3.MOYSRBAN = T1.MOYSRBAN and COALESCE(T3.UPDKBN, 0) <> 1 and COALESCE(T1.UPDKBN, 0) <> 1");
       sbSQL.append(" inner join " + szTableSHN
-          + " T4 on T4.MOYSKBN = T3.MOYSKBN and T4.MOYSSTDT = T3.MOYSSTDT and T4.MOYSRBAN = T3.MOYSRBAN and T4.MOYSRBAN = T3.MOYSRBAN and T4.BMNCD = T3.BMNCD and NVL(T4.UPDKBN, 0) <> 1");
+          + " T4 on T4.MOYSKBN = T3.MOYSKBN and T4.MOYSSTDT = T3.MOYSSTDT and T4.MOYSRBAN = T3.MOYSRBAN and T4.MOYSRBAN = T3.MOYSRBAN and T4.BMNCD = T3.BMNCD and COALESCE(T4.UPDKBN, 0) <> 1");
       sbSQL.append(
           " inner join CAL on T4.MOYSKBN = CAL.MOYSKBN and T4.MOYSSTDT = CAL.MOYSSTDT and T4.MOYSRBAN = CAL.MOYSRBAN and T4.BMNCD = CAL.BMNCD and T4.KANRINO = CAL.KANRINO and T4.KANRIENO = CAL.KANRIENO");
       sbSQL.append(
           " left outer join CAL2 on CAL2.MOYSKBN = T4.MOYSKBN and CAL2.MOYSSTDT = T4.MOYSSTDT and CAL2.MOYSRBAN = T4.MOYSRBAN and CAL2.BMNCD = T4.BMNCD and CAL2.KANRINO = T4.KANRINO and CAL2.KANRIENO = T4.KANRIENO");
       sbSQL.append(
           " left outer join WK on WK.MOYSKBN = T4.MOYSKBN and WK.MOYSSTDT = T4.MOYSSTDT and WK.MOYSRBAN = T4.MOYSRBAN and WK.BMNCD = T4.BMNCD and WK.KANRINO = T4.KANRINO and WK.KANRIENO = T4.KANRIENO");
-      sbSQL.append(" left outer join INAMS.MSTSHN M0 on M0.SHNCD = T4.SHNCD and COALESCE(M0.UPDKBN, 0) <> 1 left outer join INAMS.MSTBMN M1 on M1.BMNCD = T4.BMNCD and NVL(M1.UPDKBN, 0) <> 1");
+      sbSQL.append(" left outer join INAMS.MSTSHN M0 on M0.SHNCD = T4.SHNCD and COALESCE(M0.UPDKBN, 0) <> 1 left outer join INAMS.MSTBMN M1 on M1.BMNCD = T4.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1");
       sbSQL.append(" left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = M0.ZEIRTKBN and COALESCE(M2.UPDKBN, 0) <> 1");
       sbSQL.append(" left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = M0.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN, 0) <> 1");
       sbSQL.append(" left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN, 0) <> 1");
@@ -518,7 +519,7 @@ public class ReportST016Dao extends ItemDao {
     } else {
 
       // 店別数量CSVボタン押下時
-      sbSQL.append(" with WK as (select");
+      sbSQL.append(" with recursive WK as (select");
       sbSQL.append(" MOYSKBN");
       sbSQL.append(", MOYSSTDT");
       sbSQL.append(", MOYSRBAN");
@@ -612,7 +613,7 @@ public class ReportST016Dao extends ItemDao {
         sbSQL.append(" inner join INATK.TOKTG_KHN T2 on T2.MOYSKBN = T1.MOYSKBN and T2.MOYSSTDT = T1.MOYSSTDT and T2.MOYSRBAN = T1.MOYSRBAN and COALESCE(T2.UPDKBN, 0) <> 1");
       }
       sbSQL.append(
-          " inner join " + szTableBMN + " T3 on T3.MOYSKBN = T1.MOYSKBN and T3.MOYSSTDT = T1.MOYSSTDT and T3.MOYSRBAN = T1.MOYSRBAN and COALESCE(T3.UPDKBN, 0) <> 1 and NVL(T1.UPDKBN, 0) <> 1");
+          " inner join " + szTableBMN + " T3 on T3.MOYSKBN = T1.MOYSKBN and T3.MOYSSTDT = T1.MOYSSTDT and T3.MOYSRBAN = T1.MOYSRBAN and COALESCE(T3.UPDKBN, 0) <> 1 and COALESCE(T1.UPDKBN, 0) <> 1");
       sbSQL.append(" inner join " + szTableSHN
           + " T4 on T4.MOYSKBN = T3.MOYSKBN and T4.MOYSSTDT = T3.MOYSSTDT and T4.MOYSRBAN = T3.MOYSRBAN and T4.MOYSRBAN = T3.MOYSRBAN and T4.BMNCD = T3.BMNCD and COALESCE(T4.UPDKBN, 0) <> 1");
       sbSQL.append(
