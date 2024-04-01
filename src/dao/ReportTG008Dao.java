@@ -446,19 +446,36 @@ public class ReportTG008Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO INATK.TOKTG_SHN ( ");
+    sbSQL.append("INSERT INTO INATK.TOKTG_SHN ( ");
     for (TOKTG_SHNLayout itm : target) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
-    sbSQL.append("  )values(" + rows + " ");
-    sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
-    sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
+    sbSQL.append(" ,SENDFLG "); // 送信フラグ
+    sbSQL.append(" ,OPERATOR "); // オペレータ
     // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
-    sbSQL.append(" ,UPDDT=current_timestamp"); // 更新日
+    sbSQL.append(" ,UPDDT "); // 更新日
+    sbSQL.append("  )values(" + rows + " ");
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
+    sbSQL.append(" ,'" + userId + "'"); // オペレータ
+    // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
+    sbSQL.append(" ,current_timestamp"); // 更新日
     sbSQL.append(") ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    for (TOKTG_SHNLayout itm : target) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+      sbSQL.append("=VALUES(");
+      sbSQL.append(itm.getCol());
+      sbSQL.append(")");
+    }
+    sbSQL.append(",SENDFLG=VALUES(SENDFLG) ");
+    sbSQL.append(",OPERATOR=VALUES(OPERATOR) ");
+    sbSQL.append(",UPDDT=VALUES(UPDDT) ");
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
