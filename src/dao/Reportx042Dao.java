@@ -157,9 +157,9 @@ public class Reportx042Dao extends ItemDao {
       sbSQL.append(", READTM_FRI"); // F7 ：リードタイム_金
       sbSQL.append(", READTM_SAT"); // F8 ：リードタイム_土
       sbSQL.append(", READTM_SUN"); // F9 ：リードタイム_日
-      sbSQL.append(", OPERATOR"); // F10 ：オペレータ
-      sbSQL.append(", DATE_FORMAT(ADDDT, '%y/%m/%d')"); // F11 ：登録日
-      sbSQL.append(", DATE_FORMAT(UPDDT, '%y/%m/%d')"); // F12 ：更新日
+      sbSQL.append(", DATE_FORMAT(ADDDT, '%y/%m/%d')"); // F10 ：登録日
+      sbSQL.append(", DATE_FORMAT(UPDDT, '%y/%m/%d')"); // F11 ：更新日
+      sbSQL.append(", OPERATOR"); // F12 ：オペレータ
       sbSQL.append(", DATE_FORMAT(UPDDT,'%Y%m%d%H%i%s%f') as HDN_UPDDT "); // F13 : 排他チェック用：更新日(非表示)
       sbSQL.append(" from INAMS.MSTREADTM");
       sbSQL.append(" where COALESCE(UPDKBN, 0) = 0");
