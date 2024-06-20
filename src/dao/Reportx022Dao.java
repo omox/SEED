@@ -321,50 +321,80 @@ public class Reportx022Dao extends ItemDao {
 
     // 予約発注_納入日の登録・更新
     StringBuffer sb = new StringBuffer();
-    sb.append("REPLACE INTO INAMS.MSTBMN (");
-    sb.append(" BMNCD"); // 部門
-    sb.append(", BMNKBN"); // 部門区分
-    sb.append(", BMNKN"); // 部門名称（漢字）
-    sb.append(", BMNAN"); // 部門名称（カナ）
-    sb.append(", ZEIKBN"); // 税区分
-    sb.append(", ZEIRTHENKODT"); // 税率変更日
-    sb.append(", ZEIRTKBN_OLD"); // 旧税率区分
-    sb.append(", ZEIRTKBN"); // 税率区分
-    sb.append(", ODBOOKKBN"); // オーダーブック出力区分
-    sb.append(", HYOKAKBN"); // 評価方法区分
-    sb.append(", GENKART"); // 原価率
-    sb.append(", CORPBMNCD"); // 会社部門
-    sb.append(", URIBMNCD"); // 売上計上部門
-    sb.append(", HOGANBMNCD"); // 包含部門
-    sb.append(", JYOGENAM"); // 上限金額
-    sb.append(", JYOGENSU"); // 上限数量
-    sb.append(", TANAOROTIMKB"); // 棚卸タイミング
-    sb.append(", POSBAIHENKBN"); // POS売変対象区分
-    sb.append(", KEIHIKBN"); // 経費対象区分
-    sb.append(", TANPINKBN"); // 単品管理区分
-    sb.append(", DELKIJYUNSU"); // 削除基準日数
-    sb.append(", WARIGAIFLG"); // 値引除外フラグ
-    sb.append(", ITEMBETSUCD"); // 商品・非商品識別コード
-    sb.append(", URISEIGENFLG"); // 販売制限フラグ
-    sb.append(", URIKETAKBN"); // 売上金額最大桁数
-    sb.append(",UPDKBN ");
-    sb.append(",SENDFLG ");
-    sb.append(",OPERATOR ");
-    if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-      sb.append(",ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
-    }
-    sb.append(",UPDDT ");
+    sb.append("INSERT INTO INAMS.MSTBMN (");
+    sb.append(" BMNCD "); // 部門
+    sb.append(",BMNKBN"); // 部門区分
+    sb.append(",BMNKN"); // 部門名称（漢字）
+    sb.append(",BMNAN"); // 部門名称（カナ）
+    sb.append(",ZEIKBN"); // 税区分
+    sb.append(",ZEIRTHENKODT"); // 税率変更日
+    sb.append(",ZEIRTKBN_OLD"); // 旧税率区分
+    sb.append(",ZEIRTKBN"); // 税率区分
+    sb.append(",ODBOOKKBN"); // オーダーブック出力区分
+    sb.append(",HYOKAKBN"); // 評価方法区分
+    sb.append(",GENKART"); // 原価率
+    sb.append(",CORPBMNCD"); // 会社部門
+    sb.append(",URIBMNCD"); // 売上計上部門
+    sb.append(",HOGANBMNCD"); // 包含部門
+    sb.append(",JYOGENAM"); // 上限金額
+    sb.append(",JYOGENSU"); // 上限数量
+    sb.append(",TANAOROTIMKB"); // 棚卸タイミング
+    sb.append(",POSBAIHENKBN"); // POS売変対象区分
+    sb.append(",KEIHIKBN"); // 経費対象区分
+    sb.append(",TANPINKBN"); // 単品管理区分
+    sb.append(",DELKIJYUNSU"); // 削除基準日数
+    sb.append(",WARIGAIFLG"); // 値引除外フラグ
+    sb.append(",ITEMBETSUCD"); // 商品・非商品識別コード
+    sb.append(",URISEIGENFLG"); // 販売制限フラグ
+    sb.append(",URIKETAKBN"); // 売上金額最大桁数
+    sb.append(",UPDKBN ");//更新区分
+    sb.append(",SENDFLG ");//送信区分
+    sb.append(",OPERATOR ");//ユーザ名
+    sb.append(",ADDDT ");// 登録日
+    sb.append(",UPDDT ");//更新日
     sb.append(")");
     sb.append("VALUES (");
     sb.append(StringUtils.join(valueData, ",").substring(1));
-    sb.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
-    sb.append(", 0"); // 送信フラグ
-    sb.append(", '" + userId + "' "); // オペレーター
+    sb.append("," + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
+    sb.append(",0"); // 送信フラグ
+    sb.append(",'" + userId + "' "); // オペレーター
+    sb.append(",CURRENT_TIMESTAMP "); // 登録日
+    sb.append(",CURRENT_TIMESTAMP "); // 更新日
+    sb.append(") AS NEW ");
+    sb.append("ON DUPLICATE KEY UPDATE ");
+    sb.append("BMNCD = NEW.BMNCD");
+    sb.append(",BMNKBN = NEW.BMNKBN");
+    sb.append(",BMNAN = NEW.BMNAN");
+    sb.append(",BMNKN = NEW.BMNKN");
+    sb.append(",ZEIKBN = NEW.ZEIKBN");
+    sb.append(",ZEIRTHENKODT = NEW.ZEIRTHENKODT");
+    sb.append(",ZEIRTKBN_OLD = NEW.ZEIRTKBN_OLD");
+    sb.append(",ZEIRTKBN = NEW.ZEIRTKBN");
+    sb.append(",ODBOOKKBN = NEW.ODBOOKKBN");
+    sb.append(",HYOKAKBN = NEW.HYOKAKBN");
+    sb.append(",GENKART = NEW.GENKART");
+    sb.append(",CORPBMNCD = NEW.CORPBMNCD");
+    sb.append(",URIBMNCD = NEW.URIBMNCD");
+    sb.append(",HOGANBMNCD =NEW.HOGANBMNCD");
+    sb.append(",JYOGENAM = NEW.JYOGENAM");
+    sb.append(",JYOGENSU = NEW.JYOGENSU");
+    sb.append(",TANAOROTIMKB = NEW.TANAOROTIMKB");
+    sb.append(",POSBAIHENKBN = NEW.POSBAIHENKBN");
+    sb.append(",KEIHIKBN = NEW.KEIHIKBN");
+    sb.append(",TANPINKBN = NEW.TANPINKBN");
+    sb.append(",DELKIJYUNSU = NEW.DELKIJYUNSU");
+    sb.append(",WARIGAIFLG = NEW.WARIGAIFLG");
+    sb.append(",ITEMBETSUCD = NEW.ITEMBETSUCD");
+    sb.append(",URISEIGENFLG = NEW.URISEIGENFLG");
+    sb.append(",URIKETAKBN = NEW.URIKETAKBN");
+    sb.append(",UPDKBN = NEW.UPDKBN");
+    sb.append(",SENDFLG = NEW.SENDFLG");
+    sb.append(",OPERATOR = NEW.OPERATOR");
     if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-      sb.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
+      sb.append(",ADDDT = NEW.ADDDT");
     }
-    sb.append(", CURRENT_TIMESTAMP "); // 更新日
-    sb.append(")");
+    sb.append(",UPDDT = NEW.UPDDT");
+
 
     if (DefineReport.ID_DEBUG_MODE) {
       System.out.println("/* " + this.getClass().getName() + " */ " + sb.toString());
