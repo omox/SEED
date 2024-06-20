@@ -188,7 +188,7 @@ public class Reportx031Dao extends ItemDao {
     sbSQL.append(" FROM " + tablename + " DAI");
     sbSQL.append(" WHERE COALESCE(DAI.UPDKBN, 0) = 0 AND DAI.BMNCD = ? ");
     paramData.add(bmoncd);
-    sbSQL.append(" ORDER BY  SUPDKBN,DAICD");
+    sbSQL.append(" ORDER BY DAICD IS NULL ASC, DAICD, SUPDKBN");
     setParamData(paramData);
 
     // オプション情報（タイトル）設定
