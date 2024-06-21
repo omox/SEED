@@ -193,7 +193,7 @@ public class Reportx033Dao extends ItemDao {
     paramData.add(Bmoncd);
     paramData.add(Daicd);
     paramData.add(Chucd);
-    sbSQL.append(" order by SHOCD, SUPDKBN");
+    sbSQL.append(" order by SHOCD IS NULL ASC, SHOCD, SUPDKBN");
     setParamData(paramData);
 
     // オプション情報（タイトル）設定
