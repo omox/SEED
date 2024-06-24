@@ -135,8 +135,8 @@ public class Reportx242Dao extends ItemDao {
     sbSQL.append(" , TO_CHAR(T1.DT_UPDATE, 'YYYY/MM/DD HH24:MI') AS DT_UPDATE");
     sbSQL.append(" , TO_CHAR(T1.DT_UPDATE, 'YYYYMMDDHH24MISSNNNNNN') as HDN_UPDDT ");
     sbSQL.append(" , T1.CD_USER ");
-    sbSQL.append(" from KEYSYS2.SYS_USERS T1 ");
-    sbSQL.append(" left join KEYSYS2.SYS_USERS T2 ");
+    sbSQL.append(" from KEYSYS.SYS_USERS T1 ");
+    sbSQL.append(" left join KEYSYS.SYS_USERS T2 ");
     sbSQL.append(" on T1.NM_UPDATE = T2.USER_ID");
     sbSQL.append(" where T1.CD_USER=? ");
     paramData.add(szUserCd);
@@ -147,21 +147,21 @@ public class Reportx242Dao extends ItemDao {
     sbSQL.append(" SELECT");
     sbSQL.append(" CD_USER AS CD_USER_WK ");
     sbSQL.append(" FROM");
-    sbSQL.append(" KEYSYS2.SYS_USER_POS ");
+    sbSQL.append(" KEYSYS.SYS_USER_POS ");
     sbSQL.append(" WHERE");
     sbSQL.append(" CD_POSITION = 24321) ");
     sbSQL.append(" , WKTK as ( ");
     sbSQL.append(" SELECT");
     sbSQL.append(" CD_USER AS CD_USER_WK ");
     sbSQL.append(" FROM");
-    sbSQL.append(" KEYSYS2.SYS_USER_POS ");
+    sbSQL.append(" KEYSYS.SYS_USER_POS ");
     sbSQL.append(" WHERE");
     sbSQL.append(" CD_POSITION = 24320) ");
     sbSQL.append(" , WKTN as ( ");
     sbSQL.append(" SELECT");
     sbSQL.append(" CD_USER AS CD_USER_WK ");
     sbSQL.append(" FROM");
-    sbSQL.append(" KEYSYS2.SYS_USER_POS ");
+    sbSQL.append(" KEYSYS.SYS_USER_POS ");
     sbSQL.append(" WHERE");
     sbSQL.append(" CD_POSITION = 24322) ");
     sbSQL.append(" SELECT ");
@@ -267,7 +267,7 @@ public class Reportx242Dao extends ItemDao {
     String hdn_upddt = map.get("HDN_UPDDT");
     String userCd = map.get("USERCD");
     ArrayList<String> targetParam = new ArrayList<>();
-    targetTable = "(SELECT CD_USER,DT_UPDATE AS UPDDT FROM KEYSYS2.SYS_USERS)";
+    targetTable = "(SELECT CD_USER,DT_UPDATE AS UPDDT FROM KEYSYS.SYS_USERS)";
     targetWhere = " CD_USER = ? ";
     targetParam.add(userCd);
     if (!super.checkExclusion(targetTable, targetWhere, targetParam, hdn_upddt)) {
@@ -363,7 +363,7 @@ public class Reportx242Dao extends ItemDao {
     // ユーザーマスタの登録・更新
     sbSQL = new StringBuffer();
 
-    sbSQL.append(" INSERT into KEYSYS2.SYS_USERS  (");
+    sbSQL.append(" INSERT into KEYSYS.SYS_USERS  (");
     sbSQL.append(" CD_USER"); // ユーザーコード
     sbSQL.append(", PASSWORDS"); // パスワード
     sbSQL.append(", YOBI_6"); // 予備6
@@ -424,7 +424,7 @@ public class Reportx242Dao extends ItemDao {
     String jnlSeq = getCSVTOK_SEQ();
     sbSQL = new StringBuffer();
     prmData = new ArrayList<>();
-    sbSQL.append(" INSERT INTO KEYSYS2.SYS_USERS_JNL ");
+    sbSQL.append(" INSERT INTO KEYSYS.SYS_USERS_JNL ");
     sbSQL.append(" SELECT");
     sbSQL.append(" ? AS SEQ");
     prmData.add(jnlSeq);
@@ -478,7 +478,7 @@ public class Reportx242Dao extends ItemDao {
       sbSQL.append(" ,PASSWORDS_5");
     }
     sbSQL.append(" FROM");
-    sbSQL.append(" KEYSYS2.SYS_USERS");
+    sbSQL.append(" KEYSYS.SYS_USERS");
     sbSQL.append(" WHERE");
     sbSQL.append(" CD_USER=?");
     prmData.add(userCd);
@@ -515,7 +515,7 @@ public class Reportx242Dao extends ItemDao {
     prmData = new ArrayList<>();
     if (auth.equals("1")) {
       // SYS_USER_POSの削除
-      sbSQL.append(" DELETE FROM KEYSYS2.SYS_USER_POS WHERE CD_USER=? AND CD_POSITION=?");
+      sbSQL.append(" DELETE FROM KEYSYS.SYS_USER_POS WHERE CD_USER=? AND CD_POSITION=?");
       prmData.add(userCd);
       prmData.add(cdPositinon);
 
@@ -532,7 +532,7 @@ public class Reportx242Dao extends ItemDao {
       // SYS_USER_POS_JNLの挿入
       sbSQL = new StringBuffer();
       prmData = new ArrayList<>();
-      sbSQL.append(" INSERT INTO KEYSYS2.SYS_USER_POS_JNL ");
+      sbSQL.append(" INSERT INTO KEYSYS.SYS_USER_POS_JNL ");
       sbSQL.append(" SELECT");
       sbSQL.append(" ? AS SEQ");
       prmData.add(jnlSeq);
@@ -567,7 +567,7 @@ public class Reportx242Dao extends ItemDao {
       values += ", " + cdPositinon;
       valueData = ArrayUtils.add(valueData, "(" + values + ")");
 
-      sbSQL.append(" INSERT into KEYSYS2.SYS_USER_POS  ( ");
+      sbSQL.append(" INSERT into KEYSYS.SYS_USER_POS  ( ");
       sbSQL.append(" CD_USER"); // ユーザーコード
       sbSQL.append(", CD_POSITION");
       sbSQL.append(", NM_CREATE");
@@ -604,7 +604,7 @@ public class Reportx242Dao extends ItemDao {
       // SYS_USER_POS_JNLの挿入
       sbSQL = new StringBuffer();
       prmData = new ArrayList<>();
-      sbSQL.append(" INSERT INTO KEYSYS2.SYS_USER_POS_JNL ");
+      sbSQL.append(" INSERT INTO KEYSYS.SYS_USER_POS_JNL ");
       sbSQL.append(" SELECT");
       sbSQL.append(" ? AS SEQ");
       prmData.add(jnlSeq);
@@ -643,7 +643,7 @@ public class Reportx242Dao extends ItemDao {
    */
   public String getCSVTOK_SEQ() {
     new ItemList();
-    String sqlColCommand = "SELECT KEYSYS2.nextval('SEQ001') AS \"1\"";
+    String sqlColCommand = "SELECT KEYSYS.nextval('SEQ001') AS \"1\"";
     @SuppressWarnings("static-access")
     JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";

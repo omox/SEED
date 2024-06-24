@@ -11,7 +11,7 @@ package authentication.defines;
 public final class SQL {
 
   /** システムスキーマ名 */
-  public final static String system_schema = "KEYSYS2";
+  public final static String system_schema = "KEYSYS";
   // 遷移時にパラメータとして取得に変更
   // public final static String kbn_menu = "3";
 

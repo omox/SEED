@@ -42,7 +42,7 @@
    auth="Container"
    type="javax.sql.DataSource"
    driverClassName="com.mysql.cj.jdbc.Driver"
-   url="jdbc:mysql://rds-sum-db01.cluster-cuuukq9af8ir.ap-northeast-1.rds.amazonaws.com:3306/SUMDB"
+   url="jdbc:mysql://rds-ina-db01.cluster-cuuukq9af8ir.ap-northeast-1.rds.amazonaws.com:3306/INAMS"
    connectionProperties="useOldAliasMetadataBehavior=true;zeroDateTimeBehavior=convertToNull;enabledTLSProtocols=TLSv1.2"
    defaultAutoCommit="false"
    username="mysqladmin"

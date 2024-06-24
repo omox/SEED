@@ -76,7 +76,7 @@ public class Pass extends ItemDao {
 
     sbSQL.append("SELECT ");
     sbSQL.append("YOBI_6,YOBI_7,YOBI_8,YOBI_9 ");
-    sbSQL.append("FROM KEYSYS2.SYS_USERS ");
+    sbSQL.append("FROM KEYSYS.SYS_USERS ");
     sbSQL.append("WHERE CD_USER=?");
     paramData.add(userCd);
 

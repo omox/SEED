@@ -477,7 +477,7 @@ public class GetSqlCommandCheck {
           cd = Integer.valueOf(value.split(",")[2]);
         }
 
-        tbl = "KEYSYS2.SYS_USERS";
+        tbl = "KEYSYS.SYS_USERS";
         col = "CD_USER";
         rep += cd;
 
