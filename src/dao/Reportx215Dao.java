@@ -675,7 +675,7 @@ public class Reportx215Dao extends ItemDao {
     sbSQL.append(",OPERATOR "); // F5 : オペレーター
     sbSQL.append(",DATE_FORMAT(ADDDT,'%y/%m/%d') AS ADDDT "); // F6 : 登録日
     sbSQL.append(",DATE_FORMAT(UPDDT,'%y/%m/%d') AS UPDDT "); // F7 : 更新日
-    sbSQL.append(",DATE_FORMAT(UPDDT,'%Y%m%d%h%i%s%f') as HDN_UPDDT "); // F8 : 更新日時
+    sbSQL.append(",DATE_FORMAT(UPDDT,'%Y%m%d%H%i%s%f') as HDN_UPDDT "); // F8 : 更新日時
     sbSQL.append("FROM ");
     sbSQL.append("INAMS.TRNPCARD ");
     sbSQL.append("WHERE ");
