@@ -143,7 +143,7 @@ public class Reportx152Dao extends ItemDao {
     if (StringUtils.equals(DefineReport.Button.SEL_CHANGE.getObj(), sendBtnid) || StringUtils.equals(DefineReport.Button.SEL_REFER.getObj(), sendBtnid)
         || StringUtils.equals("btn_id_change", sendBtnid) || StringUtils.equals("btn_id_sel_refer", sendBtnid) || StringUtils.equals(DefineReport.Button.SEARCH.getObj(), sendBtnid)
 
-    ) {
+        ) {
 
       sbSQL.append("select");
       sbSQL.append(" SIR.SIRCD"); // F1 ： 仕入先コード
@@ -479,7 +479,7 @@ public class Reportx152Dao extends ItemDao {
     maxField = 21; // Fxxの最大値
     int len = dataArrayHSPTN.size();
     // 配送パターン仕入先マスタ 削除
-    this.createDeleteSqlHsptnSir(map, userInfo);
+    //this.createDeleteSqlHsptnSir(map, userInfo);
     for (int i = 0; i < len; i++) {
       JSONObject dataT = dataArrayHSPTN.getJSONObject(i);
       if (!dataT.isEmpty()) {
@@ -495,8 +495,12 @@ public class Reportx152Dao extends ItemDao {
               prmData.add(val);
             }
           }
-
           if (k == maxField) {
+            values = values + ", 0"; // 送信フラグ
+            values = values + ", '" + userId + "' "; // オペレーター
+            values = values + ", CURRENT_TIMESTAMP "; // 登録日
+            values = values + ", CURRENT_TIMESTAMP "; // 更新日
+            values = "(" + values.substring(1) + ")";
             valueData = ArrayUtils.add(valueData, values);
             values = "";
           }
@@ -507,40 +511,62 @@ public class Reportx152Dao extends ItemDao {
 
         // 配送パターンの登録・更新
         sbSQL = new StringBuffer();
-        sbSQL.append(" REPLACE INTO INAMS.MSTHSPTNSIR ( ");
-        sbSQL.append(" SIRCD"); // 仕入先コード
-        sbSQL.append(", HSPTN"); // 配送パターン
-        sbSQL.append(", TENDENFLG"); // 店別伝票フラグ
-        sbSQL.append(", VANKBN"); // 計算センター
-        sbSQL.append(", UNYOKBN"); // 運用区分
-        sbSQL.append(", DENPKBN"); // 伝票区分
-        sbSQL.append(", SHUHKBN"); // 集計表
-        sbSQL.append(", PICKDKBN"); // ピッキングデータ
-        sbSQL.append(", PICKLKBN"); // ピッキングリスト
-        sbSQL.append(", WAPNKBN"); // ワッペン
-        sbSQL.append(", IDENPKBN"); // 一括伝票
-        sbSQL.append(", KAKOSJKBN"); // 加工指示
-        sbSQL.append(", RYUTSUKBN"); // 流通区分
-        sbSQL.append(", ZDENPKBN"); // 在庫内訳_伝票区分
-        sbSQL.append(", ZSHUHKBN"); // 在庫内訳_集計表
-        sbSQL.append(", ZPICKDKBN"); // 在庫内訳_ピッキングデータ
-        sbSQL.append(", ZPICKLKBN"); // 在庫内訳_ピッキングリスト
-        sbSQL.append(", RSIRCD"); // 実仕入先コード
-        sbSQL.append(", YKNSHKBN"); // 横持先_検収区分
-        sbSQL.append(", YDENPKBN"); // 横持先_伝票区分
-        sbSQL.append(", DSHUHKBN"); // 横持先_集計表
-        sbSQL.append(", SENDFLG"); // 送信フラグ
-        sbSQL.append(", OPERATOR "); // オペレーター
+        sbSQL.append("INSERT INTO INAMS.MSTHSPTNSIR ( ");
+        sbSQL.append("SIRCD "); // 仕入先コード
+        sbSQL.append(",HSPTN "); // 配送パターン
+        sbSQL.append(",TENDENFLG "); // 店別伝票フラグ
+        sbSQL.append(",VANKBN "); // 計算センター
+        sbSQL.append(",UNYOKBN "); // 運用区分
+        sbSQL.append(",DENPKBN "); // 伝票区分
+        sbSQL.append(",SHUHKBN "); // 集計表
+        sbSQL.append(",PICKDKBN "); // ピッキングデータ
+        sbSQL.append(",PICKLKBN "); // ピッキングリスト
+        sbSQL.append(",WAPNKBN "); // ワッペン
+        sbSQL.append(",IDENPKBN "); // 一括伝票
+        sbSQL.append(",KAKOSJKBN "); // 加工指示
+        sbSQL.append(",RYUTSUKBN "); // 流通区分
+        sbSQL.append(",ZDENPKBN "); // 在庫内訳_伝票区分
+        sbSQL.append(",ZSHUHKBN "); // 在庫内訳_集計表
+        sbSQL.append(",ZPICKDKBN "); // 在庫内訳_ピッキングデータ
+        sbSQL.append(",ZPICKLKBN "); // 在庫内訳_ピッキングリスト
+        sbSQL.append(",RSIRCD "); // 実仕入先コード
+        sbSQL.append(",YKNSHKBN "); // 横持先_検収区分
+        sbSQL.append(",YDENPKBN "); // 横持先_伝票区分
+        sbSQL.append(",DSHUHKBN "); // 横持先_集計表
+        sbSQL.append(",SENDFLG "); // 送信フラグ
+        sbSQL.append(",OPERATOR "); // オペレーター
         sbSQL.append(",ADDDT ");// 登録日
         sbSQL.append(",UPDDT ");
-        sbSQL.append(")");
-        sbSQL.append("VALUES (");
-        sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", 0"); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
+        sbSQL.append(") ");
+        sbSQL.append("VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("SIRCD = NEW.SIRCD ");
+        sbSQL.append(",HSPTN = NEW.HSPTN ");
+        sbSQL.append(",TENDENFLG = NEW.TENDENFLG ");
+        sbSQL.append(",VANKBN = NEW.VANKBN ");
+        sbSQL.append(",UNYOKBN = NEW.UNYOKBN ");
+        sbSQL.append(",DENPKBN = NEW.DENPKBN ");
+        sbSQL.append(",SHUHKBN = NEW.SHUHKBN ");
+        sbSQL.append(",PICKDKBN = NEW.PICKDKBN ");
+        sbSQL.append(",PICKLKBN = NEW.PICKLKBN ");
+        sbSQL.append(",WAPNKBN = NEW.WAPNKBN ");
+        sbSQL.append(",IDENPKBN = NEW.IDENPKBN ");
+        sbSQL.append(",KAKOSJKBN = NEW.KAKOSJKBN ");
+        sbSQL.append(",RYUTSUKBN = NEW.RYUTSUKBN ");
+        sbSQL.append(",ZDENPKBN = NEW.ZDENPKBN ");
+        sbSQL.append(",ZSHUHKBN = NEW.ZSHUHKBN ");
+        sbSQL.append(",ZPICKDKBN = NEW.ZPICKDKBN ");
+        sbSQL.append(",ZPICKLKBN = NEW.ZPICKLKBN ");
+        sbSQL.append(",RSIRCD = NEW.RSIRCD ");
+        sbSQL.append(",YKNSHKBN = NEW.YKNSHKBN ");
+        sbSQL.append(",YDENPKBN = NEW.YDENPKBN ");
+        sbSQL.append(",DSHUHKBN = NEW.DSHUHKBN ");
+        sbSQL.append(",SENDFLG = NEW.SENDFLG ");
+        sbSQL.append(",OPERATOR = NEW.OPERATOR ");
+        //sbSQL.append(",ADDDT = NEW.ADDDT");
+        sbSQL.append(",UPDDT = NEW.UPDDT ");
+
 
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println("/* " + this.getClass().getName() + " */ " + sbSQL.toString());
@@ -560,7 +586,7 @@ public class Reportx152Dao extends ItemDao {
     maxField = 22; // Fxxの最大値
     len = dataArrayEHSPTN.size();
     // エリア別配送パターン仕入先マスタ 削除
-    this.createDeleteSqlEhsptnSir(map, userInfo);
+    //this.createDeleteSqlEhsptnSir(map, userInfo);
     for (int i = 0; i < len; i++) {
       JSONObject dataT = dataArrayEHSPTN.getJSONObject(i);
       if (!dataT.isEmpty()) {
@@ -578,17 +604,21 @@ public class Reportx152Dao extends ItemDao {
           }
 
           if (k == maxField) {
+            values = values + ", 0"; // 送信フラグ
+            values = values + ", '" + userId + "' "; // オペレーター
+            values = values + ", CURRENT_TIMESTAMP "; // 登録日
+            values = values + ", CURRENT_TIMESTAMP "; // 更新日
+            values = "(" + values.substring(1) + ")";
             valueData = ArrayUtils.add(valueData, values);
             values = "";
           }
         }
       }
-
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
 
         // エリア配送パターンの登録・更新
         sbSQL = new StringBuffer();
-        sbSQL.append(" REPLACE INTO INAMS.MSTAREAHSPTNSIR ( ");
+        sbSQL.append(" INSERT INTO INAMS.MSTAREAHSPTNSIR ( ");
         sbSQL.append(" SIRCD"); // 仕入先コード
         sbSQL.append(", HSPTN"); // 配送パターン
         sbSQL.append(", TENGPCD"); // 店グループコード
@@ -612,17 +642,39 @@ public class Reportx152Dao extends ItemDao {
         sbSQL.append(", YDENPKBN"); // 横持先_伝票区分
         sbSQL.append(", DSHUHKBN"); // 横持先_集計表
         sbSQL.append(", SENDFLG"); // 送信フラグ
-        sbSQL.append(", OPERATOR "); // オペレーター：
+        sbSQL.append(", OPERATOR "); // オペレーター
         sbSQL.append(",ADDDT ");// 登録日
         sbSQL.append(",UPDDT ");
-        sbSQL.append(")");
-        sbSQL.append("VALUES (");
-        sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", 0"); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
+        sbSQL.append(") ");
+        sbSQL.append("VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE  ");
+        sbSQL.append("SIRCD = NEW.SIRCD ");
+        sbSQL.append(",HSPTN = NEW.HSPTN ");
+        sbSQL.append(",TENGPCD = NEW.TENGPCD ");
+        sbSQL.append(",TENDENFLG = NEW.TENDENFLG ");
+        sbSQL.append(",VANKBN = NEW.VANKBN ");
+        sbSQL.append(",UNYOKBN = NEW.UNYOKBN ");
+        sbSQL.append(",DENPKBN = NEW.DENPKBN ");
+        sbSQL.append(",SHUHKBN = NEW.SHUHKBN ");
+        sbSQL.append(",PICKDKBN = NEW.PICKDKBN ");
+        sbSQL.append(",PICKLKBN = NEW.PICKLKBN ");
+        sbSQL.append(",WAPNKBN = NEW.WAPNKBN ");
+        sbSQL.append(",IDENPKBN = NEW.IDENPKBN ");
+        sbSQL.append(",KAKOSJKBN = NEW.KAKOSJKBN ");
+        sbSQL.append(",RYUTSUKBN = NEW.RYUTSUKBN ");
+        sbSQL.append(",ZDENPKBN = NEW.ZDENPKBN ");
+        sbSQL.append(",ZSHUHKBN = NEW.ZSHUHKBN ");
+        sbSQL.append(",ZPICKDKBN = NEW.ZPICKDKBN ");
+        sbSQL.append(",ZPICKLKBN = NEW.ZPICKLKBN ");
+        sbSQL.append(",RSIRCD = NEW.RSIRCD ");
+        sbSQL.append(",YKNSHKBN = NEW.YKNSHKBN ");
+        sbSQL.append(",YDENPKBN = NEW.YDENPKBN ");
+        sbSQL.append(",DSHUHKBN = NEW.DSHUHKBN ");
+        sbSQL.append(",SENDFLG = NEW.SENDFLG ");
+        sbSQL.append(",OPERATOR = NEW.OPERATOR ");
+        //sbSQL.append(",ADDDT = NEW.ADDDT ");
+        sbSQL.append(",UPDDT = NEW.UPDDT ");
 
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println("/* " + this.getClass().getName() + " */ " + sbSQL.toString());
