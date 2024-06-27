@@ -5414,7 +5414,7 @@ public class DefineReport {
   // SQL 催しコード
   public final static String ID_SQL_MOYSCD =
       "select CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), right ('000' || T1.MOYSRBAN, 3)) as VALUE, CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), right ('000' || T1.MOYSRBAN, 3)) as TEXT from INATK.TOKMOYCD T1 ";
-  public final static String ID_SQL_MOYSCD_HEAD = " union all select VALUE, TEXT from (values ROW('-1', '　')) as X(value, TEXT)  ";
+  public final static String ID_SQL_MOYSCD_HEAD = " union all select VALUE, TEXT from (values ROW('-1', '　')) as X(value, TEXT) ORDER BY VALUE ";
   public final static String ID_SQL_HEAD_MOYSCD =
       "select VALUE, TEXT, TEXT2, TEXT3, TEXT4 from (values ROW('-1', '　', 0, 0, 0)) as X(value, TEXT, TEXT2, TEXT3, TEXT4) union all select CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), T1.MOYSRBAN) as VALUE, CONCAT(CONCAT(CONCAT(CONCAT(T1.MOYSKBN, '-'), T1.MOYSSTDT), '-'), T1.MOYSRBAN) as TEXT, T1.MOYSKBN as TEXT2, T1.MOYSSTDT as TEXT3, T1.MOYSRBAN as TEXT4 from INATK.TOKMOYCD T1 where T1.MOYSKBN = 8 order by TEXT2, TEXT3, TEXT4;";
   public final static String ID_SQL_MOYO = DefineReport.ID_SQL_CMN_WEEK
