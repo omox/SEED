@@ -502,8 +502,9 @@ public class ReportSO003Dao extends ItemDao {
     String szMoysrban = getMap().get("MOYSRBAN"); // 催し連番
     String szSeq = getMap().get("SEQ"); // SEQ
     String sendBtnid = getMap().get("SENDBTNID"); // 呼出しボタン
+    String countRows = "";
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<>();
+    List<String> titleList = new ArrayList<String>();
 
     // 基本情報取得
     JSONArray array = getTOKMOYCDData(getMap());
@@ -618,7 +619,7 @@ public class ReportSO003Dao extends ItemDao {
       sbSQL.append(" where CSO.SEQ = " + szSeq);
       sbSQL.append(" and COALESCE(CSO.ERRCD, 0) <> 4");
       sbSQL.append(" and COALESCE(CSO.UPDKBN , 0) <> 1");
-      sbSQL.append(" ) T2");
+      sbSQL.append(" ) T2 on T1.IDX = T2.IDX");
       sbSQL.append(" order by T2.SHNCD");
 
     } else {
@@ -633,51 +634,54 @@ public class ReportSO003Dao extends ItemDao {
       String kijundt = common.CmnDate.dateFormat(common.CmnDate.convYYMMDD(szMoysstdt));
 
       if (array.size() > 0) {
-        array.getJSONObject(0).optString("F5");
+        countRows = array.getJSONObject(0).optString("F5");
       } else {
+        countRows = "0";
       }
 
 
-      sbSQL.append("WITH T1 AS ( ");
+      sbSQL.append("with RECURSIVE T1(IDX) as (select 1 from (SELECT 1 DUMMY) AS DUMMY union all select IDX + 1 from T1 where IDX < (" + countRows + " + 1))");
       sbSQL.append("select");
-      sbSQL.append(" trim(T2.SHNCD) AS F1 "); // F1: 商品コード
-      sbSQL.append(", T2.MAKERKN AS F2 "); // F2: メーカー名
-      sbSQL.append(", T2.SHNKN AS F3 "); // F3: 商品名称
-      sbSQL.append(", T2.KIKKN AS F4 "); // F4: 規格
-      sbSQL.append(", T2.RG_IRISU AS F5 "); // F5: レギュラー入数
-      sbSQL.append(", T2.IRISU AS F6 "); // F6: 生活応援入数
-      sbSQL.append(", T2.MINSU AS F7 "); // F7: 最低発注数
-      sbSQL.append(", T2.RG_GENKAAM AS F8 "); // F8: 通常原価
-      sbSQL.append(", T2.GENKAAM AS F9 "); // F9: 生活応援原価
-      sbSQL.append(", T2.A_BAIKAAM AS F10 "); // F10: A総売価
-      sbSQL.append(", T2.A_HONBAIK AS F11 "); // F11: A本売価
-      sbSQL.append(", T2.A_RANKNO AS F12 "); // F12: Aランク
-      sbSQL.append(", truncate((T2.A_HONBAIK - T2.GENKAAM) * 100 / T2.A_HONBAIK, 2) AS F13 "); // F13: A値入率
-      sbSQL.append(", T2.B_BAIKAAM AS F14"); // F14: B総売価
-      sbSQL.append(", T2.B_HONBAIK AS F15"); // F15: B本売価
-      sbSQL.append(", T2.B_RANKNO AS F16 "); // F16: Bランク
-      sbSQL.append(", null  AS F17 "); // F17: B値入率
-      sbSQL.append(", T2.C_BAIKAAM AS F18 "); // F18: C総売価
-      sbSQL.append(", T2.C_HONBAIK AS F19 "); // F19: C本売価
-      sbSQL.append(", T2.C_RANKNO AS F20 "); // F20: Cランク
-      sbSQL.append(", null  AS F21 "); // F21: C値入率
-      sbSQL.append(", T2.POPCD AS F22 "); // F22: POPコード
-      sbSQL.append(", T2.POPSZ AS F23 "); // F23: POPサイズ
-      sbSQL.append(", T2.POPSU AS F24 "); // F24: 枚数
-      sbSQL.append(", DATE_FORMAT(T2.ADDDT, '%y/%m/%d') AS F25 "); // F25: 登録
-      sbSQL.append(", DATE_FORMAT(T2.UPDDT, '%y/%m/%d') AS F26 "); // F26: 更新
-      sbSQL.append(", T2.OPERATOR AS F27 "); // F27: オペレーター
-      sbSQL.append(", T2.KANRINO AS F28 "); // F28: 管理番号
-      sbSQL.append(", T2.PLUSFLG AS F29 "); // F29: PLG配信済フラグ
-      sbSQL.append(", T2.UPDKBN AS F30 "); // F30: 更新区分
-      sbSQL.append(", null AS F31 "); // F31: 売価
-      sbSQL.append(", null AS F32"); // F32: SEQ
-      sbSQL.append(", null AS F33"); // F33: 入力番号
-      sbSQL.append(", null AS F34 "); // F34: CSV更新区分
-      sbSQL.append(", T2.RG_BAIKAAM AS F35 "); // F35: レギュラー標準売価
-      sbSQL.append(" from  (");
+      sbSQL.append(" /*+ SET_VAR(cte_max_recursion_depth = 10000) */ ");
+      sbSQL.append(" trim(T2.SHNCD)"); // F1: 商品コード
+      sbSQL.append(", T2.MAKERKN"); // F2: メーカー名
+      sbSQL.append(", T2.SHNKN"); // F3: 商品名称
+      sbSQL.append(", T2.KIKKN"); // F4: 規格
+      sbSQL.append(", T2.RG_IRISU"); // F5: レギュラー入数
+      sbSQL.append(", T2.IRISU"); // F6: 生活応援入数
+      sbSQL.append(", T2.MINSU"); // F7: 最低発注数
+      sbSQL.append(", T2.RG_GENKAAM"); // F8: 通常原価
+      sbSQL.append(", T2.GENKAAM"); // F9: 生活応援原価
+      sbSQL.append(", T2.A_BAIKAAM"); // F10: A総売価
+      sbSQL.append(", T2.A_HONBAIK"); // F11: A本売価
+      sbSQL.append(", T2.A_RANKNO"); // F12: Aランク
+      sbSQL.append(", TRUNCATE(CAST(T2.A_HONBAIK - T2.GENKAAM AS DECIMAL) * 100 / T2.A_HONBAIK, 2)"); // F13: A値入率
+      sbSQL.append(", T2.B_BAIKAAM"); // F14: B総売価
+      sbSQL.append(", T2.B_HONBAIK"); // F15: B本売価
+      sbSQL.append(", T2.B_RANKNO"); // F16: Bランク
+      sbSQL.append(", null "); // F17: B値入率
+      sbSQL.append(", T2.C_BAIKAAM"); // F18: C総売価
+      sbSQL.append(", T2.C_HONBAIK"); // F19: C本売価
+      sbSQL.append(", T2.C_RANKNO"); // F20: Cランク
+      sbSQL.append(", null "); // F21: C値入率
+      sbSQL.append(", T2.POPCD"); // F22: POPコード
+      sbSQL.append(", T2.POPSZ"); // F23: POPサイズ
+      sbSQL.append(", T2.POPSU"); // F24: 枚数
+      sbSQL.append(", DATE_FORMAT(T2.ADDDT, '%y%m%d')"); // F25: 登録
+      sbSQL.append(", DATE_FORMAT(T2.UPDDT, '%y%m%d')"); // F26: 更新
+      sbSQL.append(", T2.OPERATOR"); // F27: オペレーター
+      sbSQL.append(", T2.KANRINO"); // F28: 管理番号
+      sbSQL.append(", T2.PLUSFLG"); // F29: PLG配信済フラグ
+      sbSQL.append(", T2.UPDKBN"); // F30: 更新区分
+      sbSQL.append(", null"); // F31: 売価
+      sbSQL.append(", null"); // F32: SEQ
+      sbSQL.append(", null"); // F33: 入力番号
+      sbSQL.append(", null"); // F34: CSV更新区分
+      sbSQL.append(", T2.RG_BAIKAAM"); // F35: レギュラー標準売価
+      sbSQL.append(" from T1 left join (");
       sbSQL.append("select");
-      sbSQL.append(" SHN.SHNCD");
+      sbSQL.append(" ROW_NUMBER() over (order by SHN.SHNCD) as IDX");
+      sbSQL.append(", SHN.SHNCD");
       sbSQL.append(", SHN.MAKERKN");
       sbSQL.append(", SHN.SHNKN");
       sbSQL.append(", SHN.KIKKN");
@@ -715,13 +719,8 @@ public class ReportSO003Dao extends ItemDao {
       sbSQL.append(" left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN, 0) <> 1");
       sbSQL.append(" left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN, 0) <> 1");
       sbSQL.append(" where COALESCE(SHN.UPDKBN, 0) <> 1 and MYCD.MOYSKBN = " + szMoyskbn + " and MYCD.MOYSSTDT = " + szMoysstdt + " and MYCD.MOYSRBAN = " + szMoysrban + " and SHN.BMNCD = " + szBumon);
-      sbSQL.append(") T2 ");
-      sbSQL.append(" order by T2.KANRINO");
-      sbSQL.append(") ");
-      sbSQL.append("SELECT * FROM T1 ");
-      sbSQL.append("UNION ALL ");
-      sbSQL.append("SELECT ");
-      sbSQL.append("'' , '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''  ");
+      sbSQL.append(") AS T2 on T1.IDX = T2.IDX");
+      sbSQL.append(" order by T2.KANRINO IS NULL ASC ,T2.KANRINO ");
     }
 
     // オプション情報（タイトル）設定
