@@ -1247,7 +1247,6 @@ public class ReportTG016Dao extends ItemDao {
     String szBmncdC = map.get("BMNCD_C"); // 部門コード ※コピー画面の場合
     String szKanrinoC = map.get("KANRINO_C"); // 管理No. ※コピー画面の場合
     String szKanrienoC = map.get("KANRIENO_C");// 管理No.枝番 ※コピー画面の場合
-
     String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
     String sendPageid = map.get("PAGEID"); // 呼出しPAGEID
 
@@ -9328,8 +9327,10 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // F100: 送信フラグ
       sbSQL.append(" ,'" + userId + "'"); // F101: オペレータ
       sbSQL.append(" ,(select * from(select case when count(*) = 0 or ifnull(UPDKBN,'0') = 1 ");// F102: 登録日
+      //test
       sbSQL.append("then current_timestamp else ADDDT end as ADDDT  ");
       sbSQL.append("from INATK.TOKSP_SHN ");
+      //System.out.print("test : " + data + "\n");
       for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
         String val = StringUtils.strip(data.optString(itm.getId()));
         if (itm.getNo() == 1) {
@@ -9338,7 +9339,7 @@ public class ReportTG016Dao extends ItemDao {
           sbSQL.append("and ");
         }
         if (StringUtils.isEmpty(val)) {
-          sbSQL.append(" = null ");
+          sbSQL.append(itm.getCol() + " = null " );
         } else {
           sbSQL.append(itm.getCol() + " = ? ");
           prmData.add(val);
