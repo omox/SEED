@@ -1244,11 +1244,11 @@ public class ReportSO003Dao extends ItemDao {
     JSONArray dataArrayT = JSONArray.fromObject(map.get("DATA_SHN")); // 更新情報(予約発注_納品日)
     JSONArray dataArrayDel = JSONArray.fromObject(map.get("DATA_SHN_DEL")); // 対象情報（主要な更新情報）
 
-
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
     String kanriNo = ""; // 管理No
     String dispType = map.get("DISPTYPE"); // 画面状態
+    String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
 
     ArrayList<String> prmData = new ArrayList<>();
     Object[] valueData = new Object[] {};
@@ -1375,7 +1375,7 @@ public class ReportSO003Dao extends ItemDao {
         // 生活応援_商品の登録・更新
 
         sbSQL = new StringBuffer();
-        sbSQL.append(" REPLACE into INATK.TOKSO_SHN  (");
+        sbSQL.append(" INSERT into INATK.TOKSO_SHN  (");
         sbSQL.append(" MOYSKBN"); // 催し区分
         sbSQL.append(", MOYSSTDT"); // 催し開始日
         sbSQL.append(", MOYSRBAN"); // 催し連番
@@ -1401,12 +1401,70 @@ public class ReportSO003Dao extends ItemDao {
         sbSQL.append(", UPDKBN"); // 更新区分：
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター：
-        sbSQL.append(", ADDDT "); // 登録日：
+        sbSQL.append(", ADDDT");
+        sbSQL.append(", UPDDT "); // 更新日：
+        sbSQL.append(") ");
+        sbSQL.append("VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("MOYSKBN = NEW.MOYSKBN ");
+        sbSQL.append(", MOYSSTDT = NEW.MOYSSTD ");
+        sbSQL.append(", BMNCD = NEW.BMNCD ");
+        sbSQL.append(", KANRINO = NEW.KANRINO ");
+        sbSQL.append(", SHNCD = NEW.SHNCD ");
+        sbSQL.append(", MAKERKN = NEW. MAKERKN ");
+        sbSQL.append(", SHNKN = NEW.SHNKN ");
+        sbSQL.append(", KIKKN = NEW.KIKKN ");
+        sbSQL.append(", SHNKN = NEW.SHNKN ");
+        sbSQL.append(", KIKKN = NEW.KIKKN ");
+        sbSQL.append(", IRISU = NEW.IRISU ");
+        sbSQL.append(", MINSU = NEW.MINSU ");
+        sbSQL.append(", GENKAAM = NEW.GENKAAM ");
+        sbSQL.append(", A_BAIKAAM = NEW.A_BAIKAAM ");
+        sbSQL.append(", B_BAIKAAM = NEW.B_BAIKAAM ");
+        sbSQL.append(", C_BAIKAAM = NEW.C_BAIKAAM ");
+        sbSQL.append(", A_RANKNO = NEW.A_RANKNO ");
+        sbSQL.append(", B_RANKNO = NEW.B_RANKNO ");
+        sbSQL.append(", C_RANKNO = NEW.C_RANKNO ");
+        sbSQL.append(", POPCD = NEW.POPCD ");
+        sbSQL.append(", POPSZ = NEW.POPSZ ");
+        sbSQL.append(", POPSU = NEW.POPSU ");
+        sbSQL.append(", TENATSUK_ARR = NEW.TENATSUK_ARR ");
+        sbSQL.append(", UPDKBN = NEW.UPDKBN ");
+        sbSQL.append(", SENDFLG = NEW.SENDFLG ");
+        sbSQL.append(", OPERATOR = NEW.OPERATOR ");
+        //sbSQL.append(", ADDDT = NEW.ADDDT ");
+        sbSQL.append(", UPDDT = NEW.UPDDT ");
+        
+        /*
+        sbSQL.append(", MOYSSTDT"); // 催し開始日
+        sbSQL.append(", MOYSRBAN"); // 催し連番
+        sbSQL.append(", BMNCD"); // 部門
+        sbSQL.append(", KANRINO"); // 管理番号
+        sbSQL.append(", SHNCD"); // 商品コード
+        sbSQL.append(", MAKERKN"); // メーカー名称
+        sbSQL.append(", SHNKN"); // 商品名称
+        sbSQL.append(", KIKKN"); // 規格名称
+        sbSQL.append(", IRISU"); // 入数
+        sbSQL.append(", MINSU"); // 最低発注数
+        sbSQL.append(", GENKAAM"); // 原価
+        sbSQL.append(", A_BAIKAAM"); // A売価
+        sbSQL.append(", B_BAIKAAM"); // B売価
+        sbSQL.append(", C_BAIKAAM"); // C売価
+        sbSQL.append(", A_RANKNO"); // Aランク
+        sbSQL.append(", B_RANKNO"); // Bランク
+        sbSQL.append(", C_RANKNO"); // Cランク
+        sbSQL.append(", POPCD"); // POPコード
+        sbSQL.append(", POPSZ"); // POPサイズ
+        sbSQL.append(", POPSU"); // 枚数
+        sbSQL.append(", TENATSUK_ARR"); // 店扱いフラグ配列
+        sbSQL.append(", UPDKBN"); // 更新区分：
+        sbSQL.append(", SENDFLG"); // 送信フラグ
+        sbSQL.append(", OPERATOR "); // オペレーター：
+        sbSQL.append(", ADDDT");
         sbSQL.append(", UPDDT "); // 更新日：
         sbSQL.append(") VALUES");
-        sbSQL.append(" " + StringUtils.join(valueData, ",") + " ");
-
-
+        */
 
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -1439,7 +1497,7 @@ public class ReportSO003Dao extends ItemDao {
 
     // 管理番号更新
     if (StringUtils.isNotEmpty(kanriNo)) {
-      this.createSqlSYSMOYBMN(userId, data, SqlType.MRG, kanriNo);
+      this.createSqlSYSMOYBMN(userId, map,data, SqlType.MRG, kanriNo);
     }
 
 
@@ -1682,7 +1740,7 @@ public class ReportSO003Dao extends ItemDao {
    *
    * @throws Exception
    */
-  private JSONObject createSqlSYSMOYBMN(String userId, JSONObject data, SqlType sql, String kanriNo) {
+  private JSONObject createSqlSYSMOYBMN(String userId,HashMap<String, String> map, JSONObject data, SqlType sql, String kanriNo) {
     JSONObject result = new JSONObject();
 
     String moyskbn = data.getString("F1");
@@ -1693,11 +1751,10 @@ public class ReportSO003Dao extends ItemDao {
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
 
-
     // 基本INSERT文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("INSERT into INATK.SYSMOYBMN ");
+    sbSQL.append("INSERT INTO INATK.SYSMOYBMN ");
     sbSQL.append("( MOYSKBN");
     sbSQL.append(", MOYSSTDT");
     sbSQL.append(", MOYSRBAN");
@@ -1707,31 +1764,32 @@ public class ReportSO003Dao extends ItemDao {
     sbSQL.append(", OPERATOR");
     sbSQL.append(", ADDDT");
     sbSQL.append(", UPDDT");
-    sbSQL.append(")SELECT");
+    sbSQL.append(") VALUES");
+    sbSQL.append("( ");
+    //sbSQL.append("SELECT ( ");
     // キー情報はロックのため後で追加する
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
-      if (itm.getNo() > 1) {
+      if (itm.getNo() > 1 && itm.getCol() != TOK_CMNLayout.KANRIENO.getCol()) {
         sbSQL.append(",");
       }
 
       if (itm.getCol() == TOK_CMNLayout.KANRIENO.getCol()) {
         // 枝番の設定は行わない
-        sbSQL.append("Null as " + itm.getCol());
+        ;
       } else {
-        sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+        sbSQL.append("CAST(? as " + itm.getTyp() + ") " );
       }
     }
-    sbSQL.append(" ,null AS SUMI_HYOSEQNO"); // F6 : 付番済表示順番
-    sbSQL.append(" ,'" + userId + "' AS OPERATOR"); // オペレータ
-    sbSQL.append(" ,CURRENT_TIMESTAMP AS ADDDT"); // 登録日
-    sbSQL.append(" ,CURRENT_TIMESTAMP AS UPDDT"); // 更新日
-    sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY");
+    sbSQL.append(" ,NULL "); // F6 : 付番済表示順番
+    sbSQL.append(" ,'" + userId + "' "); // オペレータ
+    sbSQL.append(" ,CURRENT_TIMESTAMP "); // 登録日（更新）
+    sbSQL.append(" ,CURRENT_TIMESTAMP "); // 更新日
     sbSQL.append(")");
     sbSQL.append(" ON DUPLICATE KEY UPDATE ");// 重複した時のUPDATE処理
-    sbSQL.append(" SUMI_KANRINO = VALUES(KANRINO) ");
-    sbSQL.append(" SUMI_HYOSEQNO = null ");
-    sbSQL.append(" OPERATOR = '" + userId + "'");
-    sbSQL.append(" UPDDT = CURRENT_TIMESTAMP ");
+    sbSQL.append(" SUMI_KANRINO = VALUES(SUMI_KANRINO) ");
+    sbSQL.append(" ,SUMI_HYOSEQNO = VALUES(SUMI_HYOSEQNO) ");
+    sbSQL.append(" ,OPERATOR = VALUES(OPERATOR)");
+    sbSQL.append(" ,UPDDT = VALUES(UPDDT) ");
 
 
     // パラメータの設定
