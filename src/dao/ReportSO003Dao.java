@@ -1408,7 +1408,7 @@ public class ReportSO003Dao extends ItemDao {
         sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
         sbSQL.append("ON DUPLICATE KEY UPDATE ");
         sbSQL.append("MOYSKBN = NEW.MOYSKBN ");
-        sbSQL.append(", MOYSSTDT = NEW.MOYSSTD ");
+        sbSQL.append(", MOYSSTDT = NEW.MOYSSTDT ");
         sbSQL.append(", BMNCD = NEW.BMNCD ");
         sbSQL.append(", KANRINO = NEW.KANRINO ");
         sbSQL.append(", SHNCD = NEW.SHNCD ");
