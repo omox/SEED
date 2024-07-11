@@ -5431,7 +5431,7 @@ public class DefineReport {
   public final static String ID_SQL_PLUSDDT = "SELECT PLUSDDT AS " + VAL + " FROM INATK.TOKMOYCD WHERE MOYSKBN=? AND MOYSSTDT=? AND MOYSRBAN=? AND PLUSFLG='1'";
 
   // SQL 分類割引 重複チェック
-  public final static String ID_SQL_NEWDEPLICATECHEACK = "SELECT COUNT as " + VAL + " FROM INATK.TOKBT_KKK" + " WHERE MOYSKBN =? AND MOYSSTDT =? AND BMNCD =? AND DAICD =?";
+  public final static String ID_SQL_NEWDEPLICATECHEACK = "SELECT COUNT(*) as " + VAL + " FROM INATK.TOKBT_KKK" + " WHERE MOYSKBN =? AND MOYSSTDT =? AND BMNCD =? AND DAICD =?";
 
   // SQL 分類割引 重複チェック 中分類含む場合
   public final static String ID_SQL_NEWDEPLICATECHEACK_C = "SELECT COUNT(*) as " + VAL + " from INATK.TOKBT_KKK" + " WHERE MOYSKBN =? AND MOYSSTDT =? AND BMNCD =? AND DAICD =? AND CHUCD =?";
