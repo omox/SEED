@@ -2816,8 +2816,8 @@ public class ReportBM006Dao extends ItemDao {
           sbSQL.append("SHNCD"); // 商品コード
           sbSQL.append(",HBDT"); // 販売日
           sbSQL.append(",MOYCD_ARR"); // 催しコード配列
-          sbSQL.append(",KANRINO_ARR"); // 管理番号配列
           sbSQL.append(",BMNNO_ARR"); // BM番号配列
+          sbSQL.append(",KANRINO_ARR"); // 管理番号配列
           sbSQL.append(", OPERATOR "); // オペレーター：
           sbSQL.append(", ADDDT "); // 登録日：
           sbSQL.append(",  UPDDT "); // 更新日：
