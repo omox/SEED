@@ -2639,36 +2639,19 @@ public class ReportTG016Dao extends ItemDao {
 
           // パラメータ設定
           // 共通キー情報をセット
+          for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
 
-          // if (command.contains("_SHNNNDT")) {
-          // System.out.print("test1 : " + data + "\n");
-          // }
-          // if (command.contains("_SHNNNDT")) {
-          // System.out.print("test2 : --> " + paramData.size() + "\n");
-          // }
+            if (itm.getId().equals(TOK_CMNLayout.KANRINO.getId())) {
+              kanrino = data.optString(itm.getId());
+            }
 
-          // if (command.contains("TOKSP_BMN")) {
-          // for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
-          // if (itm.getId().equals(TOK_CMNLayout.KANRINO.getId())) {
-          // kanrino = data.optString(itm.getId());
-          // }
-          // if (itm.getNo() == 5) {
-          // break;
-          // }
-          // statement.setString(itm.getNo(), data.optString(itm.getId()));
-          // }
-          // } else {
-          // for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
-          // if (itm.getId().equals(TOK_CMNLayout.KANRINO.getId())) {
-          // kanrino = data.optString(itm.getId());
-          // }
-          // statement.setString(itm.getNo(), data.optString(itm.getId()));
-          // }
-          // }
+            statement.setString(itm.getNo(), data.optString(itm.getId()));
+          }
 
 
           // 各種パラメータをセット
           for (int i = 0; i < paramData.size(); i++) {
+
             String val = paramData.get(i);
             // 商品納入日 or 商品販売日テーブルだった場合
             if (command.contains("_SHNHBDT") && (i + 1) % TOK_CMN_SHNHBDTLayout.KANRINO_ARR.getNo() == 0) {
@@ -2676,15 +2659,17 @@ public class ReportTG016Dao extends ItemDao {
             } else if (command.contains("_SHNNNDT") && (i + 1) % TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getNo() == 0) {
               val = val.replace("reno", String.format("%4s", kanrino));
             }
-            if (command.contains("TOKSP_NNDT") || command.contains("TOKSP_HB") || command.contains("_SHNNNDT")) {// 共通パラメータを使用しない場合
-              statement.setString(i + 1, val);
-            } else {
-              statement.setString(i + 1, val);
-              // statement.setString((i + TOK_CMNLayout.values().length) + 1, val);
-            }
+
+            statement.setString((i + TOK_CMNLayout.values().length) + 1, val);
           }
 
           startTime = System.currentTimeMillis();
+
+          // SQL実行
+          if (DefineReport.ID_DEBUG_MODE)
+            System.out.println("[sql]" + command + "[prm]" + (paramData == null ? "" : StringUtils.join(paramData.toArray(), ",")));
+          System.out.print("/*[paramDatasize]  " + paramData.size() + " */\n");
+          // SQL実行
 
           // SQL実行
           int count = statement.executeUpdate();
@@ -9029,82 +9014,62 @@ public class ReportTG016Dao extends ItemDao {
    */
   private JSONObject createSqlTOK_CMN_BMN(String userId, JSONObject data, SqlType sql, boolean isTOKTG) {
     JSONObject result = new JSONObject();
+
     String[] notTarget =
         new String[] {TOK_CMN_BMNLayout.UPDKBN.getId(), TOK_CMN_BMNLayout.SENDFLG.getId(), TOK_CMN_BMNLayout.OPERATOR.getId(), TOK_CMN_BMNLayout.ADDDT.getId(), TOK_CMN_BMNLayout.UPDDT.getId()};
+    this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    String table = "", values = "", rows = "";
-
     if (isTOKTG) {
-      table = " INATK.TOKTG_BMN ";
+      sbSQL.append("INSERT into INATK.TOKTG_BMN ");
     } else {
-      table = " INATK.TOKSP_BMN ";
+      sbSQL.append("INSERT into INATK.TOKSP_BMN ");
     }
-
-    for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      String val = data.optString(itm.getId());
-
-      if (StringUtils.isEmpty(val)) {
-        values += ",null";
-      } else {
-        values += ",cast( ? as signed)";
-        prmData.add(val);
-      }
-    }
-
-    values += " ," + DefineReport.ValUpdkbn.NML.getVal();// 更新区分
-    values += " ," + DefineReport.Values.SENDFLG_UN.getVal(); // 送信フラグ
-    values += " ,'" + userId + "'"; // オペレータ
-    values += " , ( select * from ( select case when ifnull(UPDKBN, 0) = 1 or count(*) = 0 then current_timestamp "; // 登録日
-    values += "else ADDDT end as ADDDT from " + table + " ";
-
-    for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      String val = data.optString(itm.getId());
-      if (itm.getNo() == 1) {
-        values += "where ";
-      } else {
-        values += "and ";
-      }
-      if (StringUtils.isEmpty(val)) {
-        values += " = null ";
-      } else {
-        values += itm.getCol() + " = ? ";
-        prmData.add(val);
-      }
-    }
-
-    values += ") as T1 ) ";
-    values += " ,current_timestamp ";// 更新日
-    rows += "(" + StringUtils.removeStart(values, ",") + ")";
-
-    sbSQL.append("replace into " + table + " ( ");
-    // キー情報はロックのため後で追加する
+    sbSQL.append("(  ");
     for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
+    }
+    sbSQL.append(") SELECT ");
+    for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+    }
+    sbSQL.append(" FROM ( SELECT ");
+    // キー情報はロックのため後で追加する
+    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
 
     }
-    sbSQL.append(")values " + rows + " ");
-
-
+    sbSQL.append(" ," + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN "); // 更新区分
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG"); // 送信フラグ
+    sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
+    sbSQL.append(" ,CURRENT_TIMESTAMP AS ADDDT "); // 登録日
+    sbSQL.append(" ,CURRENT_TIMESTAMP AS UPDDT "); // 更新日
+    sbSQL.append("FROM (SELECT 1 DUMMY) AS DUMMY ");
+    sbSQL.append(") AS DUMMY ON DUPLICATE KEY UPDATE ");
+    for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol() + "=VALUES(" + itm.getCol() + ") ");
+    }
 
     if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
 
     sqlList.add(sbSQL.toString());
-
     prmList.add(prmData);
     lblList.add("全店特売(アンケート有/無)_部門");
     return result;
@@ -9154,9 +9119,9 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("and MT.BMNCD = T1.BMNCD ");
     sbSQL.append("and T1.CNT = 0 ");
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
-
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
     lblList.add("全店特売(アンケート有/無)_部門");
@@ -9251,9 +9216,9 @@ public class ReportTG016Dao extends ItemDao {
 
 
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
-
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
     lblList.add("全店特売(アンケート有)_商品");
@@ -9270,8 +9235,9 @@ public class ReportTG016Dao extends ItemDao {
    */
   private JSONObject createSqlTOKSP_SHN(String userId, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
-    String[] notTarget = new String[] {TOKSP_SHNLayout.UPDKBN.getId(), TOKSP_SHNLayout.SENDFLG.getId(), TOKSP_SHNLayout.OPERATOR.getId(), TOKSP_SHNLayout.ADDDT.getId(), TOKSP_SHNLayout.UPDDT.getId()};
 
+    String[] notTarget = new String[] {TOKSP_SHNLayout.UPDKBN.getId(), TOKSP_SHNLayout.SENDFLG.getId(), TOKSP_SHNLayout.OPERATOR.getId(), TOKSP_SHNLayout.ADDDT.getId(), TOKSP_SHNLayout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
@@ -9279,79 +9245,78 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("replace into INATK.TOKSP_SHN ( ");
-
-    if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-      for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-        sbSQL.append(itm.getCol());
+    sbSQL.append("INSERT INTO INATK.TOKSP_SHN ");
+    sbSQL.append("( ");
+    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
       }
-      sbSQL.append(")values(");
-
-      for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
-        if (ArrayUtils.contains(notTarget, itm.getId())) {
-          continue;
-        } // パラメータ不要
-
-        if (itm.getNo() > 1) {
-          sbSQL.append(",");
-        }
-
-        if (data.containsKey(itm.getId())) {
-          String value = StringUtils.strip(data.optString(itm.getId()));
-
-          // 配列系項目はスペースを取り除かない
-          if (itm.getCol().equals(TOKSP_SHNLayout.TENRANK_ARR.getCol())) {
-            value = new ReportJU012Dao(JNDIname).spaceArr(data.optString(itm.getId()), 1);
-          } else if (itm.getCol().equals(TOKSP_SHNLayout.GENKAAM_MAE.getCol()) && data.containsKey(TOKSP_SHNLayout.TKANPLUKBN.getId())) {
-            String tkanplukbn = StringUtils.strip(data.optString(TOKSP_SHNLayout.TKANPLUKBN.getId()));
-            if (tkanplukbn.equals("2") && StringUtils.isEmpty(value)) {
-              value = "0";
-            }
-          }
-
-
-          if (StringUtils.isNotEmpty(value)) {
-            prmData.add(value);
-            sbSQL.append("cast(? as " + itm.getTyp() + ")");
-          } else {
-            sbSQL.append("null ");
-          }
-        } else {
-          sbSQL.append("null ");
-        }
-      }
-      sbSQL.append(" ," + DefineReport.ValUpdkbn.NML.getVal()); // F99: 更新区分
-      sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // F100: 送信フラグ
-      sbSQL.append(" ,'" + userId + "'"); // F101: オペレータ
-      sbSQL.append(" ,(select * from(select case when count(*) = 0 or ifnull(UPDKBN,'0') = 1 ");// F102: 登録日
-      //test
-      sbSQL.append("then current_timestamp else ADDDT end as ADDDT  ");
-      sbSQL.append("from INATK.TOKSP_SHN ");
-      //System.out.print("test : " + data + "\n");
-      for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
-        String val = StringUtils.strip(data.optString(itm.getId()));
-        if (itm.getNo() == 1) {
-          sbSQL.append("where ");
-        } else {
-          sbSQL.append("and ");
-        }
-        if (StringUtils.isEmpty(val)) {
-          sbSQL.append(itm.getCol() + " = null " );
-        } else {
-          sbSQL.append(itm.getCol() + " = ? ");
-          prmData.add(val);
-        }
-      }
-      sbSQL.append(") as T1 ) ");
-      sbSQL.append(" ,current_timestamp"); // F103: 更新日
-      sbSQL.append(")");
+      sbSQL.append(itm.getCol());
     }
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    sbSQL.append(") SELECT ");
+    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+    }
+    sbSQL.append(" FROM ( SELECT ");
 
+    // キー情報はロックのため後で追加する
+    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+    }
+    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+      if (ArrayUtils.contains(notTarget, itm.getId())) {
+        continue;
+      } // パラメータ不要
+      if (ArrayUtils.contains(keys, itm.getId())) {
+        continue;
+      } // 上記で実施
+      if (data.containsKey(itm.getId())) {
+        String value = StringUtils.strip(data.optString(itm.getId()));
+
+        // 配列系項目はスペースを取り除かない
+        if (itm.getCol().equals(TOKSP_SHNLayout.TENRANK_ARR.getCol())) {
+          value = new ReportJU012Dao(JNDIname).spaceArr(data.optString(itm.getId()), 1);
+        } else if (itm.getCol().equals(TOKSP_SHNLayout.GENKAAM_MAE.getCol()) && data.containsKey(TOKSP_SHNLayout.TKANPLUKBN.getId())) {
+          String tkanplukbn = StringUtils.strip(data.optString(TOKSP_SHNLayout.TKANPLUKBN.getId()));
+          if (tkanplukbn.equals("2") && StringUtils.isEmpty(value)) {
+            value = "0";
+          }
+        }
+
+        if (StringUtils.isNotEmpty(value)) {
+          prmData.add(value);
+          sbSQL.append(",cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+        } else {
+          sbSQL.append(",null as " + itm.getCol());
+        }
+      } else {
+        sbSQL.append(",null as " + itm.getCol());
+      }
+    }
+    sbSQL.append(" ," + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN "); // F99: 更新区分
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG "); // F100: 送信フラグ
+    sbSQL.append(" ,'" + userId + "' AS OPERATOR"); // F101: オペレータ
+    sbSQL.append(" ,CURRENT_TIMESTAMP AS ADDDT "); // F102: 登録日
+    sbSQL.append(" ,CURRENT_TIMESTAMP AS UPDDT "); // F103: 更新日
+    sbSQL.append("FROM (SELECT 1 DUMMY) AS DUMMY ");
+    sbSQL.append(") AS DUMMY ON DUPLICATE KEY UPDATE ");
+    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol() + " = VALUES(" + itm.getCol() + ") ");
+    }
+
+
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
     lblList.add("全店特売(アンケート無)_商品");
@@ -9643,19 +9608,34 @@ public class ReportTG016Dao extends ItemDao {
   protected JSONObject createSqlTOKSP_NNDT(String userId, JSONArray dataArray, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
+    String[] notTarget = new String[] {TOKSP_NNDTLayout.OPERATOR.getId(), TOKSP_NNDTLayout.ADDDT.getId(), TOKSP_NNDTLayout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMNLayout.values());
+
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
-    String values = "", rows = "";
+    String values = "", names = "", rows = "";
 
     for (int j = 0; j < dataArray.size(); j++) {
+
       String arr = "";
       String tenkaisu = "";
+
       values = "";
+      names = "";
       for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+        if (ArrayUtils.contains(notTarget, itm.getId())) {
+          continue;
+        } // パラメータ不要
+        if (ArrayUtils.contains(keys, itm.getId())) {
+          continue;
+        } // 共通で実施
+
+        String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
 
-        if (itm.getId().equals(TOKSP_NNDTLayout.TENHTSU_ARR.getId())) {// 店発注数時の処理
+        if (itm.getId().equals(TOKSP_NNDTLayout.TENHTSU_ARR.getId())) {
           val = getHtsuArr(dataArray.optJSONObject(j), data, true);
+
           if (!StringUtils.isEmpty(val)) {
             for (int jj = 0; jj < val.split(":").length; jj++) {
               if (jj == 0) {
@@ -9666,64 +9646,99 @@ public class ReportTG016Dao extends ItemDao {
             }
           }
           val = arr;
-        } else if (itm.getId().equals(TOKSP_NNDTLayout.TENKAISU.getId())) {// 展開数時の処理
+        } else if (itm.getId().equals(TOKSP_NNDTLayout.TENKAISU.getId())) {
           val = tenkaisu;
         }
 
         if (StringUtils.isEmpty(val)) {
-          if (itm.getId().equals(TOKSP_NNDTLayout.ADDDT.getId()) || itm.getId().equals(TOKSP_NNDTLayout.UPDDT.getId())) {
-            if (itm.getId().equals(TOKSP_NNDTLayout.ADDDT.getId())) {
-              values += ",(select * from (select case when count(*) = 0 or ifnull(ADDDT,0) = 0 then current_timestamp ";
-              values += "else ADDDT end as ADDDT from INATK.TOKSP_NNDT ";
-              values += "where MOYSKBN = " + dataArray.optJSONObject(j).optString("F1") + " ";
-              values += "and MOYSSTDT = " + dataArray.optJSONObject(j).optString("F2") + " ";
-              values += "and MOYSRBAN = " + dataArray.optJSONObject(j).optString("F3") + " ";
-              values += "and BMNCD = " + dataArray.optJSONObject(j).optString("F4") + " ";
-              values += "and KANRINO = " + dataArray.optJSONObject(j).optString("F5") + " ";
-              values += "and KANRIENO = " + dataArray.optJSONObject(j).optString("F6") + " ";
-              values += "and NNDT = " + dataArray.optJSONObject(j).optString("F7") + " ";
-              values += ") as T1 ) ";
-            } else {
-              values += ",current_timestamp";
-            }
-
-          } else {
-            values += ", null";
-          }
+          values += ", null";
         } else {
-          values += ", cast( ? as char(" + MessageUtility.getDefByteLen(val) + "))";
           prmData.add(val);
+          values += ", cast(? as varchar(" + MessageUtility.getDefByteLen(val) + "))";
         }
+        names += ", " + col;
       }
       rows += ",(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
+    names = StringUtils.removeStart(names, ",");
 
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append(" replace into INATK.TOKSP_NNDT ");
-    sbSQL.append(" ( ");
-
+    sbSQL.append("merge into INATK.TOKSP_NNDT as T");
+    sbSQL.append(" using (select ");
+    // キー情報はロックのため後で追加する
+    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+    }
+    for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+      if (ArrayUtils.contains(notTarget, itm.getId())) {
+        continue;
+      } // パラメータ不要
+      if (ArrayUtils.contains(keys, itm.getId())) {
+        continue;
+      } // 上記で実施
+      sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
+    }
+    sbSQL.append("  from (values" + rows + ") as T1(" + names + ")");
+    sbSQL.append(" ) as RE on (");
+    sbSQL.append(" T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN ");
+    sbSQL.append(" and T.BMNCD = RE.BMNCD and T.KANRINO = RE.KANRINO and T.KANRIENO = RE.KANRIENO ");
+    sbSQL.append(" and T.NNDT = RE.NNDT ");
+    sbSQL.append(" )");
     if (SqlType.INS.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
-
+      sbSQL.append(" when not matched AND RE.SENDFLG = '1' then ");
+      sbSQL.append(" insert (");
       for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
         if (itm.getNo() > 1) {
           sbSQL.append(",");
         }
         sbSQL.append(itm.getCol());
       }
-
-      sbSQL.append(")values ");
-      sbSQL.append(rows);
-      sbSQL.append(" ");
-
+      sbSQL.append(")values(");
+      for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+        if (ArrayUtils.contains(notTarget, itm.getId())) {
+          continue;
+        } // パラメータ不要
+        if (itm.getId().equals(TOKSP_NNDTLayout.SENDFLG.getId())) {
+          continue;
+        } // パラメータ不要
+        if (itm.getNo() > 1) {
+          sbSQL.append(",");
+        }
+        sbSQL.append("RE." + itm.getCol());
+      }
+      sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
+      sbSQL.append(" ,'" + userId + "'"); // オペレータ
+      sbSQL.append(" ,current timestamp"); // 登録日
+      sbSQL.append(" ,current timestamp"); // 更新日
+      sbSQL.append(")");
     }
-
-
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
-
+    if (SqlType.UPD.getVal() == sql.getVal() || SqlType.MRG.getVal() == sql.getVal()) {
+      sbSQL.append(" when matched AND RE.SENDFLG = '1' then ");
+      sbSQL.append(" update set");
+      sbSQL.append("  TENHTSU_ARR=RE.TENHTSU_ARR"); // F8 : 店発注数配列
+      sbSQL.append(" ,HTASU=RE.HTASU"); // F9 : 発注総数
+      sbSQL.append(" ,PTNNO=RE.PTNNO"); // F10: パターン№
+      sbSQL.append(" ,TSEIKBN=RE.TSEIKBN"); // F11: 訂正区分
+      sbSQL.append(" ,TPSU=RE.TPSU"); // F12: 店舗数
+      sbSQL.append(" ,TENKAISU=RE.TENKAISU"); // F13: 展開数
+      sbSQL.append(" ,ZJSKFLG=RE.ZJSKFLG"); // F14: 前年実績フラグ
+      sbSQL.append(" ,WEEKHTDT=RE.WEEKHTDT"); // F15: 週間発注処理日
+      sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
+      sbSQL.append(" ,OPERATOR='" + userId + "'"); // オペレータ
+      // sbSQL.append(" ,ADDDT=RE.ADDDT"); // 登録日
+      sbSQL.append(" ,UPDDT=current timestamp"); // 更新日
+      // sbSQL.append(" ,bat_ctlflg01=RE.bat_ctlflg01"); // F20: batch用制御フラグ01
+      sbSQL.append(" when matched AND RE.SENDFLG <> '1' then DELETE");
+    }
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
     lblList.add("全店特売(アンケート無)_納入日");
