@@ -9657,11 +9657,11 @@ public class ReportTG016Dao extends ItemDao {
           values += ", null";
         } else {
           prmData.add(val);
-          values += ", cast(? as CHAR(" + MessageUtility.getDefByteLen(val) + "))";
+          values += ", cast(trim(?) as CHAR(" + MessageUtility.getDefByteLen(val) + "))";
         }
         names += ", " + col;
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += ",ROW(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -9691,7 +9691,7 @@ public class ReportTG016Dao extends ItemDao {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+      sbSQL.append("cast(trim(?) as " + itm.getTyp() + ") as " + itm.getCol());
     }
     for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
       if (ArrayUtils.contains(notTarget, itm.getId())) {
@@ -9700,14 +9700,14 @@ public class ReportTG016Dao extends ItemDao {
       if (ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } // 上記で実施
-      sbSQL.append(",cast(T1." + itm.getCol() + " as SIGNED ) as " + itm.getCol());
+      sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + " ) as " + itm.getCol());
     }
-    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
-    sbSQL.append(" ,'" + userId + "'"); // オペレータ
-    sbSQL.append(" ,current_timestamp "); // 登録日
-    sbSQL.append(" ,current_timestamp "); // 更新日
+    // sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
+    sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
+    sbSQL.append(" ,current_timestamp AS ADDDT "); // 登録日
+    sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
 
-    sbSQL.append("  FROM (values" + rows + ") as T1(" + names + ")");
+    sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
     sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
     for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
       if (itm.getNo() > 1) {
@@ -11665,39 +11665,39 @@ public class ReportTG016Dao extends ItemDao {
   /** 全店特売(アンケート無)_納入日レイアウト() */
   public enum TOKSP_NNDTLayout implements MSTLayout {
     /** 催し区分 */
-    MOYSKBN(1, "MOYSKBN", "SMALLINT", "催し区分"),
+    MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
-    MOYSSTDT(2, "MOYSSTDT", "INTEGER", "催し開始日"),
+    MOYSSTDT(2, "MOYSSTDT", "SIGNED", "催し開始日"),
     /** 催し連番 */
-    MOYSRBAN(3, "MOYSRBAN", "SMALLINT", "催し連番"),
+    MOYSRBAN(3, "MOYSRBAN", "SIGNED", "催し連番"),
     /** 部門 */
-    BMNCD(4, "BMNCD", "SMALLINT", "部門"),
+    BMNCD(4, "BMNCD", "SIGNED", "部門"),
     /** 管理番号 */
-    KANRINO(5, "KANRINO", "SMALLINT", "管理番号"),
+    KANRINO(5, "KANRINO", "SIGNED", "管理番号"),
     /** 枝番 */
-    KANRIENO(6, "KANRIENO", "SMALLINT", "枝番"),
+    KANRIENO(6, "KANRIENO", "SIGNED", "枝番"),
     /** 納入日 */
-    NNDT(7, "NNDT", "INTEGER", "納入日"),
+    NNDT(7, "NNDT", "SIGNED", "納入日"),
     /** 店発注数配列 */
-    TENHTSU_ARR(8, "TENHTSU_ARR", "VARCHAR(2000)", "店発注数配列"),
+    TENHTSU_ARR(8, "TENHTSU_ARR", "CHAR(2000)", "店発注数配列"),
     /** 発注総数 */
-    HTASU(9, "HTASU", "INTEGER", "発注総数"),
+    HTASU(9, "HTASU", "SIGNED", "発注総数"),
     /** パターン№ */
-    PTNNO(10, "PTNNO", "INTEGER", "パターン№"),
+    PTNNO(10, "PTNNO", "SIGNED", "パターン№"),
     /** 訂正区分 */
-    TSEIKBN(11, "TSEIKBN", "SMALLINT", "訂正区分"),
+    TSEIKBN(11, "TSEIKBN", "SIGNED", "訂正区分"),
     /** 店舗数 */
-    TPSU(12, "TPSU", "SMALLINT", "店舗数"),
+    TPSU(12, "TPSU", "SIGNED", "店舗数"),
     /** 展開数 */
-    TENKAISU(13, "TENKAISU", "INTEGER", "展開数"),
+    TENKAISU(13, "TENKAISU", "SIGNED", "展開数"),
     /** 前年実績フラグ */
-    ZJSKFLG(14, "ZJSKFLG", "SMALLINT", "前年実績フラグ"),
+    ZJSKFLG(14, "ZJSKFLG", "SIGNED", "前年実績フラグ"),
     /** 週間発注処理日 */
-    WEEKHTDT(15, "WEEKHTDT", "INTEGER", "週間発注処理日"),
+    WEEKHTDT(15, "WEEKHTDT", "SIGNED", "週間発注処理日"),
     /** 送信フラグ */
-    SENDFLG(16, "SENDFLG", "SMALLINT", "送信フラグ"),
+    SENDFLG(16, "SENDFLG", "SIGNED", "送信フラグ"),
     /** オペレータ */
-    OPERATOR(17, "OPERATOR", "VARCHAR(20)", "オペレータ"),
+    OPERATOR(17, "OPERATOR", "CHAR(20)", "オペレータ"),
     /** 登録日 */
     ADDDT(18, "ADDDT", "TIMESTAMP", "登録日"),
     /** 更新日 */
