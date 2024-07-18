@@ -10503,65 +10503,64 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlSYSMOYBMN(String userId, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    new ArrayList<String>();
+    // 更新情報
+    ArrayList<String> prmData = new ArrayList<String>();
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("replace into INATK.SYSMOYBMN ( ");
-    String szMoyskbn = data.optString(TOK_CMNLayout.MOYSKBN.getId()); // 催し区分
-    String szMoysstdt = data.optString(TOK_CMNLayout.MOYSSTDT.getId()); // 催しコード（催し開始日）
-    String szMoysrban = data.optString(TOK_CMNLayout.MOYSRBAN.getId()); // 催し連番
-    String szBmncd = data.optString(TOK_CMNLayout.BMNCD.getId()); // 部門コード
+    sbSQL.append("INSERT into INATK.SYSMOYBMN ( ");
     for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
-    sbSQL.append(")values(");
+    sbSQL.append(") ");
+    sbSQL.append("SELECT ");
+    for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      if (itm.getNo() == 6) {
+        sbSQL.append("null as " + itm.getCol());
+      } else {
+        sbSQL.append(itm.getCol());
+      }
+    }
+    sbSQL.append(" FROM ");
+    sbSQL.append("( SELECT ");
+    // キー情報はロックのため後で追加する
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      switch (itm.getNo()) {
-        case 1:
-          sbSQL.append("cast(" + szMoyskbn + " as " + itm.getTyp() + ") ");
-          break;
-        case 2:
-          sbSQL.append("cast(" + szMoysstdt + " as " + itm.getTyp() + ") ");
-          break;
-        case 3:
-          sbSQL.append("cast(" + szMoysrban + " as " + itm.getTyp() + ") ");
-          break;
-        case 4:
-          sbSQL.append("cast(" + szBmncd + " as " + itm.getTyp() + ") ");
-          break;
-        case 5:
-          sbSQL.append("cast(");
-          sbSQL.append("(SELECT SUMI_KANRINO+1 FROM INATK.SYSMOYBMN AS MT ");
-          sbSQL.append(" where MOYSKBN  = " + szMoyskbn + "");
-          sbSQL.append("   and MOYSSTDT = " + szMoysstdt + "");
-          sbSQL.append("   and MOYSRBAN = " + szMoysrban + "");
-          sbSQL.append("   and BMNCD    = " + szBmncd + "");
-          sbSQL.append(" ) ");
-          sbSQL.append(" as " + itm.getTyp() + ") ");
-          break;
-        case 6:
-          sbSQL.append(" null"); // F6 : 付番済表示順番
-          break;
+      if (itm.getNo() == 5) {
+        sbSQL.append("cast(? as " + itm.getTyp() + ") as SUMI_KANRINO ");
+      } else if (itm.getNo() == 6) {
+        sbSQL.append("cast(? as " + itm.getTyp() + ") as SUMI_HYOSEQNO ");
+      } else {
+        sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
       }
-
+    }
+    sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
+    sbSQL.append(" ,CURRENT_TIMESTAMP AS ADDDT "); // 登録日
+    sbSQL.append(" ,CURRENT_TIMESTAMP AS UPDDT "); // 更新日
+    sbSQL.append("FROM (SELECT 1 AS DUMMY) AS DUMMY ");
+    sbSQL.append(") AS DUMMY ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol() + " = VALUES(" + itm.getCol() + ") ");
     }
 
-    sbSQL.append(" ,'" + userId + "'"); // オペレータ
-    sbSQL.append(" ,current_timestamp"); // 登録日
-    sbSQL.append(" ,current_timestamp"); // 更新日
-    sbSQL.append(")");
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
-    // prmList.add(prmData);
+    prmList.add(prmData);
     lblList.add("催し部門内部管理");
     return result;
   }
