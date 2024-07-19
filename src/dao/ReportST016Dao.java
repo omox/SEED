@@ -808,7 +808,7 @@ public class ReportST016Dao extends ItemDao {
     sbSQL.append(" , T1.MOYKN as F2");
     sbSQL.append(
         " , case when T1.HBSTDT=T1.HBEDDT then DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'))) else ");
-    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, 'YYYYMMDD'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
+    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
     sbSQL.append("   ||'～'||");
     sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) end as F3");
     sbSQL.append(" , T1.SHUNO as F4");
