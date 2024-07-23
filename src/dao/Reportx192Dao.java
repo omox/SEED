@@ -237,60 +237,71 @@ public class Reportx192Dao extends ItemDao {
         String val = data.optString(key);
 
         if (StringUtils.isEmpty(val)) {
-          values += ", null";
+          values += " null,";
         } else {
-          values += ", ?";
+          values += " ?,";
           prmData.add(val);
         }
       }
 
       if (k == maxField) {
-        valueData = ArrayUtils.add(valueData, values);
+
+        values += " " + DefineReport.ValUpdkbn.NML.getVal() + " ";
+        values += ", 0";
+        values += ", '" + userId + "'";
+        values += ", CURRENT_TIMESTAMP";
+        values += ", CURRENT_TIMESTAMP";
+
+        valueData = ArrayUtils.add(valueData, "(" + values + ")");
         values = "";
       }
     }
 
-    // 商品店グループの登録・更新
-    sbSQL.append(" REPLACE INTO INAMS.MSTSHNTENGP  (");
-    sbSQL.append(" GPKBN"); // グループ区分
-    sbSQL.append(", BMNCD"); // 部門
-    sbSQL.append(", AREAKBN"); // エリア区分
-    sbSQL.append(", TENGPCD"); // 店グループ（エリア）
-    sbSQL.append(", TENGPAN"); // 店舗グループ名（カナ）
-    sbSQL.append(", TENGPKN"); // 店舗グループ名（漢字）
-    sbSQL.append(", PCARD_OPFLG"); // プライスカード出力有無
-    sbSQL.append(", UPDKBN"); // 更新区分
-    sbSQL.append(", SENDFLG"); // 送信フラグ
-    sbSQL.append(", OPERATOR "); // オペレーター
-    if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-      sbSQL.append(", ADDDT "); // 登録日
-    }
-    sbSQL.append(", UPDDT "); // 更新日
-    sbSQL.append(") ");
-    sbSQL.append("VALUES (");
-    sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
-    sbSQL.append(", 0"); // 送信フラグ
-    sbSQL.append(", '" + userId + "' "); // オペレーター
-    if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-      sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
-    }
-    sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-    sbSQL.append(")");
+      // 商品店グループの登録・更新
+      sbSQL = new StringBuffer();
+      sbSQL.append(" INSERT INTO INAMS.MSTSHNTENGP  (");
+      sbSQL.append("GPKBN"); // グループ区分
+      sbSQL.append(", BMNCD"); // 部門
+      sbSQL.append(", AREAKBN"); // エリア区分
+      sbSQL.append(", TENGPCD"); // 店グループ（エリア）
+      sbSQL.append(", TENGPAN"); // 店舗グループ名（カナ）
+      sbSQL.append(", TENGPKN"); // 店舗グループ名（漢字）
+      sbSQL.append(", PCARD_OPFLG"); // プライスカード出力有無
+      sbSQL.append(", UPDKBN"); // 更新区分：
+      sbSQL.append(", SENDFLG"); // 送信フラグ
+      sbSQL.append(", OPERATOR "); // オペレーター：
+      sbSQL.append(", ADDDT");// 登録日:
+      sbSQL.append(", UPDDT "); // 更新日：
+      sbSQL.append(") ");
+      sbSQL.append("VALUES ");
+      sbSQL.append(StringUtils.removeStart(StringUtils.join(valueData, ","), ",")  + "AS NEW " );
+      if (DefineReport.Button.SEL_CHANGE.getObj().equals(sendBtnid) ) {
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("GPKBN = NEW.GPKBN ");
+        sbSQL.append(", BMNCD = NEW.BMNCD ");
+        sbSQL.append(", AREAKBN = NEW.AREAKBN ");
+        sbSQL.append(", TENGPCD = NEW.TENGPCD ");
+        sbSQL.append(", TENGPAN = NEW.TENGPAN ");
+        sbSQL.append(", TENGPKN = NEW.TENGPKN ");
+        sbSQL.append(", PCARD_OPFLG = NEW.PCARD_OPFLG ");
+        sbSQL.append(", UPDKBN = NEW.UPDKBN ");
+        sbSQL.append(", SENDFLG = NEW.SENDFLG ");
+        sbSQL.append(", OPERATOR = NEW.OPERATOR ");
+        sbSQL.append(", UPDDT = NEW.UPDDT ");
+      }
 
-    if (DefineReport.ID_DEBUG_MODE) {
-      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
-    }
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      }
 
-    sqlList.add(sbSQL.toString());
-    prmList.add(prmData);
-    lblList.add("商品店グループマスタ");
+      sqlList.add(sbSQL.toString());
+      prmList.add(prmData);
+      lblList.add("商品店グループマスタ");
 
-    // クリア
-    prmData = new ArrayList<String>();
-    valueData = new Object[] {};
-    values = "";
-
+      // クリア
+      prmData = new ArrayList<String>();
+      valueData = new Object[] {};
+      values = "";
 
     // 商品店テーブル店舗マスタの削除処理
     sbSQL = new StringBuffer();
@@ -612,7 +623,7 @@ public class Reportx192Dao extends ItemDao {
       paramData.add(data.getString("F2"));
       paramData.add(data.getString("F3"));
       paramData.add(data.getString("F4"));
-      sqlcommand = "select COUNT(*) as value from INAMS.MSTSHNTENGP where UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " and GPKBN = ? and BMNCD = ? and AREAKBN = ? and TENGPCD = ?";
+      sqlcommand = "select COUNT(*) as VALUE from INAMS.MSTSHNTENGP where UPDKBN = " + DefineReport.ValUpdkbn.NML.getVal() + " and GPKBN = ? and BMNCD = ? and AREAKBN = ? and TENGPCD = ?";
 
       @SuppressWarnings("static-access")
       JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
