@@ -68,7 +68,7 @@ public class ReportTM003Dao extends ItemDao {
     sbSQL.append("  T1.MOYSKBN||'-'||RIGHT(T1.MOYSSTDT, 6)||'-'||RIGHT('000'||T1.MOYSRBAN,3) as F1");
     sbSQL.append(" ,T1.NENMATKBN as F2");
     sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = dayofweek(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
-    sbSQL.append("  ||'～'||DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%y%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = dayofweek(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) as F3");
+    sbSQL.append("  ||'～'||DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = dayofweek(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) as F3");
     sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T1.NNSTDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = dayofweek(DATE_FORMAT(T1.NNSTDT, '%Y%m%d')))");
     sbSQL.append("  ||'～'||DATE_FORMAT(DATE_FORMAT(T1.NNEDDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = dayofweek(DATE_FORMAT(T1.NNEDDT, '%Y%m%d'))) as F4");
     sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T1.PLUSDDT, '%y/%m/%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = dayofweek(DATE_FORMAT(T1.PLUSDDT, '%Y%m%d'))) as F5");
