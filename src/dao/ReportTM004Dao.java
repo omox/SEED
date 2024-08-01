@@ -925,6 +925,7 @@ public class ReportTM004Dao extends ItemDao {
       sbSQL.append(",MOYSRBAN = VALUES(MOYSRBAN)");
       sbSQL.append(",SHUNO = VALUES(SHUNO)");
       sbSQL.append(",MOYKN = VALUES(MOYKN)");
+      sbSQL.append(",MOYAN = VALUES(MOYAN)");
       sbSQL.append(",NENMATKBN = VALUES(NENMATKBN)");
       sbSQL.append(",HBSTDT = VALUES(HBSTDT)");
       sbSQL.append(",HBEDDT = VALUES(HBEDDT)");
