@@ -8513,6 +8513,7 @@ public class ReportTG016Dao extends ItemDao {
     ArrayList<String> paramData = new ArrayList<String>();
     StringBuffer sbSQL = new StringBuffer();
     String sqlWhere = "";
+    Object[] valueData = new Object[] {};
     Object[] valueDataOt = new Object[] {};
     String values = "";
     ArrayList<String> prmDataOt = new ArrayList<String>();
@@ -8525,15 +8526,15 @@ public class ReportTG016Dao extends ItemDao {
       prmDataOt.add(updKeys.getString(j).split(",")[2]);
       prmDataOt.add(updKeys.getString(j).split(",")[3]);
       prmDataOt.add(updKeys.getString(j).split(",")[4]);
-      valueDataOt = ArrayUtils.add(valueDataOt, values);
+      valueDataOt = ArrayUtils.add(valueDataOt, "(" + values + ")");
       values = "";
     }
 
     sbSQL = new StringBuffer();
     if (isToktg) {
-      sbSQL.append("REPLACE INTO INATK.TOKTG_SHN ( ");
+      sbSQL.append("INSERT INTO INATK.TOKTG_SHN ( ");
     } else {
-      sbSQL.append("REPLACE INTO INATK.TOKSP_SHN ( ");
+      sbSQL.append("INSERT INTO INATK.TOKSP_SHN ( ");
     }
     sbSQL.append(" MOYSKBN"); // 催し区分
     sbSQL.append(",MOYSSTDT"); // 催し開始日
@@ -8545,12 +8546,46 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(",OPERATOR "); // オペレーター：
     sbSQL.append(",ADDDT "); // 登録日：
     sbSQL.append(",UPDDT "); // 更新日：
-    sbSQL.append(" ) values( " + StringUtils.join(valueDataOt, ",") + "");
-    sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " ");// 送信区分：
-    sbSQL.append(", '" + userId + "' "); // オペレーター：
-    sbSQL.append(", current_timestamp  "); // 登録日：
-    sbSQL.append(", current_timestamp "); // 更新日：
-    sbSQL.append(")");
+    sbSQL.append(") SELECT ");
+    sbSQL.append(" MOYSKBN"); // 催し区分
+    sbSQL.append(",MOYSSTDT"); // 催し開始日
+    sbSQL.append(",MOYSRBAN"); // 催し連番
+    sbSQL.append(",BMNCD"); // 部門コード
+    sbSQL.append(",KANRINO"); // 管理番号
+    sbSQL.append(",KANRIENO"); // 枝番
+    sbSQL.append(",SENDFLG");// 送信区分：
+    sbSQL.append(",OPERATOR "); // オペレーター：
+    sbSQL.append(",ADDDT "); // 登録日：
+    sbSQL.append(",UPDDT "); // 更新日：
+    sbSQL.append("FROM ( SELECT ");
+    sbSQL.append(" MOYSKBN"); // 催し区分
+    sbSQL.append(",MOYSSTDT"); // 催し開始日
+    sbSQL.append(",MOYSRBAN"); // 催し連番
+    sbSQL.append(",BMNCD"); // 部門コード
+    sbSQL.append(",KANRINO"); // 管理番号
+    sbSQL.append(",KANRIENO"); // 枝番
+    sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG");// 送信区分：
+    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+    sbSQL.append(" FROM (VALUES ROW" + StringUtils.join(valueDataOt, ",") + " ) as T1 (NUM");
+    sbSQL.append(",MOYSKBN"); // F1 : 催し区分
+    sbSQL.append(",MOYSSTDT"); // F2 : 催し開始日
+    sbSQL.append(",MOYSRBAN"); // F3 : 催し連番
+    sbSQL.append(",BMNCD"); // F4 : 部門コード
+    sbSQL.append(",KANRINO"); // F5 : 管理番号
+    sbSQL.append(",KANRIENO"); // F6 : 枝番
+    sbSQL.append(")) as T1 ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" MOYSKBN = VALUES(MOYSKBN)"); // 催し区分
+    sbSQL.append(",MOYSSTDT = VALUES(MOYSSTDT) "); // 催し開始日
+    sbSQL.append(",MOYSRBAN = VALUES(MOYSRBAN) "); // 催し連番
+    sbSQL.append(",BMNCD = VALUES(BMNCD) "); // 部門コード
+    sbSQL.append(",KANRINO = VALUES(KANRINO)"); // 管理番号
+    sbSQL.append(",KANRIENO = VALUES(KANRIENO) "); // 枝番
+    sbSQL.append(",SENDFLG = VALUES(SENDFLG) ");// 送信区分：
+    sbSQL.append(",OPERATOR = VALUES(OPERATOR) "); // オペレーター：
+    sbSQL.append(",UPDDT = VALUES(UPDDT) "); // 更新日：
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -8625,7 +8660,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("SET ");
       sbSQL.append(" SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal());
       sbSQL.append(",OPERATOR='" + userId + "'");
-      sbSQL.append(",UPDDT=current timestamp ");
+      sbSQL.append(",UPDDT=CURRENT_TIMESTAMP ");
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere);
 
@@ -8646,7 +8681,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("SET ");
       sbSQL.append(" SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal());
       sbSQL.append(",OPERATOR='" + userId + "'");
-      sbSQL.append(",UPDDT=current timestamp ");
+      sbSQL.append(",UPDDT=CURRENT_TIMESTAMP ");
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere);
 
@@ -8667,7 +8702,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("SET ");
       sbSQL.append(" SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal());
       sbSQL.append(",OPERATOR='" + userId + "'");
-      sbSQL.append(",UPDDT=current timestamp ");
+      sbSQL.append(",UPDDT=CURRENT_TIMESTAMP ");
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere);
 
