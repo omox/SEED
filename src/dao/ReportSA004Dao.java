@@ -99,15 +99,15 @@ public class ReportSA004Dao extends ItemDao {
       sbSQL.append("  , ( case when TTSH.TKANPLUKBN = 2 then TTSH.GENKAAM_1KG else TTSH.GENKAAM_MAE END ) ");// F6
       sbSQL.append("  , ( case when TTSH.TKANPLUKBN = 2 then 'G' else '' END  ) ");// F7
       sbSQL.append("  , ( case when TTSH.ADDSHUKBN <> 01 then ( case when TTSH.BD1_A_BAIKAAN > 0 then TTSH.KO_A_BAIKAAN else TTSH.A_BAIKAAM END)");
-      sbSQL.append("  else  (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = char(TTSH.A_WRITUKBN) ) END)  ");// B割引始F8
+      sbSQL.append("  else  (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = cast(TTSH.A_WRITUKBN as char) ) END)  ");// B割引始F8
       sbSQL.append("  , (case when TTSH.BD1_A_BAIKAAN = 0 or TTSH.BD1_A_BAIKAAN is null then '' else CONCAT(TTSH.BD1_TENSU,CONCAT('個/',TTSH.BD1_A_BAIKAAN)) END ) ");// F9
       sbSQL.append("  , (case when TTSH.BD2_A_BAIKAAN = 0 or TTSH.BD2_A_BAIKAAN is null then '' else CONCAT(TTSH.BD2_TENSU,CONCAT('個/',TTSH.BD2_A_BAIKAAN)) END ) ");// F10
       sbSQL.append("  , (case when TTSH.ADDSHUKBN <> 01 then (case when TTSH.BD1_B_BAIKAAN > 0 then TTSH.KO_B_BAIKAAN else TTSH.B_BAIKAAM END)");
-      sbSQL.append("  else (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = char (TTSH.B_WRITUKBN)) END)");// F11
+      sbSQL.append("  else (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = cast(TTSH.B_WRITUKBN as char)) END)");// F11
       sbSQL.append("  , (case when TTSH.BD1_B_BAIKAAN = 0 or TTSH.BD1_B_BAIKAAN is null then '' else CONCAT(TTSH.BD1_TENSU,CONCAT('個/',TTSH.BD1_B_BAIKAAN)) END ) ");// F12
       sbSQL.append("  , (case when TTSH.BD2_B_BAIKAAN = 0 or TTSH.BD2_B_BAIKAAN is null then '' else CONCAT(TTSH.BD2_TENSU,CONCAT('個/',TTSH.BD2_B_BAIKAAN)) END ) ");// F13
       sbSQL.append("  , (case when TTSH.ADDSHUKBN <> 01 then (case when TTSH.BD1_C_BAIKAAN > 0 then TTSH.KO_C_BAIKAAN else TTSH.C_BAIKAAM END)");
-      sbSQL.append("  else (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = char (TTSH.C_WRITUKBN)) END)");// F14
+      sbSQL.append("  else (select MMSH.NMKN from INAMS.MSTMEISHO MMSH where MMSH.MEISHOKBN = 10302 and MMSH.MEISHOCD = cast(TTSH.C_WRITUKBN as char)) END)");// F14
       sbSQL.append("  , (case when TTSH.BD1_C_BAIKAAN = 0 or TTSH.BD1_C_BAIKAAN is null then '' else CONCAT(TTSH.BD1_TENSU,CONCAT('個/',TTSH.BD1_C_BAIKAAN)) END ) ");// F15
       sbSQL.append("  , (case when TTSH.BD2_C_BAIKAAN = 0 or TTSH.BD2_C_BAIKAAN is null then '' else CONCAT(TTSH.BD2_TENSU,CONCAT('個/',TTSH.BD2_C_BAIKAAN)) END ) ");// F16
       sbSQL.append(" , TTQS.KANRINO  ");

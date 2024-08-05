@@ -177,7 +177,7 @@ public class ReportJU011Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(DefineReport.ID_SQL_CMN_WEEK);
     sbSQL.append("  select");
-    sbSQL.append("  CONCAT(T1.MOYSKBN,CONCAT(T1.MOYSSTDT,right ('000' || RTRIM(CHAR (T1.MOYSRBAN)), 3))) as F1");
+    sbSQL.append("  CONCAT(T1.MOYSKBN,CONCAT(T1.MOYSSTDT,right ('000' || RTRIM(CAST(T1.MOYSRBAN as CHAR)), 3))) as F1");
     sbSQL.append("  ,T1.MOYKN  as F2");
     sbSQL.append("  ,TO_CHAR(TO_DATE(T1.NNSTDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.NNSTDT, 'YYYYMMDD')))");
     sbSQL.append("  ||'～'||");

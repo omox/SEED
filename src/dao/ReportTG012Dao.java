@@ -114,7 +114,7 @@ public class ReportTG012Dao extends ItemDao {
     sbSQL.append(" , T1.MOYSRBAN ");
     sbSQL.append(" ) ");
     sbSQL.append(" SELECT ");
-    sbSQL.append(" CONCAT(CONCAT(TTKH.MOYSKBN,'-'),CONCAT(TTKH.MOYSSTDT,CONCAT('-',right ('000' || RTRIM(CHAR (TTKH.MOYSRBAN)), 3)))) as MOYOOSI ");
+    sbSQL.append(" CONCAT(CONCAT(TTKH.MOYSKBN,'-'),CONCAT(TTKH.MOYSSTDT,CONCAT('-',right ('000' || RTRIM(CAST(TTKH.MOYSRBAN as CHAR)), 3)))) as MOYOOSI ");
     sbSQL.append(" ,TMYD.MOYKN ");
     sbSQL.append(" , DATE_FORMAT(DATE_FORMAT(TMYD.HBSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(TMYD.HBSTDT, '%Y%m%d'))) ");
     sbSQL.append(" ||'～'|| ");
