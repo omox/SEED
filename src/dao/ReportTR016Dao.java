@@ -384,17 +384,12 @@ public class ReportTR016Dao extends ItemDao {
     sbSQL.append(",UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
     sbSQL.append(",OPERATOR='" + userId + "'");
     sbSQL.append(",UPDDT=CURRENT_TIMESTAMP ");
-    sbSQL.append("WHERE SHNCD in");
+    sbSQL.append("WHERE SHNCD in ( ");
+    sbSQL.append("SELECT SHNCD FROM INATK.HATSTR_TEN ");
+    sbSQL.append("GROUP BY SHNCD HAVING SUM(CASE WHEN UPDKBN = 0 THEN 1 ELSE 0 END) = 0 ) ");
+    sbSQL.append("AND CAST(LEFT(SHNCD, 2) AS SIGNED) = ? ");
+    sbSQL.append("AND UPDKBN <> 1; ");
 
-    sbSQL.append("(select SHNCD from INATK.HATSTR_SHN");
-    sbSQL.append(" where int (left (SHNCD, 2)) = ?");
-    sbSQL.append(" and UPDKBN <> 1 and SHNCD in (");
-    sbSQL.append(" select SHNCD");
-    sbSQL.append(" from INATK.HATSTR_TEN");
-    sbSQL.append(" group by SHNCD");
-    sbSQL.append(" having SUM(case when UPDKBN = 0 then 1 else 0 end) = 0");
-    sbSQL.append(")");
-    sbSQL.append(")");
     paramData.add(bmnCd);
 
     /*
