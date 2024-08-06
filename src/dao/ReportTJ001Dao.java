@@ -77,7 +77,7 @@ public class ReportTJ001Dao extends ItemDao {
     }
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" select ");
@@ -239,33 +239,33 @@ public class ReportTJ001Dao extends ItemDao {
     SQL_TOKTJ_TEN = sbSQL.toString();
 
     sbSQL = new StringBuffer();
-    sbSQL.append(" with WK_PAGENO(IDX) as (");
-    sbSQL.append("  select");
-    sbSQL.append("   1");
-    sbSQL.append("  from SYSIBM.SYSDUMMY1");
+    sbSQL.append(" WITH RECURSIVE WK_PAGENO(IDX) as (");
+    sbSQL.append("  SELECT 1");
+    sbSQL.append("   FROM");
+    sbSQL.append("  (SELECT 1 AS DUMMY) DUMMY");
     sbSQL.append("  union all");
     sbSQL.append("  select");
     sbSQL.append("   IDX + 1");
     sbSQL.append("  from WK_PAGENO where IDX < " + maxPageno);
 
     sbSQL.append(" ),WK_GYONO(IDX) as (");
-    sbSQL.append("  select");
-    sbSQL.append("   1");
-    sbSQL.append("  from SYSIBM.SYSDUMMY1");
+    sbSQL.append("  select 1");
+    sbSQL.append("   FROM");
+    sbSQL.append("  (SELECT 1 AS DUMMY) DUMMY");
     sbSQL.append("  union all");
     sbSQL.append("  select");
     sbSQL.append("   IDX + 1");
     sbSQL.append("  from WK_GYONO");
-    sbSQL.append("  where IDX < 15");
+    sbSQL.append("  where IDX < 15)");
 
-    sbSQL.append(" ), WK_LIST as (");
+    sbSQL.append(" , WK_LIST as (");
     sbSQL.append("  select");
     sbSQL.append(" T1.IDX as PAGENO");
     sbSQL.append(", T2.IDX as GYONO");
     sbSQL.append(" from WK_PAGENO T1");
     sbSQL.append(", WK_GYONO T2");
 
-    sbSQL.append(" ),wk as ( ");
+    sbSQL.append(" ),WK as ( ");
     sbSQL.append("  select ");
     sbSQL.append("  T3.SHNKN as F1 ");
     sbSQL.append(" ,T4.NMKN as F2");
@@ -332,129 +332,129 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append(" ,T3.BAIKAAM_TB as F53 ");
     sbSQL.append(" ,'納品売価' as F54 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) END as F55 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) END as F55 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) END as F56 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) END as F56 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) END as F57 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) END as F57 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) END as F58 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) END as F58 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0) END as F59 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0) END as F59 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0) END as F60 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0) END as F60 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0) END as F61 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0) END as F61 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0) END as F62 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0) END as F62 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0) END as F63 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0) END as F63 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0) END as F64 ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0) END as F64 ");
     sbSQL.append(" ,( case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_01 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_01 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_01 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_01 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_02 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_02 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_02 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_02 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_03 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_03 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_03 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_03 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_04 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_04 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_04 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_04 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_05 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0), 0) END ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_09 , 0) * T3.IRISU_TB, 0), 0) END ");
     sbSQL.append(" + case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.BAIKAAM_TB) * NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.BAIKAAM_PACK)* NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0), 0) END) as F65 ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_10 , 0) * T3.IRISU_TB, 0), 0) END) as F65 ");
     sbSQL.append(" ,replace(rtrim(replace(T3.COMMENTKN, '　', ' ')), ' ', '　') as F66 ");
     sbSQL.append(" ,T3.GENKAAM_PACK as F67 ");
     sbSQL.append(" ,T3.BAIKAAM_PACK as F68 ");
     sbSQL.append(" ,'納品原価' as F69 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) END as F70 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0) END as F70 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) END as F71 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0) END as F71 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) END as F72 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0) END as F72 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) END as F73 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0) END as F73 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0) END as F74 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0) END as F74 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0) END as F75 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0) END as F75 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0) END as F76 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0) END as F76 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0) END as F77 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0) END as F77 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0) END as F78 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0) END as F78 ");
     sbSQL.append(" , case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0) ");
-    sbSQL.append("   else ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0) END as F79 ");
+    sbSQL.append("   then ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0) END as F79 ");
     sbSQL.append(" , ROUND((case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_03, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_04, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_05, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_06, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_07, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_08, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_09, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
-    sbSQL.append("   then NVL(ROUND(double (T3.GENKAAM_MAE) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else NVL(ROUND(double (T3.GENKAAM_PACK) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0), 0) END) / 1000, 0) as F80 ");
+    sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS double) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0), 0) ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS double) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0), 0) END) / 1000, 0) as F80 ");
     sbSQL.append(" , T3.LSTNO as F81 ");
     sbSQL.append(" , T3.BMNCD as F82 ");
     sbSQL.append(" , T3.HYOSEQNO as F83 ");
@@ -481,7 +481,7 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append(" , T3.ODS as F104 ");
     sbSQL.append("  ,");
     sbSQL.append("  case");
-    sbSQL.append("   when T3.NHKETAIKBN = 2 then TO_CHAR(ROUND(double (NVL(");
+    sbSQL.append("   when T3.NHKETAIKBN = 2 then CAST(ROUND(CAST(COALESCE(");
     sbSQL.append(" ( coalesce(T3.HTSU_01, 0) + ");
     sbSQL.append("  coalesce(T3.HTSU_02, 0) + ");
     sbSQL.append("  coalesce(T3.HTSU_03, 0) + ");
@@ -493,7 +493,7 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append("  coalesce(T3.HTSU_09, 0) + ");
     sbSQL.append("  coalesce(T3.HTSU_10, 0)   ");
     sbSQL.append("  ) * coalesce(T3.IRISU_TB, 0)");
-    sbSQL.append("  , 0)) * NVL(T3.IRISU_TB, 0) * NVL(T3.JRYO, 0), 0)) || 'Kg'");
+    sbSQL.append("  , 0) AS double) * COALESCE(T3.IRISU_TB, 0) * COALESCE(T3.JRYO, 0), 0)AS CHAR) || 'Kg'");
     sbSQL.append("  else '' end as F105");
     sbSQL.append(" , TRIM(T3.TANIKBNKN) as F106 ");
     sbSQL.append(" , T3. PAGENO ");
@@ -578,107 +578,107 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append(" select");
     sbSQL.append(" IDX AS F1"); // F1 Idx
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F1)"); // 1行目 F2 アイテム
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F15)"); // 2行目 F2 商品コード
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F49)"); // 3行目 F2 産地
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F66)"); // 4行目 F2 コメント
+    sbSQL.append("  when IDX = 1 then CAST(WK.F1 AS CHAR)"); // 1行目 F2 アイテム
+    sbSQL.append("  when IDX = 2 then CAST(WK.F15 AS CHAR)"); // 2行目 F2 商品コード
+    sbSQL.append("  when IDX = 3 then CAST(WK.F49 AS CHAR)"); // 3行目 F2 産地
+    sbSQL.append("  when IDX = 4 then CAST(WK.F66 AS CHAR)"); // 4行目 F2 コメント
     sbSQL.append("  end as F2");
     sbSQL.append(", case");
     sbSQL.append("  when IDX = 1 then null"); // 1行目 F3
     sbSQL.append("  when IDX = 2 then null"); // 2行目 F3
     // sbSQL.append(" when IDX = 3 then TO_CHAR(WK.F2)"); // 3行目 F3 単位
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F106)"); // 3行目 F3 単位
+    sbSQL.append("  when IDX = 3 then CAST(WK.F106 AS CHAR)"); // 3行目 F3 単位
     sbSQL.append("  when IDX = 4 then null"); // 4行目 F3
     sbSQL.append("  end as F3");
     sbSQL.append(", case");
     sbSQL.append("  when IDX = 1 then null"); // 1行目 F4
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F17)"); // 2行目 F4
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F97)"); // 3行目 F4 入数
+    sbSQL.append("  when IDX = 2 then CAST(WK.F17 AS CHAR)"); // 2行目 F4
+    sbSQL.append("  when IDX = 3 then CAST(WK.F97 AS CHAR)"); // 3行目 F4 入数
     sbSQL.append("  when IDX = 4 then null"); // 4行目 F4 便
     sbSQL.append("  end as F4");
     sbSQL.append(", case");
     sbSQL.append("  when IDX = 1 then null"); // 1行目 F5
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F18)"); // 2行目 F5 特売原価
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F52)"); // 3行目 F5 追加原価
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F67)"); // 4行目 F5 パック原価
+    sbSQL.append("  when IDX = 2 then CAST(WK.F18 AS CHAR)"); // 2行目 F5 特売原価
+    sbSQL.append("  when IDX = 3 then CAST(WK.F52 AS CHAR)"); // 3行目 F5 追加原価
+    sbSQL.append("  when IDX = 4 then CAST(WK.F67 AS CHAR)"); // 4行目 F5 パック原価
     sbSQL.append("  end as F5");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F98)"); // 1行目 F6 納品形態
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F19)"); // 2行目 F6 特売総売
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F53)"); // 3行目 F6 特売本売
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F68)"); // 4行目 F6 パック売価
+    sbSQL.append("  when IDX = 1 then CAST(WK.F98 AS CHAR)"); // 1行目 F6 納品形態
+    sbSQL.append("  when IDX = 2 then CAST(WK.F19 AS CHAR)"); // 2行目 F6 特売総売
+    sbSQL.append("  when IDX = 3 then CAST(WK.F53 AS CHAR)"); // 3行目 F6 特売本売
+    sbSQL.append("  when IDX = 4 then CAST(WK.F68 AS CHAR)"); // 4行目 F6 パック売価
     sbSQL.append("  end as F6");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F3)"); // 1行目 F7 販売日（配列）
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F20)"); // 2行目 F7 訂正区分（配列）
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F37)"); // 3行目 F7 ケース数（配列）
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F54)"); // 4行目 F7 納品売価（配列）
+    sbSQL.append("  when IDX = 1 then CAST(WK.F3 AS CHAR)"); // 1行目 F7 販売日（配列）
+    sbSQL.append("  when IDX = 2 then CAST(WK.F20 AS CHAR)"); // 2行目 F7 訂正区分（配列）
+    sbSQL.append("  when IDX = 3 then CAST(WK.F37 AS CHAR)"); // 3行目 F7 ケース数（配列）
+    sbSQL.append("  when IDX = 4 then CAST(WK.F54 AS CHAR)"); // 4行目 F7 納品売価（配列）
     sbSQL.append("  end as F7");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F4)"); // 1行目 F8 販売日_1
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F21)"); // 2行目 F8 訂正区分_1
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F38)"); // 3行目 F8 ケース数_1
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F55)"); // 4行目 F8 納品売価_1
+    sbSQL.append("  when IDX = 1 then CAST(WK.F4 AS CHAR)"); // 1行目 F8 販売日_1
+    sbSQL.append("  when IDX = 2 then CAST(WK.F21 AS CHAR)"); // 2行目 F8 訂正区分_1
+    sbSQL.append("  when IDX = 3 then CAST(WK.F38 AS CHAR)"); // 3行目 F8 ケース数_1
+    sbSQL.append("  when IDX = 4 then CAST(WK.F55 AS CHAR)"); // 4行目 F8 納品売価_1
     sbSQL.append("  end as F8");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F5)"); // 1行目 F9 販売日_2
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F22)"); // 2行目 F9 訂正区分_2
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F39)"); // 3行目 F9 ケース数_2
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F56)"); // 4行目 F9 納品売価_2
+    sbSQL.append("  when IDX = 1 then CAST(WK.F5 AS CHAR)"); // 1行目 F9 販売日_2
+    sbSQL.append("  when IDX = 2 then CAST(WK.F22 AS CHAR)"); // 2行目 F9 訂正区分_2
+    sbSQL.append("  when IDX = 3 then CAST(WK.F39 AS CHAR)"); // 3行目 F9 ケース数_2
+    sbSQL.append("  when IDX = 4 then CAST(WK.F56 AS CHAR)"); // 4行目 F9 納品売価_2
     sbSQL.append("  end as F9");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F6)"); // 1行目 F10 販売日_3
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F23)"); // 2行目 F10 訂正区分_3
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F40)"); // 3行目 F10 ケース数_3
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F57)"); // 4行目 F10 納品売価_3
+    sbSQL.append("  when IDX = 1 then CAST(WK.F6 AS CHAR)"); // 1行目 F10 販売日_3
+    sbSQL.append("  when IDX = 2 then CAST(WK.F23 AS CHAR)"); // 2行目 F10 訂正区分_3
+    sbSQL.append("  when IDX = 3 then CAST(WK.F40 AS CHAR)"); // 3行目 F10 ケース数_3
+    sbSQL.append("  when IDX = 4 then CAST(WK.F57 AS CHAR)"); // 4行目 F10 納品売価_3
     sbSQL.append("  end as F10");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F7)"); // 1行目 F11 販売日_4
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F24)"); // 2行目 F11 訂正区分_4
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F41)"); // 3行目 F11 ケース数_4
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F58)"); // 4行目 F11 納品売価_4
+    sbSQL.append("  when IDX = 1 then CAST(WK.F7 AS CHAR)"); // 1行目 F11 販売日_4
+    sbSQL.append("  when IDX = 2 then CAST(WK.F24 AS CHAR)"); // 2行目 F11 訂正区分_4
+    sbSQL.append("  when IDX = 3 then CAST(WK.F41 AS CHAR)"); // 3行目 F11 ケース数_4
+    sbSQL.append("  when IDX = 4 then CAST(WK.F58 AS CHAR)"); // 4行目 F11 納品売価_4
     sbSQL.append("  end as F11");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F8)"); // 1行目 F12 販売日_5
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F25)"); // 2行目 F12 訂正区分_5
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F42)"); // 3行目 F12 ケース数_5
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F59)"); // 4行目 F12 納品売価_5
+    sbSQL.append("  when IDX = 1 then CAST(WK.F8 AS CHAR)"); // 1行目 F12 販売日_5
+    sbSQL.append("  when IDX = 2 then CAST(WK.F25 AS CHAR)"); // 2行目 F12 訂正区分_5
+    sbSQL.append("  when IDX = 3 then CAST(WK.F42 AS CHAR)"); // 3行目 F12 ケース数_5
+    sbSQL.append("  when IDX = 4 then CAST(WK.F59 AS CHAR)"); // 4行目 F12 納品売価_5
     sbSQL.append("  end as F12");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F9)"); // 1行目 F13 販売日_6
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F26)"); // 2行目 F13 訂正区分_6
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F43)"); // 3行目 F13 ケース数_6
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F60)"); // 4行目 F13 納品売価_6
+    sbSQL.append("  when IDX = 1 then CAST(WK.F9 AS CHAR)"); // 1行目 F13 販売日_6
+    sbSQL.append("  when IDX = 2 then CAST(WK.F26 AS CHAR)"); // 2行目 F13 訂正区分_6
+    sbSQL.append("  when IDX = 3 then CAST(WK.F43 AS CHAR)"); // 3行目 F13 ケース数_6
+    sbSQL.append("  when IDX = 4 then CAST(WK.F60 AS CHAR)"); // 4行目 F13 納品売価_6
     sbSQL.append("  end as F13");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F10)"); // 1行目 F14 販売日_7
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F27)"); // 2行目 F14 訂正区分_7
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F44)"); // 3行目 F14 ケース数_7
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F61)"); // 4行目 F14 納品売価_7
+    sbSQL.append("  when IDX = 1 then CAST(WK.F10 AS CHAR)"); // 1行目 F14 販売日_7
+    sbSQL.append("  when IDX = 2 then CAST(WK.F27 AS CHAR)"); // 2行目 F14 訂正区分_7
+    sbSQL.append("  when IDX = 3 then CAST(WK.F44 AS CHAR)"); // 3行目 F14 ケース数_7
+    sbSQL.append("  when IDX = 4 then CAST(WK.F61 AS CHAR)"); // 4行目 F14 納品売価_7
     sbSQL.append("  end as F14");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F11)"); // 1行目 F15 販売日_8
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F28)"); // 2行目 F15 訂正区分_8
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F45)"); // 3行目 F15 ケース数_8
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F62)"); // 4行目 F15 納品売価_8
+    sbSQL.append("  when IDX = 1 then CAST(WK.F11 AS CHAR)"); // 1行目 F15 販売日_8
+    sbSQL.append("  when IDX = 2 then CAST(WK.F28 AS CHAR)"); // 2行目 F15 訂正区分_8
+    sbSQL.append("  when IDX = 3 then CAST(WK.F45 AS CHAR)"); // 3行目 F15 ケース数_8
+    sbSQL.append("  when IDX = 4 then CAST(WK.F62 AS CHAR)"); // 4行目 F15 納品売価_8
     sbSQL.append("  end as F15");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F12)"); // 1行目 F16 販売日_9
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F29)"); // 2行目 F16 訂正区分_9
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F46)"); // 3行目 F16 ケース数_9
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F63)"); // 4行目 F16 納品売価_9
+    sbSQL.append("  when IDX = 1 then CAST(WK.F12 AS CHAR)"); // 1行目 F16 販売日_9
+    sbSQL.append("  when IDX = 2 then CAST(WK.F29 AS CHAR)"); // 2行目 F16 訂正区分_9
+    sbSQL.append("  when IDX = 3 then CAST(WK.F46 AS CHAR)"); // 3行目 F16 ケース数_9
+    sbSQL.append("  when IDX = 4 then CAST(WK.F63 AS CHAR)"); // 4行目 F16 納品売価_9
     sbSQL.append("  end as F16");
     sbSQL.append(", case");
-    sbSQL.append("  when IDX = 1 then TO_CHAR(WK.F13)"); // 1行目 F17 販売日_10
-    sbSQL.append("  when IDX = 2 then TO_CHAR(WK.F30)"); // 2行目 F17 訂正区分_10
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F47)"); // 3行目 F17 ケース数_10
-    sbSQL.append("  when IDX = 4 then TO_CHAR(WK.F64)"); // 4行目 F17 納品売価_10
+    sbSQL.append("  when IDX = 1 then CAST(WK.F13 AS CHAR)"); // 1行目 F17 販売日_10
+    sbSQL.append("  when IDX = 2 then CAST(WK.F30 AS CHAR)"); // 2行目 F17 訂正区分_10
+    sbSQL.append("  when IDX = 3 then CAST(WK.F47 AS CHAR)"); // 3行目 F17 ケース数_10
+    sbSQL.append("  when IDX = 4 then CAST(WK.F64 AS CHAR)"); // 4行目 F17 納品売価_10
     sbSQL.append("  end as F17");
     sbSQL.append(", case");
     sbSQL.append("  when IDX = 1 then null"); // 1行目 F18
     sbSQL.append("  when IDX = 2 then null"); // 2行目 F18
-    sbSQL.append("  when IDX = 3 then TO_CHAR(ROUND(double(NVL(WK.F65, 0)) * 100 / NULLIF(DOUBLE(NVL(" + sumYosan + ", 0)) * 1000, 0), 2))"); // 3行目 F18 構成比
-    sbSQL.append("  when IDX = 4 then TO_CHAR(ROUND(WK.F65 / 1000, 0))"); // 4行目 F18 納品売価計
+    sbSQL.append("  when IDX = 3 then CAST(ROUND(CAST(COALESCE(WK.F65, 0)AS double) * 100 / NULLIF(CAST(COALESCE(" + sumYosan + ", 0) AS double) * 1000, 0), 2)AS CHAR)"); // 3行目 F18 構成比
+    sbSQL.append("  when IDX = 4 then CAST(ROUND(WK.F65 / 1000, 0)AS CHAR)"); // 4行目 F18 納品売価計
     sbSQL.append("  end as F18");
     sbSQL.append(", WK.F81 AS F19"); // F19 リストNo
     sbSQL.append(", WK.F82 AS F20"); // F20 部門
@@ -703,7 +703,7 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append(", WK.PAGENO AS F39 "); // F39 ページング処理に使用
     sbSQL.append(" from WK_LIST");
     sbSQL.append(" left join WK on WK_LIST.PAGENO = WK.PAGENO and WK_LIST.GYONO = WK.ROWNO, ");
-    sbSQL.append(" (select * from (values(1),(2),(3),(4)) as X(IDX) order by IDX) ");
+    sbSQL.append(" (select * from (values ROW(1),ROW(2),ROW(3),ROW(4)) as X(IDX) order by IDX)T1 ");
     sbSQL.append(" where not (WK_LIST.PAGENO = " + maxPageno + " and WK.PAGENO is null)");
     sbSQL.append(" order by WK_LIST.PAGENO,GYONO,IDX");
 
@@ -745,7 +745,7 @@ public class ReportTJ001Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -753,9 +753,9 @@ public class ReportTJ001Dao extends ItemDao {
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" SELECT YOBI_2 FROM KEYSYS.SYS_USERS WHERE CD_USER =" + userInfo.getCD_user());
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray susUsers = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray susUsers = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (susUsers.size() != 0) {
       yobi2 = susUsers.getJSONObject(0).getString("YOBI_2");
@@ -782,23 +782,23 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append(szLstno.substring(4));
     sbSQL.append("' as F1");
     sbSQL.append(" ,T1.TITLE as F2");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T1.STDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.STDT, 'YYYYMMDD')))");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T1.STDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.STDT, '%Y%m%d')))");
     sbSQL.append("  ||'～'||");
-    sbSQL.append("  TO_CHAR(TO_DATE(T1.EDDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.EDDT, 'YYYYMMDD'))) as F3");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T1.SNDSIMEDT, 'YYYYMMDD'), 'YY/MM/DD')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T1.SNDSIMEDT, 'YYYYMMDD'))) as F4");
+    sbSQL.append("  DATE_FORMAT(DATE_FORMAT(T1.EDDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.EDDT, '%Y%m%d'))) as F3");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T1.SNDSIMEDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.SNDSIMEDT, '%Y%m%d'))) as F4");
     sbSQL.append(" ,'");
     sbSQL.append(bmncd);
     sbSQL.append(" ' as F5");
     sbSQL.append(" ,'");
     sbSQL.append(bmnText);
     sbSQL.append(" ' as F6");
-    sbSQL.append(", TO_CHAR(T2.ADDDT, 'yy/mm/dd') as F7"); // F7 ： 登録日
-    sbSQL.append(", TO_CHAR(T2.UPDDT, 'yy/mm/dd') as F8"); // F8 ： 更新日
+    sbSQL.append(", DATE_FORMAT(T2.ADDDT, '%y/%m/%d') as F7"); // F7 ： 登録日
+    sbSQL.append(", DATE_FORMAT(T2.UPDDT, '%y/%m/%d') as F8"); // F8 ： 更新日
     sbSQL.append(", T2.OPERATOR as F9"); // F9 ： オペレータ
     sbSQL.append(", (SELECT SHORIDT FROM INAAD.SYSSHORIDT) > ");
     // 予備2が空なら本部
     if (StringUtils.isEmpty(yobi2)) {
-      sbSQL.append(" INTEGER(TO_CHAR(TO_DATE(T1.SNDSIMEDT,'yyyymmdd') + 1 days,'yyyymmdd')) as F10");
+      sbSQL.append(" CAST(DATE_FORMAT(DATE_ADD(DATE_FORMAT(T1.SNDSIMEDT,'%Y%m%d') ,INTERVAL+ 1 day),'%Y%m%d')AS SIGNED) as F10");
     } else {
       sbSQL.append(" INTEGER(T1.SNDSIMEDT) as F10");
     }
@@ -810,13 +810,13 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append("   and BMNCD = ?");
     sbSQL.append("   and TENCD = ?");
     sbSQL.append("  order by UPDDT desc");
-    sbSQL.append("  fetch first 1 rows only) T2 on T2.LSTNO = T1.LSTNO");
+    sbSQL.append("  LIMIT 1 ) T2 on T2.LSTNO = T1.LSTNO");
     sbSQL.append("  where");
     sbSQL.append("  T1.LSTNO = ?");
 
-    iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -828,7 +828,7 @@ public class ReportTJ001Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData2(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -851,9 +851,9 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append("  and T1.BMNCD = ?");
     sbSQL.append("  order by T1.TJDT");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -865,7 +865,7 @@ public class ReportTJ001Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData3(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -877,28 +877,28 @@ public class ReportTJ001Dao extends ItemDao {
     paramData.add(tenpo);
     paramData.add(szLstno);
     StringBuffer sbSQL = new StringBuffer();
-    sbSQL.append("WITH WEEK as ( select CWEEK , JWEEK as JWEEK from ( values (1, '日') , (2, '月') , (3, '火') , (4, '水') , (5, '木') , (6, '金') , (7, '土') ) as TMP(CWEEK, JWEEK) )");
+    sbSQL.append("WITH WEEK as ( select CWEEK , JWEEK as JWEEK from ( values ROW(1, '日') , ROW(2, '月') , ROW(3, '火') , ROW(4, '水') , ROW(5, '木') , ROW(6, '金') , ROW(7, '土') ) as TMP(CWEEK, JWEEK) )");
     sbSQL.append("  select");
-    sbSQL.append(" TO_CHAR(TO_DATE(T3.JTDT_01, 'YYYYMMDD'), 'MM/DD') as V1");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_02, 'YYYYMMDD'), 'MM/DD') as V2");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_03, 'YYYYMMDD'), 'MM/DD') as V3");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_04, 'YYYYMMDD'), 'MM/DD') as V4");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_05, 'YYYYMMDD'), 'MM/DD') as V5");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_06, 'YYYYMMDD'), 'MM/DD') as V6");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_07, 'YYYYMMDD'), 'MM/DD') as V7");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_08, 'YYYYMMDD'), 'MM/DD') as V8");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_09, 'YYYYMMDD'), 'MM/DD') as V9");
-    sbSQL.append(" ,TO_CHAR(TO_DATE(T3.JTDT_10, 'YYYYMMDD'), 'MM/DD') as V10");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_01, 'YYYYMMDD'))) as W1");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_02, 'YYYYMMDD'))) as W2");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_03, 'YYYYMMDD'))) as W3");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_04, 'YYYYMMDD'))) as W4");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_05, 'YYYYMMDD'))) as W5");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_06, 'YYYYMMDD'))) as W6");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_07, 'YYYYMMDD'))) as W7");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_08, 'YYYYMMDD'))) as W8");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_09, 'YYYYMMDD'))) as W9");
-    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(TO_DATE(T3.JTDT_10, 'YYYYMMDD'))) as W10");
+    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T3.JTDT_01, '%Y%m%d'), '%m/%d') as V1");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_02, '%Y%m%d'), '%m/%d') as V2");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_03, '%Y%m%d'), '%m/%d') as V3");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_04, '%Y%m%d'), '%m/%d') as V4");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_05, '%Y%m%d'), '%m/%d') as V5");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_06, '%Y%m%d'), '%m/%d') as V6");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_07, '%Y%m%d'), '%m/%d') as V7");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_08, '%Y%m%d'), '%m/%d') as V8");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_09, '%Y%m%d'), '%m/%d') as V9");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_10, '%Y%m%d'), '%m/%d') as V10");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_01, '%Y%m%d'))) as W1");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_02, '%Y%m%d'))) as W2");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_03, '%Y%m%d'))) as W3");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_04, '%Y%m%d'))) as W4");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_05, '%Y%m%d'))) as W5");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_06, '%Y%m%d'))) as W6");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_07, '%Y%m%d'))) as W7");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_08, '%Y%m%d'))) as W8");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_09, '%Y%m%d'))) as W9");
+    sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_10, '%Y%m%d'))) as W10");
     sbSQL.append(" ,T3.JTDT_01 as X1");
     sbSQL.append(" ,T3.JTDT_02 as X2");
     sbSQL.append(" ,T3.JTDT_03 as X3");
@@ -923,9 +923,9 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append("  T1.LSTNO = ? ");
     sbSQL.append("  order by T3.HYOSEQNO");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -937,9 +937,9 @@ public class ReportTJ001Dao extends ItemDao {
    */
   public JSONArray getAllRecord(StringBuffer sbSQL) {
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), new ArrayList<String>(), Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), new ArrayList<String>(), Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -951,7 +951,7 @@ public class ReportTJ001Dao extends ItemDao {
    */
   public String getMaxPageno(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -964,7 +964,7 @@ public class ReportTJ001Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
 
     sbSQL.append(" select");
-    sbSQL.append(" MAX(PAGENO) as value");
+    sbSQL.append(" MAX(PAGENO) as VALUE");
     sbSQL.append(" from (");
     sbSQL.append("  select");
     sbSQL.append("   LSTNO");
@@ -981,7 +981,7 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append("  , PAGENO");
     sbSQL.append("  , HYOSEQNO");
     sbSQL.append("  from INATK.TOKTJ_ADDSHN");
-    sbSQL.append(" )");
+    sbSQL.append(" ) AS T1");
     sbSQL.append(" where LSTNO = ?");
     sbSQL.append(" and BMNCD = ?");
     sbSQL.append(" and TENCD = ?");
@@ -992,7 +992,7 @@ public class ReportTJ001Dao extends ItemDao {
 
     ItemList iL = new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (array.size() > 0) {
       maxPageno = array.optJSONObject(0).optString("VALUE");
