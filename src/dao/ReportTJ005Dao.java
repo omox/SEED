@@ -27,11 +27,11 @@ import net.sf.json.JSONObject;
 public class ReportTJ005Dao extends ItemDao {
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
   /**
    * インスタンスを生成します。
@@ -137,7 +137,7 @@ public class ReportTJ005Dao extends ItemDao {
     int addShnDataNum = getAddShndataNum(getMap()); // 追加商品登録数
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     new ArrayList<String[]>();
 
@@ -318,10 +318,10 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append("   1 AS IDX");
     sbSQL.append("  from (SELECT 1 AS DUMMY) AS DUMMY");
     for (int i = 2; i <= 15; i++) {
-      sbSQL.append("union all ");
-      sbSQL.append("SELECT ");
+      sbSQL.append(" union all ");
+      sbSQL.append(" SELECT ");
       sbSQL.append(i + " AS IDX ");
-      sbSQL.append("FROM (SELECT 1 AS DUMMY) AS DUMMY ");
+      sbSQL.append(" FROM (SELECT 1 AS DUMMY) AS DUMMY ");
     }
 
     sbSQL.append(" ), WK_LIST as (");
@@ -331,7 +331,7 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append(" from WK_PAGENO T1");
     sbSQL.append(", WK_GYONO T2");
 
-    sbSQL.append(" ),wk as ( ");
+    sbSQL.append(" ),WK as ( ");
     sbSQL.append("  select ");
     sbSQL.append("  T3.SHNKN as F1 ");
     sbSQL.append(" ,T4.NMKN as F2");
@@ -493,7 +493,7 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append("   else ROUND(CAST(T3.GENKAAM_PACK AS DECIMAL) * NULLIF(T3.HTSU_10, 0) * T3.IRISU_TB, 0) END as F79 ");
     sbSQL.append(" , ROUND((case when T3.GENKAAM_PACK = 0 ");
     sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS DECIMAL) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0), 0) ");
-    sbSQL.append("   else SOALESCE(ROUND(CAST(T3.GENKAAM_PACK AS DECIMAL) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0), 0) END  ");
+    sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS DECIMAL) * NULLIF(T3.HTSU_01, 0) * T3.IRISU_TB, 0), 0) END  ");
     sbSQL.append(" + case when T3.GENKAAM_PACK = 0 ");
     sbSQL.append("   then COALESCE(ROUND(CAST(T3.GENKAAM_MAE AS DECIMAL) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0), 0) ");
     sbSQL.append("   else COALESCE(ROUND(CAST(T3.GENKAAM_PACK AS DECIMAL) * NULLIF(T3.HTSU_02, 0) * T3.IRISU_TB, 0), 0) END  ");
@@ -848,7 +848,7 @@ public class ReportTJ005Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -857,9 +857,9 @@ public class ReportTJ005Dao extends ItemDao {
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" SELECT YOBI_2 FROM KEYSYS.SYS_USERS WHERE CD_USER =" + userInfo.getCD_user());
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray susUsers = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray susUsers = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (susUsers.size() != 0) {
       yobi2 = susUsers.getJSONObject(0).getString("YOBI_2");
@@ -902,9 +902,9 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append(", (SELECT SHORIDT FROM INAAD.SYSSHORIDT) > ");
     // 予備2が空なら本部
     if (StringUtils.isEmpty(yobi2)) {
-      sbSQL.append(" INTEGER(DATE_FORMAT(DATE_FORMAT(T1.SNDSIMEDT,'%Y%m%d') +INTERVAL 1 DAY,'%Y%m%d')) as F10");
+      sbSQL.append(" CAST(DATE_FORMAT(DATE_FORMAT(T1.SNDSIMEDT,'%Y%m%d') +INTERVAL 1 DAY,'%Y%m%d')AS SIGNED) as F10");
     } else {
-      sbSQL.append(" INTEGER(T1.SNDSIMEDT) as F10");
+      sbSQL.append(" CAST(T1.SNDSIMEDT AS SIGNED) as F10");
     }
     sbSQL.append("  from");
     sbSQL.append("  INATK.TOKTJ T1");
@@ -918,9 +918,9 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append("  where");
     sbSQL.append("  T1.LSTNO = ?");
 
-    iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -932,7 +932,7 @@ public class ReportTJ005Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData2(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -954,9 +954,9 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append("  and T1.BMNCD = ?");
     sbSQL.append("  order by T1.TJDT");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -968,7 +968,7 @@ public class ReportTJ005Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData3(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -1026,9 +1026,9 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append("  T1.LSTNO = ? ");
     sbSQL.append("  order by T3.HYOSEQNO");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -1040,7 +1040,7 @@ public class ReportTJ005Dao extends ItemDao {
    */
   public int getAddShndataNum(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -1063,9 +1063,9 @@ public class ReportTJ005Dao extends ItemDao {
     paramData.add(bmncd);
     paramData.add(tenpo);
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (array.size() > 0) {
       countShndata = array.optJSONObject(0).optInt("VALUE");
@@ -1081,7 +1081,7 @@ public class ReportTJ005Dao extends ItemDao {
    */
   public String getMaxPageno(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -1120,9 +1120,9 @@ public class ReportTJ005Dao extends ItemDao {
     paramData.add(bmncd);
     paramData.add(tenpo);
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (array.size() > 0) {
       maxPageno = array.optJSONObject(0).optString("VALUE");
@@ -1143,7 +1143,7 @@ public class ReportTJ005Dao extends ItemDao {
     String szBmncd = map.get("BMNCD"); // 部門コード
     String tenpoCd = userInfo.getTenpo(); // 店舗コード
 
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     Object[] valueData = new Object[] {};
     String values = "";
 
@@ -1200,7 +1200,7 @@ public class ReportTJ005Dao extends ItemDao {
     lblList.add("事前発注_発注明細wk管理");
 
     // クリア
-    prmData = new ArrayList<String>();
+    prmData = new ArrayList<>();
     valueData = new Object[] {};
     values = "";
 
@@ -1226,9 +1226,9 @@ public class ReportTJ005Dao extends ItemDao {
                 sbSQL.append(" select DAICD,BINKBN from INAMS.MSTSHN WHERE SHNCD=null");
               }
 
-              ItemList iL = new ItemList();
+              new ItemList();
               @SuppressWarnings("static-access")
-              JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+              JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
               String daicd = "";
               String binkbn = "";
@@ -1368,7 +1368,7 @@ public class ReportTJ005Dao extends ItemDao {
         lblList.add("事前発注_発注明細wk");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -1376,7 +1376,7 @@ public class ReportTJ005Dao extends ItemDao {
 
 
     // 登録処理
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -1408,7 +1408,7 @@ public class ReportTJ005Dao extends ItemDao {
     this.createSqlDelWorkData(userInfo, map);
 
     // 登録処理
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -1443,7 +1443,7 @@ public class ReportTJ005Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     userInfo.getId();
     String szLstno = map.get("LSTNO"); // リスト№
@@ -1453,7 +1453,7 @@ public class ReportTJ005Dao extends ItemDao {
     // 事前発注_発注明細wk管理
     if (StringUtils.isNotEmpty(szLstno) || StringUtils.isNotEmpty(tenpoCd) || StringUtils.isNotEmpty(szBmncd)) {
 
-      prmData = new ArrayList<String>();
+      prmData = new ArrayList<>();
       prmData.add(szLstno);
       prmData.add(tenpoCd);
       prmData.add(szBmncd);
@@ -1474,7 +1474,7 @@ public class ReportTJ005Dao extends ItemDao {
     // 事前発注_発注明細wk
     if (StringUtils.isNotEmpty(szLstno) || StringUtils.isNotEmpty(tenpoCd) || StringUtils.isNotEmpty(szBmncd)) {
 
-      prmData = new ArrayList<String>();
+      prmData = new ArrayList<>();
       prmData.add(szLstno);
       prmData.add(tenpoCd);
       prmData.add(szBmncd);
@@ -1510,7 +1510,7 @@ public class ReportTJ005Dao extends ItemDao {
     JSONArray dataArraySHN2 = JSONArray.fromObject(map.get("DATA_SHN2")); // 対象情報:事前発注_追加商品
     JSONArray dataArrayKOUSEIHI = JSONArray.fromObject(map.get("DATA_KOUSEIHI")); // 対象情報:事前発注_構成比
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     JSONObject option = new JSONObject();
     String szLstno = map.get("LSTNO"); // リスト№
     String szBmncd = map.get("BMNCD"); // 部門コード
@@ -1568,7 +1568,7 @@ public class ReportTJ005Dao extends ItemDao {
       lblList.add("事前発注_構成比");
 
       // クリア
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       values = "";
     }
 
@@ -1640,7 +1640,7 @@ public class ReportTJ005Dao extends ItemDao {
       lblList.add("事前発注_部門予算");
 
       // クリア
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       values = "";
     }
 
@@ -1648,7 +1648,7 @@ public class ReportTJ005Dao extends ItemDao {
     values = "";
     int shnColNum = 14;
     String shnValues = "";
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     for (int i = 0; i < dataArraySHN.size(); i++) {
       for (int j = 1; j <= shnColNum; j++) {
         shnValues = dataArraySHN.optJSONObject(i).optString("F" + j);
@@ -1728,7 +1728,7 @@ public class ReportTJ005Dao extends ItemDao {
       lblList.add("事前発注_店舗");
 
       // クリア
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       values = "";
     }
 
@@ -1736,18 +1736,18 @@ public class ReportTJ005Dao extends ItemDao {
     // 使用されている表示番号の最大値を取得
     String hyoseqNo = "";
     if (dataArraySHN2.size() > 0) {
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       paramData.add(szLstno);
       paramData.add(szBmncd);
       paramData.add(tenpoCd);
-      ItemList iL = new ItemList();
+      new ItemList();
 
       String sqlcommand = "with INP as (select LSTNO, BMNCD, TENCD" + " from (values (cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(LSTNO, BMNCD, TENCD)"
           + ") select MAX(T.HYOSEQNO) as VALUE" + " from (select distinct SHN.HYOSEQNO from INATK.TOKTJ_SHN SHN" + " inner join INP on SHN.LSTNO = INP.LSTNO and SHN.BMNCD = INP.BMNCD"
           + " union all select ADS.HYOSEQNO from INATK.TOKTJ_ADDSHN ADS" + " inner join INP on ADS.LSTNO = INP.LSTNO and ADS.BMNCD = INP.BMNCD and ADS.TENCD = INP.TENCD) T";
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
       hyoseqNo = array.getJSONObject(0).optString("VALUE");
     }
 
@@ -1755,7 +1755,7 @@ public class ReportTJ005Dao extends ItemDao {
     values = "";
     shnColNum = 24;
     shnValues = "";
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     String addHyoseqNo = hyoseqNo;
     for (int i = 0; i < dataArraySHN2.size(); i++) {
       paramData.add(szLstno);
@@ -1865,7 +1865,7 @@ public class ReportTJ005Dao extends ItemDao {
       lblList.add("事前発注_追加商品");
 
       // クリア
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       values = "";
 
     }
@@ -1877,7 +1877,7 @@ public class ReportTJ005Dao extends ItemDao {
     this.createSqlDelWorkData(userInfo, map);
 
     // 登録処理
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -1925,25 +1925,25 @@ public class ReportTJ005Dao extends ItemDao {
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
 
-    ArrayList<String> paramData = new ArrayList<String>();
-    ArrayList<String> SearchParams = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
+    ArrayList<String> SearchParams = new ArrayList<>();
     String values = "";
 
     // ジャーナル情報の登録
 
     // 登録処理：事前発注_構成比_JNL
     int kouseihiColnum = 3;
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     if (dataArrayKOUSEIHI.size() > 0) {
 
       // 変更データか確認を行う
-      SearchParams = new ArrayList<String>();
+      SearchParams = new ArrayList<>();
       SearchParams.add(szLstno);
       SearchParams.add(szBmncd);
       SearchParams.add(tenpoCd);
 
       if (this.checkExistData("TOKTJ_BMNCMPRT", SearchParams)) {
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
         paramData.add(this.get_SEQ_TOKTJ004());
         paramData.add(szLstno);
         paramData.add(szBmncd);
@@ -1992,7 +1992,7 @@ public class ReportTJ005Dao extends ItemDao {
         lblList.add("事前発注_構成比_JNL");
 
         // クリア
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
         values = "";
       }
     }
@@ -2004,7 +2004,7 @@ public class ReportTJ005Dao extends ItemDao {
 
     for (int i = 0; i < dataArrayYSN.size(); i++) {
       // 変更データか確認を行う
-      SearchParams = new ArrayList<String>();
+      SearchParams = new ArrayList<>();
       SearchParams.add(szLstno);
       SearchParams.add(szBmncd);
       SearchParams.add(tenpoCd);
@@ -2080,7 +2080,7 @@ public class ReportTJ005Dao extends ItemDao {
       lblList.add("事前発注_部門予算_JNL");
 
       // クリア
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       values = "";
     }
 
@@ -2092,7 +2092,7 @@ public class ReportTJ005Dao extends ItemDao {
     String Bumon = "";
     String No = "";
     String Tenpo = "";
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     for (int i = 0; i < dataArraySHN.size(); i++) {
       paramData.add(this.get_SEQ_TOKTJ001()); // F1 : SEQ
       values += ",(SELECT ? , ";
@@ -2296,14 +2296,14 @@ public class ReportTJ005Dao extends ItemDao {
       lblList.add("事前発注_店舗_JNL");
 
       // クリア
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       values = "";
     }
 
     // 登録処理：事前発注_追加商品_JNL
     values = "";
     shnColNum = 23;
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     for (int i = 0; i < dataArraySHN2.size(); i++) {
 
       // 変更データ(表示番号が存在するデータ)の場合のみ追加する
@@ -2481,7 +2481,7 @@ public class ReportTJ005Dao extends ItemDao {
       lblList.add("事前発注_追加商品_JNL");
 
       // クリア
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       values = "";
 
     }
@@ -2500,11 +2500,11 @@ public class ReportTJ005Dao extends ItemDao {
 
     map.get(DefineReport.ID_PARAM_OBJ);
 
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray msg = new JSONArray();
     MessageUtility mu = new MessageUtility();
     String sqlcommand = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String szLstno = map.get("LSTNO"); // リスト№
     String szBmncd = map.get("BMNCD"); // 部門コード
@@ -2530,7 +2530,7 @@ public class ReportTJ005Dao extends ItemDao {
       sqlcommand = "select COUNT(LSTNO) from INATK.TOKTJ_ADDSHN where LSTNO = ? and BMNCD = ? and TENCD = ? ";
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
 
       if (array.size() > 0) {
         if (NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) >= 35) {
@@ -2548,9 +2548,9 @@ public class ReportTJ005Dao extends ItemDao {
   @SuppressWarnings("static-access")
   public boolean checkExistData(String tableName, ArrayList<String> parmList) {
     boolean exist = false;
-    ItemList iL = new ItemList();
+    new ItemList();
     String sqlcommand = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     for (int i = 0; i < parmList.size(); i++) {
       String value = parmList.get(i);
@@ -2573,7 +2573,7 @@ public class ReportTJ005Dao extends ItemDao {
       // 事前発注_部門予算
       sqlcommand = "select LSTNO as value from INATK.TOKTJ_BMNYSAN where LSTNO = ? and BMNCD = ? and TENCD = ?";
     }
-    JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
     if (array.size() > 0) {
       exist = true;
     }
@@ -2586,11 +2586,10 @@ public class ReportTJ005Dao extends ItemDao {
    * @throws Exception
    */
   public String get_SEQ_TOKTJ001() {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     String sqlColCommand = "SELECT INAMS.nextval('SEQ001') AS \"1\"";
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
     if (array.size() > 0) {
       value = array.optJSONObject(0).optString("1");
@@ -2604,11 +2603,10 @@ public class ReportTJ005Dao extends ItemDao {
    * @throws Exception
    */
   public String get_SEQ_TOKTJ002() {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     String sqlColCommand = "SELECT INAMS.nextval('SEQ002') AS \"1\"";
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
     if (array.size() > 0) {
       value = array.optJSONObject(0).optString("1");
@@ -2622,11 +2620,10 @@ public class ReportTJ005Dao extends ItemDao {
    * @throws Exception
    */
   public String get_SEQ_TOKTJ003() {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     String sqlColCommand = "SELECT INAMS.nextval('SEQ003') AS \"1\"";
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
     if (array.size() > 0) {
       value = array.optJSONObject(0).optString("1");
@@ -2640,11 +2637,10 @@ public class ReportTJ005Dao extends ItemDao {
    * @throws Exception
    */
   public String get_SEQ_TOKTJ004() {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     String sqlColCommand = "SELECT INAMS.nextval('SEQ004') AS \"1\"";
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
     if (array.size() > 0) {
       value = array.optJSONObject(0).optString("1");
