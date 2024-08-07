@@ -5388,7 +5388,7 @@ public class DefineReport {
   public final static String ID_SQLSHUNOPERIOD = DefineReport.ID_SQL_CMN_WEEK + ",SHORI as(SELECT CASE WHEN DAYOFWEEK(DATE_FORMAT(" + VAL + ",'%Y%m%d')) = 2 OR DAYOFWEEK(DATE_FORMAT(" + VAL
       + ",'%Y%m%d')) = 3 THEN DATE_FORMAT(DATE_ADD(DATE_FORMAT(" + VAL + ",'%Y%m%d'), INTERVAL 7 DAY),'%Y%m%d') ELSE DATE_FORMAT(DATE_ADD(DATE_FORMAT(" + VAL
       + ",'%Y%m%d') , INTERVAL 14 DAY),'%Y%m%d') END AS DT FROM(" + DefineReport.ID_SQLSHORIDT + ")T1) "
-      + "SELECT DATE_FORMAT(DATE_FORMAT(SHUNO.STARTDT,'%Y%m%d'),'%Y/%m/%d') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(DATE_FORMAT(SHUNO.STARTDT,'%Y%m%d'))) || '～' || DATE_FORMAT(DATE_FORMAT(SHUNO.ENDDT,'%Y%m%d'),'%y/%m/%d') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(DATE_FORMAT(SHUNO.ENDDT,'%Y%m%d'))) AS "
+      + "SELECT DATE_FORMAT(DATE_FORMAT(SHUNO.STARTDT,'%Y%m%d'),'%Y/%m/%d') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(DATE_FORMAT(SHUNO.STARTDT,'%Y%m%d'))) || '～' || DATE_FORMAT(DATE_FORMAT(SHUNO.ENDDT,'%Y%m%d'),'%Y/%m/%d') || (select JWEEK from WEEK where CWEEK=DAYOFWEEK(DATE_FORMAT(SHUNO.ENDDT,'%Y%m%d'))) AS "
       + VAL + " FROM INAAD.SYSSHUNO AS SHUNO, SHORI WHERE SHORI.DT BETWEEN SHUNO.STARTDT AND SHUNO.ENDDT";
   // SQL：期間(初期表示用)
   public final static String ID_SQL_KIKAN_DAY_INIT = "select max(COMTOB) as DT1, max(COMTOB) as DT2 from INAYS.MCALTT";
