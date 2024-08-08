@@ -898,7 +898,7 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append(" and T3.HYOSEQNO = T2.HYOSEQNO ");
     sbSQL.append(" where ");
     sbSQL.append("  T1.LSTNO = ? ");
-    sbSQL.append("  order by T3.HYOSEQNO");
+    sbSQL.append("  order by T3.HYOSEQNO  IS NULL ASC, T3.HYOSEQNO");
 
     new ItemList();
     @SuppressWarnings("static-access")

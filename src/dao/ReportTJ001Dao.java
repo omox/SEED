@@ -921,7 +921,7 @@ public class ReportTJ001Dao extends ItemDao {
     sbSQL.append(" and T3.HYOSEQNO = T2.HYOSEQNO ");
     sbSQL.append(" where ");
     sbSQL.append("  T1.LSTNO = ? ");
-    sbSQL.append("  order by T3.HYOSEQNO");
+    sbSQL.append("  order by T3.HYOSEQNO  IS NULL ASC, T3.HYOSEQNO");
 
     new ItemList();
     @SuppressWarnings("static-access")
@@ -990,7 +990,7 @@ public class ReportTJ001Dao extends ItemDao {
     paramData.add(bmncd);
     paramData.add(tenpo);
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
     JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 

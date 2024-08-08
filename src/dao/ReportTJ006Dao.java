@@ -203,7 +203,7 @@ public class ReportTJ006Dao extends ItemDao {
     sbSQL.append(" left join BMN B10 on B10.TJDT = T3.JTDT_10");
     sbSQL.append(" where ");
     sbSQL.append("  T1.LSTNO = ? ");
-    sbSQL.append("  order by T3.HYOSEQNO");
+    sbSQL.append("  order by T3.HYOSEQNO  IS NULL ASC,T3.HYOSEQNO");
     sbSQL.append("  LIMIT 1 ");
 
     // DB検索用パラメータ設定
@@ -479,53 +479,11 @@ public class ReportTJ006Dao extends ItemDao {
     sbSQL.append(",DAICD");
     sbSQL.append(",TJDT");
     sbSQL.append(",URICMPRT");
-    sbSQL.append(",NULL AS TBCMPRT");
-    sbSQL.append(", '" + userId + "' AS OPERATOR ");
-    sbSQL.append(", current_timestamp AS ADDDT ");
-    sbSQL.append(", current_timestamp AS UPDDT ");
-    sbSQL.append(" FROM (values (?,?,?,?,?,?)) as T1(");
-    sbSQL.append(" LSTNO");
-    sbSQL.append(",TENCD");
-    sbSQL.append(",BMNCD");
-    sbSQL.append(",DAICD");
-    sbSQL.append(",TJDT");
-    sbSQL.append(",URICMPRT");
-    sbSQL.append(" )) as RE on (");
-    sbSQL.append(" T.LSTNO = RE.LSTNO and ");
-    sbSQL.append(" T.TENCD = RE.TENCD and ");
-    sbSQL.append(" T.BMNCD = RE.BMNCD and ");
-    sbSQL.append(" T.DAICD = RE.DAICD and ");
-    sbSQL.append(" T.TJDT = RE.TJDT ");
-    sbSQL.append(" ) WHEN MATCHED THEN UPDATE SET");
-    sbSQL.append(" URICMPRT = RE.URICMPRT");
-    sbSQL.append(",OPERATOR = RE.OPERATOR");
-    sbSQL.append(",UPDDT = RE.UPDDT");
-    sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
-    sbSQL.append(" LSTNO");
-    sbSQL.append(",TENCD");
-    sbSQL.append(",BMNCD");
-    sbSQL.append(",DAICD");
-    sbSQL.append(",TJDT");
-    sbSQL.append(",URICMPRT");
     sbSQL.append(",TBCMPRT");
     sbSQL.append(",OPERATOR");
     sbSQL.append(",ADDDT");
     sbSQL.append(",UPDDT");
-    sbSQL.append(" ) VALUES (");
-    sbSQL.append(" RE.LSTNO");
-    sbSQL.append(",RE.TENCD");
-    sbSQL.append(",RE.BMNCD");
-    sbSQL.append(",RE.DAICD");
-    sbSQL.append(",RE.TJDT");
-    sbSQL.append(",RE.URICMPRT");
-    sbSQL.append(",RE.TBCMPRT");
-    sbSQL.append(",RE.OPERATOR");
-    sbSQL.append(",RE.ADDDT");
-    sbSQL.append(",RE.UPDDT");
-    sbSQL.append(" )");
-
-
-    sbSQL.append("MERGE INTO INATK.TOKTJ_CMPRT AS T USING (SELECT ");
+    sbSQL.append(" )SELECT * FROM (SELECT");
     sbSQL.append(" LSTNO");
     sbSQL.append(",TENCD");
     sbSQL.append(",BMNCD");
@@ -534,48 +492,19 @@ public class ReportTJ006Dao extends ItemDao {
     sbSQL.append(",URICMPRT");
     sbSQL.append(",NULL AS TBCMPRT");
     sbSQL.append(", '" + userId + "' AS OPERATOR ");
-    sbSQL.append(", current timestamp AS ADDDT ");
-    sbSQL.append(", current timestamp AS UPDDT ");
-    sbSQL.append(" FROM (values (?,?,?,?,?,?)) as T1(");
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT ");
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT ");
+    sbSQL.append(" FROM (values ROW(?,?,?,?,?,?)) as T1(");
     sbSQL.append(" LSTNO");
     sbSQL.append(",TENCD");
     sbSQL.append(",BMNCD");
     sbSQL.append(",DAICD");
     sbSQL.append(",TJDT");
-    sbSQL.append(",URICMPRT");
-    sbSQL.append(" )) as RE on (");
-    sbSQL.append(" T.LSTNO = RE.LSTNO and ");
-    sbSQL.append(" T.TENCD = RE.TENCD and ");
-    sbSQL.append(" T.BMNCD = RE.BMNCD and ");
-    sbSQL.append(" T.DAICD = RE.DAICD and ");
-    sbSQL.append(" T.TJDT = RE.TJDT ");
-    sbSQL.append(" ) WHEN MATCHED THEN UPDATE SET");
+    sbSQL.append(",URICMPRT))RE");
+    sbSQL.append(" ON DUPLICATE KEY UPDATE ");
     sbSQL.append(" URICMPRT = RE.URICMPRT");
     sbSQL.append(",OPERATOR = RE.OPERATOR");
     sbSQL.append(",UPDDT = RE.UPDDT");
-    sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
-    sbSQL.append(" LSTNO");
-    sbSQL.append(",TENCD");
-    sbSQL.append(",BMNCD");
-    sbSQL.append(",DAICD");
-    sbSQL.append(",TJDT");
-    sbSQL.append(",URICMPRT");
-    sbSQL.append(",TBCMPRT");
-    sbSQL.append(",OPERATOR");
-    sbSQL.append(",ADDDT");
-    sbSQL.append(",UPDDT");
-    sbSQL.append(" ) VALUES (");
-    sbSQL.append(" RE.LSTNO");
-    sbSQL.append(",RE.TENCD");
-    sbSQL.append(",RE.BMNCD");
-    sbSQL.append(",RE.DAICD");
-    sbSQL.append(",RE.TJDT");
-    sbSQL.append(",RE.URICMPRT");
-    sbSQL.append(",RE.TBCMPRT");
-    sbSQL.append(",RE.OPERATOR");
-    sbSQL.append(",RE.ADDDT");
-    sbSQL.append(",RE.UPDDT");
-    sbSQL.append(" )");
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -619,53 +548,7 @@ public class ReportTJ006Dao extends ItemDao {
     String userId = userInfo.getId(); // ログインユーザー
 
     StringBuffer sbSQL = new StringBuffer();
-    sbSQL.append("MERGE INTO INATK.TOKTJ_DFCMPRT AS T USING (SELECT ");
-    sbSQL.append(" TENCD");
-    sbSQL.append(",BMNCD");
-    sbSQL.append(",DAICD");
-    sbSQL.append(",URICMPRT_MON");
-    sbSQL.append(",URICMPRT_TUE");
-    sbSQL.append(",URICMPRT_WED");
-    sbSQL.append(",URICMPRT_THU");
-    sbSQL.append(",URICMPRT_FRI");
-    sbSQL.append(",URICMPRT_SAT");
-    sbSQL.append(",URICMPRT_SUN");
-    sbSQL.append(",NULL AS TBCMPRT_MON");
-    sbSQL.append(",NULL AS TBCMPRT_TUE");
-    sbSQL.append(",NULL AS TBCMPRT_WED");
-    sbSQL.append(",NULL AS TBCMPRT_THU");
-    sbSQL.append(",NULL AS TBCMPRT_FRI");
-    sbSQL.append(",NULL AS TBCMPRT_SAT");
-    sbSQL.append(",NULL AS TBCMPRT_SUN");
-    sbSQL.append(", '" + userId + "' AS OPERATOR ");
-    sbSQL.append(", current timestamp AS ADDDT ");
-    sbSQL.append(", current timestamp AS UPDDT ");
-    sbSQL.append(" FROM (values (?,?,?,?,?,?,?,?,?,?)) as T1(");
-    sbSQL.append(" TENCD");
-    sbSQL.append(",BMNCD");
-    sbSQL.append(",DAICD");
-    sbSQL.append(",URICMPRT_MON");
-    sbSQL.append(",URICMPRT_TUE");
-    sbSQL.append(",URICMPRT_WED");
-    sbSQL.append(",URICMPRT_THU");
-    sbSQL.append(",URICMPRT_FRI");
-    sbSQL.append(",URICMPRT_SAT");
-    sbSQL.append(",URICMPRT_SUN");
-    sbSQL.append(" )) as RE on (");
-    sbSQL.append(" T.TENCD = RE.TENCD and ");
-    sbSQL.append(" T.BMNCD = RE.BMNCD and ");
-    sbSQL.append(" T.DAICD = RE.DAICD");
-    sbSQL.append(" ) WHEN MATCHED THEN UPDATE SET");
-    sbSQL.append(" URICMPRT_MON = RE.URICMPRT_MON");
-    sbSQL.append(",URICMPRT_TUE = RE.URICMPRT_TUE");
-    sbSQL.append(",URICMPRT_WED = RE.URICMPRT_WED");
-    sbSQL.append(",URICMPRT_THU = RE.URICMPRT_THU");
-    sbSQL.append(",URICMPRT_FRI = RE.URICMPRT_FRI");
-    sbSQL.append(",URICMPRT_SAT = RE.URICMPRT_SAT");
-    sbSQL.append(",URICMPRT_SUN = RE.URICMPRT_SUN");
-    sbSQL.append(",OPERATOR = RE.OPERATOR");
-    sbSQL.append(",UPDDT = RE.UPDDT");
-    sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
+    sbSQL.append("INSERT INTO INATK.TOKTJ_DFCMPRT (");
     sbSQL.append(" TENCD");
     sbSQL.append(",BMNCD");
     sbSQL.append(",DAICD");
@@ -686,28 +569,49 @@ public class ReportTJ006Dao extends ItemDao {
     sbSQL.append(",OPERATOR");
     sbSQL.append(",ADDDT");
     sbSQL.append(",UPDDT");
-    sbSQL.append(" ) VALUES (");
-    sbSQL.append(" RE.TENCD");
-    sbSQL.append(",RE.BMNCD");
-    sbSQL.append(",RE.DAICD");
-    sbSQL.append(",RE.URICMPRT_MON");
-    sbSQL.append(",RE.URICMPRT_TUE");
-    sbSQL.append(",RE.URICMPRT_WED");
-    sbSQL.append(",RE.URICMPRT_THU");
-    sbSQL.append(",RE.URICMPRT_FRI");
-    sbSQL.append(",RE.URICMPRT_SAT");
-    sbSQL.append(",RE.URICMPRT_SUN");
-    sbSQL.append(",RE.TBCMPRT_MON");
-    sbSQL.append(",RE.TBCMPRT_TUE");
-    sbSQL.append(",RE.TBCMPRT_WED");
-    sbSQL.append(",RE.TBCMPRT_THU");
-    sbSQL.append(",RE.TBCMPRT_FRI");
-    sbSQL.append(",RE.TBCMPRT_SAT");
-    sbSQL.append(",RE.TBCMPRT_SUN");
-    sbSQL.append(",RE.OPERATOR");
-    sbSQL.append(",RE.ADDDT");
-    sbSQL.append(",RE.UPDDT");
-    sbSQL.append(" )");
+    sbSQL.append(" )SELECT * FROM (SELECT");
+    sbSQL.append(" TENCD");
+    sbSQL.append(",BMNCD");
+    sbSQL.append(",DAICD");
+    sbSQL.append(",URICMPRT_MON");
+    sbSQL.append(",URICMPRT_TUE");
+    sbSQL.append(",URICMPRT_WED");
+    sbSQL.append(",URICMPRT_THU");
+    sbSQL.append(",URICMPRT_FRI");
+    sbSQL.append(",URICMPRT_SAT");
+    sbSQL.append(",URICMPRT_SUN");
+    sbSQL.append(",NULL AS TBCMPRT_MON");
+    sbSQL.append(",NULL AS TBCMPRT_TUE");
+    sbSQL.append(",NULL AS TBCMPRT_WED");
+    sbSQL.append(",NULL AS TBCMPRT_THU");
+    sbSQL.append(",NULL AS TBCMPRT_FRI");
+    sbSQL.append(",NULL AS TBCMPRT_SAT");
+    sbSQL.append(",NULL AS TBCMPRT_SUN");
+    sbSQL.append(", '" + userId + "' AS OPERATOR ");
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT ");
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT ");
+    sbSQL.append(" FROM (values ROW(?,?,?,?,?,?,?,?,?,?)) as T1(");
+    sbSQL.append(" TENCD");
+    sbSQL.append(",BMNCD");
+    sbSQL.append(",DAICD");
+    sbSQL.append(",URICMPRT_MON");
+    sbSQL.append(",URICMPRT_TUE");
+    sbSQL.append(",URICMPRT_WED");
+    sbSQL.append(",URICMPRT_THU");
+    sbSQL.append(",URICMPRT_FRI");
+    sbSQL.append(",URICMPRT_SAT");
+    sbSQL.append(",URICMPRT_SUN))RE ");
+    sbSQL.append(" ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" URICMPRT_MON = RE.URICMPRT_MON");
+    sbSQL.append(",URICMPRT_TUE = RE.URICMPRT_TUE");
+    sbSQL.append(",URICMPRT_WED = RE.URICMPRT_WED");
+    sbSQL.append(",URICMPRT_THU = RE.URICMPRT_THU");
+    sbSQL.append(",URICMPRT_FRI = RE.URICMPRT_FRI");
+    sbSQL.append(",URICMPRT_SAT = RE.URICMPRT_SAT");
+    sbSQL.append(",URICMPRT_SUN = RE.URICMPRT_SUN");
+    sbSQL.append(",OPERATOR = RE.OPERATOR");
+    sbSQL.append(",UPDDT = RE.UPDDT");
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -763,7 +667,6 @@ public class ReportTJ006Dao extends ItemDao {
 
     // パラメータ確認
     JSONArray dataArrayYSN = JSONArray.fromObject(map.get("DATABMN")); // 対象情報
-
     ArrayList<String> paramData = new ArrayList<>();
     String szLstNo = map.get("LSTNO"); // 部門コード
     String szBmncd = map.get("BMNCD").substring(0, 2); // 部門コード
@@ -776,7 +679,7 @@ public class ReportTJ006Dao extends ItemDao {
 
     for (int i = 0; i < dataArrayYSN.size(); i++) {
 
-      values += ",(?,?,?,?,?)";
+      values += ",ROW(?,?,?,?,?)";
 
       paramData.add(szLstNo);
       paramData.add(tenpoCd);
@@ -787,31 +690,7 @@ public class ReportTJ006Dao extends ItemDao {
     if (dataArrayYSN.size() > 0) {
       values = StringUtils.removeStart(values, ",");
       sbSQL = new StringBuffer();
-      sbSQL.append("MERGE INTO INATK.TOKTJ_BMNYSAN AS T USING (SELECT ");
-      sbSQL.append(" BMNYSANAM"); // 発注数_01 F5
-      sbSQL.append(",TJDT"); // 表示順番 F3
-      sbSQL.append(",TENCD"); // 店コード F4
-      sbSQL.append(",LSTNO"); // リスト番号 F1
-      sbSQL.append(",BMNCD"); // 部門 F2
-      sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
-      sbSQL.append(", current timestamp AS ADDDT "); // 登録日：
-      sbSQL.append(", current timestamp AS UPDDT "); // 更新日：
-      sbSQL.append(" FROM (values " + values + " ) as T1(");
-      sbSQL.append("LSTNO"); // リスト番号 F1
-      sbSQL.append(",TENCD"); // 店コード F4
-      sbSQL.append(",BMNCD"); // 部門 F2
-      sbSQL.append(",TJDT"); // 表示順番 F3
-      sbSQL.append(",BMNYSANAM"); // 発注数_01 F5
-      sbSQL.append(" )) as RE on (");
-      sbSQL.append(" T.LSTNO = RE.LSTNO and ");
-      sbSQL.append(" T.BMNCD = RE.BMNCD and ");
-      sbSQL.append(" T.TJDT = RE.TJDT and ");
-      sbSQL.append(" T.TENCD = RE.TENCD ");
-      sbSQL.append(" ) when matched then update set");
-      sbSQL.append(" BMNYSANAM = RE.BMNYSANAM");
-      sbSQL.append(", OPERATOR = RE.OPERATOR");
-      sbSQL.append(", UPDDT = RE.UPDDT");
-      sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
+      sbSQL.append("INSERT INTO INATK.TOKTJ_BMNYSAN (");
       sbSQL.append(" LSTNO");
       sbSQL.append(",TENCD");
       sbSQL.append(",BMNCD");
@@ -819,17 +698,35 @@ public class ReportTJ006Dao extends ItemDao {
       sbSQL.append(",BMNYSANAM");
       sbSQL.append(",OPERATOR");
       sbSQL.append(",ADDDT");
-      sbSQL.append(",UPDDT");
-      sbSQL.append(" ) VALUES (");
-      sbSQL.append(" RE.LSTNO");
-      sbSQL.append(",RE.TENCD");
-      sbSQL.append(",RE.BMNCD");
-      sbSQL.append(",RE.TJDT");
-      sbSQL.append(",RE.BMNYSANAM");
-      sbSQL.append(",RE.OPERATOR");
-      sbSQL.append(",RE.ADDDT");
-      sbSQL.append(",RE.UPDDT");
-      sbSQL.append(" )");
+      sbSQL.append(",UPDDT)");
+      sbSQL.append(" SELECT ");
+      sbSQL.append(" LSTNO");
+      sbSQL.append(",TENCD");
+      sbSQL.append(",BMNCD");
+      sbSQL.append(",TJDT");
+      sbSQL.append(",BMNYSANAM");
+      sbSQL.append(",OPERATOR");
+      sbSQL.append(",ADDDT");
+      sbSQL.append(",UPDDT ");
+      sbSQL.append(" FROM (SELECT ");
+      sbSQL.append(" BMNYSANAM"); // 発注数_01 F5
+      sbSQL.append(",TJDT"); // 表示順番 F3
+      sbSQL.append(",TENCD"); // 店コード F4
+      sbSQL.append(",LSTNO"); // リスト番号 F1
+      sbSQL.append(",BMNCD"); // 部門 F2
+      sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+      sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+      sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+      sbSQL.append(" FROM (values " + values + " ) as T1(");
+      sbSQL.append("LSTNO"); // リスト番号 F1
+      sbSQL.append(",TENCD"); // 店コード F4
+      sbSQL.append(",BMNCD"); // 部門 F2
+      sbSQL.append(",TJDT"); // 表示順番 F3
+      sbSQL.append(",BMNYSANAM)) RE"); // 発注数_01 F5
+      sbSQL.append(" ON DUPLICATE KEY UPDATE ");
+      sbSQL.append(" BMNYSANAM = RE.BMNYSANAM");
+      sbSQL.append(", OPERATOR = RE.OPERATOR");
+      sbSQL.append(", UPDDT = RE.UPDDT");
 
       if (DefineReport.ID_DEBUG_MODE)
         System.out.println(this.getClass().getName() + ":" + sbSQL.toString());

@@ -982,16 +982,16 @@ public class ReportTJ005Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append("WITH WEEK as ( select CWEEK , JWEEK as JWEEK from ( values row(1, '日') , row(2, '月') , row(3, '火') , row(4, '水') , row(5, '木') , row(6, '金') , row(7, '土') ) as TMP(CWEEK, JWEEK) )");
     sbSQL.append("  select");
-    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T3.JTDT_01, '%m/%d'), '%m/%d') as V1");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_02, '%m/%d'), '%m/%d') as V2");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_03, '%m/%d'), '%m/%d') as V3");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_04, '%m/%d'), '%m/%d') as V4");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_05, '%m/%d'), '%m/%d') as V5");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_06, '%m/%d'), '%m/%d') as V6");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_07, '%m/%d'), '%m/%d') as V7");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_08, '%m/%d'), '%m/%d') as V8");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_09, '%m/%d'), '%m/%d') as V9");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_10, '%m/%d'), '%m/%d') as V10");
+    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T3.JTDT_01, '%Y%m%d'), '%m/%d') as V1");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_02, '%Y%m%d'), '%m/%d') as V2");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_03, '%Y%m%d'), '%m/%d') as V3");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_04, '%Y%m%d'), '%m/%d') as V4");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_05, '%Y%m%d'), '%m/%d') as V5");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_06, '%Y%m%d'), '%m/%d') as V6");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_07, '%Y%m%d'), '%m/%d') as V7");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_08, '%Y%m%d'), '%m/%d') as V8");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_09, '%Y%m%d'), '%m/%d') as V9");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_10, '%Y%m%d'), '%m/%d') as V10");
     sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_01, '%Y%m%d'))) as W1");
     sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_02, '%Y%m%d'))) as W2");
     sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_03, '%Y%m%d'))) as W3");
@@ -1024,7 +1024,7 @@ public class ReportTJ005Dao extends ItemDao {
     sbSQL.append(" and T3.HYOSEQNO = T2.HYOSEQNO ");
     sbSQL.append(" where ");
     sbSQL.append("  T1.LSTNO = ? ");
-    sbSQL.append("  order by T3.HYOSEQNO");
+    sbSQL.append("  order by T3.HYOSEQNO  IS NULL ASC, T3.HYOSEQNO");
 
     new ItemList();
     @SuppressWarnings("static-access")
@@ -2313,7 +2313,7 @@ public class ReportTJ005Dao extends ItemDao {
         paramData.add(szLstno);
         paramData.add(tenpoCd);
         paramData.add(szBmncd);
-        values += ",(? , ? , ? , ? , ";
+        values += ",ROW(? , ? , ? , ? , ";
         for (int j = 1; j <= shnColNum; j++) {
           String value = dataArraySHN2.getJSONObject(i).optString("F" + j);
 
@@ -2344,73 +2344,7 @@ public class ReportTJ005Dao extends ItemDao {
     if (StringUtils.isNotEmpty(values)) {
       values = StringUtils.removeStart(values, ",");
       sbSQL = new StringBuffer();
-      sbSQL.append("MERGE INTO INATK.JNL_TOKTJ_ADDSHN AS T USING (SELECT ");
-      sbSQL.append(" SEQ"); // SEQ F1
-      sbSQL.append(",LSTNO"); // リスト番号 F1
-      sbSQL.append(",TENCD"); // 店コード F4
-      sbSQL.append(",BMNCD"); // 部門 F2
-      sbSQL.append(",SHNCD"); // 商品コード F5
-      sbSQL.append(",BINKBN"); // 便区分 F6
-      sbSQL.append(",HYOSEQNO"); // 表示順番 F3
-      sbSQL.append(",HTSU_01"); // 発注数_01 F7
-      sbSQL.append(",HTSU_02"); // 発注数_02 F8
-      sbSQL.append(",HTSU_03"); // 発注数_03 F9
-      sbSQL.append(",HTSU_04"); // 発注数_04 F10
-      sbSQL.append(",HTSU_05"); // 発注数_05 F11
-      sbSQL.append(",HTSU_06"); // 発注数_06 F12
-      sbSQL.append(",HTSU_07"); // 発注数_07 F13
-      sbSQL.append(",HTSU_08"); // 発注数_08 F14
-      sbSQL.append(",HTSU_09"); // 発注数_09 F15
-      sbSQL.append(",HTSU_10"); // 発注数_10 F16
-      sbSQL.append(",JTDT_01"); // 日付_01 F16
-      sbSQL.append(",JTDT_02"); // 日付_02 F16
-      sbSQL.append(",JTDT_03"); // 日付_03 F16
-      sbSQL.append(",JTDT_04"); // 日付_04 F16
-      sbSQL.append(",JTDT_05"); // 日付_05 F16
-      sbSQL.append(",JTDT_06"); // 日付_06 F16
-      sbSQL.append(",JTDT_07"); // 日付_07 F16
-      sbSQL.append(",JTDT_08"); // 日付_08 F16
-      sbSQL.append(",JTDT_09"); // 日付_09 F16
-      sbSQL.append(",JTDT_10"); // 日付_10 F16
-      sbSQL.append(",0 as SENDFLG"); // 送信フラグ
-      sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
-      sbSQL.append(", current timestamp AS ADDDT "); // 登録日：
-      sbSQL.append(", current timestamp AS UPDDT "); // 更新日：
-      sbSQL.append(" FROM (values " + values + " ) as T1(");
-      sbSQL.append(" SEQ"); // SEQ F1
-      sbSQL.append(",LSTNO"); // リスト番号 F1
-      sbSQL.append(",TENCD"); // 店コード F4
-      sbSQL.append(",BMNCD"); // 部門 F2
-      sbSQL.append(",SHNCD"); // 商品コード F5
-      sbSQL.append(",BINKBN"); // 便区分 F6
-      sbSQL.append(",HYOSEQNO"); // 表示順番 F3
-      sbSQL.append(",HTSU_01"); // 発注数_01 F7
-      sbSQL.append(",HTSU_02"); // 発注数_02 F8
-      sbSQL.append(",HTSU_03"); // 発注数_03 F9
-      sbSQL.append(",HTSU_04"); // 発注数_04 F10
-      sbSQL.append(",HTSU_05"); // 発注数_05 F11
-      sbSQL.append(",HTSU_06"); // 発注数_06 F12
-      sbSQL.append(",HTSU_07"); // 発注数_07 F13
-      sbSQL.append(",HTSU_08"); // 発注数_08 F14
-      sbSQL.append(",HTSU_09"); // 発注数_09 F15
-      sbSQL.append(",HTSU_10"); // 発注数_10 F16
-      sbSQL.append(",JTDT_01"); // 発注数_10 F16
-      sbSQL.append(",JTDT_02"); // 発注数_10 F16
-      sbSQL.append(",JTDT_03"); // 発注数_10 F16
-      sbSQL.append(",JTDT_04"); // 発注数_10 F16
-      sbSQL.append(",JTDT_05"); // 発注数_10 F16
-      sbSQL.append(",JTDT_06"); // 発注数_10 F16
-      sbSQL.append(",JTDT_07"); // 発注数_10 F16
-      sbSQL.append(",JTDT_08"); // 発注数_10 F16
-      sbSQL.append(",JTDT_09"); // 発注数_10 F16
-      sbSQL.append(",JTDT_10"); // 発注数_10 F16
-      sbSQL.append(" )) as RE on (");
-      sbSQL.append(" T.SEQ = RE.SEQ and ");
-      sbSQL.append(" T.LSTNO = RE.LSTNO and ");
-      sbSQL.append(" T.BMNCD = RE.BMNCD and ");
-      sbSQL.append(" T.HYOSEQNO = RE.HYOSEQNO and ");
-      sbSQL.append(" T.TENCD = RE.TENCD ");
-      sbSQL.append(" )  WHEN NOT MATCHED THEN INSERT ( ");
+      sbSQL.append("INSERT INTO INATK.JNL_TOKTJ_ADDSHN ( ");
       sbSQL.append(" SEQ"); // SEQ F1
       sbSQL.append(",LSTNO"); // 販売開始日
       sbSQL.append(",TENCD"); // 部門
@@ -2442,39 +2376,74 @@ public class ReportTJ005Dao extends ItemDao {
       sbSQL.append(",OPERATOR"); // オペレーターコード
       sbSQL.append(",ADDDT"); // 登録日
       sbSQL.append(",UPDDT"); // 更新日
-      sbSQL.append(") values (");
-      sbSQL.append(" RE.SEQ"); // SEQ F1
-      sbSQL.append(",RE.LSTNO"); // 販売開始日
-      sbSQL.append(",RE.TENCD"); // 部門
-      sbSQL.append(",RE.BMNCD"); // 割引率区分
-      sbSQL.append(",RE.SHNCD"); // ダミーコード
-      sbSQL.append(",RE.BINKBN"); // 管理番号
-      sbSQL.append(",RE.HYOSEQNO"); // 管理番号
-      sbSQL.append(",RE.HTSU_01"); // 発注数_01 F7
-      sbSQL.append(",RE.HTSU_02"); // 発注数_02 F8
-      sbSQL.append(",RE.HTSU_03"); // 発注数_03 F9
-      sbSQL.append(",RE.HTSU_04"); // 発注数_04 F10
-      sbSQL.append(",RE.HTSU_05"); // 発注数_05 F11
-      sbSQL.append(",RE.HTSU_06"); // 発注数_06 F12
-      sbSQL.append(",RE.HTSU_07"); // 発注数_07 F13
-      sbSQL.append(",RE.HTSU_08"); // 発注数_08 F14
-      sbSQL.append(",RE.HTSU_09"); // 発注数_09 F15
-      sbSQL.append(",RE.HTSU_10"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_01"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_02"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_03"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_04"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_05"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_06"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_07"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_08"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_09"); // 発注数_10 F16
-      sbSQL.append(",RE.JTDT_10"); // 発注数_10 F16
-      sbSQL.append(",RE.SENDFLG"); // 送信フラグ
-      sbSQL.append(",RE.OPERATOR"); // オペレーターコード
-      sbSQL.append(",RE.ADDDT"); // 登録日
-      sbSQL.append(",RE.UPDDT"); // 更新日
-      sbSQL.append(")");
+      sbSQL.append(" )SELECT * FROM (SELECT");
+      sbSQL.append(" SEQ"); // SEQ F1
+      sbSQL.append(",LSTNO"); // リスト番号 F1
+      sbSQL.append(",TENCD"); // 店コード F4
+      sbSQL.append(",BMNCD"); // 部門 F2
+      sbSQL.append(",SHNCD"); // 商品コード F5
+      sbSQL.append(",BINKBN"); // 便区分 F6
+      sbSQL.append(",HYOSEQNO"); // 表示順番 F3
+      sbSQL.append(",HTSU_01"); // 発注数_01 F7
+      sbSQL.append(",HTSU_02"); // 発注数_02 F8
+      sbSQL.append(",HTSU_03"); // 発注数_03 F9
+      sbSQL.append(",HTSU_04"); // 発注数_04 F10
+      sbSQL.append(",HTSU_05"); // 発注数_05 F11
+      sbSQL.append(",HTSU_06"); // 発注数_06 F12
+      sbSQL.append(",HTSU_07"); // 発注数_07 F13
+      sbSQL.append(",HTSU_08"); // 発注数_08 F14
+      sbSQL.append(",HTSU_09"); // 発注数_09 F15
+      sbSQL.append(",HTSU_10"); // 発注数_10 F16
+      sbSQL.append(",JTDT_01"); // 日付_01 F16
+      sbSQL.append(",JTDT_02"); // 日付_02 F16
+      sbSQL.append(",JTDT_03"); // 日付_03 F16
+      sbSQL.append(",JTDT_04"); // 日付_04 F16
+      sbSQL.append(",JTDT_05"); // 日付_05 F16
+      sbSQL.append(",JTDT_06"); // 日付_06 F16
+      sbSQL.append(",JTDT_07"); // 日付_07 F16
+      sbSQL.append(",JTDT_08"); // 日付_08 F16
+      sbSQL.append(",JTDT_09"); // 日付_09 F16
+      sbSQL.append(",JTDT_10"); // 日付_10 F16
+      sbSQL.append(",0 as SENDFLG"); // 送信フラグ
+      sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+      sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+      sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+      sbSQL.append(" FROM (values " + values + " ) as T1(");
+      sbSQL.append(" SEQ"); // SEQ F1
+      sbSQL.append(",LSTNO"); // リスト番号 F1
+      sbSQL.append(",TENCD"); // 店コード F4
+      sbSQL.append(",BMNCD"); // 部門 F2
+      sbSQL.append(",SHNCD"); // 商品コード F5
+      sbSQL.append(",BINKBN"); // 便区分 F6
+      sbSQL.append(",HYOSEQNO"); // 表示順番 F3
+      sbSQL.append(",HTSU_01"); // 発注数_01 F7
+      sbSQL.append(",HTSU_02"); // 発注数_02 F8
+      sbSQL.append(",HTSU_03"); // 発注数_03 F9
+      sbSQL.append(",HTSU_04"); // 発注数_04 F10
+      sbSQL.append(",HTSU_05"); // 発注数_05 F11
+      sbSQL.append(",HTSU_06"); // 発注数_06 F12
+      sbSQL.append(",HTSU_07"); // 発注数_07 F13
+      sbSQL.append(",HTSU_08"); // 発注数_08 F14
+      sbSQL.append(",HTSU_09"); // 発注数_09 F15
+      sbSQL.append(",HTSU_10"); // 発注数_10 F16
+      sbSQL.append(",JTDT_01"); // 発注数_10 F16
+      sbSQL.append(",JTDT_02"); // 発注数_10 F16
+      sbSQL.append(",JTDT_03"); // 発注数_10 F16
+      sbSQL.append(",JTDT_04"); // 発注数_10 F16
+      sbSQL.append(",JTDT_05"); // 発注数_10 F16
+      sbSQL.append(",JTDT_06"); // 発注数_10 F16
+      sbSQL.append(",JTDT_07"); // 発注数_10 F16
+      sbSQL.append(",JTDT_08"); // 発注数_10 F16
+      sbSQL.append(",JTDT_09"); // 発注数_10 F16
+      sbSQL.append(",JTDT_10)) AS RE"); // 発注数_10 F16
+      sbSQL.append(" WHERE NOT EXISTS ("); // 重複削除
+      sbSQL.append(" SELECT * FROM INATK.JNL_TOKTJ_ADDSHN ");
+      sbSQL.append(" WHERE ");
+      sbSQL.append(" SEQ = RE.SEQ and ");
+      sbSQL.append(" LSTNO = RE.LSTNO and ");
+      sbSQL.append(" BMNCD = RE.BMNCD and ");
+      sbSQL.append(" HYOSEQNO = RE.HYOSEQNO and ");
+      sbSQL.append(" TENCD = RE.TENCD )");
 
       sqlList.add(sbSQL.toString());
       prmList.add(paramData);

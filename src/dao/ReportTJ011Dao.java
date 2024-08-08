@@ -64,7 +64,7 @@ public class ReportTJ011Dao extends ItemDao {
     String maxPageno = this.getMaxPageno(getMap()); // 検索対象のレコード中の最大ページ番号を取得
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
 
     StringBuffer sbSQL = new StringBuffer();
@@ -713,7 +713,7 @@ public class ReportTJ011Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -721,9 +721,9 @@ public class ReportTJ011Dao extends ItemDao {
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" SELECT YOBI_2 FROM KEYSYS.SYS_USERS WHERE CD_USER =" + userInfo.getCD_user());
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray susUsers = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray susUsers = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (susUsers.size() != 0) {
       yobi2 = susUsers.getJSONObject(0).getString("YOBI_2");
@@ -782,9 +782,9 @@ public class ReportTJ011Dao extends ItemDao {
     sbSQL.append("  where");
     sbSQL.append("  T1.LSTNO = ?");
 
-    iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -796,7 +796,7 @@ public class ReportTJ011Dao extends ItemDao {
    */
   public JSONArray getTOKMOYCDData2(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -811,16 +811,16 @@ public class ReportTJ011Dao extends ItemDao {
 
     sbSQL.append("WITH WEEK as ( select CWEEK , JWEEK as JWEEK from ( values row(1, '日') , row(2, '月') , row(3, '火') , row(4, '水') , row(5, '木') , row(6, '金') , row(7, '土') ) as TMP(CWEEK, JWEEK) )");
     sbSQL.append("  select");
-    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T3.JTDT_01, '%m/%d'), '%m/%d') as V1");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_02, '%m/%d'), '%m/%d') as V2");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_03, '%m/%d'), '%m/%d') as V3");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_04, '%m/%d'), '%m/%d') as V4");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_05, '%m/%d'), '%m/%d') as V5");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_06, '%m/%d'), '%m/%d') as V6");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_07, '%m/%d'), '%m/%d') as V7");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_08, '%m/%d'), '%m/%d') as V8");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_09, '%m/%d'), '%m/%d') as V9");
-    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_10, '%m/%d'), '%m/%d') as V10");
+    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T3.JTDT_01, '%Y%m%d'), '%m/%d') as V1");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_02, '%Y%m%d'), '%m/%d') as V2");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_03, '%Y%m%d'), '%m/%d') as V3");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_04, '%Y%m%d'), '%m/%d') as V4");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_05, '%Y%m%d'), '%m/%d') as V5");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_06, '%Y%m%d'), '%m/%d') as V6");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_07, '%Y%m%d'), '%m/%d') as V7");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_08, '%Y%m%d'), '%m/%d') as V8");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_09, '%Y%m%d'), '%m/%d') as V9");
+    sbSQL.append(" ,DATE_FORMAT(DATE_FORMAT(T3.JTDT_10, '%Y%m%d'), '%m/%d') as V10");
     sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_01, '%Y%m%d'))) as W1");
     sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_02, '%Y%m%d'))) as W2");
     sbSQL.append(" ,(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T3.JTDT_03, '%Y%m%d'))) as W3");
@@ -853,11 +853,11 @@ public class ReportTJ011Dao extends ItemDao {
     sbSQL.append(" and T3.HYOSEQNO = T2.HYOSEQNO ");
     sbSQL.append(" where ");
     sbSQL.append("  T1.LSTNO = ? ");
-    sbSQL.append("  order by T3.HYOSEQNO");
+    sbSQL.append("  order by T3.HYOSEQNO  IS NULL ASC,T3.HYOSEQNO");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -869,7 +869,7 @@ public class ReportTJ011Dao extends ItemDao {
    */
   public String getMaxPageno(HashMap<String, String> map) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     User userInfo = getUserInfo();
     String tenpo = userInfo.getTenpo();
@@ -908,9 +908,9 @@ public class ReportTJ011Dao extends ItemDao {
     paramData.add(bmncd);
     paramData.add(tenpo);
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (array.size() > 0) {
       maxPageno = array.optJSONObject(0).optString("VALUE");
