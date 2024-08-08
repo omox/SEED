@@ -117,7 +117,7 @@ public class ReportTJ002Dao extends ItemDao {
     sbSQL.append("   where");
     sbSQL.append("   T1.LSTNO = ?");
     sbSQL.append("   ORDER BY DOW ");
-    sbSQL.append("   FETCH FIRST 1 ROWS ONLY");
+    sbSQL.append("   LIMIT 1");
     sbSQL.append(" ),");
     sbSQL.append(" WK2 as ");
     sbSQL.append(" ( select");
