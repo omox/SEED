@@ -231,7 +231,7 @@ public class ReportTJ009Dao extends ItemDao {
 
     sbSQL = new StringBuffer();
 
-    sbSQL.append(" with WK_PAGENO(IDX) as (");
+    sbSQL.append(" with RECURSIVE WK_PAGENO(IDX) as (");
     sbSQL.append("  select 1");
     sbSQL.append("   from");
     sbSQL.append("  (SELECT 1 AS DUMMY) DUMMY");
@@ -257,7 +257,7 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append(" from WK_PAGENO T1");
     sbSQL.append(", WK_GYONO T2");
 
-    sbSQL.append(" ),wk as ( ");
+    sbSQL.append(" ),WK as ( ");
     sbSQL.append("  select ");
     sbSQL.append("  T3.SHNKN as F1 ");
     sbSQL.append(" ,T4.NMKN as F2");
@@ -342,7 +342,7 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0) ");
     sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_06 , 0) * T3.IRISU_TB, 0) END as F60 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
-    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB) * NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0) ");
+    sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0) ");
     sbSQL.append("   else ROUND(CAST(T3.BAIKAAM_PACK AS double)* NULLIF(T3.HTSU_07 , 0) * T3.IRISU_TB, 0) END as F61 ");
     sbSQL.append(" , case when T3.BAIKAAM_PACK = 0 ");
     sbSQL.append("   then ROUND(CAST(T3.BAIKAAM_TB AS double) * NULLIF(T3.HTSU_08 , 0) * T3.IRISU_TB, 0) ");
@@ -651,7 +651,7 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append(", case");
     sbSQL.append("  when IDX = 1 then null"); // 1行目 F18
     sbSQL.append("  when IDX = 2 then null"); // 2行目 F18
-    sbSQL.append("  when IDX = 3 then TO_CHAR(WK.F48 AS CHAR)"); // 3行目 F18 ケース数計
+    sbSQL.append("  when IDX = 3 then CAST(WK.F48 AS CHAR)"); // 3行目 F18 ケース数計
     sbSQL.append("  when IDX = 4 then"); // 4行目 F18 実績過不足
     sbSQL.append("   case");
     sbSQL.append("   when WK.F100 is not null then CAST((WK.F48 - WK.F100) AS CHAR)");
@@ -681,8 +681,8 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append(", WK.PAGENO "); // F39 ページング処理に使用
     sbSQL.append(" from WK_LIST");
     sbSQL.append(" left join WK on WK_LIST.PAGENO = WK.PAGENO and WK_LIST.GYONO = WK.ROWNO, ");
-    sbSQL.append(" (select * from (values ROW(1),ROW(2),ROW(3),ROW(4)) as X(IDX) order by IDX) ");
-    sbSQL.append(" where not (WK_LIST.PAGENO = " + maxPageno + " and WK.PAGENO is null)");
+    sbSQL.append(" (select * from (values ROW(1),ROW(2),ROW(3),ROW(4)) as X(IDX) order by IDX)T5 ");
+    sbSQL.append(" where not (WK_LIST.PAGENO = " + maxPageno + " and WK.PAGENO is null) ");
     sbSQL.append(" order by WK_LIST.PAGENO,GYONO,IDX");
 
     // オプション情報（タイトル）設定
@@ -774,7 +774,7 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append(", (SELECT SHORIDT FROM INAAD.SYSSHORIDT) > ");
     // 予備2が空なら本部
     if (StringUtils.isEmpty(yobi2)) {
-      sbSQL.append(" CAST(DATE_FORMAT(DATE_ADD(DATE_FORMAT(T1.SNDSIMEDT,'%Y%m%d'),INTERVAL + 1 days),'%Y%m%d')AS SIGNED) as F10");
+      sbSQL.append(" CAST(DATE_FORMAT(DATE_ADD(DATE_FORMAT(T1.SNDSIMEDT,'%Y%m%d'),INTERVAL + 1 day),'%Y%m%d')AS SIGNED) as F10");
     } else {
       sbSQL.append(" CAST(T1.SNDSIMEDTAS SIGNED) as F10");
     }
@@ -786,7 +786,7 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append("   and BMNCD = ?");
     sbSQL.append("   and TENCD = ?");
     sbSQL.append("  order by UPDDT desc");
-    sbSQL.append("  fetch first 1 rows only) T2 on T2.LSTNO = T1.LSTNO");
+    sbSQL.append("  LIMIT 1 ) T2 on T2.LSTNO = T1.LSTNO");
     sbSQL.append("  where");
     sbSQL.append("  T1.LSTNO = ?");
 
@@ -966,7 +966,7 @@ public class ReportTJ009Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
 
     sbSQL.append(" select");
-    sbSQL.append(" MAX(PAGENO) as value");
+    sbSQL.append(" MAX(PAGENO) as VALUE");
     sbSQL.append(" from (");
     sbSQL.append("  select");
     sbSQL.append("   LSTNO");
@@ -983,7 +983,7 @@ public class ReportTJ009Dao extends ItemDao {
     sbSQL.append("  , PAGENO");
     sbSQL.append("  , HYOSEQNO");
     sbSQL.append("  from INATK.TOKTJ_ADDSHN");
-    sbSQL.append(" ) as T1");
+    sbSQL.append(" ) AS T1");
     sbSQL.append(" where LSTNO = ?");
     sbSQL.append(" and BMNCD = ?");
     sbSQL.append(" and TENCD = ?");
