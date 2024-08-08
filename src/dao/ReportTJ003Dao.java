@@ -166,7 +166,7 @@ public class ReportTJ003Dao extends ItemDao {
     sbSQL.append(" and T3.HYOSEQNO = T2.HYOSEQNO ");
     sbSQL.append(" where ");
     sbSQL.append("  T1.LSTNO = ? ");
-    sbSQL.append("  order by T3.HYOSEQNO");
+    sbSQL.append("  order by T3.HYOSEQNO  IS NULL ASC, T3.HYOSEQNO");
 
     // DB検索用パラメータ設定
     setParamData(paramData);
@@ -236,7 +236,7 @@ public class ReportTJ003Dao extends ItemDao {
     }
 
     // 全ての情報を集約
-    String values = "(values";
+    String values = "(values ";
 
     for (int i = 0; i < wkArray.size(); i++) {
 
@@ -251,7 +251,7 @@ public class ReportTJ003Dao extends ItemDao {
 
         // ソート番号と大分類
         String getDaiCd = data.optString("DAICD");
-        values += "(CAST(? AS UNSIGNED), CAST(? AS UNSIGNED), CAST(? AS CHAR(30)),";
+        values += "ROW(CAST(? AS SIGNED), CAST(? AS SIGNED), CAST(? AS CHAR(30)),";
         paramData.add(String.valueOf(getDaiCd));
         paramData.add(String.valueOf(sortNum));
         paramData.add(data.optString("DAIBRUIKN"));
@@ -279,7 +279,7 @@ public class ReportTJ003Dao extends ItemDao {
             BigDecimal setVal = bmnyosan.multiply(uricmprt).divide(new BigDecimal("100"), 0, BigDecimal.ROUND_HALF_UP);
 
             // 小数点第一位四捨五入
-            values += "CAST(? AS UNSIGNED),";
+            values += "CAST(? AS SIGNED),";
             paramData.add(String.valueOf(setVal));
 
             // 売上予算を日付別に保持
@@ -294,7 +294,7 @@ public class ReportTJ003Dao extends ItemDao {
             }
             // 発注売価作成
           } else if (sortNum == 2) {
-            values += "CAST(? AS UNSIGNED),";
+            values += "CAST(? AS SIGNED),";
 
             BigDecimal setVal = new BigDecimal(jtDt == 10 ? data.optString("NNBAIKA_10") : data.optString("NNBAIKA_0" + String.valueOf(jtDt)));
 
@@ -364,7 +364,7 @@ public class ReportTJ003Dao extends ItemDao {
         }
 
         if (sortNum == 1 || sortNum == 2) {
-          values += "CAST(? AS UNSIGNED),";
+          values += "CAST(? AS SIGNED),";
           paramData.add(String.valueOf(kikanKei.get(sortNum)));
         } else {
           values += "CAST(? AS CHAR(10)),";
@@ -398,7 +398,7 @@ public class ReportTJ003Dao extends ItemDao {
           if (sortNum == 4 || sortNum == 3) {
             values += "CAST(? AS CHAR(10))";
           } else {
-            values += "CAST(? AS UNSIGNED)";
+            values += "CAST(? AS SIGNED)";
           }
           paramData.add(String.valueOf(bmnKei.get(key)));
           // 一番最後のレコード以外カンマをつける
@@ -424,7 +424,7 @@ public class ReportTJ003Dao extends ItemDao {
     StringBuffer sbSQL = new StringBuffer();
 
     sbSQL.append("select * from " + values + " as ");
-    sbSQL.append("(F1 ,F2 ,F3 ,F4 ");
+    sbSQL.append("T1(F1 ,F2 ,F3 ,F4 ");
     sbSQL.append(",F5 ,F6 ,F7 ,F8 ,F9 ,F10 ,F11 ,F12 ,F13 ,F14 ,F15 "); // 日付別+期間
     sbSQL.append(",F16 ,F17 ,F18 ,F19 ,F20 ,F21 ,F22 ,F23 ,F24 ,F25 ) "); // 日付別売上予算、発注売価、ダミー、荒利
     sbSQL.append("order by F1,F2 ");
@@ -540,9 +540,9 @@ public class ReportTJ003Dao extends ItemDao {
     paramData = new ArrayList<>();
 
     if (array.size() != 0) {
-      values = "(values ROW";
+      values = "(values ";
     }
-
+    System.out.print(array + "\n");
     for (int i = 0; i < array.size(); i++) {
       // 日付は固定値
       for (int j = 0; j < arr.size(); j++) {
@@ -551,9 +551,9 @@ public class ReportTJ003Dao extends ItemDao {
         String wk = arr.getString(j).split("-")[1];
         String daiCd = array.getJSONObject(i).containsKey("DAICD") ? array.getJSONObject(i).getString("DAICD") : "";
 
-        values += "(CAST(? AS UNSIGNED)";
+        values += "ROW(CAST(? AS SIGNED)";
         paramData.add(String.valueOf(daiCd));
-        values += ",CAST(? AS UNSIGNED)";
+        values += ",CAST(? AS SIGNED)";
         paramData.add(tjDt);
         values += ",CAST(? AS DECIMAL(5,2))) ";
 
@@ -700,26 +700,26 @@ public class ReportTJ003Dao extends ItemDao {
     sbSQL.append(" ,T1.JTDT_08");
     sbSQL.append(" ,T1.JTDT_09");
     sbSQL.append(" ,T1.JTDT_10");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_01*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_01");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_02*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_02");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_03*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_03");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_04*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_04");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_05*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_05");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_06*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_06");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_07*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_07");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_08*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_08");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_09*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_09");
-    sbSQL.append(" ,IFNULL(SUM((T1.BAIKAAM_TB*T1.HTSU_10*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_10");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_01*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_01");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_02*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_02");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_03*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_03");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_04*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_04");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_05*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_05");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_06*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_06");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_07*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_07");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_08*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_08");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_09*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_09");
-    sbSQL.append(" ,IFNULL(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_10*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_10");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_01*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_01");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_02*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_02");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_03*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_03");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_04*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_04");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_05*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_05");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_06*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_06");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_07*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_07");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_08*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_08");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_09*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_09");
+    sbSQL.append(" ,COALESCE(SUM((T1.BAIKAAM_TB*T1.HTSU_10*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS NNBAIKA_10");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_01*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_01");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_02*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_02");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_03*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_03");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_04*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_04");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_05*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_05");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_06*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_06");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_07*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_07");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_08*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_08");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_09*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_09");
+    sbSQL.append(" ,COALESCE(SUM(((T1.BAIKAAM_TB-T1.GENKAAM_MAE)*T1.HTSU_10*T1.IRISU_TB))/CAST(1000 as float),CAST(0 as float)) AS ARARI_10");
     sbSQL.append(" FROM");
     sbSQL.append(" INAMS.MSTDAIBRUI T0 LEFT JOIN WK T1");
     sbSQL.append(" ON T0.BMNCD=T1.BMNCD and T0.DAICD=T1.DAICD and T1.LSTNO = ? and T1.TENCD = ?");
