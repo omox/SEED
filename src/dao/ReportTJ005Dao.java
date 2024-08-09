@@ -1742,7 +1742,7 @@ public class ReportTJ005Dao extends ItemDao {
       paramData.add(tenpoCd);
       new ItemList();
 
-      String sqlcommand = "with INP as (select LSTNO, BMNCD, TENCD" + " from (values (cast(? as varchar), cast(? as varchar), cast(? as varchar))) as X(LSTNO, BMNCD, TENCD)"
+      String sqlcommand = "with INP as (select LSTNO, BMNCD, TENCD" + " from (values ROW (cast(? as char), cast(? as char), cast(? as char))) as X(LSTNO, BMNCD, TENCD)"
           + ") select MAX(T.HYOSEQNO) as VALUE" + " from (select distinct SHN.HYOSEQNO from INATK.TOKTJ_SHN SHN" + " inner join INP on SHN.LSTNO = INP.LSTNO and SHN.BMNCD = INP.BMNCD"
           + " union all select ADS.HYOSEQNO from INATK.TOKTJ_ADDSHN ADS" + " inner join INP on ADS.LSTNO = INP.LSTNO and ADS.BMNCD = INP.BMNCD and ADS.TENCD = INP.TENCD) T";
 
