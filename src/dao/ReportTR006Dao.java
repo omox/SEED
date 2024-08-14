@@ -674,7 +674,7 @@ public class ReportTR006Dao extends ItemDao {
         }
         names += ", " + col;
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += ",ROW(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -688,7 +688,7 @@ public class ReportTR006Dao extends ItemDao {
       }
       sbSQLIn.append(itm.getCol() + " as " + itm.getCol());
     }
-    sbSQLIn.append(" from (values" + rows + ") as T1(" + names + ")");
+    sbSQLIn.append(" from (values " + rows + ") as T1(" + names + ")");
 
     // 基本Select文
     StringBuffer sbSQL = new StringBuffer();

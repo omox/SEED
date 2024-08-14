@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.ArrayUtils;
@@ -348,9 +349,11 @@ public class ReportTR007Dao extends ItemDao {
 
     StringBuffer sbSQL = new StringBuffer();
     JSONArray dataArrayT = JSONArray.fromObject(map.get("DATA_HATSTR")); // 正規定量_店別数量(次週も含む)
-    map.get("TENFLG");
+    String tenFlg = map.get("TENFLG"); // 店番が指定されているかどうか
 
-    new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<String>();
+    String sqlWhere = "";
+
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
 
@@ -358,7 +361,8 @@ public class ReportTR007Dao extends ItemDao {
     Object[] valueData = new Object[] {};
     String values = "";
 
-    new HashMap<String, String>();
+    // 親論理削除時のチェック用マップ
+    Map<String, String> shn = new HashMap<String, String>();
 
     int maxField = 12; // Fxxの最大値
     int len = dataArrayT.size();
@@ -376,27 +380,26 @@ public class ReportTR007Dao extends ItemDao {
         for (int k = 1; k <= maxField; k++) {
           String key = "F" + String.valueOf(k);
 
+          if (k == 1) {
+            values += String.valueOf(i + 1);
+          }
 
           if (!ArrayUtils.contains(delKey, key)) {
             String val = dataT.optString(key);
             if (StringUtils.isEmpty(val)) {
-              values += "null ,";
+              values += ", null";
             } else {
-              values += "? ,";
+              values += ", ?";
               prmData.add(val);
             }
           }
 
           if (k == maxField) {
             // 最後に更新区分を追加する
-            values += "?";
+            values += ", ?";
             prmData.add(updKbn);
 
-            values += ",0 ";
-            values += ", '" + userId + "' ";
-            values += ", CURRENT_TIMESTAMP";
-            values += ", CURRENT_TIMESTAMP";
-            valueData = ArrayUtils.add(valueData, "(" + values + ")");
+            valueData = ArrayUtils.add(valueData, "ROW(" + values + ")");
             values = "";
           }
         }
@@ -405,45 +408,88 @@ public class ReportTR007Dao extends ItemDao {
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
 
         sbSQL = new StringBuffer();
-        sbSQL.append("INSERT INTO INATK.HATTR_CSV (");
-        sbSQL.append("SHUNO"); // 週№
-        sbSQL.append(",SHNCD"); // 商品コード
-        sbSQL.append(",TENCD"); // 店コード
-        sbSQL.append(",JSEIKBN"); // 次正区分
-        sbSQL.append(",SURYO_MON"); // 店別数量_月
-        sbSQL.append(",SURYO_TUE"); // 店別数量_火
-        sbSQL.append(",SURYO_WED"); // 店別数量_水
-        sbSQL.append(",SURYO_THU"); // 店別数量_木
-        sbSQL.append(",SURYO_FRI"); // 店別数量_金
-        sbSQL.append(",SURYO_SAT"); // 店別数量_土
-        sbSQL.append(",SURYO_SUN"); // 店別数量_日
-        sbSQL.append(",UPDKBN");
-        sbSQL.append(",SENDFLG");
-        sbSQL.append(",OPERATOR");
-        sbSQL.append(",ADDDT");
-        sbSQL.append(",UPDDT");
-        sbSQL.append(") VALUES ");
-        sbSQL.append(StringUtils.join(valueData, ","));
+        sbSQL.append("INSERT INTO INATK.HATTR_CSV ( ");
+        sbSQL.append("SHUNO "); // 週№
+        sbSQL.append(",SHNCD "); // 商品コード
+        sbSQL.append(",TENCD "); // 店コード
+        sbSQL.append(",JSEIKBN "); // 次正区分
+        sbSQL.append(",SURYO_MON "); // 店別数量_月
+        sbSQL.append(",SURYO_TUE "); // 店別数量_火
+        sbSQL.append(",SURYO_WED "); // 店別数量_水
+        sbSQL.append(",SURYO_THU "); // 店別数量_木
+        sbSQL.append(",SURYO_FRI "); // 店別数量_金
+        sbSQL.append(",SURYO_SAT "); // 店別数量_土
+        sbSQL.append(",SURYO_SUN "); // 店別数量_日
+        sbSQL.append(",UPDKBN ");
+        sbSQL.append(",SENDFLG ");
+        sbSQL.append(",OPERATOR ");
+        sbSQL.append(",ADDDT ");
+        sbSQL.append(",UPDDT ");
+        sbSQL.append(") ");
+        sbSQL.append("SELECT ");
+        sbSQL.append("SHUNO "); // 週№
+        sbSQL.append(",SHNCD "); // 商品コード
+        sbSQL.append(",TENCD "); // 店コード
+        sbSQL.append(",JSEIKBN "); // 次正区分
+        sbSQL.append(",SURYO_MON "); // 店別数量_月
+        sbSQL.append(",SURYO_TUE "); // 店別数量_火
+        sbSQL.append(",SURYO_WED "); // 店別数量_水
+        sbSQL.append(",SURYO_THU "); // 店別数量_木
+        sbSQL.append(",SURYO_FRI "); // 店別数量_金
+        sbSQL.append(",SURYO_SAT "); // 店別数量_土
+        sbSQL.append(",SURYO_SUN "); // 店別数量_日
+        sbSQL.append(",UPDKBN ");
+        sbSQL.append(",SENDFLG ");
+        sbSQL.append(",OPERATOR ");
+        sbSQL.append(",ADDDT ");
+        sbSQL.append(",UPDDT ");
+        sbSQL.append("FROM ( ");
+        sbSQL.append("SELECT ");
+        sbSQL.append("SHUNO "); // 週№
+        sbSQL.append(",SHNCD "); // 商品コード
+        sbSQL.append(",TENCD "); // 店コード
+        sbSQL.append(",JSEIKBN "); // 次正区分
+        sbSQL.append(",SURYO_MON "); // 店別数量_月
+        sbSQL.append(",SURYO_TUE "); // 店別数量_火
+        sbSQL.append(",SURYO_WED "); // 店別数量_水
+        sbSQL.append(",SURYO_THU "); // 店別数量_木
+        sbSQL.append(",SURYO_FRI "); // 店別数量_金
+        sbSQL.append(",SURYO_SAT "); // 店別数量_土
+        sbSQL.append(",SURYO_SUN "); // 店別数量_日
+        sbSQL.append(",UPDKBN "); // 更新区分
+        sbSQL.append(", 0 AS SENDFLG "); // 送信区分：未送信
+        sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター
+        sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日
+        sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日
+        sbSQL.append(" FROM (values " + StringUtils.join(valueData, ",") + ") as T1(NUM ");
+        sbSQL.append(",JSEIKBN "); // F1 次正区分
+        sbSQL.append(",SHUNO "); // F2 週№
+        sbSQL.append(",SHNCD "); // F3 商品コード
+        sbSQL.append(",TENCD "); // F4 店コード
+        sbSQL.append(",SURYO_MON "); // F5 店別数量_月
+        sbSQL.append(",SURYO_TUE "); // F6 店別数量_火
+        sbSQL.append(",SURYO_WED "); // F7 店別数量_水
+        sbSQL.append(",SURYO_THU "); // F8 店別数量_木
+        sbSQL.append(",SURYO_FRI "); // F9 店別数量_金
+        sbSQL.append(",SURYO_SAT "); // F10 店別数量_土
+        sbSQL.append(",SURYO_SUN "); // F11 店別数量_日
+        sbSQL.append(",UPDKBN "); // F12 更新区分
+        sbSQL.append(")) AS T1 ");
         sbSQL.append("ON DUPLICATE KEY UPDATE ");
-        sbSQL.append("SHUNO = VALUES(SHUNO)"); // 週№
-        sbSQL.append(",SHNCD = VALUES(SHNCD)"); // 商品コード
-        sbSQL.append(",TENCD = VALUES(TENCD)"); // 店コード
-        sbSQL.append(",JSEIKBN = VALUES(JSEIKBN)"); // 次正区分
-        sbSQL.append(",SURYO_MON = VALUES(SURYO_MON)"); // 店別数量_月
-        sbSQL.append(",SURYO_TUE = VALUES(SURYO_TUE)"); // 店別数量_火
-        sbSQL.append(",SURYO_WED = VALUES(SURYO_WED)"); // 店別数量_水
-        sbSQL.append(",SURYO_THU = VALUES(SURYO_THU)"); // 店別数量_木
-        sbSQL.append(",SURYO_FRI = VALUES(SURYO_FRI)"); // 店別数量_金
-        sbSQL.append(",SURYO_SAT = VALUES(SURYO_SAT)"); // 店別数量_土
-        sbSQL.append(",SURYO_SUN = VALUES(SURYO_SUN)"); // 店別数量_日
-        sbSQL.append(",UPDKBN = VALUES(UPDKBN)");
-        sbSQL.append(",SENDFLG =VALUES(SENDFLG)");
-        sbSQL.append(",OPERATOR = VALUES(OPERATOR)");
-        sbSQL.append(",UPDDT = VALUES(UPDDT)");
+        sbSQL.append("SURYO_MON = VALUES(SURYO_MON) "); // 店別数量_月
+        sbSQL.append(",SURYO_TUE = VALUES(SURYO_TUE) "); // 店別数量_火
+        sbSQL.append(",SURYO_WED = VALUES(SURYO_WED) "); // 店別数量_水
+        sbSQL.append(",SURYO_THU = VALUES(SURYO_THU) "); // 店別数量_木
+        sbSQL.append(",SURYO_FRI = VALUES(SURYO_FRI) "); // 店別数量_金
+        sbSQL.append(",SURYO_SAT = VALUES(SURYO_SAT) "); // 店別数量_土
+        sbSQL.append(",SURYO_SUN = VALUES(SURYO_SUN) "); // 店別数量_日
+        sbSQL.append(",UPDKBN = VALUES(UPDKBN) ");
+        sbSQL.append(",SENDFLG = VALUES(SENDFLG) ");
+        sbSQL.append(",OPERATOR = VALUES(OPERATOR) ");
+        sbSQL.append(",UPDDT = VALUES(UPDDT) ");
 
-        if (DefineReport.ID_DEBUG_MODE) {
-          System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
-        }
+        if (DefineReport.ID_DEBUG_MODE)
+          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
@@ -607,7 +653,7 @@ public class ReportTR007Dao extends ItemDao {
 
     // 保存用 List (検索情報)作成
     setWhere(new ArrayList<List<String>>());
-    new ArrayList<String>();
+    List<String> cells = new ArrayList<String>();
 
     // 共通箇所設定
     createCmnOutput(jad);
@@ -663,15 +709,20 @@ public class ReportTR007Dao extends ItemDao {
 
     ItemList iL = new ItemList();
 
-    map.get("SHNCD");
-    map.get("BUMON");
-    map.get("DAIBUN");
-    map.get("CHUBUN");
-    map.get("TENCD");
-    map.get("SHUNO");
-    map.get("SEIKI");
-    map.get("JISYU");
+    String szShncd = map.get("SHNCD"); // 商品コード
+    String szBumon = map.get("BUMON"); // 部門
+    String szDaibun = map.get("DAIBUN"); // 大分類
+    String szChubun = map.get("CHUBUN"); // 中分類
+    String szTencd = map.get("TENCD"); // 店コード
+    String szShuno = map.get("SHUNO"); // 週No.
+    String szSeiki = map.get("SEIKI"); // 正規
+    String szJisyu = map.get("JISYU"); // 次週
 
+    // 配送グループ名称（漢字）に入力があった場合部分一致検索を行う
+    // DB検索用パラメータ
+    String sqlFrom = "";
+    String sqlWhere = "";
+    String sqlWith = "";
     ArrayList<String> paramData = new ArrayList<String>();
 
     // 一覧表情報
