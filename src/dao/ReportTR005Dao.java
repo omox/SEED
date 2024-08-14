@@ -402,7 +402,7 @@ public class ReportTR005Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append("COALESCE(UPDKBN, 0) <> 1  ");
       sbSQL.append("ORDER BY ");
-      sbSQL.append("ID desc fetch first 1 rows only)) ");
+      sbSQL.append("ID desc LIMIT 1 ) as T1 ) ");
       sbSQL.append("SELECT ");
       sbSQL.append("SHUNO.SHUNO ");
       sbSQL.append(",SHORI.DT ");
