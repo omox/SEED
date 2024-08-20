@@ -1058,7 +1058,6 @@ public class ReportSK003Dao extends ItemDao {
     JSONArray dataArrayT = JSONArray.fromObject(map.get("DATA_SHN")); // 更新情報(予約発注_納品日)
     JSONArray.fromObject(map.get("DATA_SHN_DEL"));
 
-
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
     String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
@@ -1099,22 +1098,28 @@ public class ReportSK003Dao extends ItemDao {
         }
 
         if (StringUtils.isEmpty(val)) {
-          values += ", null";
+          values += " null ,";
         } else {
-          values += ", ?";
+          values += "? ,";
           prmData.add(val);
         }
       }
 
       if (k == maxField) {
-        valueData = ArrayUtils.add(valueData, values);
+        values += " " + DefineReport.ValUpdkbn.NML.getVal() + " ";
+        values += ", 0";
+        values += ", '" + userId + "'";
+        values += ", CURRENT_TIMESTAMP";
+        values += ", CURRENT_TIMESTAMP";
+        
+        valueData = ArrayUtils.add(valueData,  "(" + values + ")");
         values = "";
       }
     }
 
     // 新店改装店発注の登録・更新
     sbSQL = new StringBuffer();
-    sbSQL.append(" REPLACE INTO INATK.HATSK (");
+    sbSQL.append(" INSERT INTO INATK.HATSK (");
     sbSQL.append(" INPUTNO"); // 入力№
     sbSQL.append(", TENNO"); // 店コード
     sbSQL.append(", HTDT"); // 発注日
@@ -1122,23 +1127,27 @@ public class ReportSK003Dao extends ItemDao {
     sbSQL.append(", SHNKBN"); // 商品区分
     sbSQL.append(", KSPAGE"); // 構成ページ
     sbSQL.append(", BDENKBN"); // 別伝区分
-    sbSQL.append(", SENDFLG");// 送信フラグ
     sbSQL.append(", UPDKBN"); // 更新区分：
+    sbSQL.append(", SENDFLG");// 送信フラグ
     sbSQL.append(", OPERATOR "); // オペレーター：
     sbSQL.append(", ADDDT "); // 登録日：
     sbSQL.append(", UPDDT "); // 更新日：
-    sbSQL.append(") VALUES (");
-    sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-    sbSQL.append(", 0"); // 送信フラグ
-    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
-    sbSQL.append(", '" + userId + "' "); // オペレーター
-    if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
-      sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
-    } else {
-      sbSQL.append(",ADDDT ");
-    }
-    sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-    sbSQL.append(")");
+    sbSQL.append(") ");
+    sbSQL.append("VALUES ");
+    sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("INPUTNO = NEW.INPUTNO ");
+    sbSQL.append(", TENNO = NEW.TENNO ");
+    sbSQL.append(", HTDT = NEW.HTDT ");
+    sbSQL.append(", NNDT = NEW.NNDT ");
+    sbSQL.append(", SHNKBN = NEW.SHNKBN ");
+    sbSQL.append(", KSPAGE = NEW.KSPAGE ");
+    sbSQL.append(", BDENKBN = NEW.BDENKBN ");
+    sbSQL.append(", UPDKBN = NEW.UPDKBN ");
+    sbSQL.append(", SENDFLG = NEW.SENDFLG ");
+    sbSQL.append(", OPERATOR = NEW.OPERATOR ");
+    //sbSQL.append(", ADDDT = NEW.ADDDT ");
+    sbSQL.append(", UPDDT = NEW.UPDDT ");
 
 
 
