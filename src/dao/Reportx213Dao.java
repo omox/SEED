@@ -442,7 +442,7 @@ public class Reportx213Dao extends ItemDao {
     }
 
     // クリア
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     valueData = new Object[] {};
     values = "";
 
@@ -454,21 +454,38 @@ public class Reportx213Dao extends ItemDao {
       if (!dataG.isEmpty()) {
         for (int k = 1; k <= maxField; k++) {
           String key = "F" + String.valueOf(k);
+          String val = dataG.optString(key);
 
-          if (!ArrayUtils.contains(new String[] {"F3"}, key)) {
-            String val = dataG.optString(key);
-
+          if (k == 1) {
             if (StringUtils.isEmpty(val)) {
 
               // 新規登録の場合更新区分は有効
               if (key.equals("F1")) {
                 paramData.add(input_seq);
-                values += "(?";
+                values += "?";
                 values += "," + DefineReport.ValUpdkbn.NML.getVal();
                 values += "," + DefineReport.Values.SENDFLG_UN.getVal();
-
-                // 新規登録の場合SEQ001から新しい番号を発行
-              } else if (key.equals("F5")) {
+              }
+            } else {
+              paramData.add(input_seq);
+              values += "?";
+            }
+          }
+          // 削除対象行の件数をチェック
+          if (key.equals("F1")) {
+            if (val.equals("1")) {
+              delcnt++;
+              values += "," + DefineReport.ValUpdkbn.DEL.getVal();
+              values += "," + DefineReport.Values.SENDFLG_UN.getVal();
+            }
+            if (val.equals("0")) {
+              values += "," + DefineReport.ValUpdkbn.NML.getVal();
+              values += "," + DefineReport.Values.SENDFLG_UN.getVal();
+            }
+          }
+          if (!ArrayUtils.contains(new String[] {"F1", "F3"}, key)) {
+            if (StringUtils.isEmpty(val)) {
+              if (key.equals("F5")) {
                 values += ", ?";
                 paramData.add(String.valueOf(i + 1));
               } else {
@@ -477,16 +494,6 @@ public class Reportx213Dao extends ItemDao {
             } else {
               values += ", ?";
               paramData.add(val);
-
-              // 削除対象行の件数をチェック
-              if (key.equals("F1")) {
-                if (val.equals("1")) {
-                  delcnt++;
-                }
-                // 送信フラグを追加
-                values += "," + DefineReport.ValUpdkbn.NML.getVal();
-                values += "," + DefineReport.Values.SENDFLG_UN.getVal();
-              }
             }
           }
 
@@ -494,11 +501,12 @@ public class Reportx213Dao extends ItemDao {
             values += (", '" + userId + "' "); // オペレーター
             values += (", CURRENT_TIMESTAMP ");
             values += (", CURRENT_TIMESTAMP "); // 更新日
-            valueData = ArrayUtils.add(valueData, values + ")");
+            valueData = ArrayUtils.add(valueData, "(" + values + ")");
             values = "";
           }
         }
       }
+
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
@@ -512,13 +520,13 @@ public class Reportx213Dao extends ItemDao {
         sbSQL.append(", OPERATOR "); // オペレーター：
         sbSQL.append(", ADDDT "); // 登録日：
         sbSQL.append(", UPDDT "); // 更新日：
-        sbSQL.append(") VALUES (");
-        sbSQL.append(StringUtils.join(valueData, ",").substring(1));
+        sbSQL.append(") VALUES ");
+        sbSQL.append(" " + StringUtils.join(valueData, ",") + " ");
 
 
 
         if (DefineReport.ID_DEBUG_MODE) {
-          System.out.println("/* " + this.getClass().getName() + "*/" + sbSQL.toString());
+          System.out.println("/* " + this.getClass().getName() + "[sql]*/" + sbSQL.toString());
         }
 
         sqlList.add(sbSQL.toString());
@@ -526,7 +534,7 @@ public class Reportx213Dao extends ItemDao {
         lblList.add("プライスカード発行枚数トラン");
 
         // クリア
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
