@@ -155,7 +155,6 @@
 				var newValue = $.getInputboxValue(obj);
 				that.changeInputboxFunc(that, $.id_inp.txt_tenkaikbn, newValue, obj);
 			});
-
 			$('#'+$.id_inp.txt_shncd).next().on('focusout', function(e){
 				var obj = $(this).find('[orizinid='+$.id_inp.txt_shncd+']');
 				var code = e.which ? e.which : e.keyCode;
@@ -6945,7 +6944,8 @@
 		getInputboxParams: function(that, id, newValue, key){
 			// 情報取得
 			var values = {};
-			values["value"] = newValue;
+			//values["value"] = newValue;
+			values["value"] = that.jsonHidden[9].value;
 			if(key){
 				values["KEY"] = key;
 			}
