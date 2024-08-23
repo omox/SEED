@@ -31,11 +31,11 @@ import net.sf.json.JSONObject;
 public class ReportRP006Dao extends ItemDao {
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
   // JQgrid用のSQL通常率パターン
   public final static String ID_SQL_TENBETUBRT_RP006_UPD = "" + "WITH RECURSIVE T1(IDX) as (select 1 from (SELECT 1 AS DUMMY) DUMMY union all select IDX + 1 from T1 where IDX < 400)"
@@ -56,24 +56,14 @@ public class ReportRP006Dao extends ItemDao {
       + ", case when COALESCE(T2.MISEUNYOKBN, 9) = 9 then '' else T2.TENKN end as TENKN" // F2 : 店舗名
       + ", case when COALESCE(T2.MISEUNYOKBN, 9) = 9 then '' else '0' end as BUNPAIRT" // F3 : 分配率(通常率)
       + ", case when COALESCE(T2.MISEUNYOKBN, 9) = 9 then 0 else 1 end as EDITFLG " // EDITFLG : 0:不可 1:可
-      + " from T1"
+      + " from T3 ,T1"
       + " left join (select TEN.TENCD, TEN.MISEUNYOKBN , TEN.UPDKBN, TEN.TENKN, TBN.BMNCD  from INAMS.MSTTEN TEN inner join INAMS.MSTTENBMN TBN on TBN.TENCD = TEN.TENCD and TBN.BMNCD = ? and COALESCE(TEN.UPDKBN, 0) <> 1 and COALESCE(TBN.UPDKBN, 0) <> 1) T2 on T1.IDX = T2.TENCD and COALESCE(UPDKBN, 0) <> 1"
-      + " LEFT OUTER JOIN T3 ON T3.BMNCD = T2.BMNCD where T1.IDX <= T3.MAXTEN" + " order by T1.IDX";
+      + "  where T1.IDX <= T3.MAXTEN" + " order by T1.IDX";
 
   public final static String ID_SQL_TENBETUBRT_RP010 = ""
       /*
-       * + "select" + " right('000'||TENCD,3) as TENCD" // F1 : 店番 +
-       * ", (case when MISEUNYOKBN = 9 then NULL when COUNT = 0 then NULL else TENKN end) as TENKN" // F2
-       * : 店舗名 + ", (INT(SUBSTR(TENURI_ARR, ((TENCD -1) * 9 + 1), 9))) as URIAGE" // F3 : 売上(実績率) +
-       * ", (INT(SUBSTR(TENTEN_ARR, ((TENCD -1) * 9 + 1), 9))) as TENSU" // F4 : 点数(実績率) + " from" +
-       * " (select" + " T1.TENCD" + ", T1.MISEUNYOKBN" +
-       * ", (select count(T2.TENCD) from INAMS.MSTTENBMN T2 where T2.TENCD=T1.TENCD and T2.BMNCD=?) as COUNT"
-       * + ", T1.TENKN" +
-       * ", (select T3.TENURI_ARR from INATK.TOKJRTPTN T3 where T3.BMNCD=? and T3.WWMMFLG=? and YYMM=? and DAICD=? and CHUCD=?)"
-       * +
-       * ", (select T3.TENTEN_ARR from INATK.TOKJRTPTN T3 where T3.BMNCD=? and T3.WWMMFLG=? and YYMM=? and DAICD=? and CHUCD=?)"
-       * + " from INAMS.MSTTEN T1" + " where T1.TENCD <= 400" + " and COALESCE(T1.UPDKBN, 0) = 0" + " )" +
-       * " order by TENCD";
+       * + "select" + " right('000'||TENCD,3) as TENCD" // F1 : 店番 + ", (case when MISEUNYOKBN = 9 then NULL when COUNT = 0 then NULL else TENKN end) as TENKN" // F2 : 店舗名 + ", (INT(SUBSTR(TENURI_ARR, ((TENCD -1) * 9 + 1), 9))) as URIAGE" // F3 : 売上(実績率) + ", (INT(SUBSTR(TENTEN_ARR, ((TENCD -1) * 9 + 1), 9))) as TENSU" // F4 : 点数(実績率) + " from" + " (select" + " T1.TENCD" + ", T1.MISEUNYOKBN" + ", (select count(T2.TENCD) from INAMS.MSTTENBMN T2 where T2.TENCD=T1.TENCD and T2.BMNCD=?) as COUNT" + ", T1.TENKN" +
+       * ", (select T3.TENURI_ARR from INATK.TOKJRTPTN T3 where T3.BMNCD=? and T3.WWMMFLG=? and YYMM=? and DAICD=? and CHUCD=?)" + ", (select T3.TENTEN_ARR from INATK.TOKJRTPTN T3 where T3.BMNCD=? and T3.WWMMFLG=? and YYMM=? and DAICD=? and CHUCD=?)" + " from INAMS.MSTTEN T1" + " where T1.TENCD <= 400" + " and COALESCE(T1.UPDKBN, 0) = 0" + " )" + " order by TENCD";
        */
 
 
@@ -316,7 +306,7 @@ public class ReportRP006Dao extends ItemDao {
     // SQL発行：通常率パターン(登録)
     this.createSqlRtptn(data, dataArrayRtptn, userInfo);
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       // 更新処理実行
       countList = super.executeSQLs(sqlList, prmList);
@@ -349,56 +339,21 @@ public class ReportRP006Dao extends ItemDao {
    * @return
    */
   /*
-   * public String createSqlRtptn(JSONArray dataArray, JSONArray dataArrayRtptn, HashMap<String,
-   * String> map, User userInfo, String sysdate){
+   * public String createSqlRtptn(JSONArray dataArray, JSONArray dataArrayRtptn, HashMap<String, String> map, User userInfo, String sysdate){
    *
    * String dbsysdate = CmnDate.dbDateFormat(sysdate);
    *
-   * JSONObject option = new JSONObject(); // 更新情報 ArrayList<String> prmData = new
-   * ArrayList<String>(); String values = ""; String updateRows = ""; // 更新データ
+   * JSONObject option = new JSONObject(); // 更新情報 ArrayList<String> prmData = new ArrayList<String>(); String values = ""; String updateRows = ""; // 更新データ
    *
-   * String obj = map.get(DefineReport.ID_PARAM_OBJ); JSONObject msgObj = new JSONObject(); JSONArray
-   * msg = new JSONArray();
+   * String obj = map.get(DefineReport.ID_PARAM_OBJ); JSONObject msgObj = new JSONObject(); JSONArray msg = new JSONArray();
    *
-   * // パラメータ確認 int kryoColNum = 9; // テーブル列数 // ログインユーザー情報取得 int userId = userInfo.getCD_user(); //
-   * ログインユーザー values = ""; // 更新情報 for (int i = 1; i <= kryoColNum; i++) { String col = "F" + i;
-   * String val = dataArray.optJSONObject(0).optString(col); if (i==4) { // F4 : 店分配率配列： val = "";
-   * for(int j=0; j < dataArrayRtptn.size(); j++){ val +=
-   * StringUtils.leftPad(dataArrayRtptn.optJSONObject(j).optString("F3"), 5, "0"); } } else if (i==5)
-   * { // F5 : 更新区分： val = "0"; } else if (i==6) { // F6 : 送信フラグ： val = "0"; } else if (i==7) { // F7
-   * : オペレーター： val = ""+userId; } else if (i==8) { // F8 : 登録日： val = dbsysdate; } else if (i==9) { //
-   * F9 : 更新日： val = dbsysdate; } if (isTest) { if (i == 1) { values += "( '" + val + "'"; // F1 : 部門：
-   * } else if (i == 9) { values += ", '" + val + "')"; // F9 : 更新日： } else { values += ", '" + val +
-   * "'"; // F2 : 率パターンNo.：, F3 : 率パターン名称： } } else { prmData.add(val); values += ", ?"; } } //
-   * 基本INSERT/UPDATE文 StringBuffer sbSQL; // 更新SQL sbSQL = new StringBuffer(); sbSQL = new
-   * StringBuffer(); sbSQL.append("merge into INATK.TOKRTPTN as T using (select");
-   * sbSQL.append("  BMNCD"); // F1 : 部門： sbSQL.append(", RTPTNNO"); // F2 : 率パターンNo.：
-   * sbSQL.append(", RTPTNKN"); // F3 : 率パターン名称： sbSQL.append(", TENRT_ARR"); // F4 : 店分配率配列：
-   * sbSQL.append(", UPDKBN"); // F5 : 更新区分 sbSQL.append(", SENDFLG"); // F6 : 送信フラグ
-   * sbSQL.append(", OPERATOR"); // F7 : オペレータ sbSQL.append(", ADDDT"); // F8 : 登録日
-   * sbSQL.append(", UPDDT"); // F9 : 更新日 sbSQL.append(" from (values "+values+" ) as T1(");
-   * sbSQL.append("  BMNCD"); // F1 : 部門： sbSQL.append(", RTPTNNO"); // F2 : 率パターンNo.：
-   * sbSQL.append(", RTPTNKN"); // F3 : 率パターン名称： sbSQL.append(", TENRT_ARR"); // F4 : 店分配率配列：
-   * sbSQL.append(", UPDKBN"); // F5 : 更新区分 sbSQL.append(", SENDFLG"); // F6 : 送信フラグ
-   * sbSQL.append(", OPERATOR"); // F7 : オペレータ sbSQL.append(", ADDDT"); // F8 : 登録日
-   * sbSQL.append(", UPDDT"); // F9 : 更新日
-   * sbSQL.append("))as RE on (T.BMNCD = RE.BMNCD and T.RTPTNNO = RE.RTPTNNO)");
-   * sbSQL.append(" when matched then update set"); sbSQL.append("  BMNCD = RE.BMNCD"); // F1 : 部門：
-   * sbSQL.append(", RTPTNNO = RE.RTPTNNO"); // F2 : 率パターンNo.： sbSQL.append(", RTPTNKN = RE.RTPTNKN");
-   * // F3 : 率パターン名称： sbSQL.append(", TENRT_ARR = RE.TENRT_ARR"); // F4 : 店分配率配列：
-   * sbSQL.append(", UPDKBN = RE.UPDKBN"); // F5 : 更新区分： sbSQL.append(", SENDFLG = RE.SENDFLG"); // F6
-   * : 送信フラグ： sbSQL.append(", OPERATOR = RE.OPERATOR"); // F7 : オペレーター：
-   * sbSQL.append(", UPDDT = RE.UPDDT"); // F9 : 更新日： sbSQL.append(" when not matched then insert(");
-   * sbSQL.append("  BMNCD"); // F1 : 部門： sbSQL.append(", RTPTNNO"); // F2 : 率パターンNo.：
-   * sbSQL.append(", RTPTNKN"); // F3 : 率パターン名称： sbSQL.append(", TENRT_ARR"); // F4 : 店分配率配列：
-   * sbSQL.append(", UPDKBN"); // F5 : 更新区分： sbSQL.append(", SENDFLG"); // F6 : 送信フラグ：
-   * sbSQL.append(", OPERATOR"); // F7 : オペレーター： sbSQL.append(", ADDDT"); // F8 : 登録日：
-   * sbSQL.append(", UPDDT"); // F9 : 更新日： sbSQL.append(") values ("); sbSQL.append("  RE.BMNCD"); //
-   * F1 : 部門： sbSQL.append(", RE.RTPTNNO"); // F2 : 率パターンNo.： sbSQL.append(", RE.RTPTNKN"); // F3 :
-   * 率パターン名称： sbSQL.append(", RE.TENRT_ARR"); // F4 : 店分配率配列： sbSQL.append(", RE.UPDKBN"); // F5 :
-   * 更新区分： sbSQL.append(", RE.SENDFLG"); // F6 : 送信フラグ： sbSQL.append(", RE.OPERATOR"); // F7 : オペレーター：
-   * sbSQL.append(", RE.ADDDT"); // F8 : 登録日： sbSQL.append(", RE.UPDDT"); // F9 : 更新日：
-   * sbSQL.append(")");
+   * // パラメータ確認 int kryoColNum = 9; // テーブル列数 // ログインユーザー情報取得 int userId = userInfo.getCD_user(); // ログインユーザー values = ""; // 更新情報 for (int i = 1; i <= kryoColNum; i++) { String col = "F" + i; String val = dataArray.optJSONObject(0).optString(col); if (i==4) { // F4 : 店分配率配列： val = ""; for(int j=0; j < dataArrayRtptn.size(); j++){ val += StringUtils.leftPad(dataArrayRtptn.optJSONObject(j).optString("F3"), 5, "0"); } } else if (i==5) { // F5 : 更新区分： val = "0"; } else if (i==6) { // F6 : 送信フラグ： val = "0"; } else if (i==7) { // F7 : オペレーター： val =
+   * ""+userId; } else if (i==8) { // F8 : 登録日： val = dbsysdate; } else if (i==9) { // F9 : 更新日： val = dbsysdate; } if (isTest) { if (i == 1) { values += "( '" + val + "'"; // F1 : 部門： } else if (i == 9) { values += ", '" + val + "')"; // F9 : 更新日： } else { values += ", '" + val + "'"; // F2 : 率パターンNo.：, F3 : 率パターン名称： } } else { prmData.add(val); values += ", ?"; } } // 基本INSERT/UPDATE文 StringBuffer sbSQL; // 更新SQL sbSQL = new StringBuffer(); sbSQL = new StringBuffer(); sbSQL.append("merge into INATK.TOKRTPTN as T using (select");
+   * sbSQL.append("  BMNCD"); // F1 : 部門： sbSQL.append(", RTPTNNO"); // F2 : 率パターンNo.： sbSQL.append(", RTPTNKN"); // F3 : 率パターン名称： sbSQL.append(", TENRT_ARR"); // F4 : 店分配率配列： sbSQL.append(", UPDKBN"); // F5 : 更新区分 sbSQL.append(", SENDFLG"); // F6 : 送信フラグ sbSQL.append(", OPERATOR"); // F7 : オペレータ sbSQL.append(", ADDDT"); // F8 : 登録日 sbSQL.append(", UPDDT"); // F9 : 更新日 sbSQL.append(" from (values "+values+" ) as T1("); sbSQL.append("  BMNCD"); // F1 : 部門： sbSQL.append(", RTPTNNO"); // F2 : 率パターンNo.： sbSQL.append(", RTPTNKN"); // F3 : 率パターン名称：
+   * sbSQL.append(", TENRT_ARR"); // F4 : 店分配率配列： sbSQL.append(", UPDKBN"); // F5 : 更新区分 sbSQL.append(", SENDFLG"); // F6 : 送信フラグ sbSQL.append(", OPERATOR"); // F7 : オペレータ sbSQL.append(", ADDDT"); // F8 : 登録日 sbSQL.append(", UPDDT"); // F9 : 更新日 sbSQL.append("))as RE on (T.BMNCD = RE.BMNCD and T.RTPTNNO = RE.RTPTNNO)"); sbSQL.append(" when matched then update set"); sbSQL.append("  BMNCD = RE.BMNCD"); // F1 : 部門： sbSQL.append(", RTPTNNO = RE.RTPTNNO"); // F2 : 率パターンNo.： sbSQL.append(", RTPTNKN = RE.RTPTNKN"); // F3 : 率パターン名称：
+   * sbSQL.append(", TENRT_ARR = RE.TENRT_ARR"); // F4 : 店分配率配列： sbSQL.append(", UPDKBN = RE.UPDKBN"); // F5 : 更新区分： sbSQL.append(", SENDFLG = RE.SENDFLG"); // F6 : 送信フラグ： sbSQL.append(", OPERATOR = RE.OPERATOR"); // F7 : オペレーター： sbSQL.append(", UPDDT = RE.UPDDT"); // F9 : 更新日： sbSQL.append(" when not matched then insert("); sbSQL.append("  BMNCD"); // F1 : 部門： sbSQL.append(", RTPTNNO"); // F2 : 率パターンNo.： sbSQL.append(", RTPTNKN"); // F3 : 率パターン名称： sbSQL.append(", TENRT_ARR"); // F4 : 店分配率配列： sbSQL.append(", UPDKBN"); // F5 : 更新区分：
+   * sbSQL.append(", SENDFLG"); // F6 : 送信フラグ： sbSQL.append(", OPERATOR"); // F7 : オペレーター： sbSQL.append(", ADDDT"); // F8 : 登録日： sbSQL.append(", UPDDT"); // F9 : 更新日： sbSQL.append(") values ("); sbSQL.append("  RE.BMNCD"); // F1 : 部門： sbSQL.append(", RE.RTPTNNO"); // F2 : 率パターンNo.： sbSQL.append(", RE.RTPTNKN"); // F3 : 率パターン名称： sbSQL.append(", RE.TENRT_ARR"); // F4 : 店分配率配列： sbSQL.append(", RE.UPDKBN"); // F5 : 更新区分： sbSQL.append(", RE.SENDFLG"); // F6 : 送信フラグ： sbSQL.append(", RE.OPERATOR"); // F7 : オペレーター： sbSQL.append(", RE.ADDDT"); // F8 :
+   * 登録日： sbSQL.append(", RE.UPDDT"); // F9 : 更新日： sbSQL.append(")");
    *
    * System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
    *
@@ -425,7 +380,7 @@ public class ReportRP006Dao extends ItemDao {
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
 
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     Object[] valueData = new Object[] {};
     String values = "";
 
@@ -539,7 +494,7 @@ public class ReportRP006Dao extends ItemDao {
     // }
     // }
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -579,7 +534,7 @@ public class ReportRP006Dao extends ItemDao {
 
     // DB検索用パラメータ
     String sqlWhere = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
 
     sqlWhere += " where BMNCD=?";
@@ -645,9 +600,9 @@ public class ReportRP006Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     // DB検索用パラメータ
     String sqlWhere = "";
@@ -819,7 +774,7 @@ public class ReportRP006Dao extends ItemDao {
         sbSQL = new StringBuffer();
         sbSQL.append("select * from INATK.TOKRTPTN RTPTN where RTPTN.BMNCD = " + data.optString(TOKRTPTNLayout.BMNCD.getId()) + " and RTPTN.RTPTNNO = " + data.optString(TOKRTPTNLayout.RTPTNNO.getId())
             + "  and COALESCE(RTPTN.UPDKBN, 0) = 0");
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
         if (dbDatas.size() > 0) {
           msg.add(MessageUtility.getDbMessageIdObj("E11040", new String[] {reqNo + "部門コード,率パターンNo."}));
           return msg;
@@ -835,10 +790,10 @@ public class ReportRP006Dao extends ItemDao {
       // 部門コード存在チェック
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (StringUtils.isEmpty(data.optString(TOKRTPTNLayout.BMNCD.getId()))) {
         sqlWhere += "BMNCD=null AND ";
@@ -855,7 +810,7 @@ public class ReportRP006Dao extends ItemDao {
       sbSQL.append(sqlWhere); // 入力された商品コードで検索
       sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal());
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0) {
         msg.add(MessageUtility.getDbMessageIdObj("E11044", new String[] {reqNo}));
@@ -891,10 +846,10 @@ public class ReportRP006Dao extends ItemDao {
       // 変数を初期化
       if (DefineReport.Button.UPLOAD.getObj().equals(sendBtnid)) {
         sbSQL = new StringBuffer();
-        iL = new ItemList();
+        new ItemList();
         dbDatas = new JSONArray();
         sqlWhere = "";
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
 
         // 店存在チェック
         if (StringUtils.isEmpty(tencd)) {
@@ -912,7 +867,7 @@ public class ReportRP006Dao extends ItemDao {
         sbSQL.append(sqlWhere); // 入力された商品コードで検索
         sbSQL.append("MISEUNYOKBN <> '9' AND UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " ");
 
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
         if (dbDatas.size() == 0) {
           // 登録不可の店舗
