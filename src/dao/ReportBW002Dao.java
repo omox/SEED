@@ -782,18 +782,53 @@ public class ReportBW002Dao extends ItemDao {
                 }
               }
               // updateRows += ",("+values+")";
-              values += ", " + DefineReport.ValUpdkbn.NML.getVal();
-              values += ",0 ";
-              values += ", '" + userId + "' ";
-              values += ", CURRENT_TIMESTAMP ";
-              values += ", CURRENT_TIMESTAMP ";
               updateRows += ",(" + StringUtils.removeStart(values, ",") + ")";
             }
           }
         }
         updateRows = StringUtils.removeStart(updateRows, ",");
         sbSQL = new StringBuffer();
-        sbSQL.append("REPLACE INTO INATK.TOKRS_SHN ( ");
+        sbSQL.append("INSERT INTO INATK.TOKRS_SHN ( ");
+        sbSQL.append(" HBSTDT "); // 販売開始日
+        sbSQL.append(",BMNCD "); // 部門
+        sbSQL.append(",WRITUKBN "); // 割引率区分
+        sbSQL.append(",SEICUTKBN "); // 正規・カット
+        sbSQL.append(",DUMMYCD "); // ダミーコード
+        sbSQL.append(",KANRINO "); // 管理番号
+        sbSQL.append(",SHNCD "); // 商品コード
+        sbSQL.append(",MAKERKN "); // メーカー名
+        sbSQL.append(",SHNKN "); // 商品名称
+        sbSQL.append(",KIKKN "); // 規格名称
+        sbSQL.append(",IRISU "); // 入数
+        sbSQL.append(",BAIKAAM "); // 売価
+        sbSQL.append(",GENKAAM "); // 原価
+        sbSQL.append(",UPDKBN "); // 更新フラグ
+        sbSQL.append(",SENDFLG "); // 送信フラグ
+        sbSQL.append(",OPERATOR "); // オペレーターコード
+        sbSQL.append(",ADDDT "); // 登録日
+        sbSQL.append(",UPDDT "); // 更新日
+        sbSQL.append(") ");
+        sbSQL.append("SELECT ");
+        sbSQL.append(" HBSTDT "); // 販売開始日
+        sbSQL.append(",BMNCD "); // 部門
+        sbSQL.append(",WRITUKBN "); // 割引率区分
+        sbSQL.append(",SEICUTKBN "); // 正規・カット
+        sbSQL.append(",DUMMYCD "); // ダミーコード
+        sbSQL.append(",KANRINO "); // 管理番号
+        sbSQL.append(",SHNCD "); // 商品コード
+        sbSQL.append(",MAKERKN "); // メーカー名
+        sbSQL.append(",SHNKN "); // 商品名称
+        sbSQL.append(",KIKKN "); // 規格名称
+        sbSQL.append(",IRISU "); // 入数
+        sbSQL.append(",BAIKAAM "); // 売価
+        sbSQL.append(",GENKAAM "); // 原価
+        sbSQL.append(",UPDKBN "); // 更新フラグ
+        sbSQL.append(",SENDFLG "); // 送信フラグ
+        sbSQL.append(",OPERATOR "); // オペレーターコード
+        sbSQL.append(",ADDDT "); // 登録日
+        sbSQL.append(",UPDDT "); // 更新日
+        sbSQL.append("FROM ( ");
+        sbSQL.append("SELECT ");
         sbSQL.append(" HBSTDT"); // 販売開始日 F1
         sbSQL.append(",BMNCD"); // 部門 F2
         sbSQL.append(",WRITUKBN"); // 割引率区分 F3
@@ -807,13 +842,38 @@ public class ReportBW002Dao extends ItemDao {
         sbSQL.append(",BAIKAAM"); // 売価
         sbSQL.append(",GENKAAM"); // 原価
         sbSQL.append(",MAKERKN"); // メーカ名
-        sbSQL.append(",UPDKBN"); // 更新区分：
-        sbSQL.append(",SENDFLG"); // 送信フラグ
-        sbSQL.append(",OPERATOR "); // オペレーター：
-        sbSQL.append(",ADDDT "); // 登録日：
-        sbSQL.append(",UPDDT "); // 更新日：
-        sbSQL.append(") VALUES ");
-        sbSQL.append(updateRows);
+        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
+        sbSQL.append(",0 as SENDFLG"); // 送信フラグ
+        sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+        sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+        sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+        sbSQL.append(" FROM (values ROW" + updateRows + ") as T1(");
+        sbSQL.append(" HBSTDT"); // 販売開始日
+        sbSQL.append(",BMNCD"); // 部門
+        sbSQL.append(",WRITUKBN"); // 割引率区分
+        sbSQL.append(",SEICUTKBN"); // 正規・カット
+        sbSQL.append(",DUMMYCD"); // ダミーコード
+        sbSQL.append(",KANRINO"); // 管理番号
+        sbSQL.append(",SHNCD"); // 商品コード
+        sbSQL.append(",SHNKN"); // 商品名称
+        sbSQL.append(",KIKKN"); // 規格名称
+        sbSQL.append(",IRISU"); // 入数
+        sbSQL.append(",BAIKAAM"); // 売価
+        sbSQL.append(",GENKAAM"); // 原価
+        sbSQL.append(",MAKERKN"); // メーカー名
+        sbSQL.append(")) as T1 ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("SHNCD = VALUES(SHNCD) "); // 商品コード
+        sbSQL.append(",MAKERKN = VALUES(MAKERKN) "); // メーカー名
+        sbSQL.append(",SHNKN = VALUES(SHNKN) "); // 商品名称
+        sbSQL.append(",KIKKN = VALUES(KIKKN) "); // 規格名称
+        sbSQL.append(",IRISU = VALUES(IRISU) "); // 入数
+        sbSQL.append(",BAIKAAM = VALUES(BAIKAAM) "); // 売価
+        sbSQL.append(",GENKAAM = VALUES(GENKAAM) "); // 原価
+        sbSQL.append(",UPDKBN = VALUES(UPDKBN) "); // 更新フラグ
+        sbSQL.append(",SENDFLG = VALUES(SENDFLG) "); // 送信フラグ
+        sbSQL.append(",OPERATOR = VALUES(OPERATOR) "); // オペレーターコード
+        sbSQL.append(",UPDDT = VALUES(UPDDT) "); // 更新日
 
         int count = super.executeSQL(sbSQL.toString(), paramData);
         if (StringUtils.isEmpty(getMessage())) {
@@ -1003,11 +1063,7 @@ public class ReportBW002Dao extends ItemDao {
                     values += ", ?";
                   }
                 }
-                values += ", " + DefineReport.ValUpdkbn.NML.getVal();
-                values += ", 0";
-                values += ", '" + userId + "' ";
-                values += ", CURRENT_TIMESTAMP ";
-                values += ", CURRENT_TIMESTAMP ";
+
                 updateRows += ",(" + StringUtils.removeStart(values, ",") + ")";
               }
             }
@@ -1020,7 +1076,45 @@ public class ReportBW002Dao extends ItemDao {
           }
           sbSQL = new StringBuffer();
           new ArrayList<String>();
-          sbSQL.append(" REPLACE INTO INATK.TOKRS_SHN ( ");
+          sbSQL.append("INSERT INTO INATK.TOKRS_SHN ( ");
+          sbSQL.append(" HBSTDT "); // 販売開始日
+          sbSQL.append(",BMNCD "); // 部門
+          sbSQL.append(",WRITUKBN "); // 割引率区分
+          sbSQL.append(",SEICUTKBN "); // 正規・カット
+          sbSQL.append(",DUMMYCD "); // ダミーコード
+          sbSQL.append(",KANRINO "); // 管理番号
+          sbSQL.append(",SHNCD "); // 商品コード
+          sbSQL.append(",SHNKN "); // 商品名称
+          sbSQL.append(",KIKKN "); // 規格名称
+          sbSQL.append(",IRISU "); // 入数
+          sbSQL.append(",BAIKAAM "); // 売価
+          sbSQL.append(",GENKAAM "); // 原価
+          sbSQL.append(",UPDKBN "); // 更新フラグ
+          sbSQL.append(",SENDFLG "); // 送信フラグ
+          sbSQL.append(",OPERATOR "); // オペレーターコード
+          sbSQL.append(",ADDDT "); // 登録日
+          sbSQL.append(",UPDDT "); // 更新日
+          sbSQL.append(") ");
+          sbSQL.append("SELECT ");
+          sbSQL.append(" HBSTDT "); // 販売開始日
+          sbSQL.append(",BMNCD "); // 部門
+          sbSQL.append(",WRITUKBN "); // 割引率区分
+          sbSQL.append(",SEICUTKBN "); // 正規・カット
+          sbSQL.append(",DUMMYCD "); // ダミーコード
+          sbSQL.append(",KANRINO "); // 管理番号
+          sbSQL.append(",SHNCD "); // 商品コード
+          sbSQL.append(",SHNKN "); // 商品名称
+          sbSQL.append(",KIKKN "); // 規格名称
+          sbSQL.append(",IRISU "); // 入数
+          sbSQL.append(",BAIKAAM "); // 売価
+          sbSQL.append(",GENKAAM "); // 原価
+          sbSQL.append(",UPDKBN "); // 更新フラグ
+          sbSQL.append(",SENDFLG "); // 送信フラグ
+          sbSQL.append(",OPERATOR "); // オペレーターコード
+          sbSQL.append(",ADDDT "); // 登録日
+          sbSQL.append(",UPDDT "); // 更新日
+          sbSQL.append("FROM ( ");
+          sbSQL.append("SELECT ");
           sbSQL.append(" HBSTDT"); // 販売開始日 F1
           sbSQL.append(",BMNCD"); // 部門 F2
           sbSQL.append(",WRITUKBN"); // 割引率区分 F3
@@ -1033,13 +1127,36 @@ public class ReportBW002Dao extends ItemDao {
           sbSQL.append(",IRISU"); // 入数
           sbSQL.append(",BAIKAAM"); // 売価
           sbSQL.append(",GENKAAM"); // 原価
-          sbSQL.append(",UPDKBN"); // 更新区分：
-          sbSQL.append(",SENDFLG"); // 送信フラグ
-          sbSQL.append(",OPERATOR "); // オペレーター：
-          sbSQL.append(",ADDDT "); // 登録日：
-          sbSQL.append(",UPDDT "); // 更新日：
-          sbSQL.append(") VALUES ");
-          sbSQL.append(updateRows);
+          sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
+          sbSQL.append(",0 as SENDFLG"); // 送信フラグ
+          sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+          sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+          sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+          sbSQL.append(" FROM (values ROW" + updateRows + ") as T1(");
+          sbSQL.append(" HBSTDT"); // 販売開始日
+          sbSQL.append(",BMNCD"); // 部門
+          sbSQL.append(",WRITUKBN"); // 割引率区分
+          sbSQL.append(",SEICUTKBN"); // 正規・カット
+          sbSQL.append(",DUMMYCD"); // ダミーコード
+          sbSQL.append(",KANRINO"); // 管理番号
+          sbSQL.append(",SHNCD"); // 商品コード
+          sbSQL.append(",SHNKN"); // 商品名称
+          sbSQL.append(",KIKKN"); // 規格名称
+          sbSQL.append(",IRISU"); // 入数
+          sbSQL.append(",BAIKAAM"); // 売価
+          sbSQL.append(",GENKAAM"); // 原価
+          sbSQL.append(")) as T1 ");
+          sbSQL.append("ON DUPLICATE KEY UPDATE ");
+          sbSQL.append("SHNCD = VALUES(SHNCD) "); // 商品コード
+          sbSQL.append(",SHNKN = VALUES(SHNKN) "); // 商品名称
+          sbSQL.append(",KIKKN = VALUES(KIKKN) "); // 規格名称
+          sbSQL.append(",IRISU = VALUES(IRISU) "); // 入数
+          sbSQL.append(",BAIKAAM = VALUES(BAIKAAM) "); // 売価
+          sbSQL.append(",GENKAAM = VALUES(GENKAAM) "); // 原価
+          sbSQL.append(",UPDKBN = VALUES(UPDKBN) "); // 更新フラグ
+          sbSQL.append(",SENDFLG = VALUES(SENDFLG) "); // 送信フラグ
+          sbSQL.append(",OPERATOR = VALUES(OPERATOR) "); // オペレーターコード
+          sbSQL.append(",UPDDT = VALUES(UPDDT) "); // 更新日
 
 
           int count = super.executeSQL(sbSQL.toString(), paramData);
