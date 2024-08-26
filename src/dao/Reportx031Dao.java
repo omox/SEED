@@ -643,6 +643,174 @@ public class Reportx031Dao extends ItemDao {
     return sbSQL.toString();
   }
 
+  /**
+   * 小小分類マスタINSERT/UPDATE処理
+   *
+   * @param dataArray
+   * @param tablename
+   * @param map
+   * @param userInfo
+   */
+  public String createSqlSsho(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
+    // 更新情報
+    ArrayList<String> prmData = new ArrayList<>();
+
+    String updateRows = ""; // 更新データ
+
+    // ログインユーザー情報取得
+    String userId = userInfo.getId(); // ログインユーザー
+
+    String bmoncd = map.get("BUMON"); // 入力部門コード
+    String daicd = map.get("DAICD"); // 入力大分類コード
+    String chucd = map.get("CHUCD"); // 入力中分類コード
+    String shocd = map.get("SHOCD");; // 入力小分類コード
+    String sshocd = ""; // 入力小小分類コード
+    String adddt = ""; // 登録日
+    String updflg = ""; // 更新フラグ
+    for (int i = 0; i < dataArray.size(); i++) {
+      JSONObject data = dataArray.getJSONObject(i);
+      if (data.isEmpty()) {
+        continue;
+      }
+
+      sshocd = data.optString("F1");
+      data.optString("F13");
+      updflg = data.optString("F14");
+      String values = "";
+
+      if (isTest) {
+        values += bmoncd + ",";
+        values += daicd + ",";
+        values += chucd + ",";
+        values += shocd + ",";
+        values += StringUtils.defaultIfEmpty(data.optString("F1"), "null") + ",";
+        values += StringUtils.defaultIfEmpty("'" + data.optString("F2") + "'", "null") + ",";
+        values += StringUtils.defaultIfEmpty("'" + data.optString("F3") + "'", "null") + ",";
+        values += StringUtils.defaultIfEmpty(data.optString("F4"), "null") + ",";
+        values += StringUtils.defaultIfEmpty(data.optString("F5"), "null") + ",";
+        values += StringUtils.defaultIfEmpty(data.optString("F6"), "null") + ",";
+        values += StringUtils.defaultIfEmpty(data.optString("F7"), "null") + ",";
+        values += StringUtils.defaultIfEmpty(data.optString("F8"), "null") + ",";
+        values += StringUtils.defaultIfEmpty(data.optString("F9"), "null") + ",";
+        values += updflg + ",";;
+        values += "null,";
+        values += "null,";
+        values += "null,";
+        values += "null";
+
+      } else {
+        for (int j = 0; j < data.size(); j++) {
+          values += ", ?";
+        }
+        values = StringUtils.removeStart(values, ",");
+
+        for (String prm : values.split(",", 0)) {
+          prmData.add(prm);
+        }
+      }
+
+      // 削除処理
+      if (StringUtils.equals(updflg, DefineReport.ValUpdkbn.DEL.getVal())) {
+        /*
+         * JSONArray msgdl = this.deleteChildDataDai(map, data); if(msgdl.size() > 0){ }
+         */
+      }
+
+      if (!StringUtils.isEmpty(sshocd)) {
+        // 未入力新規登録データを省く
+        updateRows += ",(" + values + ")";
+      }
+    }
+    updateRows = StringUtils.removeStart(updateRows, ",");
+
+    StringBuffer sbSQL;
+    sbSQL = new StringBuffer();
+    sbSQL.append("REPLACE INTO INAMS.MSTSSHOBRUI (");
+    sbSQL.append(" T1.BMNCD");
+    sbSQL.append(", T1.DAICD");
+    sbSQL.append(", T1.CHUCD");
+    sbSQL.append(", T1.SHOCD");
+    sbSQL.append(", T1.SSHOCD");
+    sbSQL.append(", T1.SSHOBRUIAN");
+    sbSQL.append(", T1.SSHOBRUIKN");
+    sbSQL.append(", T1.ATR1");
+    sbSQL.append(", T1.ATR2");
+    sbSQL.append(", T1.ATR3");
+    sbSQL.append(", T1.ATR4");
+    sbSQL.append(", T1.ATR5");
+    sbSQL.append(", T1.ATR6");
+    sbSQL.append(", T1.UPDKBN");
+    sbSQL.append(", T1.SENDFLG");
+    sbSQL.append(", '" + userId + "' as OPERATOR");
+    sbSQL.append(", CURRENT_TIMESTAMP as ADDDT");
+    sbSQL.append(", CURRENT_TIMESTAMP as UPDDT");
+    sbSQL.append(" from (values " + updateRows + ") as T1(");
+    sbSQL.append(" BMNCD");
+    sbSQL.append(", DAICD");
+    sbSQL.append(", CHUCD");
+    sbSQL.append(", SHOCD");
+    sbSQL.append(", SSHOCD");
+    sbSQL.append(", SSHOBRUIAN");
+    sbSQL.append(", SSHOBRUIKN");
+    sbSQL.append(", ATR1");
+    sbSQL.append(", ATR2");
+    sbSQL.append(", ATR3");
+    sbSQL.append(", ATR4");
+    sbSQL.append(", ATR5");
+    sbSQL.append(", ATR6");
+    sbSQL.append(", UPDKBN");
+    sbSQL.append(", SENDFLG");
+    sbSQL.append(", OPERATOR");
+    sbSQL.append(", ADDDT");
+    sbSQL.append(", UPDDT)) as RE on T.BMNCD = RE.BMNCD and T.DAICD = RE.DAICD and T.CHUCD = RE.CHUCD and T.SHOCD = RE.SHOCD and T.SSHOCD = RE.SSHOCD");
+    sbSQL.append(" when matched then update set");
+    sbSQL.append(" BMNCD = RE.BMNCD");
+    sbSQL.append(", DAICD = RE.DAICD");
+    sbSQL.append(", CHUCD = RE.CHUCD");
+    sbSQL.append(", SHOCD = RE.SHOCD");
+    sbSQL.append(", SSHOCD = RE.SSHOCD");
+    sbSQL.append(", SSHOBRUIAN = RE.SSHOBRUIAN");
+    sbSQL.append(", SSHOBRUIKN = RE.SSHOBRUIKN");
+    sbSQL.append(", ATR1 = RE.ATR1");
+    sbSQL.append(", ATR2 = RE.ATR2");
+    sbSQL.append(", ATR3 = RE.ATR3");
+    sbSQL.append(", ATR4 = RE.ATR4");
+    sbSQL.append(", ATR5 = RE.ATR5");
+    sbSQL.append(", ATR6 = RE.ATR6");
+    sbSQL.append(", UPDKBN = RE.UPDKBN");
+    sbSQL.append(", SENDFLG = RE.SENDFLG");
+    sbSQL.append(", OPERATOR = RE.OPERATOR");
+    sbSQL.append(adddt);
+    sbSQL.append(", UPDDT = RE.UPDDT");
+    sbSQL.append(" when not matched then insert values (");
+    sbSQL.append(" RE.BMNCD");
+    sbSQL.append(", RE.DAICD");
+    sbSQL.append(", RE.CHUCD");
+    sbSQL.append(", RE.SHOCD");
+    sbSQL.append(", RE.SSHOCD");
+    sbSQL.append(", RE.SSHOBRUIAN");
+    sbSQL.append(", RE.SSHOBRUIKN");
+    sbSQL.append(", RE.ATR1");
+    sbSQL.append(", RE.ATR2");
+    sbSQL.append(", RE.ATR3");
+    sbSQL.append(", RE.ATR4");
+    sbSQL.append(", RE.ATR5");
+    sbSQL.append(", RE.ATR6");
+    sbSQL.append(", RE.UPDKBN");
+    sbSQL.append(", RE.SENDFLG");
+    sbSQL.append(", RE.OPERATOR");
+    sbSQL.append(", RE.ADDDT");
+    sbSQL.append(", RE.UPDDT)");
+
+    if (DefineReport.ID_DEBUG_MODE)
+      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+
+    sqlList.add(sbSQL.toString());
+    prmList.add(prmData);
+    lblList.add("小小分類マスタ");
+
+    return sbSQL.toString();
+  }
 
   /**
    * 大分類マスタDELETE処理
@@ -1086,7 +1254,7 @@ public class Reportx031Dao extends ItemDao {
       tableNameSHO = "INAMS.MSTSHOBRUI";
     }
 
-    // SQL発行：大分類マスタ
+    // SQL発行：
     if (dataArrayDai.size() > 0) {
       // 新規・登録SQL
       this.createSqlDai(dataArrayDai, bunrui, map, userInfo);
