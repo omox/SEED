@@ -114,7 +114,7 @@ public class ReportJU022Dao extends ItemDao {
     String userId = userInfo.getId(); // ログインユーザー
 
     ArrayList<String> prmData = new ArrayList<String>();
-    Object[] valueData = new Object[] {};
+    String valueData = "";
     String values = "";
 
     // DB検索用パラメータ
@@ -151,13 +151,15 @@ public class ReportJU022Dao extends ItemDao {
       }
 
       if (k == maxField) {
-        valueData = ArrayUtils.add(valueData, values);
-        values = "";
+        valueData += ",(" + StringUtils.removeStart(values, ",") + ")";
+        // values = "";
       }
     }
 
     // 配送グループマスタの登録・更新
-    sbSQL.append("REPLACE INTO INATK.TOKQJU_MOY ( ");
+    valueData = StringUtils.removeStart(valueData, ",");
+    sbSQL = new StringBuffer();
+    sbSQL.append("INSERT INTO INATK.TOKQJU_MOY ( ");
     sbSQL.append("  MOYSKBN"); // 催し区分：
     sbSQL.append(", MOYSSTDT"); // 催し開始日：
     sbSQL.append(", MOYSRBAN"); // 催し連番：
@@ -167,13 +169,43 @@ public class ReportJU022Dao extends ItemDao {
     sbSQL.append(", OPERATOR "); // オペレーター：
     sbSQL.append(", ADDDT "); // 登録日：
     sbSQL.append(", UPDDT "); // 更新日：
-    sbSQL.append(") VALUES ( " + StringUtils.join(valueData, ",") + " ");
-    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
-    sbSQL.append(", 0 "); // 送信フラグ：
-    sbSQL.append(", '" + userId + "' "); // オペレーター：
-    sbSQL.append(", current_timestamp "); // 登録日：
-    sbSQL.append(", current_timestamp "); // 更新日：
-    sbSQL.append(")");
+    sbSQL.append(") ");
+    sbSQL.append("SELECT ");
+    sbSQL.append("  MOYSKBN"); // 催し区分：
+    sbSQL.append(", MOYSSTDT"); // 催し開始日：
+    sbSQL.append(", MOYSRBAN"); // 催し連番：
+    sbSQL.append(", QASMDT"); // アンケート締め切り日：
+    sbSQL.append(", UPDKBN"); // 更新区分：
+    sbSQL.append(", SENDFLG"); // 送信フラグ：
+    sbSQL.append(", OPERATOR "); // オペレーター：
+    sbSQL.append(", ADDDT "); // 登録日：
+    sbSQL.append(", UPDDT "); // 更新日：
+    sbSQL.append("FROM ( ");
+    sbSQL.append("SELECT ");
+    sbSQL.append("  MOYSKBN"); // 催し区分：
+    sbSQL.append(", MOYSSTDT"); // 催し開始日：
+    sbSQL.append(", MOYSRBAN"); // 催し連番：
+    sbSQL.append(", QASMDT"); // アンケート締め切り日：
+    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
+    sbSQL.append(",0 as SENDFLG"); // 送信フラグ：
+    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+    sbSQL.append(" FROM (values ROW" + valueData + ") as T1(");
+    sbSQL.append("  MOYSKBN"); // 催し区分：
+    sbSQL.append(", MOYSSTDT"); // 催し開始日：
+    sbSQL.append(", MOYSRBAN"); // 催し連番：
+    sbSQL.append(", QASMDT"); // アンケート締め切り日：
+    sbSQL.append(")) as T1 ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("  MOYSKBN = VALUES(MOYSKBN)"); // 催し区分：
+    sbSQL.append(", MOYSSTDT = VALUES(MOYSSTDT)"); // 催し開始日：
+    sbSQL.append(", MOYSRBAN = VALUES(MOYSRBAN)"); // 催し連番：
+    sbSQL.append(", QASMDT = VALUES(QASMDT)"); // アンケート締め切り日：
+    sbSQL.append(", UPDKBN = VALUES(UPDKBN)"); // 更新区分：
+    sbSQL.append(", SENDFLG = VALUES(SENDFLG)"); // 送信フラグ：
+    sbSQL.append(", OPERATOR = VALUES(OPERATOR)"); // オペレーター：
+    sbSQL.append(", UPDDT = VALUES(UPDDT)"); // 更新日：
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -238,7 +270,7 @@ public class ReportJU022Dao extends ItemDao {
       sbSQL.append("SET ");
       sbSQL.append("SUMI_KANRINO=" + kanrino);
       sbSQL.append(",OPERATOR='" + userId + "'");
-      sbSQL.append(",UPDDT=current_timestamp ");
+      sbSQL.append(",UPDDT= CURRENT_TIMESTAMP ");
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere);
 
@@ -302,9 +334,9 @@ public class ReportJU022Dao extends ItemDao {
     sbSQL.append("UPDATE ");
     sbSQL.append("INATK.TOKQJU_MOY ");
     sbSQL.append("SET ");
-    sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal() + ",");
-    sbSQL.append("OPERATOR='" + userId + "'");
-    sbSQL.append(",UPDDT=current_timestamp ");
+    sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
+    sbSQL.append(",OPERATOR='" + userId + "'");
+    sbSQL.append(",UPDDT= CURRENT_TIMESTAMP ");
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 

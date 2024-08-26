@@ -696,7 +696,7 @@ public class ReportJU033Dao extends ItemDao {
 
     // DB検索用パラメータ
     StringBuffer sbSQL = new StringBuffer();
-    Object[] valueData = new Object[] {};
+    String valueData = "";
     String values = "";
     ArrayList<String> prmData = new ArrayList<String>();
 
@@ -783,13 +783,14 @@ public class ReportJU033Dao extends ItemDao {
       }
 
       if (k == maxField) {
-        valueData = ArrayUtils.add(valueData, values);
-        values = "";
+        valueData += ",(" + StringUtils.removeStart(values, ",") + ")";
+        // values = "";
       }
     }
 
+    valueData = StringUtils.removeStart(valueData, ",");
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO INATK.TOKQJU_SHN ( ");
+    sbSQL.append("INSERT INTO INATK.TOKQJU_SHN ( ");
     sbSQL.append(" MOYSKBN"); // 催し区分
     sbSQL.append(",MOYSSTDT"); // 催し開始日
     sbSQL.append(",MOYSRBAN"); // 催し連番
@@ -815,13 +816,107 @@ public class ReportJU033Dao extends ItemDao {
     sbSQL.append(",OPERATOR "); // オペレーター：
     sbSQL.append(",ADDDT "); // 登録日：
     sbSQL.append(",UPDDT "); // 更新日：
-    sbSQL.append(") VALUES ( " + StringUtils.join(valueData, ",") + " ");
-    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
-    sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
-    sbSQL.append(", '" + userId + "' "); // オペレーター：
-    sbSQL.append(", current_timestamp "); // 登録日：
-    sbSQL.append(", current_timestamp "); // 更新日：
-    sbSQL.append(")");
+    sbSQL.append(") ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" MOYSKBN"); // 催し区分
+    sbSQL.append(",MOYSSTDT"); // 催し開始日
+    sbSQL.append(",MOYSRBAN"); // 催し連番
+    sbSQL.append(",KANRINO"); // 管理番号
+    sbSQL.append(",SHNCD"); // 商品コード
+    sbSQL.append(",SHNKBN"); // 商品区分
+    sbSQL.append(",TSEIKBN"); // 訂正区分
+    sbSQL.append(",JUKBN"); // 事前区分
+    sbSQL.append(",BDENKBN"); // 別伝区分
+    sbSQL.append(",WAPPNKBN"); // ワッペン区分
+    sbSQL.append(",IRISU"); // 入数
+    sbSQL.append(",GENKAAM"); // 原価
+    sbSQL.append(",BAIKAAM"); // 売価
+    sbSQL.append(",HTDT"); // 発注日
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",JUTENKAIKBN"); // 展開方法
+    sbSQL.append(",RANKNO_ADD"); // 対象ランク
+    sbSQL.append(",HTSU"); // 発注数
+    sbSQL.append(",SURYOPTN"); // 数量パターン
+    sbSQL.append(",TENHTSU_ARR"); // 店発注数配列
+    sbSQL.append(",UPDKBN"); // 更新区分：
+    sbSQL.append(",SENDFLG"); // 送信区分：
+    sbSQL.append(",OPERATOR "); // オペレーター：
+    sbSQL.append(",ADDDT "); // 登録日：
+    sbSQL.append(",UPDDT "); // 更新日：
+    sbSQL.append("FROM ( ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" MOYSKBN"); // 催し区分
+    sbSQL.append(",MOYSSTDT"); // 催し開始日
+    sbSQL.append(",MOYSRBAN"); // 催し連番
+    sbSQL.append(",KANRINO"); // 管理番号
+    sbSQL.append(",SHNCD"); // 商品コード
+    sbSQL.append(",SHNKBN"); // 商品区分
+    sbSQL.append(",TSEIKBN"); // 訂正区分
+    sbSQL.append(",JUKBN"); // 事前区分
+    sbSQL.append(",BDENKBN"); // 別伝区分
+    sbSQL.append(",WAPPNKBN"); // ワッペン区分
+    sbSQL.append(",IRISU"); // 入数
+    sbSQL.append(",GENKAAM"); // 原価
+    sbSQL.append(",BAIKAAM"); // 売価
+    sbSQL.append(",HTDT"); // 発注日
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",JUTENKAIKBN"); // 展開方法
+    sbSQL.append(",RANKNO_ADD"); // 対象ランク
+    sbSQL.append(",HTSU"); // 発注数
+    sbSQL.append(",SURYOPTN"); // 数量パターン
+    sbSQL.append(",TENHTSU_ARR"); // 店発注数配列
+    sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN"); // 更新区分：
+    sbSQL.append(",0 as SENDFLG"); // 送信フラグ：
+    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+    sbSQL.append(" FROM (values ROW" + valueData + ") as T1(");
+    sbSQL.append(" MOYSKBN"); // 催し区分
+    sbSQL.append(",MOYSSTDT"); // 催し開始日
+    sbSQL.append(",MOYSRBAN"); // 催し連番
+    sbSQL.append(",KANRINO"); // 管理番号
+    sbSQL.append(",SHNCD"); // 商品コード
+    sbSQL.append(",SHNKBN"); // 商品区分
+    sbSQL.append(",TSEIKBN"); // 訂正区分
+    sbSQL.append(",JUKBN"); // 事前区分
+    sbSQL.append(",BDENKBN"); // 別伝区分
+    sbSQL.append(",WAPPNKBN"); // ワッペン区分
+    sbSQL.append(",IRISU"); // 入数
+    sbSQL.append(",GENKAAM"); // 原価
+    sbSQL.append(",BAIKAAM"); // 売価
+    sbSQL.append(",HTDT"); // 発注日
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",JUTENKAIKBN"); // 展開方法
+    sbSQL.append(",RANKNO_ADD"); // 対象ランク
+    sbSQL.append(",HTSU"); // 発注数
+    sbSQL.append(",SURYOPTN"); // 数量パターン
+    sbSQL.append(",TENHTSU_ARR"); // 店発注数配列
+    sbSQL.append(")) as T1 ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" MOYSKBN = VALUES(MOYSKBN)"); // 催し区分
+    sbSQL.append(",MOYSSTDT = VALUES(MOYSSTDT)"); // 催し開始日
+    sbSQL.append(",MOYSRBAN = VALUES(MOYSRBAN)"); // 催し連番
+    sbSQL.append(",KANRINO = VALUES(KANRINO)"); // 管理番号
+    sbSQL.append(",SHNCD = VALUES(SHNCD)"); // 商品コード
+    sbSQL.append(",SHNKBN = VALUES(SHNKBN)"); // 商品区分
+    sbSQL.append(",TSEIKBN = VALUES(TSEIKBN)"); // 訂正区分
+    sbSQL.append(",JUKBN = VALUES(JUKBN)"); // 事前区分
+    sbSQL.append(",BDENKBN = VALUES(BDENKBN)"); // 別伝区分
+    sbSQL.append(",WAPPNKBN = VALUES(WAPPNKBN)"); // ワッペン区分
+    sbSQL.append(",IRISU = VALUES(IRISU)"); // 入数
+    sbSQL.append(",GENKAAM = VALUES(GENKAAM)"); // 原価
+    sbSQL.append(",BAIKAAM = VALUES(BAIKAAM)"); // 売価
+    sbSQL.append(",HTDT = VALUES(HTDT)"); // 発注日
+    sbSQL.append(",NNDT = VALUES(NNDT)"); // 納入日
+    sbSQL.append(",JUTENKAIKBN = VALUES(JUTENKAIKBN)"); // 展開方法
+    sbSQL.append(",RANKNO_ADD = VALUES(RANKNO_ADD)"); // 対象ランク
+    sbSQL.append(",HTSU = VALUES(HTSU)"); // 発注数
+    sbSQL.append(",SURYOPTN = VALUES(SURYOPTN)"); // 数量パターン
+    sbSQL.append(",TENHTSU_ARR = VALUES(TENHTSU_ARR)"); // 店発注数配列
+    sbSQL.append(",UPDKBN = VALUES(UPDKBN)"); // 更新区分：
+    sbSQL.append(",SENDFLG = VALUES(SENDFLG)"); // 送信区分：
+    sbSQL.append(",OPERATOR = VALUES(OPERATOR)"); // オペレーター：
+    sbSQL.append(",UPDDT = VALUES(UPDDT)"); // 更新日：
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -911,7 +1006,7 @@ public class ReportJU033Dao extends ItemDao {
     // 事前打出し_商品納入日更新
     values = " ";
     prmData = new ArrayList<String>();
-    valueData = new Object[] {};
+    valueData = " ";
 
     // 商品コード
     if (StringUtils.isEmpty(data.optString("F5"))) {
@@ -953,10 +1048,12 @@ public class ReportJU033Dao extends ItemDao {
       prmData.add(dblCnt_Arr);
     }
 
-    valueData = ArrayUtils.add(valueData, values);
+    valueData += "(" + StringUtils.removeStart(values, ",") + ")";
 
+    valueData = StringUtils.removeStart(valueData, ",");
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO INATK.TOKJU_SHNNNDT ( ");
+    new ArrayList<String>();
+    sbSQL.append("INSERT INTO INATK.TOKJU_SHNNNDT ( ");
     sbSQL.append(" SHNCD"); // 商品コード
     sbSQL.append(",NNDT"); // 納入日
     sbSQL.append(",MOYCD_ARR"); // 催し配列
@@ -965,11 +1062,41 @@ public class ReportJU033Dao extends ItemDao {
     sbSQL.append(",OPERATOR "); // オペレーター：
     sbSQL.append(",ADDDT "); // 登録日：
     sbSQL.append(",UPDDT "); // 更新日：
-    sbSQL.append(") VALUES ( " + StringUtils.join(valueData, ",") + " ");
-    sbSQL.append(", '" + userId + "' "); // オペレーター：
-    sbSQL.append(", current_timestamp "); // 登録日：
-    sbSQL.append(", current_timestamp "); // 更新日：
-    sbSQL.append(")");
+    sbSQL.append(") ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" SHNCD"); // 商品コード
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",MOYCD_ARR"); // 催し配列
+    sbSQL.append(",KANRINO_ARR"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR"); // 重複件数配列
+    sbSQL.append(",OPERATOR "); // オペレーター：
+    sbSQL.append(",ADDDT "); // 登録日：
+    sbSQL.append(",UPDDT "); // 更新日：
+    sbSQL.append("FROM ( ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" SHNCD"); // 商品コード
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",MOYCD_ARR"); // 催し配列
+    sbSQL.append(",KANRINO_ARR"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR"); // 重複件数配列
+    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+    sbSQL.append(" FROM (values ROW" + valueData + ") as T1(");
+    sbSQL.append(" SHNCD"); // 商品コード
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",MOYCD_ARR"); // 催し配列
+    sbSQL.append(",KANRINO_ARR"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR"); // 重複件数配列
+    sbSQL.append(")) as T1 ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" SHNCD = VALUES(SHNCD)"); // 商品コード
+    sbSQL.append(",NNDT = VALUES(NNDT)"); // 納入日
+    sbSQL.append(",MOYCD_ARR = VALUES(MOYCD_ARR)"); // 催し配列
+    sbSQL.append(",KANRINO_ARR = VALUES(KANRINO_ARR)"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR = VALUES(DBLCNT_ARR)"); // 重複件数配列
+    sbSQL.append(",OPERATOR = VALUES(OPERATOR)"); // オペレーター：
+    sbSQL.append(",UPDDT = VALUES(UPDDT)"); // 更新日：
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -994,7 +1121,7 @@ public class ReportJU033Dao extends ItemDao {
 
     // DB検索用パラメータ
     StringBuffer sbSQL = new StringBuffer();
-    Object[] valueData = new Object[] {};
+    String valueData = "";
     ArrayList<String> paramData = new ArrayList<String>();
     String sqlWhere = "";
     String values = "";
@@ -1238,7 +1365,7 @@ public class ReportJU033Dao extends ItemDao {
     // 事前打出し_商品納入日更新
     values = " ";
     paramData = new ArrayList<String>();
-    valueData = new Object[] {};
+    valueData = "";
 
     // 商品コード
     if (StringUtils.isEmpty(data.optString("F5"))) {
@@ -1280,10 +1407,12 @@ public class ReportJU033Dao extends ItemDao {
       paramData.add(dblCnt_Arr);
     }
 
-    valueData = ArrayUtils.add(valueData, values);
+    valueData += "(" + StringUtils.removeStart(values, ",") + ")";
 
+    valueData = StringUtils.removeStart(valueData, ",");
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO INATK.TOKJU_SHNNNDT ( ");
+    new ArrayList<String>();
+    sbSQL.append("INSERT INTO INATK.TOKJU_SHNNNDT ( ");
     sbSQL.append(" SHNCD"); // 商品コード
     sbSQL.append(",NNDT"); // 納入日
     sbSQL.append(",MOYCD_ARR"); // 催し配列
@@ -1292,11 +1421,41 @@ public class ReportJU033Dao extends ItemDao {
     sbSQL.append(",OPERATOR "); // オペレーター：
     sbSQL.append(",ADDDT "); // 登録日：
     sbSQL.append(",UPDDT "); // 更新日：
-    sbSQL.append(") VALUES ( " + StringUtils.join(valueData, ",") + " ");
-    sbSQL.append(", '" + userId + "' "); // オペレーター：
-    sbSQL.append(", current_timestamp "); // 登録日：
-    sbSQL.append(", current_timestamp "); // 更新日：
-    sbSQL.append(")");
+    sbSQL.append(") ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" SHNCD"); // 商品コード
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",MOYCD_ARR"); // 催し配列
+    sbSQL.append(",KANRINO_ARR"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR"); // 重複件数配列
+    sbSQL.append(",OPERATOR "); // オペレーター：
+    sbSQL.append(",ADDDT "); // 登録日：
+    sbSQL.append(",UPDDT "); // 更新日：
+    sbSQL.append("FROM ( ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" SHNCD"); // 商品コード
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",MOYCD_ARR"); // 催し配列
+    sbSQL.append(",KANRINO_ARR"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR"); // 重複件数配列
+    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+    sbSQL.append(" FROM (values ROW" + valueData + ") as T1(");
+    sbSQL.append(" SHNCD"); // 商品コード
+    sbSQL.append(",NNDT"); // 納入日
+    sbSQL.append(",MOYCD_ARR"); // 催し配列
+    sbSQL.append(",KANRINO_ARR"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR"); // 重複件数配列
+    sbSQL.append(")) as T1 ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" SHNCD = VALUES(SHNCD)"); // 商品コード
+    sbSQL.append(",NNDT = VALUES(NNDT)"); // 納入日
+    sbSQL.append(",MOYCD_ARR = VALUES(MOYCD_ARR)"); // 催し配列
+    sbSQL.append(",KANRINO_ARR = VALUES(KANRINO_ARR)"); // 管理番号配列
+    sbSQL.append(",DBLCNT_ARR = VALUES(DBLCNT_ARR)"); // 重複件数配列
+    sbSQL.append(",OPERATOR = VALUES(OPERATOR)"); // オペレーター：
+    sbSQL.append(",UPDDT = VALUES(UPDDT)"); // 更新日：
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
