@@ -133,7 +133,7 @@ public class ReportYH001Dao extends ItemDao {
     }
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
     StringBuffer sbSQL = new StringBuffer();
 
     if (!StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
@@ -183,11 +183,11 @@ public class ReportYH001Dao extends ItemDao {
   boolean isTest = true;
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
   /** 予約発注企画更新のKEY保持用変数 */
   String kkk_seq = ""; //
@@ -213,7 +213,7 @@ public class ReportYH001Dao extends ItemDao {
       kkk_seq = this.getKKK_SEQ();
     }
 
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     Object[] valueData = new Object[] {};
     String values = "";
 
@@ -310,7 +310,7 @@ public class ReportYH001Dao extends ItemDao {
     // ログインユーザー情報取得
     String userId = userInfo.getId(); // ログインユーザー
 
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     StringBuffer sbSQL = new StringBuffer();
 
     int len = dataArray.size();
@@ -319,7 +319,7 @@ public class ReportYH001Dao extends ItemDao {
 
       // 予約発注_商品の登録・更新
       sbSQL = new StringBuffer();
-      prmData = new ArrayList<String>();
+      prmData = new ArrayList<>();
       sbSQL.append("update INATK.HATYH_SHN");
       sbSQL.append(" set");
       sbSQL.append(" UPDKBN = ?");
@@ -362,7 +362,7 @@ public class ReportYH001Dao extends ItemDao {
     // 排他チェック用
     String targetTable = null;
     String targetWhere = null;
-    ArrayList<String> targetParam = new ArrayList<String>();
+    ArrayList<String> targetParam = new ArrayList<>();
     JSONArray msg = new JSONArray();
 
     // パラメータ確認
@@ -397,7 +397,7 @@ public class ReportYH001Dao extends ItemDao {
       }
     }
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -480,7 +480,7 @@ public class ReportYH001Dao extends ItemDao {
 
     // 商品店グループマスタ
     sbSQL = new StringBuffer();
-    prmData = new ArrayList<String>();
+    prmData = new ArrayList<>();
 
     sbSQL.append("update INATK.HATYH_SHN set");
     sbSQL.append(" UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal());
@@ -495,7 +495,7 @@ public class ReportYH001Dao extends ItemDao {
     prmList.add(prmData);
     lblList.add("予約発注商品");
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -578,9 +578,9 @@ public class ReportYH001Dao extends ItemDao {
   public String getKKK_SEQ() {
     // 関連情報取得
     ItemList iL = new ItemList();
-    String sqlColCommand = "SELECT INAMS.nextval('SEQ005') AS \"1\"";
+    String sqlColCommand = "SELECT INAMS.nextval('SEQ006') AS \"1\"";
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
     if (array.size() > 0) {
       value = array.optJSONObject(0).optString("1");
