@@ -1215,11 +1215,7 @@ public class ReportBW002Dao extends ItemDao {
             values += ", ?";
           }
         }
-        values += ", " + DefineReport.ValUpdkbn.NML.getVal();
-        values += ", 0";
-        values += ", '" + userId + "' ";
-        values += ", CURRENT_TIMESTAMP ";
-        values += ", CURRENT_TIMESTAMP ";
+
         updateRows += ",(" + StringUtils.removeStart(values, ",") + ")";
 
       }
@@ -1230,7 +1226,7 @@ public class ReportBW002Dao extends ItemDao {
     }
     updateRows = StringUtils.removeStart(updateRows, ",");
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO INATK.TOKRS_SHN ( ");
+    sbSQL.append("INSERT INTO INATK.TOKRS_SHN ( ");
     sbSQL.append(" HBSTDT"); // 販売開始日 F1
     sbSQL.append(",BMNCD"); // 部門 F2
     sbSQL.append(",WRITUKBN"); // 割引率区分 F3
@@ -1242,9 +1238,51 @@ public class ReportBW002Dao extends ItemDao {
     sbSQL.append(",OPERATOR "); // オペレーター：
     sbSQL.append(",ADDDT "); // 登録日：
     sbSQL.append(",UPDDT "); // 更新日：
-    sbSQL.append(") VALUES ");
-    sbSQL.append(updateRows);
-
+    sbSQL.append(") ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" HBSTDT"); // 販売開始日 F1
+    sbSQL.append(",BMNCD"); // 部門 F2
+    sbSQL.append(",WRITUKBN"); // 割引率区分 F3
+    sbSQL.append(",SEICUTKBN"); // 正規・カット F4
+    sbSQL.append(",DUMMYCD"); // ダミーコード F5
+    sbSQL.append(",KANRINO"); // 管理番号 F6
+    sbSQL.append(",UPDKBN"); // 更新区分：
+    sbSQL.append(",SENDFLG"); // 送信フラグ
+    sbSQL.append(",OPERATOR "); // オペレーター：
+    sbSQL.append(",ADDDT "); // 登録日：
+    sbSQL.append(",UPDDT "); // 更新日：
+    sbSQL.append("FROM ( ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" HBSTDT"); // 販売開始日 F1
+    sbSQL.append(",BMNCD"); // 部門 F2
+    sbSQL.append(",WRITUKBN"); // 割引率区分 F3
+    sbSQL.append(",SEICUTKBN"); // 正規・カット F4
+    sbSQL.append(",DUMMYCD"); // ダミーコード F5
+    sbSQL.append(",KANRINO"); // 管理番号 F6
+    sbSQL.append(", " + DefineReport.ValUpdkbn.DEL.getVal() + " AS UPDKBN"); // 更新区分：
+    sbSQL.append(",0 as SENDFLG"); // 送信フラグ
+    sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+    sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
+    sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
+    sbSQL.append(" FROM (values ROW" + updateRows + ") as T1(");
+    sbSQL.append(" HBSTDT"); // 販売開始日 F1
+    sbSQL.append(",BMNCD"); // 部門 F2
+    sbSQL.append(",WRITUKBN"); // 割引率区分 F3
+    sbSQL.append(",SEICUTKBN"); // 正規・カット F4
+    sbSQL.append(",DUMMYCD"); // ダミーコード F5
+    sbSQL.append(",KANRINO"); // 管理番号 F6
+    sbSQL.append(")) as T1 ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" HBSTDT = VALUES(HBSTDT) "); // 販売開始日 F1
+    sbSQL.append(",BMNCD = VALUES(BMNCD) "); // 部門 F2
+    sbSQL.append(",WRITUKBN = VALUES(WRITUKBN) "); // 割引率区分 F3
+    sbSQL.append(",SEICUTKBN = VALUES(SEICUTKBN) "); // 正規・カット F4
+    sbSQL.append(",DUMMYCD = VALUES(DUMMYCD) "); // ダミーコード F5
+    sbSQL.append(",KANRINO = VALUES(KANRINO) "); // 管理番号 F6
+    sbSQL.append(",UPDKBN = VALUES(UPDKBN) "); // 更新フラグ
+    sbSQL.append(",SENDFLG = VALUES(SENDFLG) "); // 送信フラグ
+    sbSQL.append(",OPERATOR = VALUES(OPERATOR) "); // オペレーターコード
+    sbSQL.append(",UPDDT = VALUES(UPDDT) "); // 更新日
 
     int count = super.executeSQL(sbSQL.toString(), prmData);
     if (StringUtils.isEmpty(getMessage())) {
@@ -1259,12 +1297,38 @@ public class ReportBW002Dao extends ItemDao {
     // 全部削除された場合
     prmData = new ArrayList<String>();
     sbSQL = new StringBuffer();
-    sbSQL.append("  UPDATE INATK.TOKRS_KKK as TRKK ");
-    sbSQL.append("  SET UPDKBN = '1' "); // 販売開始日 F1
-    sbSQL.append("  FROM ( select "); // 部門 F2
-    sbSQL.append("  count(1) as CNT"); // 割引率区分 F3
-    sbSQL.append("  from INATK.TOKRS_SHN "); // 登録日：
-    sbSQL.append("  where "); // 更新日：
+    sbSQL.append("  UPDATE INATK.TOKRS_KKK AS TRKK ");
+    sbSQL.append(" INNER JOIN ( ");
+    sbSQL.append("SELECT ");
+    sbSQL.append(" HBSTDT");
+    sbSQL.append(", BMNCD");
+    sbSQL.append(", WRITUKBN");
+    sbSQL.append(", SEICUTKBN");
+    sbSQL.append(", DUMMYCD");
+    sbSQL.append(" FROM INATK.TOKRS_SHN");
+    sbSQL.append(" WHERE ");
+    sbSQL.append(" HBSTDT = ");
+    sbSQL.append(szHbstdt);
+    sbSQL.append(" and BMNCD = ");
+    sbSQL.append(szBmncd);
+    sbSQL.append(" and WRITUKBN = ");
+    sbSQL.append(szWaribiki);
+    sbSQL.append(" and SEICUTKBN = ");
+    sbSQL.append(szSeisi);
+    sbSQL.append(" and DUMMYCD = ");
+    sbSQL.append(szDummycd);
+    sbSQL.append(" ) AS TRSH ");
+    sbSQL.append("  SET UPDKBN = '1' ");
+    sbSQL.append("  WHERE ");
+    sbSQL.append(" TRKK.HBSTDT = TRSH.HBSTDT");
+    sbSQL.append(" and TRKK.BMNCD = TRSH.BMNCD");
+    sbSQL.append(" and TRKK.WRITUKBN = TRSH.WRITUKBN");
+    sbSQL.append(" and TRKK.SEICUTKBN = TRSH.SEICUTKBN");
+    sbSQL.append(" and TRKK.DUMMYCD = TRSH.DUMMYCD");
+    sbSQL.append(" and ( SELECT ");
+    sbSQL.append("  COUNT(1) ");
+    sbSQL.append("  FROM INATK.TOKRS_SHN ");
+    sbSQL.append(" WHERE ");
     sbSQL.append(" HBSTDT = ");
     sbSQL.append(szHbstdt);
     sbSQL.append(" and BMNCD = ");
@@ -1276,18 +1340,7 @@ public class ReportBW002Dao extends ItemDao {
     sbSQL.append(" and DUMMYCD = ");
     sbSQL.append(szDummycd);
     sbSQL.append(" and UPDKBN = 0");
-    sbSQL.append(" ) as TRSH where");
-    sbSQL.append(" TRKK.HBSTDT = ");
-    sbSQL.append(szHbstdt);
-    sbSQL.append(" and TRKK.BMNCD = ");
-    sbSQL.append(szBmncd);
-    sbSQL.append(" and TRKK.WRITUKBN = ");
-    sbSQL.append(szWaribiki);
-    sbSQL.append(" and TRKK.SEICUTKBN = ");
-    sbSQL.append(szSeisi);
-    sbSQL.append(" and TRKK.DUMMYCD = ");
-    sbSQL.append(szDummycd);
-    sbSQL.append(" and TRSH.CNT = 0 ");
+    sbSQL.append(" ) = 0 ");
 
     count = super.executeSQL(sbSQL.toString(), prmData);
     if (StringUtils.isEmpty(getMessage())) {
