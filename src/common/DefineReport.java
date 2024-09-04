@@ -5688,7 +5688,7 @@ public class DefineReport {
   public final static String ID_SQL_SHN_CHK_UPDATECNT =
       "select CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?) AS T1 where CNT < (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU)";
   public final static String ID_SQL_SHN_CHK_UPDATECNT2 =
-      "select (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU) - CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?)";
+      "select (select COALESCE(MAXSU, 0) from INAAD.SYSSHNGENDOSU) - CNT as VALUE from (select COALESCE(max(UPDATECNT), 0) as CNT from INAAD.SYSSHNCOUNT where UPDATEDT = ?) AS MT ";
   public final static String ID_SQL_SHN_SHNCD = "select SUBSTRING(right ('0000000' || RTRIM(SHNCD), 8), 1, 4) || '" + SEPARATOR
       + "' || SUBSTRING(right ('0000000' || RTRIM(SHNCD), 8), 5, 4) AS F1,SHNKN as F2,right ('0000000' || RTRIM(SHNCD), 8) as VALUE from INAMS.MSTSHN";
   public final static String ID_SQL_SHN_SHNCD_TAIL = " order by VALUE LIMIT 1001 ";
