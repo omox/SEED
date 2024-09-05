@@ -578,7 +578,7 @@ public class ReportBW000Dao extends ItemDao {
 			if(StringUtils.isNotEmpty(data.optString("F7"))){
 				paramData  = new ArrayList<String>();
 				paramData.add(data.getString("F7"));
-				sqlcommand = "select COUNT(SHNCD) as value from INAMS.MSTSHN where COALESCE(UPDKBN, 0) <> 1 and SHNCD = ? ";
+				sqlcommand = "select COUNT(SHNCD) as VALUE from INAMS.MSTSHN where COALESCE(UPDKBN, 0) <> 1 and SHNCD = ? ";
 
 				array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
 				if(NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == 0){
@@ -1093,7 +1093,12 @@ public class ReportBW000Dao extends ItemDao {
 					}
 
 					if(k == maxField){
-						values = StringUtils.removeStart(values, ",");
+			            values += " " + DefineReport.ValUpdkbn.NML.getVal() + " ";
+			            values += ", 0";
+			            values += ", '" + userId + "'";
+			            values += ", CURRENT_TIMESTAMP";
+			            values += ", CURRENT_TIMESTAMP";
+			            
 						valueData = ArrayUtils.add(valueData, "(" + values + ")");
 						values = "";
 					}
@@ -1178,7 +1183,7 @@ public class ReportBW000Dao extends ItemDao {
 					}
 
 					if(k == maxField){
-			            values += ", '" + userId + "'";
+			            values += " '" + userId + "'";
 			            values += ", CURRENT_TIMESTAMP";
 			            values += ", CURRENT_TIMESTAMP";
 			            
@@ -1201,6 +1206,7 @@ public class ReportBW000Dao extends ItemDao {
 	        sbSQL.append(") ");
 	        sbSQL.append("VALUES ");
 	        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+	        sbSQL.append("ON DUPLICATE KEY UPDATE ");
 			sbSQL.append("HBSTDT = NEW.HBSTDT");
 			sbSQL.append(", BMNCD = NEW.BMNCD");
 			sbSQL.append(", WRITUKBN = NEW.WRITUKBN");
