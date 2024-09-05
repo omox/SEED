@@ -13,13 +13,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-
 import authentication.bean.User;
 import common.CmnDate;
 import common.DefineReport;
@@ -582,87 +579,71 @@ public class ReportJU037Dao extends ItemDao {
 					}
 
 				    kanrino = no.getValue();
-
-				    // 催しコード内部管理更新
-					values = "1,";
+					
+					//クリア
 					prmData = new ArrayList<String>();
 					valueData = new Object[]{};
-
+					values = "";
+					
 					// 催し区分
 					if (StringUtils.isEmpty(moyskbn)) {
-						values += "null,";
+						values += "null, ";
 					} else {
-						values += "?,";
+						values += "?, ";
 						prmData.add(moyskbn);
 					}
 
 					// 催し開始日
 					if (StringUtils.isEmpty(moysstdt)) {
-						values += "null,";
+						values += "null, ";
 					} else {
-						values += "?,";
+						values += "?, ";
 						prmData.add(moysstdt);
 					}
 
 					// 催し連番
 					if (StringUtils.isEmpty(moysrban)) {
-						values += "null,";
+						values += "null, ";
 					} else {
-						values += "?,";
+						values += "?, ";
 						prmData.add(moysrban);
 					}
 
 					// 管理番号
 					if (StringUtils.isEmpty(kanrino)) {
-						values += "null";
+						values += "null, ";
 					} else {
-						values += "?";
+						values += "?, ";
 						prmData.add(kanrino);
 					}
 
-					valueData = ArrayUtils.add(valueData, "("+values+")");
-					values = "";
+		            values += " '" + userId + "'";
+		            values += ", CURRENT_TIMESTAMP";
+		            values += ", CURRENT_TIMESTAMP";
+
+		            valueData = ArrayUtils.add(valueData, "(" + values + ")");
+		            values = "";
 
 					if(valueData.length >= 100 || (i+1 == len && valueData.length > 0)){
 						sbSQL = new StringBuffer();
-						sbSQL.append("MERGE INTO INATK.SYSMOYCD AS T USING (SELECT ");
+						sbSQL.append("INSERT INTO INATK.SYSMOYCD (");
 						sbSQL.append(" MOYSKBN");												// 催し区分
-						sbSQL.append(",MOYSSTDT");												// 催し開始日
-						sbSQL.append(",MOYSRBAN");												// 催し連番
-						sbSQL.append(",SUMI_KANRINO");											// 管理番号
-						sbSQL.append(", '"+userId+"' AS OPERATOR ");							// オペレーター：
-						sbSQL.append(", current timestamp AS ADDDT ");							// 登録日：
-						sbSQL.append(", current timestamp AS UPDDT ");							// 更新日：
-						sbSQL.append(" FROM (values "+StringUtils.join(valueData, ",")+") as T1(NUM");
-						sbSQL.append(",MOYSKBN");												// 催し区分
-						sbSQL.append(",MOYSSTDT");												// 催し開始日
-						sbSQL.append(",MOYSRBAN");												// 催し連番
-						sbSQL.append(",SUMI_KANRINO");											// 管理番号
-						sbSQL.append(")) as RE on (");
-						sbSQL.append("T.MOYSKBN=RE.MOYSKBN AND ");
-						sbSQL.append("T.MOYSSTDT=RE.MOYSSTDT AND ");
-						sbSQL.append("T.MOYSRBAN=RE.MOYSRBAN ");
-						sbSQL.append(") WHEN MATCHED THEN UPDATE SET ");
-						sbSQL.append("SUMI_KANRINO=RE.SUMI_KANRINO");
-						sbSQL.append(",OPERATOR=RE.OPERATOR ");
-						sbSQL.append(",UPDDT=RE.UPDDT");
-						sbSQL.append(" WHEN NOT MATCHED THEN INSERT (");
-						sbSQL.append(" MOYSKBN");												// 催し区分
-						sbSQL.append(",MOYSSTDT");												// 催し開始日
-						sbSQL.append(",MOYSRBAN");												// 催し連番
-						sbSQL.append(",SUMI_KANRINO");											// 管理番号
-						sbSQL.append(",OPERATOR");
-						sbSQL.append(",ADDDT");
-						sbSQL.append(",UPDDT");
-						sbSQL.append(") VALUES (");
-						sbSQL.append(" RE.MOYSKBN");											// 催し区分
-						sbSQL.append(",RE.MOYSSTDT");											// 催し開始日
-						sbSQL.append(",RE.MOYSRBAN");											// 催し連番
-						sbSQL.append(",RE.SUMI_KANRINO");										// 管理番号
-						sbSQL.append(",RE.OPERATOR");
-						sbSQL.append(",RE.ADDDT");
-						sbSQL.append(",RE.UPDDT");
-						sbSQL.append(")");
+						sbSQL.append(", MOYSSTDT");												// 催し開始日
+						sbSQL.append(", MOYSRBAN");												// 催し連番
+						sbSQL.append(", SUMI_KANRINO");											// 管理番号
+						sbSQL.append(", OPERATOR");							                // オペレーター：
+						sbSQL.append(", ADDDT");							                    // 登録日：
+						sbSQL.append(", UPDDT");							                    // 更新日：
+				        sbSQL.append(") ");
+				        sbSQL.append("VALUES ");
+				        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+				        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+						sbSQL.append("MOYSKBN = NEW.MOYSKBN");												
+						sbSQL.append(", MOYSSTDT = NEW.MOYSSTDT");												
+						sbSQL.append(", MOYSRBAN = NEW.MOYSRBAN");											
+						sbSQL.append(", SUMI_KANRINO = NEW.SUMI_KANRINO");
+	                    sbSQL.append(", OPERATOR = NEW.OPERATOR ");                          
+	                    sbSQL.append(", UPDDT = NEW.UPDDT ");   
 
 						if (DefineReport.ID_DEBUG_MODE) System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
@@ -869,7 +850,7 @@ public class ReportJU037Dao extends ItemDao {
 		String values = "";
 		values += " " + seq;
 		values += "," + userId;
-		values += ",current timestamp ";
+		values += ",current_timestamp ";
 		if(isTest){
 			values += ",'" + commentkn+"'";
 		}else{
@@ -981,7 +962,7 @@ public class ReportJU037Dao extends ItemDao {
 				}
 				names  += ", "+col;
 			}
-			rows += ",("+StringUtils.removeStart(values, ",")+")";
+			rows += ", row ("+StringUtils.removeStart(values, ",")+")";
 		}
 		rows = StringUtils.removeStart(rows, ",");
 		names = StringUtils.removeStart(names, ",");
@@ -1041,7 +1022,7 @@ public class ReportJU037Dao extends ItemDao {
 				}
 				names  += ", "+col;
 			}
-			rows += ",("+StringUtils.removeStart(values, ",")+")";
+			rows += ", row ("+StringUtils.removeStart(values, ",")+")";
 		}
 		rows = StringUtils.removeStart(rows, ",");
 		names = StringUtils.removeStart(names, ",");
@@ -1138,7 +1119,7 @@ public class ReportJU037Dao extends ItemDao {
 	public String getCSVTOK_SEQ() {
 		// 関連情報取得
 		ItemList iL = new ItemList();
-		String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ003";
+		String sqlColCommand = "SELECT INAMS.nextval('SEQ003') AS \"1\"";  
 		@SuppressWarnings("static-access")
 		JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
 		String value = "";
