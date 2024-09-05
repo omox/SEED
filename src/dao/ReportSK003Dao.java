@@ -617,7 +617,7 @@ public class ReportSK003Dao extends ItemDao {
 
   public List<JSONObject> checkData(HashMap<String, String> map, User userInfo, MessageUtility mu, JSONArray dataArray, // 対象情報（主要な更新情報）
       JSONArray dataArrayShn // 対象情報（追加更新情報）
-  ) {
+      ) {
     JSONArray msg = new JSONArray();
     JSONObject data = new JSONObject();
     ItemList iL = new ItemList();
@@ -710,12 +710,13 @@ public class ReportSK003Dao extends ItemDao {
           return msg;
         }
 
-        // 存在チェック
+        // 店舗存在チェック
         paramData = new ArrayList<String>();
         paramData.add(data.getString("F2"));
-        sqlcommand = "select COUNT(TENCD) as value from INAMS.MSTTEN where COALESCE(UPDKBN, 0) <> 1 and MISEUNYOKBN <> 9 and TENCD = ? ";
+        sqlcommand = "SELECT COUNT(TENCD) AS VALUE FROM INAMS.MSTTEN WHERE COALESCE(UPDKBN, 0) <> 1 AND MISEUNYOKBN <> 9 AND TENCD = ? ";
         @SuppressWarnings("static-access")
         JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+
         if (NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == 0) {
           JSONObject o = mu.getDbMessageObj("EX1077", new String[] {reqNo});
           msg.add(o);
@@ -731,7 +732,7 @@ public class ReportSK003Dao extends ItemDao {
 
         // 存在チェック
         paramData = new ArrayList<String>();
-        sqlcommand = "select SHORIDT as VALUE from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1";
+        sqlcommand = "SELECT SHORIDT AS VALUE FROM INAAD.SYSSHORIDT WHERE COALESCE(UPDKBN, 0) <> 1";
         @SuppressWarnings("static-access")
         JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         if (array.size() > 0) {
@@ -839,7 +840,7 @@ public class ReportSK003Dao extends ItemDao {
         // 商品マスタ
         paramData = new ArrayList<String>();
         paramData.add(data.getString("F3"));
-        sqlcommand = "select COUNT(SHNCD) as value from INAMS.MSTSHN where COALESCE(UPDKBN, 0) <> 1 and SHNCD = ? ";
+        sqlcommand = "SELECT COUNT(SHNCD) AS VALUE FROM INAMS.MSTSHN WHERE COALESCE(UPDKBN, 0) <> 1 AND SHNCD = ? ";
         @SuppressWarnings("static-access")
         JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         if (NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == 0) {
@@ -853,7 +854,7 @@ public class ReportSK003Dao extends ItemDao {
           paramData = new ArrayList<String>();
           paramData.add(tencd);
           paramData.add(data.getString("F3").substring(0, 2));
-          sqlcommand = "select COUNT(TENCD) as value from INAMS.MSTTENBMN where COALESCE(UPDKBN, 0) <> 1 and TENCD = ? and  BMNCD = ?";
+          sqlcommand = "SELECT COUNT(TENCD) AS VALUE FROM INAMS.MSTTENBMN WHERE COALESCE(UPDKBN, 0) <> 1 AND TENCD = ? AND  BMNCD = ?";
           array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
           if (NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == 0) {
             JSONObject o = mu.getDbMessageObj("E20219", new String[] {reqNo});
@@ -1111,7 +1112,7 @@ public class ReportSK003Dao extends ItemDao {
         values += ", '" + userId + "'";
         values += ", CURRENT_TIMESTAMP";
         values += ", CURRENT_TIMESTAMP";
-        
+
         valueData = ArrayUtils.add(valueData,  "(" + values + ")");
         values = "";
       }
