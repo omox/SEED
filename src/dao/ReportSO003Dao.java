@@ -613,9 +613,9 @@ public class ReportSO003Dao extends ItemDao {
       sbSQL.append(" left outer join INAMS.MSTSHN M0 on M0.SHNCD = CSO.SHNCD and COALESCE(M0.UPDKBN, 0) <> 1");
       sbSQL.append(" left outer join INAMS.MSTBMN M1 on M1.BMNCD = CSO.BMNCD and COALESCE(M1.UPDKBN, 0) <> 1");
       sbSQL.append(" left outer join INAMS.MSTZEIRT M2 on M2.ZEIRTKBN = M0.ZEIRTKBN and COALESCE(M2.UPDKBN, 0) <> 1");
-      sbSQL.append(" left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = M0.ZEIRTKBN_OLD and NVL(M3.UPDKBN, 0) <> 1");
+      sbSQL.append(" left outer join INAMS.MSTZEIRT M3 on M3.ZEIRTKBN = M0.ZEIRTKBN_OLD and COALESCE(M3.UPDKBN, 0) <> 1");
       sbSQL.append(" left outer join INAMS.MSTZEIRT M4 on M4.ZEIRTKBN = M1.ZEIRTKBN and COALESCE(M4.UPDKBN, 0) <> 1");
-      sbSQL.append(" left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and NVL(M5.UPDKBN, 0) <> 1");
+      sbSQL.append(" left outer join INAMS.MSTZEIRT M5 on M5.ZEIRTKBN = M1.ZEIRTKBN_OLD and COALESCE(M5.UPDKBN, 0) <> 1");
       sbSQL.append(" where CSO.SEQ = " + szSeq);
       sbSQL.append(" and COALESCE(CSO.ERRCD, 0) <> 4");
       sbSQL.append(" and COALESCE(CSO.UPDKBN , 0) <> 1");
@@ -797,8 +797,8 @@ public class ReportSO003Dao extends ItemDao {
     sbSQL.append(" from INATK.TOKMOYCD MYCD");
     sbSQL.append(" inner join INATK.TOKSO_BMN BMN on BMN.MOYSKBN = MYCD.MOYSKBN and BMN.MOYSSTDT = MYCD.MOYSSTDT and BMN.MOYSRBAN = MYCD.MOYSRBAN");
     sbSQL.append(" inner join INATK.TOKSO_SHN SHN on SHN.MOYSKBN = BMN.MOYSKBN and SHN.MOYSSTDT = BMN.MOYSSTDT and SHN.MOYSRBAN = BMN.MOYSRBAN and SHN.BMNCD = BMN.BMNCD");
-    sbSQL.append(" inner join INAMS.MSTSHN M0 on M0.SHNCD = SHN.SHNCD and NVL(M0.UPDKBN, 0) <> 1");
-    sbSQL.append(" where NVL(SHN.UPDKBN, 0) <> 1");
+    sbSQL.append(" inner join INAMS.MSTSHN M0 on M0.SHNCD = SHN.SHNCD and COALESCE(M0.UPDKBN, 0) <> 1");
+    sbSQL.append(" where COALESCE(SHN.UPDKBN, 0) <> 1");
     sbSQL.append(" and BMN.MOYSKBN = " + szMoyskbn);
     sbSQL.append(" and BMN.MOYSSTDT = " + szMoysstdt);
     sbSQL.append(" and BMN.MOYSRBAN = " + szMoysrban);
@@ -1032,7 +1032,7 @@ public class ReportSO003Dao extends ItemDao {
         paramData.add(data.getString("F3"));
         paramData.add(data.getString("F4"));
         paramData.add(data.getString("F6"));
-        sqlcommand = "select COUNT(SHNCD) as value from INATK.TOKSO_SHN where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and BMNCD = ? and SHNCD = ? ";
+        sqlcommand = "select COUNT(SHNCD) as VALUE from INATK.TOKSO_SHN where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and BMNCD = ? and SHNCD = ? ";
 
         @SuppressWarnings("static-access")
         JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
@@ -1248,7 +1248,7 @@ public class ReportSO003Dao extends ItemDao {
     String userId = userInfo.getId(); // ログインユーザー
     String kanriNo = ""; // 管理No
     String dispType = map.get("DISPTYPE"); // 画面状態
-    String sendBtnid = map.get("SENDBTNID"); // 呼出しボタン
+    map.get("SENDBTNID");
 
     ArrayList<String> prmData = new ArrayList<>();
     Object[] valueData = new Object[] {};
@@ -1433,38 +1433,22 @@ public class ReportSO003Dao extends ItemDao {
         sbSQL.append(", UPDKBN = NEW.UPDKBN ");
         sbSQL.append(", SENDFLG = NEW.SENDFLG ");
         sbSQL.append(", OPERATOR = NEW.OPERATOR ");
-        //sbSQL.append(", ADDDT = NEW.ADDDT ");
+        // sbSQL.append(", ADDDT = NEW.ADDDT ");
         sbSQL.append(", UPDDT = NEW.UPDDT ");
-        
+
         /*
-        sbSQL.append(", MOYSSTDT"); // 催し開始日
-        sbSQL.append(", MOYSRBAN"); // 催し連番
-        sbSQL.append(", BMNCD"); // 部門
-        sbSQL.append(", KANRINO"); // 管理番号
-        sbSQL.append(", SHNCD"); // 商品コード
-        sbSQL.append(", MAKERKN"); // メーカー名称
-        sbSQL.append(", SHNKN"); // 商品名称
-        sbSQL.append(", KIKKN"); // 規格名称
-        sbSQL.append(", IRISU"); // 入数
-        sbSQL.append(", MINSU"); // 最低発注数
-        sbSQL.append(", GENKAAM"); // 原価
-        sbSQL.append(", A_BAIKAAM"); // A売価
-        sbSQL.append(", B_BAIKAAM"); // B売価
-        sbSQL.append(", C_BAIKAAM"); // C売価
-        sbSQL.append(", A_RANKNO"); // Aランク
-        sbSQL.append(", B_RANKNO"); // Bランク
-        sbSQL.append(", C_RANKNO"); // Cランク
-        sbSQL.append(", POPCD"); // POPコード
-        sbSQL.append(", POPSZ"); // POPサイズ
-        sbSQL.append(", POPSU"); // 枚数
-        sbSQL.append(", TENATSUK_ARR"); // 店扱いフラグ配列
-        sbSQL.append(", UPDKBN"); // 更新区分：
-        sbSQL.append(", SENDFLG"); // 送信フラグ
-        sbSQL.append(", OPERATOR "); // オペレーター：
-        sbSQL.append(", ADDDT");
-        sbSQL.append(", UPDDT "); // 更新日：
-        sbSQL.append(") VALUES");
-        */
+         * sbSQL.append(", MOYSSTDT"); // 催し開始日 sbSQL.append(", MOYSRBAN"); // 催し連番 sbSQL.append(", BMNCD");
+         * // 部門 sbSQL.append(", KANRINO"); // 管理番号 sbSQL.append(", SHNCD"); // 商品コード
+         * sbSQL.append(", MAKERKN"); // メーカー名称 sbSQL.append(", SHNKN"); // 商品名称 sbSQL.append(", KIKKN"); //
+         * 規格名称 sbSQL.append(", IRISU"); // 入数 sbSQL.append(", MINSU"); // 最低発注数 sbSQL.append(", GENKAAM");
+         * // 原価 sbSQL.append(", A_BAIKAAM"); // A売価 sbSQL.append(", B_BAIKAAM"); // B売価
+         * sbSQL.append(", C_BAIKAAM"); // C売価 sbSQL.append(", A_RANKNO"); // Aランク
+         * sbSQL.append(", B_RANKNO"); // Bランク sbSQL.append(", C_RANKNO"); // Cランク sbSQL.append(", POPCD");
+         * // POPコード sbSQL.append(", POPSZ"); // POPサイズ sbSQL.append(", POPSU"); // 枚数
+         * sbSQL.append(", TENATSUK_ARR"); // 店扱いフラグ配列 sbSQL.append(", UPDKBN"); // 更新区分：
+         * sbSQL.append(", SENDFLG"); // 送信フラグ sbSQL.append(", OPERATOR "); // オペレーター：
+         * sbSQL.append(", ADDDT"); sbSQL.append(", UPDDT "); // 更新日： sbSQL.append(") VALUES");
+         */
 
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -1497,7 +1481,7 @@ public class ReportSO003Dao extends ItemDao {
 
     // 管理番号更新
     if (StringUtils.isNotEmpty(kanriNo)) {
-      this.createSqlSYSMOYBMN(userId, map,data, SqlType.MRG, kanriNo);
+      this.createSqlSYSMOYBMN(userId, map, data, SqlType.MRG, kanriNo);
     }
 
 
@@ -1740,7 +1724,7 @@ public class ReportSO003Dao extends ItemDao {
    *
    * @throws Exception
    */
-  private JSONObject createSqlSYSMOYBMN(String userId,HashMap<String, String> map, JSONObject data, SqlType sql, String kanriNo) {
+  private JSONObject createSqlSYSMOYBMN(String userId, HashMap<String, String> map, JSONObject data, SqlType sql, String kanriNo) {
     JSONObject result = new JSONObject();
 
     String moyskbn = data.getString("F1");
@@ -1766,7 +1750,7 @@ public class ReportSO003Dao extends ItemDao {
     sbSQL.append(", UPDDT");
     sbSQL.append(") VALUES");
     sbSQL.append("( ");
-    //sbSQL.append("SELECT ( ");
+    // sbSQL.append("SELECT ( ");
     // キー情報はロックのため後で追加する
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       if (itm.getNo() > 1 && itm.getCol() != TOK_CMNLayout.KANRIENO.getCol()) {
@@ -1777,7 +1761,7 @@ public class ReportSO003Dao extends ItemDao {
         // 枝番の設定は行わない
         ;
       } else {
-        sbSQL.append("CAST(? as " + itm.getTyp() + ") " );
+        sbSQL.append("CAST(? as " + itm.getTyp() + ") ");
       }
     }
     sbSQL.append(" ,NULL "); // F6 : 付番済表示順番
@@ -1849,14 +1833,14 @@ public class ReportSO003Dao extends ItemDao {
     sbSQL.append(" and SOB.BMNCD = ?");
 
     JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
-    String value = ""; // 生活応援_部門 更新日
+    String VALUE = ""; // 生活応援_部門 更新日
     String count = ""; // 登録商品数
 
     if (array.size() > 0) {
-      value = array.optJSONObject(0).optString("UPDDT");
+      VALUE = array.optJSONObject(0).optString("UPDDT");
       count = array.optJSONObject(0).optString("COUNT_ROW");
 
-      option.put("UPDDT", value);
+      option.put("UPDDT", VALUE);
       option.put("COUNT_ROWS", count);
     }
 
@@ -2059,7 +2043,7 @@ public class ReportSO003Dao extends ItemDao {
         paramData.add(data.getString("F3"));
         paramData.add(data.getString("F4"));
         paramData.add(data.getString("F6"));
-        sqlcommand = "select COUNT(SHNCD) as value from INATK.TOKSO_SHN where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and BMNCD = ? and SHNCD = ? ";
+        sqlcommand = "select COUNT(SHNCD) as VALUE from INATK.TOKSO_SHN where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and BMNCD = ? and SHNCD = ? ";
 
         @SuppressWarnings("static-access")
         JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
@@ -2093,9 +2077,8 @@ public class ReportSO003Dao extends ItemDao {
       if (StringUtils.isNotEmpty(data.optString("F6"))) {
         paramData = new ArrayList<>();
         paramData.add(data.getString("F6"));
-        sqlcommand = "select COUNT(SHNCD) as value from INAMS.MSTSHN where COALESCE(UPDKBN, 0) <> 1 and SHNCD = ? ";
+        sqlcommand = "select COUNT(SHNCD) as VALUE from INAMS.MSTSHN where COALESCE(UPDKBN, 0) <> 1 and SHNCD = ? ";
 
-        @SuppressWarnings("static-access")
         JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         if (NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == 0) {
           JSONObject o = mu.getDbMessageObj("E11046", new String[] {});
@@ -2109,9 +2092,8 @@ public class ReportSO003Dao extends ItemDao {
       if (StringUtils.isNotEmpty(data.optString("F4"))) {
         paramData = new ArrayList<>();
         paramData.add(data.getString("F4"));
-        sqlcommand = "select COUNT(BMNCD) as value from INAMS.MSTBMN where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? ";
+        sqlcommand = "select COUNT(BMNCD) as VALUE from INAMS.MSTBMN where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? ";
 
-        @SuppressWarnings("static-access")
         JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         if (NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == 0) {
           JSONObject o = mu.getDbMessageObj("E11097", new String[] {});
@@ -2144,7 +2126,7 @@ public class ReportSO003Dao extends ItemDao {
           if (Integer.parseInt(val) > 900) {
             emsgId = "E20466";
             paramData = new ArrayList<>();
-            sqlcommand = "select COUNT(BMNCD) as value from INATK.TOKRANKEX where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and RANKNO = ? ";
+            sqlcommand = "select COUNT(BMNCD) as VALUE from INATK.TOKRANKEX where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and RANKNO = ? ";
             paramData.add(data.getString("F4"));
             paramData.add(data.getString("F1"));
             paramData.add(data.getString("F2"));
@@ -2154,7 +2136,7 @@ public class ReportSO003Dao extends ItemDao {
           } else {
             emsgId = "E20057";
             paramData = new ArrayList<>();
-            sqlcommand = "select COUNT(BMNCD) as value from INATK.TOKRANK where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? and RANKNO = ? ";
+            sqlcommand = "select COUNT(BMNCD) as VALUE from INATK.TOKRANK where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? and RANKNO = ? ";
             paramData.add(data.getString("F4"));
             paramData.add(val);
           }
@@ -2194,7 +2176,7 @@ public class ReportSO003Dao extends ItemDao {
         paramData.add(data.getString("F3"));
         paramData.add(data.getString("F4"));
         paramData.add(data.getString("F6"));
-        sqlcommand = "select COUNT(SHNCD) as value from INATK.TOKSO_SHN where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and BMNCD = ? and SHNCD = ? ";
+        sqlcommand = "select COUNT(SHNCD) as VALUE from INATK.TOKSO_SHN where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ? and BMNCD = ? and SHNCD = ? ";
 
         @SuppressWarnings("static-access")
         JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);

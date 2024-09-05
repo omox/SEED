@@ -373,7 +373,7 @@ public class ReportSO004Dao extends ItemDao {
         paramData.add(data.getString("F1"));
         paramData.add(data.getString("F2"));
         paramData.add(data.getString("F3"));
-        sqlcommand = "select COUNT(MOYSKBN) as value from INATK.TOKMOYCD where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?   ";
+        sqlcommand = "select COUNT(MOYSKBN) as VALUE from INATK.TOKMOYCD where COALESCE(UPDKBN, 0) <> 1 and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?   ";
 
         @SuppressWarnings("static-access")
         JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
@@ -388,7 +388,7 @@ public class ReportSO004Dao extends ItemDao {
       if (StringUtils.isNumeric(data.getString("F4"))) {
         paramData = new ArrayList<String>();
         paramData.add(data.getString("F4"));
-        sqlcommand = "select COUNT(BMNCD) as value from INAMS.MSTBMN where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? ";
+        sqlcommand = "select COUNT(BMNCD) as VALUE from INAMS.MSTBMN where COALESCE(UPDKBN, 0) <> 1 and BMNCD = ? ";
 
         @SuppressWarnings("static-access")
         JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
@@ -402,7 +402,7 @@ public class ReportSO004Dao extends ItemDao {
       // 必須入力チェック
       /*
        * if(data.optString(FileLayout.TENNO.getCol())){
-       * 
+       *
        * }
        */
       // 基本データチェック:入力値がテーブル定義と矛盾してないか確認
@@ -466,7 +466,7 @@ public class ReportSO004Dao extends ItemDao {
          * int[]{inpsetting.getDigit1(), inpsetting.getDigit2()}; if(StringUtils.equals("POPSZ",
          * colinf.getCol())){ dtype = colinf.getDataType(); digit = colinf.getDigit(); } }catch
          * (IllegalArgumentException e){ dtype = colinf.getDataType(); digit = colinf.getDigit(); }
-         * 
+         *
          * // ①データ型による文字種チェック if(!InputChecker.checkDataType(dtype, val)){ //JSONObject o =
          * mu.getDbMessageObjDataTypeErr(dtype, colinf.getText()+"は"); JSONObject o =
          * mu.getDbMessageObjDataTypeErr(dtype, new String[]{}); msg.add(o); return msg; } // ②データ桁チェック
@@ -601,7 +601,7 @@ public class ReportSO004Dao extends ItemDao {
   public String getCSVTOK_SEQ() {
     // 関連情報取得
     ItemList iL = new ItemList();
-    String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ010";
+    String sqlColCommand = "SELECT INAMS.NEXTVAL('SEQ010') AS \"1\"";
     @SuppressWarnings("static-access")
     JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
@@ -633,7 +633,7 @@ public class ReportSO004Dao extends ItemDao {
     values += " " + seq;
     values += ",?";
     prmData.add(userId);
-    values += ",current timestamp ";
+    values += ",CURRENT_TIMESTAMP ";
 
     if (isTest) {
       values += ",'" + commentkn + "'";
@@ -644,8 +644,8 @@ public class ReportSO004Dao extends ItemDao {
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("insert into INATK.CSVTOKHEAD(SEQ, OPERATOR, INPUT_DATE, COMMENTKN)");
-    sbSQL.append("values(" + values + ")");
+    sbSQL.append("INSERT INTO INATK.CSVTOKHEAD(SEQ, OPERATOR, INPUT_DATE, COMMENTKN)");
+    sbSQL.append("values ROW(" + values + ")");
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -958,7 +958,7 @@ public class ReportSO004Dao extends ItemDao {
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("insert into INATK.CSVTOK_SO(");
+    sbSQL.append("INSERT INTO INATK.CSVTOK_SO(");
     sbSQL.append(" SEQ");
     sbSQL.append(", INPUTNO");
     sbSQL.append(", ERRCD");
@@ -1023,10 +1023,10 @@ public class ReportSO004Dao extends ItemDao {
     sbSQL.append(", TENATSUK_ARR");
     sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN");
     sbSQL.append(", '" + userId + "' AS OPERATOR ");
-    sbSQL.append(", current timestamp as ADDDT");
-    sbSQL.append(", current timestamp as UPDDT");
+    sbSQL.append(", CURRENT_TIMESTAMP as ADDDT");
+    sbSQL.append(", CURRENT_TIMESTAMP as UPDDT");
     sbSQL.append("  from");
-    sbSQL.append(" (values(" + values + ")) as T1( ");
+    sbSQL.append(" (values ROW(" + values + ")) as T1( ");
     sbSQL.append(" SEQ");
     sbSQL.append(", INPUTNO");
     sbSQL.append(", ERRCD");
