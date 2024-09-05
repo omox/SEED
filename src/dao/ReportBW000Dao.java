@@ -14,13 +14,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-
 import authentication.bean.User;
 import authentication.defines.Consts;
 import common.CmnDate;
@@ -238,7 +235,7 @@ public class ReportBW000Dao extends ItemDao {
 						seq = this.getCSVTOK_SEQ();
 
 						// ヘッダ登録用SQL作成
-						JSONObject hdrtn = this.createSqlCSVTOKHEAD(userId, sysdate, seq, szCommentkn);
+						this.createSqlCSVTOKHEAD(userId, sysdate, seq, szCommentkn);
 					}
 
 					// エラー内容登録SQLの発行
@@ -581,7 +578,7 @@ public class ReportBW000Dao extends ItemDao {
 			if(StringUtils.isNotEmpty(data.optString("F7"))){
 				paramData  = new ArrayList<String>();
 				paramData.add(data.getString("F7"));
-				sqlcommand = "select COUNT(SHNCD) as value from INAMS.MSTSHN where NVL(UPDKBN, 0) <> 1 and SHNCD = ? ";
+				sqlcommand = "select COUNT(SHNCD) as value from INAMS.MSTSHN where COALESCE(UPDKBN, 0) <> 1 and SHNCD = ? ";
 
 				array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
 				if(NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == 0){
@@ -1017,84 +1014,53 @@ public class ReportBW000Dao extends ItemDao {
 
 			String val = data.optString(key);
 			if(StringUtils.isEmpty(val)){
-				values += ", null";
+				values += "null　,";
 			}else{
-				values += ", ?";
+				values += "? ,";
 				prmData.add(val);
 			}
 
 			if(k == maxField){
-				values = StringUtils.removeStart(values, ",");
-				valueData = ArrayUtils.add(valueData, "("+values+")");
+	            values += " " + DefineReport.ValUpdkbn.NML.getVal() + " ";
+	            values += ", 0";
+	            values += ", '" + userId + "'";
+	            values += ", CURRENT_TIMESTAMP";
+	            values += ", CURRENT_TIMESTAMP";
+	            
+				valueData = ArrayUtils.add(valueData, "(" + values + ")");
 				values = "";
 			}
 		}
 
 		// 冷凍食品_企画の登録・更新
 		sbSQL = new StringBuffer();
-		sbSQL.append(" merge into INATK.TOKRS_KKK as T using (select");
+		sbSQL.append(" INSERT into INATK.TOKRS_KKK (");
 		sbSQL.append(" HBSTDT");													// 催し開始日
 		sbSQL.append(", BMNCD");													// 部門コード
 		sbSQL.append(", WRITUKBN");													// 割り付き区分
 		sbSQL.append(", SEICUTKBN");												// 正規カット
 		sbSQL.append(", DUMMYCD");													// ダミーコード
 		sbSQL.append(", MEISHOKN");													// 名称漢字名
-		sbSQL.append(", "+DefineReport.ValUpdkbn.NML.getVal()+" AS UPDKBN");		// 更新区分：
-		sbSQL.append(", "+ DefineReport.Values.SENDFLG_UN.getVal()+ " as SENDFLG");	// 送信フラグ
-		sbSQL.append(", '"+userId+"' AS OPERATOR ");								// オペレーター：
-		sbSQL.append(", current timestamp AS ADDDT ");								// 登録日：
-		sbSQL.append(", current timestamp AS UPDDT ");								// 更新日：
-		sbSQL.append(" from (values "+StringUtils.join(valueData, ",")+") as T1( ");
-		sbSQL.append(" HBSTDT");
-		sbSQL.append(", BMNCD");
-		sbSQL.append(", WRITUKBN");
-		sbSQL.append(", SEICUTKBN");
-		sbSQL.append(", DUMMYCD");
-		sbSQL.append(", MEISHOKN");
-		sbSQL.append(" ))as RE on (T.HBSTDT = RE.HBSTDT  ");
-		sbSQL.append(" and T.BMNCD = RE.BMNCD ");
-		sbSQL.append(" and T.WRITUKBN = RE.WRITUKBN ");
-		sbSQL.append(" and T.SEICUTKBN = RE.SEICUTKBN ");
-		sbSQL.append(" and T.DUMMYCD = RE.DUMMYCD )");
-		//sbSQL.append(" and T.UPDKBN = 1 ) ");
-		sbSQL.append(" when matched then update set");
-		sbSQL.append(" HBSTDT = RE.HBSTDT");
-		sbSQL.append(", BMNCD = RE.BMNCD");
-		sbSQL.append(", WRITUKBN = RE.WRITUKBN");
-		sbSQL.append(", SEICUTKBN = RE.SEICUTKBN");
-		sbSQL.append(", DUMMYCD = RE.DUMMYCD");
-		sbSQL.append(", MEISHOKN = RE.MEISHOKN");
-		sbSQL.append(", UPDKBN = RE.UPDKBN");
-		sbSQL.append(", SENDFLG = RE.SENDFLG");
-		sbSQL.append(", OPERATOR = RE.OPERATOR");
-		sbSQL.append(", ADDDT = case when NVL(UPDKBN, 0) = 1 then RE.ADDDT else ADDDT end");
-		//sbSQL.append(", ADDDT = RE.ADDDT");
-		sbSQL.append(", UPDDT = RE.UPDDT");
-		sbSQL.append("  when not matched then INSERT (");
-		sbSQL.append(" HBSTDT");
-		sbSQL.append(", BMNCD");
-		sbSQL.append(", WRITUKBN");
-		sbSQL.append(", SEICUTKBN");
-		sbSQL.append(", DUMMYCD");
-		sbSQL.append(", MEISHOKN");
-		sbSQL.append(", UPDKBN");
-		sbSQL.append(", SENDFLG");
-		sbSQL.append(", OPERATOR");
-		sbSQL.append(", ADDDT");
-		sbSQL.append(", UPDDT");
-		sbSQL.append(") values (");
-		sbSQL.append(" RE.HBSTDT");
-		sbSQL.append(", RE.BMNCD");
-		sbSQL.append(", RE.WRITUKBN");
-		sbSQL.append(", RE.SEICUTKBN");
-		sbSQL.append(", RE.DUMMYCD");
-		sbSQL.append(", RE.MEISHOKN");
-		sbSQL.append(", RE.UPDKBN");
-		sbSQL.append(", RE.SENDFLG");
-		sbSQL.append(", RE.OPERATOR");
-		sbSQL.append(", RE.ADDDT");
-		sbSQL.append(", RE.UPDDT");
-		sbSQL.append(")");
+		sbSQL.append(", UPDKBN");		                                            // 更新区分：
+		sbSQL.append(", SENDFLG");	                                                // 送信フラグ
+		sbSQL.append(", OPERATOR ");                  								// オペレーター：
+		sbSQL.append(", ADDDT ");	                    							// 登録日：
+		sbSQL.append(", UPDDT ");                                                	// 更新日：
+        sbSQL.append(") ");
+        sbSQL.append("VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+		sbSQL.append("HBSTDT = NEW.HBSTDT");
+		sbSQL.append(", BMNCD = NEW.BMNCD");
+		sbSQL.append(", WRITUKBN = NEW.WRITUKBN");
+		sbSQL.append(", SEICUTKBN = NEW.SEICUTKBN");
+		sbSQL.append(", DUMMYCD = NEW.DUMMYCD");
+		sbSQL.append(", MEISHOKN = NEW.MEISHOKN");
+	    sbSQL.append(", UPDKBN = NEW.UPDKBN"); 
+	    sbSQL.append(", SENDFLG = NEW.SENDFLG"); 
+	    sbSQL.append(", OPERATOR = NEW.OPERATOR");                                                          
+	    sbSQL.append(", UPDDT = NEW.UPDDT ");   
+
 
 		if (DefineReport.ID_DEBUG_MODE) System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
@@ -1120,21 +1086,22 @@ public class ReportBW000Dao extends ItemDao {
 
 					// 新規登録時は管理番号を使用する。
 					if(StringUtils.isEmpty(val)){
-						values += ", null";
+						values += "null ,";
 					}else{
-						values += ", ?";
+						values += "? ,";
 						prmData.add(val);
 					}
 
 					if(k == maxField){
 						values = StringUtils.removeStart(values, ",");
-						valueData = ArrayUtils.add(valueData, "("+values+")");
+						valueData = ArrayUtils.add(valueData, "(" + values + ")");
 						values = "";
 					}
 				}
 			}
 			//	冷凍食品_商品
-			sbSQL.append(" merge into INATK.TOKRS_SHN as T using (select");
+			sbSQL = new StringBuffer();
+			sbSQL.append(" INSERT into INATK.TOKRS_SHN (");
 			sbSQL.append(" HBSTDT");													// 催し開始日
 			sbSQL.append(", BMNCD");													// 部門コード
 			sbSQL.append(", WRITUKBN");													// 割率区分
@@ -1148,91 +1115,32 @@ public class ReportBW000Dao extends ItemDao {
 			sbSQL.append(", IRISU");													// 入数
 			sbSQL.append(", BAIKAAM");													// 売価
 			sbSQL.append(", GENKAAM");													// 原価
-			sbSQL.append(", "+DefineReport.ValUpdkbn.NML.getVal()+" AS UPDKBN");		// 更新区分：
-			sbSQL.append(", "+ DefineReport.Values.SENDFLG_UN.getVal()+ " as SENDFLG");	// 送信フラグ
-			sbSQL.append(", '"+userId+"' AS OPERATOR ");								// オペレーター：
-			sbSQL.append(", current timestamp AS ADDDT ");								// 登録日：
-			sbSQL.append(", current timestamp AS UPDDT ");								// 更新日：
-			sbSQL.append(" from (values "+StringUtils.join(valueData, ",")+") as T1( ");
-			sbSQL.append(" HBSTDT");
-			sbSQL.append(", BMNCD");
-			sbSQL.append(", WRITUKBN");
-			sbSQL.append(", SEICUTKBN");
-			sbSQL.append(", DUMMYCD");
-			sbSQL.append(", KANRINO");
-			sbSQL.append(", SHNCD");
-			sbSQL.append(", MAKERKN");
-			sbSQL.append(", SHNKN");
-			sbSQL.append(", KIKKN");
-			sbSQL.append(", IRISU");
-			sbSQL.append(", BAIKAAM");
-			sbSQL.append(", GENKAAM");
-			sbSQL.append(" ))as RE on (T.HBSTDT = RE.HBSTDT  ");
-			sbSQL.append(" and T.BMNCD = RE.BMNCD ");
-			sbSQL.append(" and T.WRITUKBN = RE.WRITUKBN ");
-			sbSQL.append(" and T.SEICUTKBN = RE.SEICUTKBN ");
-			sbSQL.append(" and T.DUMMYCD = RE.DUMMYCD ");
-			sbSQL.append(" and T.KANRINO = RE.KANRINO )");
-			//sbSQL.append(" and T.UPDKBN = 1 ) ");
-			sbSQL.append(" when matched then update set");
-			sbSQL.append(" HBSTDT = RE.HBSTDT");
-			sbSQL.append(", BMNCD = RE.BMNCD");
-			sbSQL.append(", WRITUKBN = RE.WRITUKBN");
-			sbSQL.append(", SEICUTKBN = RE.SEICUTKBN");
-			sbSQL.append(", DUMMYCD = RE.DUMMYCD");
-			sbSQL.append(", KANRINO = RE.KANRINO");
-			sbSQL.append(", SHNCD = RE.SHNCD");
-			sbSQL.append(", MAKERKN = RE.MAKERKN");
-			sbSQL.append(", SHNKN = RE.SHNKN");
-			sbSQL.append(", KIKKN = RE.KIKKN");
-			sbSQL.append(", IRISU = RE.IRISU");
-			sbSQL.append(", BAIKAAM = RE.BAIKAAM");
-			sbSQL.append(", GENKAAM = RE.GENKAAM");
-			sbSQL.append(", UPDKBN = RE.UPDKBN");
-			sbSQL.append(", SENDFLG = RE.SENDFLG");
-			sbSQL.append(", OPERATOR = RE.OPERATOR");
-			//sbSQL.append(", ADDDT = RE.ADDDT");
-			sbSQL.append(", ADDDT = case when NVL(UPDKBN, 0) = 1 then RE.ADDDT else ADDDT end");
-			sbSQL.append(", UPDDT = RE.UPDDT");
-			sbSQL.append("  when not matched then INSERT (");
-			sbSQL.append("  HBSTDT");
-			sbSQL.append(", BMNCD");
-			sbSQL.append(", WRITUKBN");
-			sbSQL.append(", SEICUTKBN");
-			sbSQL.append(", DUMMYCD");
-			sbSQL.append(", KANRINO");
-			sbSQL.append(", SHNCD");
-			sbSQL.append(", MAKERKN");
-			sbSQL.append(", SHNKN");
-			sbSQL.append(", KIKKN");
-			sbSQL.append(", IRISU");
-			sbSQL.append(", BAIKAAM");
-			sbSQL.append(", GENKAAM");
-			sbSQL.append(", UPDKBN");
-			sbSQL.append(", SENDFLG");
-			sbSQL.append(", OPERATOR");
-			sbSQL.append(", ADDDT");
-			sbSQL.append(", UPDDT");
-			sbSQL.append(") values (");
-			sbSQL.append(" RE.HBSTDT");
-			sbSQL.append(", RE.BMNCD");
-			sbSQL.append(", RE.WRITUKBN");
-			sbSQL.append(", RE.SEICUTKBN");
-			sbSQL.append(", RE.DUMMYCD");
-			sbSQL.append(", RE.KANRINO");
-			sbSQL.append(", RE.SHNCD");
-			sbSQL.append(", RE.MAKERKN");
-			sbSQL.append(", RE.SHNKN");
-			sbSQL.append(", RE.KIKKN");
-			sbSQL.append(", RE.IRISU");
-			sbSQL.append(", RE.BAIKAAM");
-			sbSQL.append(", RE.GENKAAM");
-			sbSQL.append(", RE.UPDKBN");
-			sbSQL.append(", RE.SENDFLG");
-			sbSQL.append(", RE.OPERATOR");
-			sbSQL.append(", RE.ADDDT");
-			sbSQL.append(", RE.UPDDT");
-			sbSQL.append(")");
+			sbSQL.append(", UPDKBN");		                                            // 更新区分：
+			sbSQL.append(", SENDFLG");	                                                // 送信フラグ
+			sbSQL.append(", OPERATOR ");								                // オペレーター：
+			sbSQL.append(", ADDDT ");								                    // 登録日：
+			sbSQL.append(", UPDDT ");								                    // 更新日：
+	        sbSQL.append(") ");
+	        sbSQL.append("VALUES ");
+	        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+	        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+			sbSQL.append("HBSTDT = NEW.HBSTDT");
+			sbSQL.append(", BMNCD = NEW.BMNCD");
+			sbSQL.append(", WRITUKBN = NEW.WRITUKBN");
+			sbSQL.append(", SEICUTKBN = NEW.SEICUTKBN");
+			sbSQL.append(", DUMMYCD = NEW.DUMMYCD");
+			sbSQL.append(", KANRINO = NEW.KANRINO");
+			sbSQL.append(", SHNCD = NEW.SHNCD");
+			sbSQL.append(", MAKERKN = NEW.MAKERKN");
+			sbSQL.append(", SHNKN = NEW.SHNKN");
+			sbSQL.append(", KIKKN = NEW.KIKKN");
+			sbSQL.append(", IRISU = NEW.IRISU");
+			sbSQL.append(", BAIKAAM = NEW.BAIKAAM");
+			sbSQL.append(", GENKAAM = NEW.GENKAAM");
+	        sbSQL.append(", UPDKBN = NEW.UPDKBN");                                             
+	        sbSQL.append(", SENDFLG = NEW.SENDFLG");                                                
+	        sbSQL.append(", OPERATOR = NEW.OPERATOR");                                                                                      
+	        sbSQL.append(", UPDDT = NEW.UPDDT");
 
 			if (DefineReport.ID_DEBUG_MODE) System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
@@ -1263,73 +1171,45 @@ public class ReportBW000Dao extends ItemDao {
 
 					// 新規登録時は管理番号を使用する。
 					if(StringUtils.isEmpty(val)){
-						values += ", null";
+						values += "null ,";
 					}else{
-						values += ", ?";
+						values += "? ,";
 						prmData.add(val);
 					}
 
 					if(k == maxField){
-						values = StringUtils.removeStart(values, ",");
-						valueData = ArrayUtils.add(valueData, "("+values+")");
+			            values += ", '" + userId + "'";
+			            values += ", CURRENT_TIMESTAMP";
+			            values += ", CURRENT_TIMESTAMP";
+			            
+						valueData = ArrayUtils.add(valueData, "(" + values + ")");
 						values = "";
 					}
 				}
 			}
 			//	冷凍食品内部管理
-			sbSQL.append(" merge into INATK.SYSRS as T using ( select");
+			sbSQL.append(" INSERT into INATK.SYSRS (");
 			sbSQL.append(" HBSTDT");													// 催し開始日
 			sbSQL.append(", BMNCD");													// 部門コード
 			sbSQL.append(", WRITUKBN");													// 割率区分
 			sbSQL.append(", SEICUTKBN");												// 正規カット区分
 			sbSQL.append(", DUMMYCD");													// ダミーコード
 			sbSQL.append(", SUMI_KANRINO");												// 管理番号
-			sbSQL.append(", '"+userId+"' AS OPERATOR ");								// オペレーター：
-			sbSQL.append(", current timestamp AS ADDDT ");								// 登録日：
-			sbSQL.append(", current timestamp AS UPDDT ");								// 更新日：
-			sbSQL.append(" from (values "+StringUtils.join(valueData, ",")+") as T1( ");
-			sbSQL.append(" HBSTDT");
-			sbSQL.append(", BMNCD");
-			sbSQL.append(", WRITUKBN");
-			sbSQL.append(", SEICUTKBN");
-			sbSQL.append(", DUMMYCD");
-			sbSQL.append(", SUMI_KANRINO");
-			sbSQL.append(" )) as RE on ( T.HBSTDT = RE.HBSTDT  ");
-			sbSQL.append(" and T.BMNCD = RE.BMNCD ");
-			sbSQL.append(" and T.WRITUKBN = RE.WRITUKBN ");
-			sbSQL.append(" and T.SEICUTKBN = RE.SEICUTKBN ");
-			sbSQL.append(" and T.DUMMYCD = RE.DUMMYCD ");
-			sbSQL.append(" ) when matched then update set");
-			sbSQL.append(" HBSTDT = RE.HBSTDT");
-			sbSQL.append(", BMNCD = RE.BMNCD");
-			sbSQL.append(", WRITUKBN = RE.WRITUKBN");
-			sbSQL.append(", SEICUTKBN = RE.SEICUTKBN");
-			sbSQL.append(", DUMMYCD = RE.DUMMYCD");
-			sbSQL.append(", SUMI_KANRINO = RE.SUMI_KANRINO");
-			sbSQL.append(", OPERATOR = RE.OPERATOR");
-			sbSQL.append(", ADDDT = RE.ADDDT");
-			sbSQL.append(", UPDDT = RE.UPDDT");
-			sbSQL.append("  when not matched then INSERT (");
-			sbSQL.append("  HBSTDT");
-			sbSQL.append(", BMNCD");
-			sbSQL.append(", WRITUKBN");
-			sbSQL.append(", SEICUTKBN");
-			sbSQL.append(", DUMMYCD");
-			sbSQL.append(", SUMI_KANRINO");
-			sbSQL.append(", OPERATOR");
-			sbSQL.append(", ADDDT");
-			sbSQL.append(", UPDDT");
-			sbSQL.append(") values (");
-			sbSQL.append(" RE.HBSTDT");
-			sbSQL.append(", RE.BMNCD");
-			sbSQL.append(", RE.WRITUKBN");
-			sbSQL.append(", RE.SEICUTKBN");
-			sbSQL.append(", RE.DUMMYCD");
-			sbSQL.append(", RE.SUMI_KANRINO");
-			sbSQL.append(", RE.OPERATOR");
-			sbSQL.append(", RE.ADDDT");
-			sbSQL.append(", RE.UPDDT");
-			sbSQL.append(")");
+			sbSQL.append(", OPERATOR ");								                // オペレーター：
+			sbSQL.append(", ADDDT ");								                    // 登録日：
+			sbSQL.append(", UPDDT ");								                    // 更新日：
+	        sbSQL.append(") ");
+	        sbSQL.append("VALUES ");
+	        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+			sbSQL.append("HBSTDT = NEW.HBSTDT");
+			sbSQL.append(", BMNCD = NEW.BMNCD");
+			sbSQL.append(", WRITUKBN = NEW.WRITUKBN");
+			sbSQL.append(", SEICUTKBN = NEW.SEICUTKBN");
+			sbSQL.append(", DUMMYCD = NEW.DUMMYCD");
+			sbSQL.append(", SUMI_KANRINO = NEW.SUMI_KANRINO");
+	        sbSQL.append(", OPERATOR = NEW.OPERATOR");                                                // オペレーター：
+	        sbSQL.append(", UPDDT = NEW.UPDDT");
+
 
 			if (DefineReport.ID_DEBUG_MODE) System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
@@ -1380,7 +1260,7 @@ public class ReportBW000Dao extends ItemDao {
 		sbSQL.append(" SET ");
 		sbSQL.append(" UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
 		sbSQL.append(",OPERATOR='" + userId + "'");
-		sbSQL.append(",UPDDT=current timestamp ");
+		sbSQL.append(",UPDDT=current_timestamp ");
 		sbSQL.append(" WHERE HBSTDT = ?");
 		sbSQL.append(" and BMNCD = ?");
 		sbSQL.append(" and WRITUKBN = ?");
@@ -1402,7 +1282,7 @@ public class ReportBW000Dao extends ItemDao {
 		sbSQL.append(" SET ");
 		sbSQL.append(" UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
 		sbSQL.append(",OPERATOR='" + userId + "'");
-		sbSQL.append(",UPDDT=current timestamp ");
+		sbSQL.append(",UPDDT=current_timestamp ");
 		sbSQL.append(" WHERE HBSTDT = ?");
 		sbSQL.append(" and BMNCD = ?");
 		sbSQL.append(" and WRITUKBN = ?");
@@ -1422,7 +1302,7 @@ public class ReportBW000Dao extends ItemDao {
 		sbSQL.append(" SET ");
 		sbSQL.append(" UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
 		sbSQL.append(",OPERATOR='" + userId + "'");
-		sbSQL.append(",UPDDT=current timestamp ");
+		sbSQL.append(",UPDDT=current_timestamp ");
 		sbSQL.append(" WHERE HBSTDT = ?");
 		sbSQL.append(" and BMNCD = ?");
 		sbSQL.append(" and WRITUKBN = ?");
@@ -1447,10 +1327,10 @@ public class ReportBW000Dao extends ItemDao {
 	 */
 	public String getCSVTOK_SEQ() {
 		// 関連情報取得
-		ItemList iL = new ItemList();
-		String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ010";
+		new ItemList();
+		String sqlColCommand = "SELECT INAMS.nextval('SEQ010') AS \"1\" ";
 		@SuppressWarnings("static-access")
-		JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
+		JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
 		String value = "";
 		if(array.size() > 0){
 			value = array.optJSONObject(0).optString("1");
@@ -1479,7 +1359,7 @@ public class ReportBW000Dao extends ItemDao {
 		String values = "";
 		values += " " + seq;
 		values += "," + userId;
-		values += ",current timestamp ";
+		values += ",current_timestamp ";
 		if(isTest){
 			values += ",'" + commentkn+"'";
 		}else{
@@ -1678,6 +1558,7 @@ public class ReportBW000Dao extends ItemDao {
 		LinkedList<String> valList = new LinkedList<String>();
 		valList.add("");	//
 		int i = 1;
+	    Object[] valueData = new Object[] {};
 		String values = "";
 		for(CSVTOK_RSKKKLayout itm :CSVTOK_RSKKKLayout.values()){
 			String val = "";
@@ -1716,17 +1597,25 @@ public class ReportBW000Dao extends ItemDao {
 			}
 
 			if(StringUtils.isEmpty(val)){
-				values += " null,";
+				values += "null ,";
 			}else{
-				values += " ?,";
+				values += "? ,";
 				prmData.add(val);
 			}
 		}
-		values = StringUtils.removeEnd(values, ",");
-
+		//values = StringUtils.removeEnd(values, ",");
+		
+        values += " " + DefineReport.ValUpdkbn.NML.getVal() + " ";
+        values += ", '" + userId + "'";
+        values += ", CURRENT_TIMESTAMP";
+        values += ", CURRENT_TIMESTAMP";
+        
+        valueData = ArrayUtils.add(valueData, "(" + values + ")");
+        values = "";
+        
 		StringBuffer sbSQL;
 		sbSQL = new StringBuffer();
-		sbSQL.append(" merge into INATK.CSVTOK_RSKKK as T using (select");
+		sbSQL.append(" INSERT into INATK.CSVTOK_RSKKK (");
 		sbSQL.append(" SEQ");														// SEQ
 		sbSQL.append(", INPUTNO");													// 入力番号
 		sbSQL.append(", HBSTDT");													// 催し区分
@@ -1735,65 +1624,27 @@ public class ReportBW000Dao extends ItemDao {
 		sbSQL.append(", SEICUTKBN");												// 部門
 		sbSQL.append(", DUMMYCD");													// ダミーコード
 		sbSQL.append(", MEISHOKN");													// 企画名称
-		sbSQL.append(", "+DefineReport.ValUpdkbn.NML.getVal()+" AS UPDKBN");		// 更新区分：
-		sbSQL.append(", '"+userId+"' AS OPERATOR ");								// オペレーター：
-		sbSQL.append(", current timestamp AS ADDDT ");								// 登録日：
-		sbSQL.append(", current timestamp AS UPDDT ");								// 更新日：
-		sbSQL.append(" from (values ("+values+")) as T1( ");
-		sbSQL.append(" SEQ");														// SEQ
-		sbSQL.append(", INPUTNO");													// 入力番号
-		sbSQL.append(", HBSTDT");
-		sbSQL.append(", BMNCD");
-		sbSQL.append(", WRITUKBN");
-		sbSQL.append(", SEICUTKBN");
-		sbSQL.append(", DUMMYCD");
-		sbSQL.append(", MEISHOKN");
-		//sbSQL.append(" ))as RE on (T.HBSTDT = RE.HBSTDT  ");
-		sbSQL.append(" ))as RE on (T.SEQ = RE.SEQ and T.INPUTNO = RE.INPUTNO ");
-		sbSQL.append(" and T.BMNCD = RE.BMNCD ");
-		sbSQL.append(" and T.WRITUKBN = RE.WRITUKBN ");
-		sbSQL.append(" and T.SEICUTKBN = RE.SEICUTKBN ");
-		sbSQL.append(" and T.DUMMYCD = RE.DUMMYCD ) ");
-		sbSQL.append(" when matched then update set");
-		sbSQL.append(" SEQ = RE.SEQ");
-		sbSQL.append(", INPUTNO = RE.INPUTNO");
-		sbSQL.append(", HBSTDT = RE.HBSTDT");
-		sbSQL.append(", BMNCD = RE.BMNCD");
-		sbSQL.append(", WRITUKBN = RE.WRITUKBN");
-		sbSQL.append(", SEICUTKBN = RE.SEICUTKBN");
-		sbSQL.append(", DUMMYCD = RE.DUMMYCD");
-		sbSQL.append(", MEISHOKN = RE.MEISHOKN");
-		sbSQL.append(", UPDKBN = RE.UPDKBN");
-		sbSQL.append(", OPERATOR = RE.OPERATOR");
-		sbSQL.append(", ADDDT = RE.ADDDT");
-		sbSQL.append(", UPDDT = RE.UPDDT");
-		sbSQL.append("  when not matched then INSERT (");
-		sbSQL.append(" SEQ");
-		sbSQL.append(", INPUTNO");
-		sbSQL.append(", HBSTDT");
-		sbSQL.append(", BMNCD");
-		sbSQL.append(", WRITUKBN");
-		sbSQL.append(", SEICUTKBN");
-		sbSQL.append(", DUMMYCD");
-		sbSQL.append(", MEISHOKN");
-		sbSQL.append(", UPDKBN");
-		sbSQL.append(", OPERATOR");
-		sbSQL.append(", ADDDT");
-		sbSQL.append(", UPDDT");
-		sbSQL.append(") values (");
-		sbSQL.append(" SEQ");
-		sbSQL.append(", INPUTNO");
-		sbSQL.append(", RE.HBSTDT");
-		sbSQL.append(", RE.BMNCD");
-		sbSQL.append(", RE.WRITUKBN");
-		sbSQL.append(", RE.SEICUTKBN");
-		sbSQL.append(", RE.DUMMYCD");
-		sbSQL.append(", RE.MEISHOKN");
-		sbSQL.append(", RE.UPDKBN");
-		sbSQL.append(", RE.OPERATOR");
-		sbSQL.append(", RE.ADDDT");
-		sbSQL.append(", RE.UPDDT");
-		sbSQL.append(")");
+		sbSQL.append(", UPDKBN");		                                            // 更新区分：
+		sbSQL.append(", OPERATOR ");								                // オペレーター：
+		sbSQL.append(", ADDDT ");								                    // 登録日：
+		sbSQL.append(", UPDDT ");								                    // 更新日：
+        sbSQL.append(") ");
+        sbSQL.append("VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+		sbSQL.append(" SEQ = NEW.SEQ");												         
+		sbSQL.append(", INPUTNO = NEW.INPUTNO");													
+		sbSQL.append(", HBSTDT = NEW.HBSTDT");
+		sbSQL.append(", BMNCD = NEW.BMNCD");
+		sbSQL.append(", WRITUKBN = NEW.WRITUKBN");
+		sbSQL.append(", SEICUTKBN = NEW.SEICUTKBN");
+		sbSQL.append(", DUMMYCD = NEW.DUMMYCD");
+		sbSQL.append(", MEISHOKN  = NEW.MEISHOKN");
+	    sbSQL.append(", UPDKBN = NEW.UPDKBN");                                                   
+	    sbSQL.append(", OPERATOR = NEW.OPERATOR");                                                
+	    sbSQL.append(", ADDDT = NEW.ADDDT  ");                                                   
+	    sbSQL.append(", UPDDT = NEW.UPDDT ");
+
 
 		if (DefineReport.ID_DEBUG_MODE) System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
@@ -1820,6 +1671,7 @@ public class ReportBW000Dao extends ItemDao {
 		LinkedList<String> valList = new LinkedList<String>();
 		valList.add("");	//
 		int i = 1;
+	    Object[] valueData = new Object[]{};
 		String values = "";
 		for(CSVTOK_RSSHNLayout itm :CSVTOK_RSSHNLayout.values()){
 			String val = ((String) this.csvtokrsshn_add_data[itm.getNo()-1]);
@@ -1830,31 +1682,37 @@ public class ReportBW000Dao extends ItemDao {
 			}
 
 			if (StringUtils.isEmpty(val)) {
-				values += " null,";
+				values += "null ,";
 			} else {
-				values += " ?,";
+				values += "? ,";
 				prmData.add(val);
 			}
 
 		}
-		values = StringUtils.removeEnd(values, ",");
-		Object[] valueData = new Object[]{};
+        values += " " + DefineReport.ValUpdkbn.NML.getVal() + " ";
+        values += ", '" + userId + "'";
+        values += ", CURRENT_TIMESTAMP";
+        values += ", CURRENT_TIMESTAMP";
+
+        valueData = ArrayUtils.add(valueData, "(" + values + ")");
+        values = "";
+
 		StringBuffer sbSQL;
 		sbSQL = new StringBuffer();
 		// 冷凍食品_商品の登録・更新
-		sbSQL.append(" merge into INATK.CSVTOK_RSSHN as T using (select");
-		sbSQL.append(" SEQ");													// 催し区分
+		sbSQL.append(" INSERT into INATK.CSVTOK_RSSHN (");
+		sbSQL.append(" SEQ");													    // 催し区分
 		sbSQL.append(", INPUTNO");													// 催し開始日
-		sbSQL.append(", INPUTEDANO");													// 催し開始日
+		sbSQL.append(", INPUTEDANO");											    // 催し開始日
 		sbSQL.append(", ERRCD");													// 催し開始日
 		sbSQL.append(", ERRFLD");													// 催し開始日
 		sbSQL.append(", ERRVL");													// 催し開始日
 		sbSQL.append(", ERRTBLNM");													// 催し開始日
-		sbSQL.append(", CSV_UPDKBN");													// 催し開始日
+		sbSQL.append(", CSV_UPDKBN");											    // 催し開始日
 		sbSQL.append(", HBSTDT");													// 催し開始日
 		sbSQL.append(", BMNCD");													// 催し開始日
 		sbSQL.append(", WRITUKBN");													// 催し連番
-		sbSQL.append(", SEICUTKBN");													// 部門
+		sbSQL.append(", SEICUTKBN");											    // 部門
 		sbSQL.append(", DUMMYCD");													// 部門
 		sbSQL.append(", KANRINO");													// 部門
 		sbSQL.append(", SHNCD");													// 部門
@@ -1864,117 +1722,39 @@ public class ReportBW000Dao extends ItemDao {
 		sbSQL.append(", IRISU");													// 部門
 		sbSQL.append(", BAIKAAM");													// 部門
 		sbSQL.append(", GENKAAM");													// 部門
-		sbSQL.append(", "+DefineReport.ValUpdkbn.NML.getVal()+" AS UPDKBN");		// 更新区分：
-		sbSQL.append(", '"+userId+"' AS OPERATOR ");								// オペレーター：
-		sbSQL.append(", current timestamp AS ADDDT ");								// 登録日：
-		sbSQL.append(", current timestamp AS UPDDT ");								// 更新日：
-		sbSQL.append(" from (values ("+values+")) as T1( ");
-		sbSQL.append(" SEQ");													// 催し区分
-		sbSQL.append(", INPUTNO");													// 催し開始日
-		sbSQL.append(", INPUTEDANO");													// 催し開始日
-		sbSQL.append(", ERRCD");													// 催し開始日
-		sbSQL.append(", ERRFLD");													// 催し開始日
-		sbSQL.append(", ERRVL");													// 催し開始日
-		sbSQL.append(", ERRTBLNM");													// 催し開始日
-		sbSQL.append(", CSV_UPDKBN");													// 催し開始日
-		sbSQL.append(", HBSTDT");													// 催し開始日
-		sbSQL.append(", BMNCD");													// 催し開始日
-		sbSQL.append(", WRITUKBN");													// 催し連番
-		sbSQL.append(", SEICUTKBN");													// 部門
-		sbSQL.append(", DUMMYCD");													// 部門
-		sbSQL.append(", KANRINO");													// 部門
-		sbSQL.append(", SHNCD");													// 部門
-		sbSQL.append(", MAKERKN");													// 部門
-		sbSQL.append(", SHNKN");													// 部門
-		sbSQL.append(", KIKKN");													// 部門
-		sbSQL.append(", IRISU");													// 部門
-		sbSQL.append(", BAIKAAM");													// 部門
-		sbSQL.append(", GENKAAM");													// 部門
-		sbSQL.append(" ))as RE on (T.HBSTDT = RE.HBSTDT  ");
-		sbSQL.append(" and T.BMNCD = RE.BMNCD ");
-		sbSQL.append(" and T.WRITUKBN = RE.WRITUKBN ");
-		sbSQL.append(" and T.SEICUTKBN = RE.SEICUTKBN ");
-		sbSQL.append(" and T.DUMMYCD = RE.DUMMYCD ");
-		sbSQL.append(" and T.SHNCD = RE.SHNCD ) ");
-		sbSQL.append(" when matched then update set");
-		sbSQL.append(" SEQ = RE.SEQ");
-		sbSQL.append(", WRITUKBN = RE.WRITUKBN");
-		sbSQL.append(", INPUTNO = RE.INPUTNO");
-		sbSQL.append(", INPUTEDANO = RE.INPUTEDANO");
-		sbSQL.append(", ERRCD = RE.ERRCD");
-		sbSQL.append(", ERRFLD = RE.ERRFLD");
-		sbSQL.append(", ERRVL = RE.ERRVL");
-		sbSQL.append(", ERRTBLNM = RE.ERRTBLNM");
-		sbSQL.append(", CSV_UPDKBN = RE.CSV_UPDKBN");
-		sbSQL.append(", HBSTDT = RE.HBSTDT");
-		sbSQL.append(", BMNCD = RE.BMNCD");
-		sbSQL.append(", SEICUTKBN = RE.SEICUTKBN");
-		sbSQL.append(", DUMMYCD = RE.DUMMYCD");
-		sbSQL.append(", KANRINO = RE.KANRINO");
-		sbSQL.append(", SHNCD = RE.SHNCD");
-		sbSQL.append(", MAKERKN = RE.MAKERKN");
-		sbSQL.append(", SHNKN = RE.SHNKN");
-		sbSQL.append(", KIKKN = RE.KIKKN");
-		sbSQL.append(", IRISU = RE.IRISU");
-		sbSQL.append(", BAIKAAM = RE.BAIKAAM");
-		sbSQL.append(", GENKAAM = RE.GENKAAM");
-		sbSQL.append(", UPDKBN = RE.UPDKBN");
-		sbSQL.append(", OPERATOR = RE.OPERATOR");
-		sbSQL.append(", ADDDT = RE.ADDDT");
-		sbSQL.append(", UPDDT = RE.UPDDT");
-		sbSQL.append("  when not matched then INSERT (");
-		sbSQL.append(" SEQ");													// 催し区分
-		sbSQL.append(", INPUTNO");													// 催し開始日
-		sbSQL.append(", INPUTEDANO");													// 催し開始日
-		sbSQL.append(", ERRCD");													// 催し開始日
-		sbSQL.append(", ERRFLD");													// 催し開始日
-		sbSQL.append(", ERRVL");													// 催し開始日
-		sbSQL.append(", ERRTBLNM");													// 催し開始日
-		sbSQL.append(", CSV_UPDKBN");													// 催し開始日
-		sbSQL.append(", HBSTDT");													// 催し開始日
-		sbSQL.append(", BMNCD");													// 催し開始日
-		sbSQL.append(", WRITUKBN");													// 催し連番
-		sbSQL.append(", SEICUTKBN");													// 部門
-		sbSQL.append(", DUMMYCD");													// 部門
-		sbSQL.append(", KANRINO");													// 部門
-		sbSQL.append(", SHNCD");													// 部門
-		sbSQL.append(", MAKERKN");													// 部門
-		sbSQL.append(", SHNKN");													// 部門
-		sbSQL.append(", KIKKN");													// 部門
-		sbSQL.append(", IRISU");													// 部門
-		sbSQL.append(", BAIKAAM");													// 部門
-		sbSQL.append(", GENKAAM");													// 部門
-		sbSQL.append(", UPDKBN");
-		sbSQL.append(", OPERATOR");
-		sbSQL.append(", ADDDT");
-		sbSQL.append(", UPDDT");
-		sbSQL.append(") values (");
-		sbSQL.append(" SEQ");													// 催し区分
-		sbSQL.append(", RE.INPUTNO");											// 催し開始日
-		sbSQL.append(", RE.INPUTEDANO");										// 催し開始日
-		sbSQL.append(", RE.ERRCD");													// 催し開始日
-		sbSQL.append(", RE.ERRFLD");													// 催し開始日
-		sbSQL.append(", RE.ERRVL");													// 催し開始日
-		sbSQL.append(", RE.ERRTBLNM");													// 催し開始日
-		sbSQL.append(", RE.CSV_UPDKBN");													// 催し開始日
-		sbSQL.append(", RE.HBSTDT");													// 催し開始日
-		sbSQL.append(", RE.BMNCD");													// 催し開始日
-		sbSQL.append(", RE.WRITUKBN");													// 催し連番
-		sbSQL.append(", RE.SEICUTKBN");													// 部門
-		sbSQL.append(", RE.DUMMYCD");													// 部門
-		sbSQL.append(", RE.KANRINO");													// 部門
-		sbSQL.append(", RE.SHNCD");													// 部門
-		sbSQL.append(", RE.MAKERKN");													// 部門
-		sbSQL.append(", RE.SHNKN");													// 部門
-		sbSQL.append(", RE.KIKKN");													// 部門
-		sbSQL.append(", RE.IRISU");													// 部門
-		sbSQL.append(", RE.BAIKAAM");													// 部門
-		sbSQL.append(", RE.GENKAAM");													// 部門
-		sbSQL.append(", RE.UPDKBN");
-		sbSQL.append(", RE.OPERATOR");
-		sbSQL.append(", RE.ADDDT");
-		sbSQL.append(", RE.UPDDT");
-		sbSQL.append(")");
+		sbSQL.append(", UPDKBN");		                                            // 更新区分：
+		sbSQL.append(", OPERATOR ");								                // オペレーター：
+		sbSQL.append(", ADDDT ");								                    // 登録日：
+		sbSQL.append(", UPDDT ");								                    // 更新日：
+        sbSQL.append(") ");
+        sbSQL.append("VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+		sbSQL.append(" SEQ = NEW.SEQ");													// 催し区分
+		sbSQL.append(", INPUTNO = NEW.INPUTNO");													// 催し開始日
+		sbSQL.append(", INPUTEDANO = NEW.INPUTEDANO");													// 催し開始日
+		sbSQL.append(", ERRCD = NEW.ERRCD");													// 催し開始日
+		sbSQL.append(", ERRFLD = NEW.ERRFLD");													// 催し開始日
+		sbSQL.append(", ERRVL = NEW.ERRVL");													// 催し開始日
+		sbSQL.append(", ERRTBLNM = NEW.ERRTBLNM");													// 催し開始日
+		sbSQL.append(", CSV_UPDKBN = NEW.CSV_UPDKBN");													// 催し開始日
+		sbSQL.append(", HBSTDT = NEW.HBSTDT");													// 催し開始日
+		sbSQL.append(", BMNCD = NEW.BMNCD");													// 催し開始日
+		sbSQL.append(", WRITUKBN = NEW.WRITUKBN");													// 催し連番
+		sbSQL.append(", SEICUTKBN = NEW.SEICUTKBN");													// 部門
+		sbSQL.append(", DUMMYCD = NEW.DUMMYCD");													// 部門
+		sbSQL.append(", KANRINO = NEW.KANRINO");													// 部門
+		sbSQL.append(", SHNCD = NEW.SHNCD");													// 部門
+		sbSQL.append(", MAKERKN = NEW.MAKERKN");													// 部門
+		sbSQL.append(", SHNKN = NEW.SHNKN");													// 部門
+		sbSQL.append(", KIKKN = NEW.KIKKN");													// 部門
+		sbSQL.append(", IRISU = NEW.IRISU");													// 部門
+		sbSQL.append(", BAIKAAM = NEW.BAIKAAM ");													// 部門
+		sbSQL.append(", GENKAAM = NEW.GENKAAM");	
+	    sbSQL.append(", UPDKBN = NEW.UPDKBN");                                                   // 更新区分：
+	    sbSQL.append(", OPERATOR = NEW.OPERATOR ");                                                // オペレーター：                                                  // 登録日：
+	    sbSQL.append(", UPDDT = NEW.UPDDT "); 
+
 
 		if (DefineReport.ID_DEBUG_MODE) System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
