@@ -661,7 +661,6 @@ public class ReportJU012Dao extends ItemDao {
 
     if (dbDatas.size() == 0) {
       // 登録のない催しコード
-      System.out.print("data 2: " + dbDatas + "\n");
       msg.add(mu.getDbMessageObj("E20005", new String[] {}));
       return msg;
     }
@@ -1134,7 +1133,6 @@ public class ReportJU012Dao extends ItemDao {
       moysstdt = data.optString("F2");
       moysrban = data.optString("F3");
 
-      System.out.print("data : "+ data+"\n");
 
       String key = moyskbn + moysstdt + moysrban;
       if (!moysCd.contains(key)) {
@@ -2206,7 +2204,7 @@ public class ReportJU012Dao extends ItemDao {
       sbSQL.append(", OPERATOR "); // オペレーター：
       sbSQL.append(", ADDDT "); // 登録日：
       sbSQL.append(", UPDDT "); // 更新日：
-      sbSQL.append(") VALUES ( " + StringUtils.removeStart(StringUtils.join(valueData, ","),",") + " ");
+      sbSQL.append(") VALUES ( " + StringUtils.removeStart(StringUtils.join(valueData, ","), ",") + " ");
       sbSQL.append(", " + jutenkaikbn + " "); // 展開方法
       sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
       sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
