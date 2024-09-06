@@ -276,8 +276,8 @@ public class ReportTG016Dao extends ItemDao {
     // 関連情報取得
     StringBuffer sbSQL = new StringBuffer();
     JSONArray dbDatas = new JSONArray();
-    ItemList iL = new ItemList();
-    ArrayList<String> prmData = new ArrayList<String>();
+    new ItemList();
+    ArrayList<String> prmData = new ArrayList<>();
 
     prmData.add(szMoyskbn);
     prmData.add(szMoysstdt);
@@ -312,7 +312,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" CAST(DATE_FORMAT(T1.NNSTDT_TGF - INTERVAL 14 DAY,'%Y%m%d') AS SIGNED) >= T3.STARTDT ");
     sbSQL.append(" AND CAST(DATE_FORMAT(T1.NNSTDT_TGF - INTERVAL 14 DAY,'%Y%m%d') AS SIGNED ) <= T3.ENDDT)");
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), prmData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), prmData, Defines.STR_JNDI_DS);
 
     if (dbDatas.size() != 0) {
       return dbDatas.getJSONObject(0).optString("FLG");
@@ -381,7 +381,7 @@ public class ReportTG016Dao extends ItemDao {
 
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     StringBuffer sbSQL = new StringBuffer();
 
@@ -873,7 +873,7 @@ public class ReportTG016Dao extends ItemDao {
     String szMoysrban = map.get("MOYSRBAN"); // 催し連番
     String szBmncd = map.get("BMNCD"); // 部門コード
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" select");
@@ -922,9 +922,9 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("   and T1.MOYSSTDT = " + szMoysstdt + "");
     sbSQL.append("   and T1.MOYSRBAN = " + szMoysrban + "");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -936,7 +936,7 @@ public class ReportTG016Dao extends ItemDao {
    */
   public JSONArray getByCd(String byCd) {
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlWhere = "";
 
     if (StringUtils.isEmpty(byCd)) {
@@ -952,9 +952,9 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" from INAAD.SYSLOGIN");
     sbSQL.append(" where " + sqlWhere);
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -1010,7 +1010,7 @@ public class ReportTG016Dao extends ItemDao {
     }
 
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     // 2.1.4．【画面】.「納入情報」タブ上の「パターンNo.」と「パターン年月表示」の制御：
     // 2.1.4.1．前提：
@@ -1222,9 +1222,9 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" group by M1.DT WITH ROLLUP ");
     sbSQL.append(" order by IFNULL(M1.DT, 99999999)");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -1265,7 +1265,7 @@ public class ReportTG016Dao extends ItemDao {
       szTableSHN = "INATK.TOKSP_SHN";
     }
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" SELECT ");
     sbSQL.append(" T1.MOYSKBN ");
@@ -1302,9 +1302,9 @@ public class ReportTG016Dao extends ItemDao {
     }
     sbSQL.append(" and IFNULL(T1.UPDKBN, 0) <> 1 ");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -1867,14 +1867,14 @@ public class ReportTG016Dao extends ItemDao {
   }
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
   /** SQLリスト保持用変数(付番管理用) */
-  ArrayList<String> sqlList0 = new ArrayList<String>();
+  ArrayList<String> sqlList0 = new ArrayList<>();
 
   /**
    * 更新処理実行
@@ -2295,7 +2295,7 @@ public class ReportTG016Dao extends ItemDao {
           // データが存在していてPLU配信しないフラグがたっている場合
           if (pluSndFlg.equals("1") && map.size() != 0) {
 
-            Set<String> keys = new TreeSet<String>();
+            Set<String> keys = new TreeSet<>();
 
             for (HashMap.Entry<String, String> delMap : map.entrySet()) {
               String val = delMap.getValue();
@@ -2356,10 +2356,10 @@ public class ReportTG016Dao extends ItemDao {
 
           // 更新時はupdate or delete or insertの判断が必要
           StringBuffer sbSQL = new StringBuffer();
-          ItemList iL = new ItemList();
+          new ItemList();
           JSONArray dbDatas = new JSONArray();
           String sqlWhere = "";
-          ArrayList<String> paramData = new ArrayList<String>();
+          ArrayList<String> paramData = new ArrayList<>();
 
           String kanrino = dataN.optString(TOKSP_NNDTLayout.KANRINO.getId());
           String kanrieno = dataN.optString(TOKSP_NNDTLayout.KANRIENO.getId());
@@ -2422,7 +2422,7 @@ public class ReportTG016Dao extends ItemDao {
           sbSQL.append("WHERE ");
           sbSQL.append(sqlWhere); // 入力された商品コードで検索
 
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
           // レコードが存在していてチェックのある場合はupdate。チェックの無い場合はdelete
           boolean del = false;
@@ -2453,7 +2453,7 @@ public class ReportTG016Dao extends ItemDao {
           arr = dataN.optString(TOKSP_NNDTLayout.TENHTSU_ARR.getId());
           HashMap<String, String> mapHtsu = daoJu.getDigitMap(arr, 5, "1");
 
-          Set<String> keys = new TreeSet<String>();
+          Set<String> keys = new TreeSet<>();
 
           if (mapHtsu.size() == 0 && del) {
             // 配列が作成されていない場合該当の催しコード+管理番号は削除
@@ -2519,15 +2519,8 @@ public class ReportTG016Dao extends ItemDao {
           this.createSqlTOKSP_SHNNNDT(userId, array, SqlType.MRG, table);
         }
         /*
-         * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ //
-         * ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
-         * this.createSqlTOKSP_SHNHBDT(userId, dataArrayHB, SqlType.MRG); // ②全特（ア無）_商品納入日 催し区分 <>
-         * 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = result7 =
-         * this.createSqlTOKSP_SHNNNDT(userId, dataArrayNNDT, SqlType.MRG); }else{ // ③本部個特_商品販売日
-         * 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
-         * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKHTK_SHNHBDT"); //
-         * ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 =
-         * this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
+         * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ // ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 = this.createSqlTOKSP_SHNHBDT(userId, dataArrayHB, SqlType.MRG); // ②全特（ア無）_商品納入日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = result7 = this.createSqlTOKSP_SHNNNDT(userId, dataArrayNNDT, SqlType.MRG); }else{ // ③本部個特_商品販売日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 = this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG,
+         * "INATK.TOKHTK_SHNHBDT"); // ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
          */
 
         // ③ 催し部門内部管理、管理番号内部管理：※但し、催し部門内部管理の更新は行わない。※後述
@@ -2542,7 +2535,7 @@ public class ReportTG016Dao extends ItemDao {
     }
 
     boolean isError = false;
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       ArrayList<String> commands = sqlList;
       ArrayList<ArrayList<String>> paramDatas = prmList;
@@ -2683,7 +2676,7 @@ public class ReportTG016Dao extends ItemDao {
 
         con.commit();
       } catch (SQLException e) {
-        countList = new ArrayList<Integer>();
+        countList = new ArrayList<>();
         rollback(con);
         e.printStackTrace();
         if (DefineReport.ID_SQLSTATE_CONNECTION_RESET.equals(e.getSQLState())) {
@@ -2695,7 +2688,7 @@ public class ReportTG016Dao extends ItemDao {
         }
 
       } catch (Exception e) {
-        countList = new ArrayList<Integer>();
+        countList = new ArrayList<>();
         e.printStackTrace();
 
       } finally {
@@ -2939,10 +2932,10 @@ public class ReportTG016Dao extends ItemDao {
 
         // 存在しているレコードのみ削除
         StringBuffer sbSQL = new StringBuffer();
-        ItemList iL = new ItemList();
+        new ItemList();
         JSONArray dbDatas = new JSONArray();
         String sqlWhere = "";
-        ArrayList<String> paramData = new ArrayList<String>();
+        ArrayList<String> paramData = new ArrayList<>();
 
         String kanrino = dataN.optString(TOKSP_NNDTLayout.KANRINO.getId());
         String kanrieno = dataN.optString(TOKSP_NNDTLayout.KANRIENO.getId());
@@ -3004,7 +2997,7 @@ public class ReportTG016Dao extends ItemDao {
         sbSQL.append("WHERE ");
         sbSQL.append(sqlWhere); // 入力された商品コードで検索
 
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
         // レコードが存在していてチェックのある場合はupdate。チェックの無い場合はdelete
         if (dbDatas.size() >= 1) {
@@ -3016,7 +3009,7 @@ public class ReportTG016Dao extends ItemDao {
           arr = dataN.optString(TOKSP_NNDTLayout.TENHTSU_ARR.getId());
           HashMap<String, String> mapHtsu = daoJu.getDigitMap(arr, 5, "1");
 
-          Set<String> keys = new TreeSet<String>();
+          Set<String> keys = new TreeSet<>();
 
           if (mapHtsu.size() == 0) {
             // 配列が作成されていない場合該当の催しコード+管理番号は削除
@@ -3079,15 +3072,8 @@ public class ReportTG016Dao extends ItemDao {
       }
 
       /*
-       * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ //
-       * ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
-       * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKSP_SHNHBDT"); //
-       * ②全特（ア無）_商品納入日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 =
-       * this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKSP_SHNNNDT");
-       * }else{ // ③本部個特_商品販売日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
-       * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKHTK_SHNHBDT"); //
-       * ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 =
-       * this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
+       * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ // ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 = this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKSP_SHNHBDT"); // ②全特（ア無）_商品納入日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKSP_SHNNNDT"); }else{ // ③本部個特_商品販売日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
+       * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKHTK_SHNHBDT"); // ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
        */
 
       this.createSqlSYS_CMN_DEL(userId, data, SqlType.DEL, "INATK.SYSMOYBMN", isTOKTG);
@@ -3098,7 +3084,7 @@ public class ReportTG016Dao extends ItemDao {
     String targetTable = isTOKTG ? "INATK.TOKTG_SHN" : "INATK.TOKSP_SHN";
     String targetWhere = " MOYSKBN = ? and MOYSSTDT= ? and MOYSRBAN = ? and BMNCD = ? and KANRINO = ? and KANRIENO = ? and UPDKBN = 0";
     String targetValue = isTOKTG ? data.optString(TOKTG_SHNLayout.UPDDT.getId()) : data.optString(TOKSP_SHNLayout.UPDDT.getId());
-    ArrayList<String> targetParam = new ArrayList<String>();
+    ArrayList<String> targetParam = new ArrayList<>();
     targetParam.add(data.optString(TOK_CMNLayout.MOYSKBN.getId()));
     targetParam.add(data.optString(TOK_CMNLayout.MOYSSTDT.getId()));
     targetParam.add(data.optString(TOK_CMNLayout.MOYSRBAN.getId()));
@@ -3111,7 +3097,7 @@ public class ReportTG016Dao extends ItemDao {
       return option;
     }
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -3200,7 +3186,7 @@ public class ReportTG016Dao extends ItemDao {
 
     MessageUtility mu = new MessageUtility();
 
-    List<JSONObject> msgList = new ArrayList<JSONObject>();
+    List<JSONObject> msgList = new ArrayList<>();
     // CSV情報を削除する場合は無条件チェックなし
     if (!isCsverr) {
       msgList = this.checkDataDel(isNew, isChange, false, map, userInfo, sysdate, mu, dataArray, dataArray);
@@ -3249,12 +3235,12 @@ public class ReportTG016Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     JSONArray msg = new JSONArray();
 
@@ -3283,7 +3269,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(createSqlSelMSTSHN(szMoyskbn, szMoysstdt, shnCd));
     paramData.add(shnCd);
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     if (dbDatas.size() != 0) {
       shubetuCd = dbDatas.getJSONObject(0).optString("F172");
@@ -3407,10 +3393,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (StringUtils.isEmpty(shnCd)) {
         sqlWhere += "SHNCD=null AND ";
@@ -3437,7 +3423,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal() + " AND ");
       sbSQL.append("PLUSNDFLG<>1");
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() >= 1) {
 
@@ -3496,10 +3482,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (StringUtils.isEmpty(shnCd)) {
         sqlWhere += "SHNCD=null";
@@ -3516,7 +3502,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere); // 入力された商品コードで検索
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0) {
         // マスタに登録のない商品
@@ -3579,10 +3565,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (StringUtils.isEmpty(moyskbn)) {
         sqlWhere += " and MOYSKBN=null";
@@ -3615,7 +3601,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append(DefineReport.ID_SQL_CHK_TBL.replace("@T", tbl).replaceAll("@C", "CHLDNO").replace("?", chldNo));
       sbSQL.append(sqlWhere);
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() != 0 && dbDatas.getJSONObject(0).optInt("VALUE") != 0) {
 
@@ -3660,7 +3646,7 @@ public class ReportTG016Dao extends ItemDao {
             paramData.add(kanrieno);
           }
           sbSQL.append(sqlWhere);
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
           if (dbDatas.size() != 1) {
             // ②E20484 子No.は同じグループNo.中でユニークでなければいけません。 0 E
@@ -4293,16 +4279,8 @@ public class ReportTG016Dao extends ItemDao {
     // ③ 【画面】.A総売価行の「100g総売価」>=【画面】.B総売価行の「100g総売価」>=【画面】.C総売価行の「100g総売価」。
     // ④ 【画面】.A総売価行の「100g総売価」=【画面】.B総売価行の「100g総売価」=【画面】.C総売価行の「100g総売価」は不可。
     /*
-     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_a_baikaam+2 &&
-     * !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue:
-     * $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam =
-     * id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2));
-     * var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue:
-     * $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」
-     * ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >=
-     * c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 =
-     * C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return
-     * "E20547"; } }
+     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_a_baikaam+2 && !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam = id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2)); var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」 ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E
+     * if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >= c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 = C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return "E20547"; } }
      */
 
     // 99.1Kg原価
@@ -4457,16 +4435,8 @@ public class ReportTG016Dao extends ItemDao {
     // ③ 【画面】.A総売価行の「100g総売価」>=【画面】.B総売価行の「100g総売価」>=【画面】.C総売価行の「100g総売価」。
     // ④ 【画面】.A総売価行の「100g総売価」=【画面】.B総売価行の「100g総売価」=【画面】.C総売価行の「100g総売価」は不可。
     /*
-     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_b_baikaam+2 &&
-     * !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue:
-     * $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam =
-     * id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2));
-     * var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue:
-     * $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」
-     * ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >=
-     * c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 =
-     * C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return
-     * "E20547"; } }
+     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_b_baikaam+2 && !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam = id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2)); var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」 ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E
+     * if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >= c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 = C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return "E20547"; } }
      */
     // 106.1Kg原価 表示・入力不可
     // 107.1Kg総売価
@@ -4532,16 +4502,8 @@ public class ReportTG016Dao extends ItemDao {
     // ④ 【画面】.A総売価行の「100g総売価」=【画面】.B総売価行の「100g総売価」=【画面】.C総売価行の「100g総売価」は不可。
     // ⑤ 【画面】.B総売価行の「100g総売価」を入力しないと【画面】.C総売価行の「100g総売価」を入力できない。
     /*
-     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_c_baikaam+2 &&
-     * !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue:
-     * $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam =
-     * id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2));
-     * var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue:
-     * $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」
-     * ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >=
-     * c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 =
-     * C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return
-     * "E20547"; } }
+     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_c_baikaam+2 && !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam = id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2)); var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」 ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E
+     * if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >= c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 = C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return "E20547"; } }
      */
     // 113.1Kg原価 表示・入力不可
     // 114.1Kg総売価
@@ -4663,10 +4625,10 @@ public class ReportTG016Dao extends ItemDao {
         // ③E20220 冷凍食品企画に登録されていません。 0 E
         // 変数を初期化
         sbSQL = new StringBuffer();
-        iL = new ItemList();
+        new ItemList();
         dbDatas = new JSONArray();
         sqlWhere = "";
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
 
         if (!StringUtils.isEmpty(hbStDt) && !StringUtils.isEmpty(shnCd)) {
           if (!StringUtils.isEmpty(aWrituKbn) && !aWrituKbn.equals("-1")) {
@@ -4675,7 +4637,7 @@ public class ReportTG016Dao extends ItemDao {
             paramData.add(shnCd); // 商品コード
             paramData.add(aWrituKbn); // 割引率
 
-            dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+            dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
             if (dbDatas.size() == 0) {
               // マスタに登録のない商品
@@ -4686,10 +4648,10 @@ public class ReportTG016Dao extends ItemDao {
 
           // 変数を初期化
           sbSQL = new StringBuffer();
-          iL = new ItemList();
+          new ItemList();
           dbDatas = new JSONArray();
           sqlWhere = "";
-          paramData = new ArrayList<String>();
+          paramData = new ArrayList<>();
 
           if (!StringUtils.isEmpty(bWrituKbn) && !bWrituKbn.equals("-1")) {
             sbSQL.append(DefineReport.ID_SQL_TOKRS_KKK_CNT);
@@ -4697,7 +4659,7 @@ public class ReportTG016Dao extends ItemDao {
             paramData.add(shnCd); // 商品コード
             paramData.add(bWrituKbn); // 割引率
 
-            dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+            dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
             if (dbDatas.size() == 0) {
               // マスタに登録のない商品
               msg.add(mu.getDbMessageObj("E20220", new String[] {reqNo}));
@@ -4707,17 +4669,17 @@ public class ReportTG016Dao extends ItemDao {
 
           // 変数を初期化
           sbSQL = new StringBuffer();
-          iL = new ItemList();
+          new ItemList();
           dbDatas = new JSONArray();
           sqlWhere = "";
-          paramData = new ArrayList<String>();
+          paramData = new ArrayList<>();
           if (!StringUtils.isEmpty(cWrituKbn) && !cWrituKbn.equals("-1")) {
             sbSQL.append(DefineReport.ID_SQL_TOKRS_KKK_CNT);
             paramData.add(hbStDt); // 販売開始日
             paramData.add(shnCd); // 商品コード
             paramData.add(cWrituKbn); // 割引率
 
-            dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+            dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
             if (dbDatas.size() == 0) {
               // マスタに登録のない商品
@@ -5699,11 +5661,11 @@ public class ReportTG016Dao extends ItemDao {
     if (!StringUtils.isEmpty(juhtdt)) {
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sbSQL.append("select 1 from INAAD.SYSSHORIDT where SHORIDT >= " + iJuhtdt);
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), new ArrayList<String>(), Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), new ArrayList<String>(), Defines.STR_JNDI_DS);
 
       if (dbDatas.size() != 0) {
         msg.add(mu.getDbMessageObj("E20530", new String[] {reqNo}));
@@ -5736,17 +5698,17 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       sbSQL.append(DefineReport.ID_SQL_CHK_TBL.replace("@T", "INAMS.MSTMEISHO").replaceAll("@C", "MEISHOCD"));
       sbSQL.append(" and MEISHOKBN = ");
       sbSQL.append(DefineReport.MeisyoSelect.KBN10665.getCd());
       paramData.add(binKbn);
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() != 0 && dbDatas.getJSONObject(0).getString("VALUE").equals("0")) {
         // E20455 [便区分]整合チェックエラー 0 E
@@ -5802,17 +5764,17 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       sbSQL.append(DefineReport.ID_SQL_CHK_TBL.replace("@T", "INAMS.MSTMEISHO").replaceAll("@C", "MEISHOCD"));
       sbSQL.append(" and MEISHOKBN = ");
       sbSQL.append(DefineReport.MeisyoSelect.KBN10666.getCd());
       paramData.add(wappnKbn);
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0) {
         // ②E20456 [ワッペン区分]整合チェックエラー 0 E
@@ -5842,11 +5804,7 @@ public class ReportTG016Dao extends ItemDao {
     // 184.販売日
     // 185.納入日 新規の場合、初期値は非チェック状態に設置する。
     /*
-     * TODO: 不要？ if(allcheck && id===$.id.chk_nndt){
-     * if((that.judgeRepType.frm1||that.judgeRepType.frm2||that.judgeRepType.frm3) &&
-     * that.judgeRepType.st && (that.judgeRepType.toktg_h||that.judgeRepType.toksp)){ // 16_1,16_2,16_3
-     * // ① 【画面】.「納入期間」入力がある時のみ入力可。 // ② 1日はチェックが必要。 // ③ 【画面】.「納入期間」の範囲内 // E20363 「納入日」に1日はチェックが必要です。
-     * 0 E if($("[id^="+$.id.chk_nndt+"]:checked").length === 0){ return "E20363"; } } }
+     * TODO: 不要？ if(allcheck && id===$.id.chk_nndt){ if((that.judgeRepType.frm1||that.judgeRepType.frm2||that.judgeRepType.frm3) && that.judgeRepType.st && (that.judgeRepType.toktg_h||that.judgeRepType.toksp)){ // 16_1,16_2,16_3 // ① 【画面】.「納入期間」入力がある時のみ入力可。 // ② 1日はチェックが必要。 // ③ 【画面】.「納入期間」の範囲内 // E20363 「納入日」に1日はチェックが必要です。 0 E if($("[id^="+$.id.chk_nndt+"]:checked").length === 0){ return "E20363"; } } }
      */
 
     // ランクNo展開配列作成機能
@@ -5869,7 +5827,7 @@ public class ReportTG016Dao extends ItemDao {
     JSONArray tencdAdds = new JSONArray();
     JSONArray rankAdds = new JSONArray();
     JSONArray tencdDels = new JSONArray();
-    Set<String> tencds = new TreeSet<String>();
+    Set<String> tencds = new TreeSet<>();
 
     // 22.除外店
     // ① 入力範囲：001～999。
@@ -5974,7 +5932,7 @@ public class ReportTG016Dao extends ItemDao {
           return msg;
         }
       } else {
-        Set<Integer> tencdsChk = new TreeSet<Integer>();
+        Set<Integer> tencdsChk = new TreeSet<>();
         for (int i = 0; i < saveTenrankArr.split("").length; i++) {
           if (!StringUtils.isEmpty(saveTenrankArr.split("")[i].trim())) {
             tencdsChk.add(i + 1);
@@ -6204,10 +6162,10 @@ public class ReportTG016Dao extends ItemDao {
         } else {
           // 変数を初期化
           sbSQL = new StringBuffer();
-          iL = new ItemList();
+          new ItemList();
           dbDatas = new JSONArray();
           sqlWhere = "";
-          paramData = new ArrayList<String>();
+          paramData = new ArrayList<>();
 
           if (StringUtils.isEmpty(shnCd)) {
             sqlWhere += "T1.SHNCD=null AND ";
@@ -6236,7 +6194,7 @@ public class ReportTG016Dao extends ItemDao {
           sbSQL.append("WHERE ");
           sbSQL.append(sqlWhere); // 入力された商品コードで検索
 
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
           if (dbDatas.size() >= 1) {
             if (isNew) {
@@ -6293,7 +6251,7 @@ public class ReportTG016Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
@@ -6315,9 +6273,9 @@ public class ReportTG016Dao extends ItemDao {
     }
 
     String sqlSelect = "MOYCD_ARR AS ARR ";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
-    HashMap<String, String> arrMap = new HashMap<String, String>();
+    HashMap<String, String> arrMap = new HashMap<>();
     int digit = 10;
 
     // 商品コード
@@ -6368,7 +6326,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     // データが存在する場合、配列の展開を実施
     if (dbDatas.size() != 0) {
@@ -6380,7 +6338,7 @@ public class ReportTG016Dao extends ItemDao {
   // 対象店取得処理
   public Set<String> getRmTenCds(String moyscd, String kanrino, HashMap<String, String> mapMoysCd, HashMap<String, String> mapKanriNo) {
 
-    Set<String> tencds = new TreeSet<String>();
+    Set<String> tencds = new TreeSet<>();
 
     for (HashMap.Entry<String, String> getMoysCd : mapMoysCd.entrySet()) {
 
@@ -6418,13 +6376,13 @@ public class ReportTG016Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlFrom = "INATK.TOKSP_SHN T1, INATK.TOKSP_NNDT T2 ";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String moyskbn = "";
     String moysstdt = "";
@@ -6536,7 +6494,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append(" AND T1.KANRIENO=T2.KANRIENO ");
       sbSQL.append(" AND T1.KANRIENO=T2.KANRIENO ");
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       boolean E20465 = false;
       boolean E20464 = false;
@@ -6606,7 +6564,7 @@ public class ReportTG016Dao extends ItemDao {
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
     JSONArray msg = new JSONArray();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     String moyskbn = "";
     String moysstdt = "";
@@ -6615,7 +6573,7 @@ public class ReportTG016Dao extends ItemDao {
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlFrom = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String JNDIname = Defines.STR_JNDI_DS;
 
@@ -6758,10 +6716,10 @@ public class ReportTG016Dao extends ItemDao {
       // 催しコード存在確認
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       // 催し区分
       if (StringUtils.isEmpty(moyskbn)) {
@@ -6794,7 +6752,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere + "UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // 入力された催しコード
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0) {
         // エラー発生箇所を保存
@@ -6806,10 +6764,10 @@ public class ReportTG016Dao extends ItemDao {
       // 部門コード存在確認
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       // 部門コード
       if (StringUtils.isEmpty(bmncd)) {
@@ -6826,7 +6784,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere + "UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // 入力された部門コード
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0) {
         // エラー発生箇所を保存
@@ -6837,10 +6795,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (isToktg) {
         sqlFrom = "INATK.TOKTG_SHN ";
@@ -6900,7 +6858,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere); // 入力された催しコード
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0) {
         // エラー発生箇所を保存
@@ -6919,10 +6877,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (isToktg && (gtsimechgkbn.equals("0") || StringUtils.isEmpty(gtsimechgkbn)) && !gtsimeokflg.equals("0")) {
         sqlFrom = "INATK.TOKTG_KHN ";
@@ -6959,7 +6917,7 @@ public class ReportTG016Dao extends ItemDao {
         sbSQL.append(sqlWhere); // 入力された催しコード
         sbSQL.append("GTSIMEFLG = '1' ");
 
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
         if (dbDatas.size() != 0) {
           // エラー発生箇所を保存
@@ -6971,10 +6929,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (isToktg) {
         sqlFrom = "INATK.TOKTG_NNDT ";
@@ -7038,7 +6996,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere); // 入力された催しコード
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0 || (dbDatas.size() != 0 && !dbDatas.getJSONObject(0).containsKey("MOYSKBN"))) {
         // エラー発生箇所を保存
@@ -7061,10 +7019,10 @@ public class ReportTG016Dao extends ItemDao {
 
         // 変数を初期化
         sbSQL = new StringBuffer();
-        iL = new ItemList();
+        new ItemList();
         dbDatas = new JSONArray();
         sqlWhere = "";
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
         sqlFrom = "INAMS.MSTTEN ";
 
         // 店コード
@@ -7084,7 +7042,7 @@ public class ReportTG016Dao extends ItemDao {
         sbSQL.append("MISEUNYOKBN = 9 AND ");
         sbSQL.append("IFNULL(UPDKBN, 0)=" + DefineReport.ValUpdkbn.NML.getVal());
 
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
         if (dbDatas.size() != 0) {
           // エラー発生箇所を保存
@@ -7136,10 +7094,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       // 商品コード
       if (StringUtils.isEmpty(shncd)) {
@@ -7156,7 +7114,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere + "UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal());
 
-      dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       if (dbDatas.size() == 0) {
         // エラー発生箇所を保存
@@ -7169,10 +7127,10 @@ public class ReportTG016Dao extends ItemDao {
 
         // 変数を初期化
         sbSQL = new StringBuffer();
-        iL = new ItemList();
+        new ItemList();
         dbDatas = new JSONArray();
         sqlWhere = "";
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
 
         if (moyskbn.equals("3")) {
           sqlFrom = "INATK.TOKHTK_SHNNNDT ";
@@ -7211,7 +7169,7 @@ public class ReportTG016Dao extends ItemDao {
         sbSQL.append("WHERE ");
         sbSQL.append(sqlWhere);
 
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
         if (dbDatas.size() == 0) {
           // エラー発生箇所を保存
@@ -7226,10 +7184,10 @@ public class ReportTG016Dao extends ItemDao {
 
 
   // チェック済キー格納用変数
-  Set<String> shnCd = new TreeSet<String>();
-  Set<String> tenCdChk = new TreeSet<String>();
-  Set<String> tokKhn = new TreeSet<String>();
-  HashMap<String, String> tokShnMap = new HashMap<String, String>();
+  Set<String> shnCd = new TreeSet<>();
+  Set<String> tenCdChk = new TreeSet<>();
+  Set<String> tokKhn = new TreeSet<>();
+  HashMap<String, String> tokShnMap = new HashMap<>();
 
   public List<JSONObject> checkCsvNndt2(MessageUtility mu, JSONArray dataArray, // メイン
       JSONArray dataArrayShn, // 商品
@@ -7238,7 +7196,7 @@ public class ReportTG016Dao extends ItemDao {
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
     JSONArray msg = new JSONArray();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     String moyskbn = "";
     String moysstdt = "";
@@ -7247,7 +7205,7 @@ public class ReportTG016Dao extends ItemDao {
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlFrom = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String JNDIname = Defines.STR_JNDI_DS;
 
@@ -7448,10 +7406,10 @@ public class ReportTG016Dao extends ItemDao {
       if (!StringUtils.isEmpty(shncd)) {
         if (!shnCd.contains(shncd)) {
           sbSQL = new StringBuffer();
-          iL = new ItemList();
+          new ItemList();
           dbDatas = new JSONArray();
           sqlWhere = "";
-          paramData = new ArrayList<String>();
+          paramData = new ArrayList<>();
 
           sqlWhere += "SHNCD=? AND ";
           paramData.add(shncd);
@@ -7463,7 +7421,7 @@ public class ReportTG016Dao extends ItemDao {
           sbSQL.append("WHERE ");
           sbSQL.append(sqlWhere + "UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal());
 
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
           if (dbDatas.size() == 0) {
             // エラー発生箇所を保存
@@ -7509,10 +7467,10 @@ public class ReportTG016Dao extends ItemDao {
       } else {
         // 変数を初期化
         sbSQL = new StringBuffer();
-        iL = new ItemList();
+        new ItemList();
         dbDatas = new JSONArray();
         sqlWhere = "";
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
 
         if (isToktg) {
           sqlFrom = "INATK.TOKTG_SHN ";
@@ -7574,7 +7532,7 @@ public class ReportTG016Dao extends ItemDao {
         sbSQL.append("WHERE ");
         sbSQL.append(sqlWhere); // 入力された催しコード
 
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
         if (dbDatas.size() == 0) {
           // エラー発生箇所を保存
@@ -7607,10 +7565,10 @@ public class ReportTG016Dao extends ItemDao {
 
       // 変数を初期化
       sbSQL = new StringBuffer();
-      iL = new ItemList();
+      new ItemList();
       dbDatas = new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       if (isToktg && (gtsimechgkbn.equals("0") || StringUtils.isEmpty(gtsimechgkbn)) && !gtsimeokflg.equals("0")) {
 
@@ -7650,7 +7608,7 @@ public class ReportTG016Dao extends ItemDao {
           sbSQL.append(sqlWhere); // 入力された催しコード
           sbSQL.append("GTSIMEFLG = '1' ");
 
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
           if (dbDatas.size() != 0) {
             // エラー発生箇所を保存
@@ -7665,7 +7623,7 @@ public class ReportTG016Dao extends ItemDao {
       // 数値の設定がない店舗は更新対象外
       String tenhtsuArr = htsuArr.split("-")[0];
       HashMap<String, String> arrMapNn = new ReportJU012Dao(JNDIname).getDigitMap(tenhtsuArr, 5, "0");
-      HashMap<String, String> arrMapCsv = new HashMap<String, String>();
+      HashMap<String, String> arrMapCsv = new HashMap<>();
       arrMapCsv.put(htsuArr.split("-")[1], htsuArr.split("-")[2]);
 
       for (HashMap.Entry<String, String> csv : arrMapCsv.entrySet()) {
@@ -7677,10 +7635,10 @@ public class ReportTG016Dao extends ItemDao {
           // 店舗存在チェック
           // 変数を初期化
           sbSQL = new StringBuffer();
-          iL = new ItemList();
+          new ItemList();
           dbDatas = new JSONArray();
           sqlWhere = "";
-          paramData = new ArrayList<String>();
+          paramData = new ArrayList<>();
           sqlFrom = "INAMS.MSTTEN ";
 
           // 店コード
@@ -7700,7 +7658,7 @@ public class ReportTG016Dao extends ItemDao {
           sbSQL.append("MISEUNYOKBN = 9 AND ");
           sbSQL.append("IFNULL(UPDKBN, 0)=" + DefineReport.ValUpdkbn.NML.getVal());
 
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
           if (dbDatas.size() != 0) {
             // エラー発生箇所を保存
@@ -7778,7 +7736,7 @@ public class ReportTG016Dao extends ItemDao {
       isChange = false;
     }
 
-    HashMap<String, String> map = new HashMap<String, String>();
+    HashMap<String, String> map = new HashMap<>();
     moyskbn = dataArray.getJSONObject(0).optString(TOK_CMNLayout.MOYSKBN.getId());
     moysstdt = dataArray.getJSONObject(0).optString(TOK_CMNLayout.MOYSSTDT.getId());
     moysrban = dataArray.getJSONObject(0).optString(TOK_CMNLayout.MOYSRBAN.getId());
@@ -8282,14 +8240,14 @@ public class ReportTG016Dao extends ItemDao {
     new JSONObject();
 
     // DB検索用パラメータ
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     StringBuffer sbSQL = new StringBuffer();
     String sqlWhere = "";
     Object[] valueData = new Object[] {};
     String values = "";
     new ItemList();
     new JSONArray();
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     new ArrayList<String>();
     new ArrayList<String>();
 
@@ -8322,8 +8280,8 @@ public class ReportTG016Dao extends ItemDao {
       nndt = data.optString(TOKSP_NNDTLayout.NNDT.getId());
       data.optString(TOKSP_NNDTLayout.TENHTSU_ARR.getId());
 
-      values += String.valueOf(0 + 1);
-      values += ",? ,? ,? ,? ,? ,0 ,?";
+
+      values += "? ,? ,? ,? ,? ,0 ,?";
       prmData.add(moyskbn);
       prmData.add(moysstdt);
       prmData.add(moysrban);
@@ -8359,16 +8317,33 @@ public class ReportTG016Dao extends ItemDao {
         }
       }
 
-      valueData = ArrayUtils.add(valueData, values);
+      valueData = ArrayUtils.add(valueData, "ROW(" + values + ")");
       values = "";
 
       if (valueData.length >= 100 || (i + 1 == dataArray.size() && valueData.length > 0)) {
         sbSQL = new StringBuffer();
         if (isToktg) {
-          sbSQL.append("REPLACE INTO INATK.TOKTG_NNDT  ( ");
+          sbSQL.append("INSERT INTO INATK.TOKTG_NNDT (SELECT ");
         } else {
-          sbSQL.append("REPLACE INTO INATK.TOKSP_NNDT  ( ");
+          sbSQL.append("INSERT INTO INATK.TOKSP_NNDT ( ");
         }
+        sbSQL.append(" MOYSKBN");
+        sbSQL.append(",MOYSSTDT");
+        sbSQL.append(",MOYSRBAN");
+        sbSQL.append(",BMNCD");
+        sbSQL.append(",KANRINO");
+        sbSQL.append(",KANRIENO");
+        sbSQL.append(",NNDT");
+        sbSQL.append(",TENKAISU");
+        sbSQL.append(",TENHTSU_ARR");
+        if (isToktg) {
+          sbSQL.append(",TENCHGFLG_ARR");
+        }
+        sbSQL.append(",SENDFLG");
+        sbSQL.append(",OPERATOR");
+        sbSQL.append(",ADDDT");
+        sbSQL.append(",UPDDT");
+        sbSQL.append(" )SELECT");
         sbSQL.append(" MOYSKBN"); // 催し区分
         sbSQL.append(",MOYSSTDT"); // 催し開始日
         sbSQL.append(",MOYSRBAN"); // 催し連番
@@ -8381,16 +8356,34 @@ public class ReportTG016Dao extends ItemDao {
         if (isToktg) {
           sbSQL.append(",TENCHGFLG_ARR"); // 店変更フラグ配列
         }
-        sbSQL.append(", SENDFLG");// 送信区分：
-        sbSQL.append(", OPERATOR "); // オペレーター：
-        sbSQL.append(", ADDDT "); // 登録日：
-        sbSQL.append(", UPDDT "); // 更新日：
-        sbSQL.append(" ) values (" + StringUtils.join(valueData, ",") + " ");
-        sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " ");// 送信区分：
-        sbSQL.append(", '" + userId + "' "); // オペレーター：
-        sbSQL.append(", current_timestamp  "); // 登録日：
-        sbSQL.append(", current_timestamp  "); // 更新日：
-        sbSQL.append(")");
+        sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG");// 送信区分：
+        sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
+        sbSQL.append(", current_timestamp AS ADDDT "); // 登録日：
+        sbSQL.append(", current_timestamp AS UPDDT "); // 更新日：
+        sbSQL.append(" FROM (values " + StringUtils.join(valueData, ",") + ") as RE(");
+        sbSQL.append(" MOYSKBN"); // F1 : 催し区分
+        sbSQL.append(",MOYSSTDT"); // F2 : 催し開始日
+        sbSQL.append(",MOYSRBAN"); // F3 : 催し連番
+        sbSQL.append(",BMNCD"); // F4 : 部門コード
+        sbSQL.append(",KANRINO"); // F5 : 管理番号
+        sbSQL.append(",KANRIENO"); // F6 : 枝番
+        sbSQL.append(",NNDT"); // F7 : 納入日
+        sbSQL.append(",TENKAISU"); // 特殊 : 展開数
+        sbSQL.append(",TENHTSU_ARR"); // F8 : 店発注数配列
+        if (isToktg) {
+          sbSQL.append(",TENCHGFLG_ARR"); // 特殊 : 店変更フラグ配列
+        }
+        sbSQL.append(") ");
+        sbSQL.append(" ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("TENKAISU=RE.TENKAISU ");
+        sbSQL.append(",TENHTSU_ARR=RE.TENHTSU_ARR ");
+        if (isToktg) {
+          sbSQL.append(",TENCHGFLG_ARR=RE.TENCHGFLG_ARR ");
+        }
+        sbSQL.append(",SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal() + " ");
+        sbSQL.append(",OPERATOR= '" + userId + "' ");
+        sbSQL.append(",UPDDT=current_timestamp ");
+
 
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -8400,7 +8393,7 @@ public class ReportTG016Dao extends ItemDao {
         lblList.add("全店特売（アンケート有/無）_納入日");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -8438,7 +8431,7 @@ public class ReportTG016Dao extends ItemDao {
       new ItemList();
       new JSONArray();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       String set = "POPKN=? ";
       paramData.add(popkn);
@@ -8510,13 +8503,12 @@ public class ReportTG016Dao extends ItemDao {
   public void createSqlNnDtSub(JSONArray updKeys, String userId) {
 
     // DB検索用パラメータ
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     StringBuffer sbSQL = new StringBuffer();
     String sqlWhere = "";
-    Object[] valueData = new Object[] {};
     Object[] valueDataOt = new Object[] {};
     String values = "";
-    ArrayList<String> prmDataOt = new ArrayList<String>();
+    ArrayList<String> prmDataOt = new ArrayList<>();
 
     for (int j = 0; j < updKeys.size(); j++) {
       values += String.valueOf(0 + 1);
@@ -8526,7 +8518,7 @@ public class ReportTG016Dao extends ItemDao {
       prmDataOt.add(updKeys.getString(j).split(",")[2]);
       prmDataOt.add(updKeys.getString(j).split(",")[3]);
       prmDataOt.add(updKeys.getString(j).split(",")[4]);
-      valueDataOt = ArrayUtils.add(valueDataOt, "(" + values + ")");
+      valueDataOt = ArrayUtils.add(valueDataOt, "ROW(" + values + ")");
       values = "";
     }
 
@@ -8577,15 +8569,15 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(",KANRIENO"); // F6 : 枝番
     sbSQL.append(")) as T1 ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
-    sbSQL.append(" MOYSKBN = VALUES(MOYSKBN)"); // 催し区分
-    sbSQL.append(",MOYSSTDT = VALUES(MOYSSTDT) "); // 催し開始日
-    sbSQL.append(",MOYSRBAN = VALUES(MOYSRBAN) "); // 催し連番
-    sbSQL.append(",BMNCD = VALUES(BMNCD) "); // 部門コード
-    sbSQL.append(",KANRINO = VALUES(KANRINO)"); // 管理番号
-    sbSQL.append(",KANRIENO = VALUES(KANRIENO) "); // 枝番
-    sbSQL.append(",SENDFLG = VALUES(SENDFLG) ");// 送信区分：
-    sbSQL.append(",OPERATOR = VALUES(OPERATOR) "); // オペレーター：
-    sbSQL.append(",UPDDT = VALUES(UPDDT) "); // 更新日：
+    sbSQL.append(" MOYSKBN = T1.MOYSKBN"); // 催し区分
+    sbSQL.append(",MOYSSTDT = T1.MOYSSTDT "); // 催し開始日
+    sbSQL.append(",MOYSRBAN = T1.MOYSRBAN "); // 催し連番
+    sbSQL.append(",BMNCD = T1.BMNCD "); // 部門コード
+    sbSQL.append(",KANRINO = T1.KANRINO"); // 管理番号
+    sbSQL.append(",KANRIENO = T1.KANRIENO "); // 枝番
+    sbSQL.append(",SENDFLG = T1.SENDFLG ");// 送信区分：
+    sbSQL.append(",OPERATOR = T1.OPERATOR "); // オペレーター：
+    sbSQL.append(",UPDDT = T1.UPDDT "); // 更新日：
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -8595,7 +8587,7 @@ public class ReportTG016Dao extends ItemDao {
     lblList.add("全店特売（アンケート有/無）_商品");
 
     // クリア
-    prmDataOt = new ArrayList<String>();
+    prmDataOt = new ArrayList<>();
     valueDataOt = new Object[] {};
     values = "";
 
@@ -8610,7 +8602,7 @@ public class ReportTG016Dao extends ItemDao {
       // 変数を初期化
       sbSQL = new StringBuffer();
       sqlWhere = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
 
       // 催し区分
       if (StringUtils.isEmpty(moyskbn)) {
@@ -8740,14 +8732,14 @@ public class ReportTG016Dao extends ItemDao {
 
     // 格納用変数
     StringBuffer sbSQL = new StringBuffer();
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
 
     // DB検索用パラメータ
     String sqlWhere = "";
     String sqlWhereNndt = "";
     String sqlFrom = "";
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String arrChg = "";
 
@@ -8824,11 +8816,11 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" AND T1.KANRIENO=T2.KANRIENO ");
     sbSQL.append(sqlWhereNndt); // 入力された催しコード
 
-    dbDatas = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     // 数値の設定がない店舗は更新対象外
-    HashMap<String, String> arrMapNn = new HashMap<String, String>();
-    HashMap<String, String> arrMapNnChg = new HashMap<String, String>();
+    HashMap<String, String> arrMapNn = new HashMap<>();
+    HashMap<String, String> arrMapNnChg = new HashMap<>();
     String getArr = "";
     if (dbDatas.size() != 0 && dbDatas.getJSONObject(0).containsKey("MOYSKBN")) {
 
@@ -8901,7 +8893,7 @@ public class ReportTG016Dao extends ItemDao {
     }
 
     // 今回対象外となった店舗があった場合
-    ArrayList<String> delTen = new ArrayList<String>();
+    ArrayList<String> delTen = new ArrayList<>();
     for (HashMap.Entry<String, String> del : arrMapNn.entrySet()) {
       String key = del.getKey();
       if (!arrMapCsv.containsKey(key)) {
@@ -8909,8 +8901,7 @@ public class ReportTG016Dao extends ItemDao {
       }
     }
 
-    for (int i = 0; i < delTen.size(); i++) {
-      String key = delTen.get(i);
+    for (String key : delTen) {
       arrMapNn.remove(key);
       if (isToktg) {
         if (arrMapNnChg.containsKey(key)) {
@@ -8974,10 +8965,9 @@ public class ReportTG016Dao extends ItemDao {
    * @throws Exception
    */
   public JSONArray getMstData(String sqlcommand, ArrayList<String> paramData) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
     return array;
   }
 
@@ -8987,10 +8977,9 @@ public class ReportTG016Dao extends ItemDao {
    * @throws Exception
    */
   public boolean checkMstExist(String outobj, String value, JSONObject obj) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
 
     String tbl = "";
@@ -9031,7 +9020,7 @@ public class ReportTG016Dao extends ItemDao {
       }
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
       if (array.size() > 0 && NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) > 0) {
         return true;
       }
@@ -9058,7 +9047,7 @@ public class ReportTG016Dao extends ItemDao {
     this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
@@ -9128,7 +9117,7 @@ public class ReportTG016Dao extends ItemDao {
     String szTableShn = isTOKTG ? "INATK.TOKTG_SHN" : "INATK.TOKSP_SHN";
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
@@ -9181,7 +9170,7 @@ public class ReportTG016Dao extends ItemDao {
     String[] keys = this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 基本Merge文
     StringBuffer sbSQL;
@@ -9218,10 +9207,8 @@ public class ReportTG016Dao extends ItemDao {
       }
     }
     for (TOKTG_SHNLayout itm : TOKTG_SHNLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      if (ArrayUtils.contains(keys, itm.getId())) {
+      // パラメータ不要
+      if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } // 上記で実施
       if (data.containsKey(itm.getId())) {
@@ -9278,7 +9265,7 @@ public class ReportTG016Dao extends ItemDao {
     String[] keys = this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 基本Merge文
     StringBuffer sbSQL;
@@ -9308,10 +9295,8 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
     for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      if (ArrayUtils.contains(keys, itm.getId())) {
+      // パラメータ不要
+      if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } // 上記で実施
       if (data.containsKey(itm.getId())) {
@@ -9373,7 +9358,7 @@ public class ReportTG016Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String szTableShn = isTOKTG ? "INATK.TOKTG_SHN" : "INATK.TOKSP_SHN";
 
@@ -9428,7 +9413,7 @@ public class ReportTG016Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String table = "", colList = "", rows = "", values = "";
     System.out.print("data > " + data + "\n");
 
@@ -9541,7 +9526,7 @@ public class ReportTG016Dao extends ItemDao {
     String[] keys = this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
 
     for (int j = 0; j < dataArray.size(); j++) {
@@ -9553,13 +9538,9 @@ public class ReportTG016Dao extends ItemDao {
       values = "";
       names = "";
       for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
-        if (ArrayUtils.contains(notUse, itm.getId())) {
-          continue;
-        } // 不要
-        if (ArrayUtils.contains(notTarget, itm.getId())) {
-          continue;
-        } // パラメータ不要
-        if (ArrayUtils.contains(keys, itm.getId())) {
+        // 不要
+        // パラメータ不要
+        if (ArrayUtils.contains(notUse, itm.getId()) || ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
           continue;
         } // 共通で実施
 
@@ -9650,7 +9631,7 @@ public class ReportTG016Dao extends ItemDao {
     String[] keys = this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
 
     for (int j = 0; j < dataArray.size(); j++) {
@@ -9661,10 +9642,8 @@ public class ReportTG016Dao extends ItemDao {
       values = "";
       names = "";
       for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
-        if (ArrayUtils.contains(notTarget, itm.getId())) {
-          continue;
-        } // パラメータ不要
-        if (ArrayUtils.contains(keys, itm.getId())) {
+        // パラメータ不要
+        if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
           continue;
         } // 共通で実施
 
@@ -9729,10 +9708,8 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
     for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      if (ArrayUtils.contains(keys, itm.getId())) {
+      // パラメータ不要
+      if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } // 上記で実施
       sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + " ) as " + itm.getCol());
@@ -9762,9 +9739,9 @@ public class ReportTG016Dao extends ItemDao {
   public HashMap<Integer, String> getTencds(String bmnCd, String moysKbn, String moysStDt, String moysRban, String rankNoAdd, String rankNoDel, String rankNoAddB, String rankNoAddC,
       JSONArray tenCdAdds, JSONArray tenCdDels, String tenAtsukArr, String tenRankArr) {
 
-    Set<Integer> tencds = new TreeSet<Integer>();
-    Set<Integer> bTencds = new TreeSet<Integer>();
-    Set<Integer> cTencds = new TreeSet<Integer>();
+    Set<Integer> tencds = new TreeSet<>();
+    Set<Integer> bTencds = new TreeSet<>();
+    Set<Integer> cTencds = new TreeSet<>();
 
     if (!StringUtils.isEmpty(tenAtsukArr)) {
 
@@ -9804,7 +9781,7 @@ public class ReportTG016Dao extends ItemDao {
           , tenCdDels // 除外店
       );
 
-      bTencds = new TreeSet<Integer>();
+      bTencds = new TreeSet<>();
       if (!StringUtils.isEmpty(rankNoAddB)) {
         rankNoDel = "";
         tenCdAdds = new JSONArray();
@@ -9821,7 +9798,7 @@ public class ReportTG016Dao extends ItemDao {
         );
       }
 
-      cTencds = new TreeSet<Integer>();
+      cTencds = new TreeSet<>();
       if (!StringUtils.isEmpty(rankNoAddC)) {
         rankNoDel = "";
         tenCdAdds = new JSONArray();
@@ -9844,7 +9821,7 @@ public class ReportTG016Dao extends ItemDao {
 
   public HashMap<Integer, String> tenAtsukMerge(Set<Integer> tencds, Set<Integer> bTencds, Set<Integer> cTencds) {
 
-    HashMap<Integer, String> tenAtsuk = new HashMap<Integer, String>();
+    HashMap<Integer, String> tenAtsuk = new HashMap<>();
 
     for (int i = 1; i <= 400; i++) {
 
@@ -9895,16 +9872,14 @@ public class ReportTG016Dao extends ItemDao {
     String[] keys = this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
       for (TOKSP_HBLayout itm : TOKSP_HBLayout.values()) {
-        if (ArrayUtils.contains(notTarget, itm.getId())) {
-          continue;
-        } // パラメータ不要
-        if (ArrayUtils.contains(keys, itm.getId())) {
+        // パラメータ不要
+        if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
           continue;
         } // 共通で実施
 
@@ -9960,10 +9935,8 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
     for (TOKSP_HBLayout itm : TOKSP_HBLayout.values()) {
-      if (ArrayUtils.contains(notTarget, itm.getId())) {
-        continue;
-      } // パラメータ不要
-      if (ArrayUtils.contains(keys, itm.getId())) {
+      // パラメータ不要
+      if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } // 上記で実施
       sbSQL.append(",cast(? as " + itm.getTyp() + ") as " + itm.getCol());
@@ -10005,7 +9978,7 @@ public class ReportTG016Dao extends ItemDao {
     String values = "", rows = "";
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       String val = data.optJSONObject(0).optString(itm.getId());
@@ -10060,7 +10033,7 @@ public class ReportTG016Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 基本Merge文
     StringBuffer sbSQL;
@@ -10113,7 +10086,7 @@ public class ReportTG016Dao extends ItemDao {
     String[] notTarget = new String[] {TOK_CMN_SHNHBDTLayout.OPERATOR.getId(), TOK_CMN_SHNHBDTLayout.ADDDT.getId(), TOK_CMN_SHNHBDTLayout.UPDDT.getId()};
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
@@ -10210,7 +10183,7 @@ public class ReportTG016Dao extends ItemDao {
     String[] notTarget = new String[] {TOK_CMN_SHNHBDTLayout.OPERATOR.getId(), TOK_CMN_SHNHBDTLayout.ADDDT.getId(), TOK_CMN_SHNHBDTLayout.UPDDT.getId()};
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
@@ -10305,7 +10278,7 @@ public class ReportTG016Dao extends ItemDao {
     String[] notTarget = new String[] {TOK_CMN_SHNNNDTLayout.OPERATOR.getId(), TOK_CMN_SHNNNDTLayout.ADDDT.getId(), TOK_CMN_SHNNNDTLayout.UPDDT.getId()};
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
@@ -10410,7 +10383,7 @@ public class ReportTG016Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
@@ -10539,7 +10512,7 @@ public class ReportTG016Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
@@ -10650,7 +10623,7 @@ public class ReportTG016Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
@@ -10694,7 +10667,7 @@ public class ReportTG016Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String[] szTableshn = new String[] {"INATK.TOKTG_SHN", "INATK.TOKSP_SHN"};
 
@@ -12469,9 +12442,7 @@ public class ReportTG016Dao extends ItemDao {
    * @return String
    */
   public String calcAvg(String baika, String tensu) {
-    if (baika.length() == 0)
-      return "";
-    if (tensu.length() == 0)
+    if ((baika.length() == 0) || (tensu.length() == 0))
       return "";
 
     double d1 = Double.parseDouble(baika);
