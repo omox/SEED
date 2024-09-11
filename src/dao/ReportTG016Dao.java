@@ -8560,7 +8560,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
     sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
     sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
-    sbSQL.append(" FROM (VALUES ROW" + StringUtils.join(valueDataOt, ",") + " ) as T1 (NUM");
+    sbSQL.append(" FROM (VALUES " + StringUtils.join(valueDataOt, ",") + " ) as T1 (NUM");
     sbSQL.append(",MOYSKBN"); // F1 : 催し区分
     sbSQL.append(",MOYSSTDT"); // F2 : 催し開始日
     sbSQL.append(",MOYSRBAN"); // F3 : 催し連番
