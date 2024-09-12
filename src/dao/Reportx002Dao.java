@@ -4297,6 +4297,8 @@ public class Reportx002Dao extends ItemDao {
         values += ", current_timestamp";
       } else if (TblType.CSV.getVal() != tbl.getVal() && (i == 123 || i == 115)) {
         values += ", current_timestamp";
+      } else if (TblType.CSV.getVal() == tbl.getVal() && i == 114) {
+      } else if (TblType.CSV.getVal() == tbl.getVal() && i == 115) {
       } else if (StringUtils.isEmpty(val)) {
         values += ", null";
       } else {
@@ -4336,7 +4338,7 @@ public class Reportx002Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "", names = "";
 
-    StringBuffer sbSQLKey = new StringBuffer();
+    new StringBuffer();
     List<String> keyColList = new ArrayList<String>();
     List<String> keyValList = new ArrayList<String>();
     if (TblType.SEI.getVal() == tbl.getVal()) {
@@ -4356,14 +4358,14 @@ public class Reportx002Dao extends ItemDao {
       keyValList.add(csvshn_add_data[CSVSHNLayout.INPUTNO.getNo() - 1]);
     }
     // 共通固定値情報
-    MSTSHNLayout[] keys = new MSTSHNLayout[] { MSTSHNLayout.UPDKBN,MSTSHNLayout.TOROKUMOTO, MSTSHNLayout.SENDFLG, MSTSHNLayout.OPERATOR, MSTSHNLayout.ADDDT, MSTSHNLayout.UPDDT};
+    MSTSHNLayout[] keys = new MSTSHNLayout[] {MSTSHNLayout.UPDKBN, MSTSHNLayout.TOROKUMOTO, MSTSHNLayout.SENDFLG, MSTSHNLayout.OPERATOR, MSTSHNLayout.ADDDT, MSTSHNLayout.UPDDT};
     for (MSTSHNLayout itm : keys) {
       keyColList.add(itm.getId());
       String val = "";
       if (itm == MSTSHNLayout.UPDKBN) { // 更新区分
         val = DefineReport.ValUpdkbn.DEL.getVal();
       }
-      
+
       if (itm == MSTSHNLayout.TOROKUMOTO) { // 登録元
 
         if (data.containsKey(MSTSHNLayout.TOROKUMOTO.getId())) {
@@ -4375,9 +4377,9 @@ public class Reportx002Dao extends ItemDao {
         }
       }
       if (TblType.CSV.getVal() != tbl.getVal()) {
-      if (itm == MSTSHNLayout.SENDFLG) { // 送信フラグ
-        val = DefineReport.Values.SENDFLG_UN.getVal();
-      }
+        if (itm == MSTSHNLayout.SENDFLG) { // 送信フラグ
+          val = DefineReport.Values.SENDFLG_UN.getVal();
+        }
       }
       if (itm == MSTSHNLayout.OPERATOR) { // オペレータ
         val = userId;
@@ -4432,7 +4434,7 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append("SHNCD = NEW.SHNCD ");
     sbSQL.append(",UPDKBN = NEW.UPDKBN ");
     sbSQL.append(",TOROKUMOTO = NEW.TOROKUMOTO ");
-    
+
     if (TblType.CSV.getVal() != tbl.getVal()) {
       sbSQL.append(",SENDFLG = NEW.SENDFLG");
     }
@@ -4440,7 +4442,7 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.CSV.getVal() != tbl.getVal() && DefineReport.Button.CSV_IMPORT_YYK.getObj().equals(btnId)) {
       sbSQL.append(",ADDDT = NEW.ADDDT"); // F114: 登録日
     }
-    
+
     sbSQL.append(",UPDDT = NEW.UPDDT");
 
     if (DefineReport.ID_DEBUG_MODE)
@@ -4977,9 +4979,9 @@ public class Reportx002Dao extends ItemDao {
       values = "";
       names = "";
       if (j == 1) {
-        values += "( ";
+        values += "ROW( ";
       } else {
-        values += ",( ";
+        values += ",ROW( ";
 
       }
       for (int i = 1; i <= colNum; i++) {
@@ -5078,7 +5080,7 @@ public class Reportx002Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO " + szTable + " ( ");
+    sbSQL.append("INSERT INTO " + szTable + " ( ");
     sbSQL.append("  SHNCD"); // F1 : 商品コード
     sbSQL.append(" ,SRCCD"); // F2 : ソースコード
     sbSQL.append(" ,YOYAKUDT"); // F3 : マスタ変更予定日
@@ -5106,7 +5108,63 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.TMP.getVal() == tbl.getVal()) {
       sbSQL.append(" ,SESID"); // F1 : セッションID
     }
-    sbSQL.append(" )VALUES " + values + " ");
+    sbSQL.append(" ) SELECT * FROM (VALUES " + values + ") ");
+    sbSQL.append("AS TMP( ");
+    sbSQL.append("  SHNCD"); // F1 : 商品コード
+    sbSQL.append(" ,SRCCD"); // F2 : ソースコード
+    sbSQL.append(" ,YOYAKUDT"); // F3 : マスタ変更予定日
+    sbSQL.append(" ,SEQNO"); // F4 : 入力順番
+    if (TblType.CSV.getVal() == tbl.getVal() || TblType.JNL.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SRCKBN"); // F5 : ソース区分
+    } else {
+      sbSQL.append(" ,SOURCEKBN"); // F5 : ソース区分
+    }
+    sbSQL.append(" ,SENDFLG"); // F6 : 送信フラグ
+    sbSQL.append(" ,OPERATOR"); // F7 : オペレータ
+    sbSQL.append(" ,ADDDT"); // F8 : 登録日
+    sbSQL.append(" ,UPDDT"); // F9 : 更新日
+    sbSQL.append(" ,YUKO_STDT"); // F10: 有効開始日
+    sbSQL.append(" ,YUKO_EDDT"); // F11: 有効終了日
+    if (TblType.JNL.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
+      sbSQL.append(" ,RENNO"); // F2 : RENNO
+    }
+    if (TblType.CSV.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
+      sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
+      sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
+    }
+    if (TblType.TMP.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SESID"); // F1 : セッションID
+    }
+    sbSQL.append(") ON DUPLICATE KEY UPDATE "); // F1 : セッションID
+    sbSQL.append("  SHNCD=VALUES(SHNCD) "); // F1 : 商品コード
+    sbSQL.append(" ,SRCCD=VALUES(SRCCD) "); // F2 : ソースコード
+    sbSQL.append(" ,YOYAKUDT=VALUES(YOYAKUDT) "); // F3 : マスタ変更予定日
+    sbSQL.append(" ,SEQNO=VALUES(SEQNO) "); // F4 : 入力順番
+    if (TblType.CSV.getVal() == tbl.getVal() || TblType.JNL.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SRCKBN=VALUES(SRCKBN) "); // F5 : ソース区分
+    } else {
+      sbSQL.append(" ,SOURCEKBN=VALUES(SOURCEKBN) "); // F5 : ソース区分
+    }
+    sbSQL.append(" ,SENDFLG=VALUES(SENDFLG) "); // F6 : 送信フラグ
+    sbSQL.append(" ,OPERATOR=VALUES(OPERATOR) "); // F7 : オペレータ
+    sbSQL.append(" ,ADDDT=VALUES(ADDDT) "); // F8 : 登録日
+    sbSQL.append(" ,UPDDT=VALUES(UPDDT) "); // F9 : 更新日
+    sbSQL.append(" ,YUKO_STDT=VALUES(YUKO_STDT) "); // F10: 有効開始日
+    sbSQL.append(" ,YUKO_EDDT=VALUES(YUKO_EDDT) "); // F11: 有効終了日
+    if (TblType.JNL.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SEQ=VALUES(SEQ) "); // F1 : SEQ
+      sbSQL.append(" ,RENNO=VALUES(RENNO) "); // F2 : RENNO
+    }
+    if (TblType.CSV.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SEQ=VALUES(SEQ) "); // F1 : SEQ
+      sbSQL.append(" ,INPUTNO=VALUES(INPUTNO) "); // F2 : 入力番号
+      sbSQL.append(" ,INPUTEDANO=VALUES(INPUTEDANO) "); // F3 : 入力枝番
+    }
+    if (TblType.TMP.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SESID=VALUES(SESID) "); // F1 : セッションID
+    }
     return sbSQL.toString();
   }
 

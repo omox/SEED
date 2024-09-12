@@ -917,17 +917,6 @@ public class Reportx004Dao extends ItemDao {
     // }
 
     ArrayList<String> targetParam = new ArrayList<String>();
-    // EX.CSVエラー修正
-    /*
-     * if(isCsverr){ targetTable = "INAMS.CSVSHN"; targetWhere += " and SEQ = ? and INPUTNO = ?";
-     * targetParam.add(szSeq); targetParam.add(szInputno); }else{
-     */
-    // ②正 .変更
-    /*
-     * if(isChange){ targetTable = "INAMS.MSTSHN"; targetWhere += " and SHNCD = ?";
-     * targetParam.add(data.optString(MSTSHNLayout.SHNCD.getId()));
-     */
-
     targetParam.add(data.optString(MSTSHNLayout.SHNCD.getId()));
     targetParam.add(data.optString(MSTSHNLayout.YOYAKUDT.getId()));
     // }
@@ -1390,7 +1379,6 @@ public class Reportx004Dao extends ItemDao {
       }
 
       dao.createSqlMSTSHN(userId, sendBtnid, data, TblType.CSV, SqlType.INS);
-
     }
 
     // ************ 子テーブル処理 ***********
@@ -1557,7 +1545,7 @@ public class Reportx004Dao extends ItemDao {
     values += " " + seq; // SEQ
     values += ",'" + userId + "'"; // OPERATOR
     values += ",current_timestamp"; // INPUT_DATE
-    values += ",cast(? as varchar(" + MessageUtility.getDefByteLen(commentkn) + "))";
+    values += ",cast(? as char(" + MessageUtility.getDefByteLen(commentkn) + "))";
     prmData.add(commentkn);
 
     StringBuffer sbSQL;
@@ -1587,7 +1575,7 @@ public class Reportx004Dao extends ItemDao {
     if (data.isEmpty()) {
       return new JSONArray();
     }
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 共通SQL
     StringBuffer sbSQLIn = new StringBuffer();
@@ -1600,7 +1588,7 @@ public class Reportx004Dao extends ItemDao {
         String value = StringUtils.strip(data.optString(itm.getCol()));
         if (StringUtils.isNotEmpty(value)) {
           prmData.add(value);
-          sbSQLIn.append("cast(? as varchar(" + MessageUtility.getDefByteLen(value) + ")) as " + itm.getCol());
+          sbSQLIn.append("cast(? as char(" + MessageUtility.getDefByteLen(value) + ")) as " + itm.getCol());
         } else {
           sbSQLIn.append("cast(null as " + itm.getTyp() + ") as " + itm.getCol());
         }
@@ -1625,15 +1613,15 @@ public class Reportx004Dao extends ItemDao {
       if (itm.isText()) {
         // POP名称の場合
         if (itm.getCol().equals(MSTSHNLayout.POPKN.getCol())) {
-          sbSQL.append("CASE WHEN nvl(RE." + MSTSHNLayout.SHNKBN.getCol() + ", varchar(T." + MSTSHNLayout.SHNKBN.getCol() + ")) = '0' AND ");
-          sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + "))) = '' THEN ");
-          sbSQL.append("trim(COALESCE(RE." + MSTSHNLayout.SHNKN.getCol() + ", varchar(T." + MSTSHNLayout.SHNKN.getCol() + "))) ELSE ");
-          sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + "))) END as " + itm.getId());
+          sbSQL.append("CASE WHEN COALESCE(RE." + MSTSHNLayout.SHNKBN.getCol() + ", CAST(T." + MSTSHNLayout.SHNKBN.getCol() + " AS CHAR)) = '0' AND ");
+          sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR))) = '' THEN ");
+          sbSQL.append("trim(COALESCE(RE." + MSTSHNLayout.SHNKN.getCol() + ", CAST(T." + MSTSHNLayout.SHNKN.getCol() + " AS CHAR))) ELSE ");
+          sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR))) END as " + itm.getId());
         } else {
-          sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + "))) as " + itm.getId());
+          sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR))) as " + itm.getId());
         }
       } else {
-        sbSQL.append("COALESCE(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + ")) as " + itm.getId());
+        sbSQL.append("COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR)) as " + itm.getId());
       }
     }
     sbSQL.append(" from (" + sbSQLIn.toString() + ") RE");
@@ -1671,7 +1659,7 @@ public class Reportx004Dao extends ItemDao {
         if (dataArray.optJSONObject(j).containsKey(itm.getCol()) && !ArrayUtils.contains(nullSetCol, itm.getCol())) {
           if (StringUtils.isNotEmpty(val)) {
             prmData.add(val);
-            values += ", cast(? as varchar(" + MessageUtility.getDefByteLen(val) + "))";
+            values += ", cast(? as char(" + MessageUtility.getDefByteLen(val) + "))";
           } else {
             values += ",cast(null as " + itm.getTyp() + ")";
           }
@@ -1683,10 +1671,10 @@ public class Reportx004Dao extends ItemDao {
       for (CSVCMNLayout itm : CSVCMNLayout.values()) {
         String col = itm.getCol();
         String val = dataArray.optJSONObject(j).optString(col);
-        values += ", " + val + "";
+        values += ", '" + val + "' ";
         names += ", " + col;
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += ", row(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -1708,9 +1696,9 @@ public class Reportx004Dao extends ItemDao {
         }
       } else {
         if (itm.isText()) {
-          sbSQL.append("trim(nvl(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + "))) as " + itm.getId());
+          sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR))) as " + itm.getId());
         } else {
-          sbSQL.append("COALESCE(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + ")) as " + itm.getId());
+          sbSQL.append("COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR)) as " + itm.getId());
         }
       }
     }
@@ -1979,14 +1967,16 @@ public class Reportx004Dao extends ItemDao {
         if (dataArray.optJSONObject(j).containsKey(itm.getCol()) && !ArrayUtils.contains(nullSetCol, itm.getCol())) {
           if (StringUtils.isNotEmpty(val)) {
             prmData.add(val);
-            values += ", cast(? as varchar(" + MessageUtility.getDefByteLen(val) + "))";
+            values += ", cast(? as char(" + MessageUtility.getDefByteLen(val) + "))";
             if (keyCol.equals(itm.getCol())) {
               count = true;
             }
           } else {
 
-            if (itm.getTyp().equals("INTEGER") || itm.getTyp().equals("SMALLINT")) {
-              values += ",cast(cast(null as " + itm.getTyp() + ") as varchar (1))";
+            if (itm.getTyp().equals("SIGNED") || itm.getTyp().equals("SIGNED")) {
+              values += ",cast(cast(null as " + itm.getTyp() + ") as char (1))";
+            } else if (itm.getTyp().equals("SMALLINT") || itm.getTyp().equals("INTEGER")) {
+              values += ",cast(cast(null as SIGNED) as char (1))";
             } else {
               values += ",cast(null as " + itm.getTyp() + ")";
             }
@@ -1996,7 +1986,7 @@ public class Reportx004Dao extends ItemDao {
         }
         names += ", " + col;
         if (!StringUtils.isEmpty(groupCol) && col.equals(groupCol)) {
-          selNames += ", varchar (ROW_NUMBER() over (order by @O)) as " + col;
+          selNames += ", CAST(ROW_NUMBER() over (order by @O) AS CHAR) as " + col;
         } else {
           selNames += ", " + col;
           groupNames += ", " + col;
@@ -2009,13 +1999,13 @@ public class Reportx004Dao extends ItemDao {
         values += ", " + val + "";
         names += ", " + col;
         if (col.equals(CSVCMNLayout.INPUTEDANO.getCol())) {
-          selNames += ", varchar (ROW_NUMBER() over (order by @O)) as " + col;
+          selNames += ", CAST(ROW_NUMBER() over (order by @O) AS CHAR) as " + col;
         } else {
           selNames += ", " + col;
           groupNames += ", " + col;
         }
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += ", row(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -2032,19 +2022,19 @@ public class Reportx004Dao extends ItemDao {
         sbSQL.append(",");
       }
       if (itm.isText()) {
-        sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + "))) as " + itm.getCol());
+        sbSQL.append("trim(COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR))) as " + itm.getCol());
       } else {
-        sbSQL.append("COALESCE(RE." + itm.getCol() + ", varchar(T." + itm.getCol() + ")) as " + itm.getCol());
+        sbSQL.append("COALESCE(RE." + itm.getCol() + ", CAST(T." + itm.getCol() + " AS CHAR)) as " + itm.getCol());
       }
     }
     for (CSVCMNLayout itm : CSVCMNLayout.values()) {
       sbSQL.append(",RE." + itm.getCol() + " as " + itm.getCol());
     }
-    sbSQL.append(" from (SELECT " + selNames + " FROM (values" + rows + ") as RE(" + names + ") ");
+    sbSQL.append(" from (SELECT " + selNames + " FROM (values " + rows + ") as RE(" + names + ") ");
     if (count) {
       sbSQL.append(" where @K IS NOT NULL ");
     }
-    sbSQL.append(" GROUP BY " + groupNames + ") RE left outer join @T T on @W) ");
+    sbSQL.append(" GROUP BY " + groupNames + ") RE left outer join @T T on @W) AS MT ");
 
 
     String sqlCommand = sbSQL.toString();
@@ -2251,7 +2241,7 @@ public class Reportx004Dao extends ItemDao {
   public String getCSVSHN_SEQ() {
     // 関連情報取得
     ItemList iL = new ItemList();
-    String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ003";
+    String sqlColCommand = "SELECT INAMS.nextval('SEQ003') AS \"1\" ";
     @SuppressWarnings("static-access")
     JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
@@ -2269,7 +2259,7 @@ public class Reportx004Dao extends ItemDao {
   public String getJNLSHN_SEQ_NOW() {
     // 関連情報取得
     ItemList iL = new ItemList();
-    String sqlColCommand = "VALUES NEXTVAL FOR INAMS.SEQ002";
+    String sqlColCommand = "SELECT INAMS.nextval('SEQ002') AS \"2\"";
     @SuppressWarnings("static-access")
     JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
@@ -2299,247 +2289,247 @@ public class Reportx004Dao extends ItemDao {
   /** 商品マスタレイアウト() */
   public enum MSTSHNLayout implements MSTLayout {
     /** 商品コード */
-    SHNCD(1, "SHNCD", "CHARACTER(14)", "商品コード"),
+    SHNCD(1, "SHNCD", "CHAR(14)", "商品コード"),
     /** マスタ変更予定日 */
-    YOYAKUDT(2, "YOYAKUDT", "INTEGER", "マスタ変更予定日"),
+    YOYAKUDT(2, "YOYAKUDT", "SIGNED", "マスタ変更予定日"),
     /** 店売価実施日 */
-    TENBAIKADT(3, "TENBAIKADT", "INTEGER", "店売価実施日"),
+    TENBAIKADT(3, "TENBAIKADT", "SIGNED", "店売価実施日"),
     /** 用途分類コード_部門 */
-    YOT_BMNCD(4, "YOT_BMNCD", "SMALLINT", "用途分類コード_部門"),
+    YOT_BMNCD(4, "YOT_BMNCD", "SIGNED", "用途分類コード_部門"),
     /** 用途分類コード_大 */
-    YOT_DAICD(5, "YOT_DAICD", "SMALLINT", "用途分類コード_大"),
+    YOT_DAICD(5, "YOT_DAICD", "SIGNED", "用途分類コード_大"),
     /** 用途分類コード_中 */
-    YOT_CHUCD(6, "YOT_CHUCD", "SMALLINT", "用途分類コード_中"),
+    YOT_CHUCD(6, "YOT_CHUCD", "SIGNED", "用途分類コード_中"),
     /** 用途分類コード_小 */
-    YOT_SHOCD(7, "YOT_SHOCD", "SMALLINT", "用途分類コード_小"),
+    YOT_SHOCD(7, "YOT_SHOCD", "SIGNED", "用途分類コード_小"),
     /** 売場分類コード_部門 */
-    URI_BMNCD(8, "URI_BMNCD", "SMALLINT", "売場分類コード_部門"),
+    URI_BMNCD(8, "URI_BMNCD", "SIGNED", "売場分類コード_部門"),
     /** 売場分類コード_大 */
-    URI_DAICD(9, "URI_DAICD", "SMALLINT", "売場分類コード_大"),
+    URI_DAICD(9, "URI_DAICD", "SIGNED", "売場分類コード_大"),
     /** 売場分類コード_中 */
-    URI_CHUCD(10, "URI_CHUCD", "SMALLINT", "売場分類コード_中"),
+    URI_CHUCD(10, "URI_CHUCD", "SIGNED", "売場分類コード_中"),
     /** 売場分類コード_小 */
-    URI_SHOCD(11, "URI_SHOCD", "SMALLINT", "売場分類コード_小"),
+    URI_SHOCD(11, "URI_SHOCD", "SIGNED", "売場分類コード_小"),
     /** 標準分類コード_部門 */
-    BMNCD(12, "BMNCD", "SMALLINT", "標準分類コード_部門"),
+    BMNCD(12, "BMNCD", "SIGNED", "標準分類コード_部門"),
     /** 標準分類コード_大 */
-    DAICD(13, "DAICD", "SMALLINT", "標準分類コード_大"),
+    DAICD(13, "DAICD", "SIGNED", "標準分類コード_大"),
     /** 標準分類コード_中 */
-    CHUCD(14, "CHUCD", "SMALLINT", "標準分類コード_中"),
+    CHUCD(14, "CHUCD", "SIGNED", "標準分類コード_中"),
     /** 標準分類コード_小 */
-    SHOCD(15, "SHOCD", "SMALLINT", "標準分類コード_小"),
+    SHOCD(15, "SHOCD", "SIGNED", "標準分類コード_小"),
     /** 標準分類コード_小小 */
-    SSHOCD(16, "SSHOCD", "SMALLINT", "標準分類コード_小小"),
+    SSHOCD(16, "SSHOCD", "SIGNED", "標準分類コード_小小"),
     /** 取扱期間_開始日 */
-    ATSUK_STDT(17, "ATSUK_STDT", "INTEGER", "取扱期間_開始日"),
+    ATSUK_STDT(17, "ATSUK_STDT", "SIGNED", "取扱期間_開始日"),
     /** 取扱期間_終了日 */
-    ATSUK_EDDT(18, "ATSUK_EDDT", "INTEGER", "取扱期間_終了日"),
+    ATSUK_EDDT(18, "ATSUK_EDDT", "SIGNED", "取扱期間_終了日"),
     /** 取扱停止 */
-    TEISHIKBN(19, "TEISHIKBN", "SMALLINT", "取扱停止"),
+    TEISHIKBN(19, "TEISHIKBN", "SIGNED", "取扱停止"),
     /** 商品名（カナ） */
-    SHNAN(20, "SHNAN", "VARCHAR(20)", "商品名（カナ）"),
+    SHNAN(20, "SHNAN", "CHAR(20)", "商品名（カナ）"),
     /** 商品名（漢字） */
-    SHNKN(21, "SHNKN", "VARCHAR(40)", "商品名（漢字）"),
+    SHNKN(21, "SHNKN", "CHAR(40)", "商品名（漢字）"),
     /** プライスカード商品名称（漢字） */
-    PCARDKN(22, "PCARDKN", "VARCHAR(40)", "プライスカード商品名称（漢字）"),
+    PCARDKN(22, "PCARDKN", "CHAR(40)", "プライスカード商品名称（漢字）"),
     /** POP名称 */
-    POPKN(23, "POPKN", "VARCHAR(40)", "POP名称"),
+    POPKN(23, "POPKN", "CHAR(40)", "POP名称"),
     /** レシート名（カナ） */
-    RECEIPTAN(24, "RECEIPTAN", "VARCHAR(20)", "レシート名（カナ）"),
+    RECEIPTAN(24, "RECEIPTAN", "CHAR(20)", "レシート名（カナ）"),
     /** レシート名（漢字） */
-    RECEIPTKN(25, "RECEIPTKN", "VARCHAR(40)", "レシート名（漢字）"),
+    RECEIPTKN(25, "RECEIPTKN", "CHAR(40)", "レシート名（漢字）"),
     /** PC区分 */
-    PCKBN(26, "PCKBN", "SMALLINT", "PC区分"),
+    PCKBN(26, "PCKBN", "SIGNED", "PC区分"),
     /** 加工区分 */
-    KAKOKBN(27, "KAKOKBN", "SMALLINT", "加工区分"),
+    KAKOKBN(27, "KAKOKBN", "SIGNED", "加工区分"),
     /** 市場区分 */
-    ICHIBAKBN(28, "ICHIBAKBN", "SMALLINT", "市場区分"),
+    ICHIBAKBN(28, "ICHIBAKBN", "SIGNED", "市場区分"),
     /** 商品種類 */
-    SHNKBN(29, "SHNKBN", "SMALLINT", "商品種類"),
+    SHNKBN(29, "SHNKBN", "SIGNED", "商品種類"),
     /** 産地 */
-    SANCHIKN(30, "SANCHIKN", "VARCHAR(40)", "産地"),
+    SANCHIKN(30, "SANCHIKN", "CHAR(40)", "産地"),
     /** 標準仕入先コード */
-    SSIRCD(31, "SSIRCD", "INTEGER", "標準仕入先コード"),
+    SSIRCD(31, "SSIRCD", "SIGNED", "標準仕入先コード"),
     /** 配送パターン */
-    HSPTN(32, "HSPTN", "SMALLINT", "配送パターン"),
+    HSPTN(32, "HSPTN", "SIGNED", "配送パターン"),
     /** レギュラー情報_取扱フラグ */
-    RG_ATSUKFLG(33, "RG_ATSUKFLG", "SMALLINT", "レギュラー情報_取扱フラグ"),
+    RG_ATSUKFLG(33, "RG_ATSUKFLG", "SIGNED", "レギュラー情報_取扱フラグ"),
     /** レギュラー情報_原価 */
     RG_GENKAAM(34, "RG_GENKAAM", "DECIMAL(8,2)", "レギュラー情報_原価"),
     /** レギュラー情報_売価 */
-    RG_BAIKAAM(35, "RG_BAIKAAM", "INTEGER", "レギュラー情報_売価"),
+    RG_BAIKAAM(35, "RG_BAIKAAM", "SIGNED", "レギュラー情報_売価"),
     /** レギュラー情報_店入数 */
-    RG_IRISU(36, "RG_IRISU", "SMALLINT", "レギュラー情報_店入数"),
+    RG_IRISU(36, "RG_IRISU", "SIGNED", "レギュラー情報_店入数"),
     /** レギュラー情報_一括伝票フラグ */
-    RG_IDENFLG(37, "RG_IDENFLG", "CHARACTER(1)", "レギュラー情報_一括伝票フラグ"),
+    RG_IDENFLG(37, "RG_IDENFLG", "CHAR(1)", "レギュラー情報_一括伝票フラグ"),
     /** レギュラー情報_ワッペン */
-    RG_WAPNFLG(38, "RG_WAPNFLG", "CHARACTER(1)", "レギュラー情報_ワッペン"),
+    RG_WAPNFLG(38, "RG_WAPNFLG", "CHAR(1)", "レギュラー情報_ワッペン"),
     /** 販促情報_取扱フラグ */
-    HS_ATSUKFLG(39, "HS_ATSUKFLG", "SMALLINT", "販促情報_取扱フラグ"),
+    HS_ATSUKFLG(39, "HS_ATSUKFLG", "SIGNED", "販促情報_取扱フラグ"),
     /** 販促情報_原価 */
     HS_GENKAAM(40, "HS_GENKAAM", "DECIMAL(8,2)", "販促情報_原価"),
     /** 販促情報_売価 */
-    HS_BAIKAAM(41, "HS_BAIKAAM", "INTEGER", "販促情報_売価"),
+    HS_BAIKAAM(41, "HS_BAIKAAM", "SIGNED", "販促情報_売価"),
     /** 販促情報_店入数 */
-    HS_IRISU(42, "HS_IRISU", "SMALLINT", "販促情報_店入数"),
+    HS_IRISU(42, "HS_IRISU", "SIGNED", "販促情報_店入数"),
     /** 販促情報_ワッペン */
-    HS_WAPNFLG(43, "HS_WAPNFLG", "CHARACTER(1)", "販促情報_ワッペン"),
+    HS_WAPNFLG(43, "HS_WAPNFLG", "CHAR(1)", "販促情報_ワッペン"),
     /** 販促情報_スポット最低発注数 */
-    HS_SPOTMINSU(44, "HS_SPOTMINSU", "SMALLINT", "販促情報_スポット最低発注数"),
+    HS_SPOTMINSU(44, "HS_SPOTMINSU", "SIGNED", "販促情報_スポット最低発注数"),
     /** 販促情報_特売ワッペン */
-    HP_SWAPNFLG(45, "HP_SWAPNFLG", "CHARACTER(1)", "販促情報_特売ワッペン"),
+    HP_SWAPNFLG(45, "HP_SWAPNFLG", "CHAR(1)", "販促情報_特売ワッペン"),
     /** 規格名称 */
-    KIKKN(46, "KIKKN", "VARCHAR(46)", "規格名称"),
+    KIKKN(46, "KIKKN", "CHAR(46)", "規格名称"),
     /** ユニットプライス_容量 */
-    UP_YORYOSU(47, "UP_YORYOSU", "INTEGER", "ユニットプライス_容量"),
+    UP_YORYOSU(47, "UP_YORYOSU", "SIGNED", "ユニットプライス_容量"),
     /** ユニットプライス_単位容量 */
-    UP_TYORYOSU(48, "UP_TYORYOSU", "SMALLINT", "ユニットプライス_単位容量"),
+    UP_TYORYOSU(48, "UP_TYORYOSU", "SIGNED", "ユニットプライス_単位容量"),
     /** ユニットプライス_ユニット単位 */
-    UP_TANIKBN(49, "UP_TANIKBN", "SMALLINT", "ユニットプライス_ユニット単位"),
+    UP_TANIKBN(49, "UP_TANIKBN", "SIGNED", "ユニットプライス_ユニット単位"),
     /** 商品サイズ_横 */
-    SHNYOKOSZ(50, "SHNYOKOSZ", "SMALLINT", "商品サイズ_横"),
+    SHNYOKOSZ(50, "SHNYOKOSZ", "SIGNED", "商品サイズ_横"),
     /** 商品サイズ_縦 */
-    SHNTATESZ(51, "SHNTATESZ", "SMALLINT", "商品サイズ_縦"),
+    SHNTATESZ(51, "SHNTATESZ", "SIGNED", "商品サイズ_縦"),
     /** 商品サイズ_奥行 */
-    SHNOKUSZ(52, "SHNOKUSZ", "SMALLINT", "商品サイズ_奥行"),
+    SHNOKUSZ(52, "SHNOKUSZ", "SIGNED", "商品サイズ_奥行"),
     /** 商品サイズ_重量 */
     SHNJRYOSZ(53, "SHNJRYOSZ", "DECIMAL(6,1)", "商品サイズ_重量"),
     /** PB区分 */
-    PBKBN(54, "PBKBN", "SMALLINT", "PB区分"),
+    PBKBN(54, "PBKBN", "SIGNED", "PB区分"),
     /** 小物区分 */
-    KOMONOKBM(55, "KOMONOKBM", "SMALLINT", "小物区分"),
+    KOMONOKBM(55, "KOMONOKBM", "SIGNED", "小物区分"),
     /** 棚卸区分 */
-    TANAOROKBN(56, "TANAOROKBN", "SMALLINT", "棚卸区分"),
+    TANAOROKBN(56, "TANAOROKBN", "SIGNED", "棚卸区分"),
     /** 定計区分 */
-    TEIKEIKBN(57, "TEIKEIKBN", "SMALLINT", "定計区分"),
+    TEIKEIKBN(57, "TEIKEIKBN", "SIGNED", "定計区分"),
     /** ODS_賞味期限_春 */
-    ODS_HARUSU(58, "ODS_HARUSU", "SMALLINT", "ODS_賞味期限_春"),
+    ODS_HARUSU(58, "ODS_HARUSU", "SIGNED", "ODS_賞味期限_春"),
     /** ODS_賞味期限_夏 */
-    ODS_NATSUSU(59, "ODS_NATSUSU", "SMALLINT", "ODS_賞味期限_夏"),
+    ODS_NATSUSU(59, "ODS_NATSUSU", "SIGNED", "ODS_賞味期限_夏"),
     /** ODS_賞味期限_秋 */
-    ODS_AKISU(60, "ODS_AKISU", "SMALLINT", "ODS_賞味期限_秋"),
+    ODS_AKISU(60, "ODS_AKISU", "SIGNED", "ODS_賞味期限_秋"),
     /** ODS_賞味期限_冬 */
-    ODS_FUYUSU(61, "ODS_FUYUSU", "SMALLINT", "ODS_賞味期限_冬"),
+    ODS_FUYUSU(61, "ODS_FUYUSU", "SIGNED", "ODS_賞味期限_冬"),
     /** ODS_入荷期限 */
-    ODS_NYUKASU(62, "ODS_NYUKASU", "SMALLINT", "ODS_入荷期限"),
+    ODS_NYUKASU(62, "ODS_NYUKASU", "SIGNED", "ODS_入荷期限"),
     /** ODS_値引期限 */
-    ODS_NEBIKISU(63, "ODS_NEBIKISU", "SMALLINT", "ODS_値引期限"),
+    ODS_NEBIKISU(63, "ODS_NEBIKISU", "SIGNED", "ODS_値引期限"),
     /** プライスカード_種類 */
-    PCARD_SHUKBN(64, "PCARD_SHUKBN", "SMALLINT", "プライスカード_種類"),
+    PCARD_SHUKBN(64, "PCARD_SHUKBN", "SIGNED", "プライスカード_種類"),
     /** プライスカード_色 */
-    PCARD_IROKBN(65, "PCARD_IROKBN", "SMALLINT", "プライスカード_色"),
+    PCARD_IROKBN(65, "PCARD_IROKBN", "SIGNED", "プライスカード_色"),
     /** 税区分 */
-    ZEIKBN(66, "ZEIKBN", "SMALLINT", "税区分"),
+    ZEIKBN(66, "ZEIKBN", "SIGNED", "税区分"),
     /** 税率区分 */
-    ZEIRTKBN(67, "ZEIRTKBN", "SMALLINT", "税率区分"),
+    ZEIRTKBN(67, "ZEIRTKBN", "SIGNED", "税率区分"),
     /** 旧税率区分 */
-    ZEIRTKBN_OLD(68, "ZEIRTKBN_OLD", "SMALLINT", "旧税率区分"),
+    ZEIRTKBN_OLD(68, "ZEIRTKBN_OLD", "SIGNED", "旧税率区分"),
     /** 税率変更日 */
-    ZEIRTHENKODT(69, "ZEIRTHENKODT", "INTEGER", "税率変更日"),
+    ZEIRTHENKODT(69, "ZEIRTHENKODT", "SIGNED", "税率変更日"),
     /** 製造限度日数 */
-    SEIZOGENNISU(70, "SEIZOGENNISU", "SMALLINT", "製造限度日数"),
+    SEIZOGENNISU(70, "SEIZOGENNISU", "SIGNED", "製造限度日数"),
     /** 定貫不定貫区分 */
-    TEIKANKBN(71, "TEIKANKBN", "SMALLINT", "定貫不定貫区分"),
+    TEIKANKBN(71, "TEIKANKBN", "SIGNED", "定貫不定貫区分"),
     /** メーカーコード */
-    MAKERCD(72, "MAKERCD", "INTEGER", "メーカーコード"),
+    MAKERCD(72, "MAKERCD", "SIGNED", "メーカーコード"),
     /** 輸入区分 */
-    IMPORTKBN(73, "IMPORTKBN", "SMALLINT", "輸入区分"),
+    IMPORTKBN(73, "IMPORTKBN", "SIGNED", "輸入区分"),
     /** 仕分区分 */
-    SIWAKEKBN(74, "SIWAKEKBN", "SMALLINT", "仕分区分"),
+    SIWAKEKBN(74, "SIWAKEKBN", "SIGNED", "仕分区分"),
     /** 返品区分 */
-    HENPIN_KBN(75, "HENPIN_KBN", "SMALLINT", "返品区分"),
+    HENPIN_KBN(75, "HENPIN_KBN", "SIGNED", "返品区分"),
     /** 対象年齢 */
-    TAISHONENSU(76, "TAISHONENSU", "SMALLINT", "対象年齢"),
+    TAISHONENSU(76, "TAISHONENSU", "SIGNED", "対象年齢"),
     /** カロリー表示 */
-    CALORIESU(77, "CALORIESU", "SMALLINT", "カロリー表示"),
+    CALORIESU(77, "CALORIESU", "SIGNED", "カロリー表示"),
     /** フラグ情報_ELP */
-    ELPFLG(78, "ELPFLG", "SMALLINT", "フラグ情報_ELP"),
+    ELPFLG(78, "ELPFLG", "SIGNED", "フラグ情報_ELP"),
     /** フラグ情報_ベルマーク */
-    BELLMARKFLG(79, "BELLMARKFLG", "SMALLINT", "フラグ情報_ベルマーク"),
+    BELLMARKFLG(79, "BELLMARKFLG", "SIGNED", "フラグ情報_ベルマーク"),
     /** フラグ情報_リサイクル */
-    RECYCLEFLG(80, "RECYCLEFLG", "SMALLINT", "フラグ情報_リサイクル"),
+    RECYCLEFLG(80, "RECYCLEFLG", "SIGNED", "フラグ情報_リサイクル"),
     /** フラグ情報_エコマーク */
-    ECOFLG(81, "ECOFLG", "SMALLINT", "フラグ情報_エコマーク"),
+    ECOFLG(81, "ECOFLG", "SIGNED", "フラグ情報_エコマーク"),
     /** 包材用途 */
-    HZI_YOTO(82, "HZI_YOTO", "SMALLINT", "包材用途"),
+    HZI_YOTO(82, "HZI_YOTO", "SIGNED", "包材用途"),
     /** 包材材質 */
-    HZI_ZAISHITU(83, "HZI_ZAISHITU", "SMALLINT", "包材材質"),
+    HZI_ZAISHITU(83, "HZI_ZAISHITU", "SIGNED", "包材材質"),
     /** 包材リサイクル対象 */
-    HZI_RECYCLE(84, "HZI_RECYCLE", "SMALLINT", "包材リサイクル対象"),
+    HZI_RECYCLE(84, "HZI_RECYCLE", "SIGNED", "包材リサイクル対象"),
     /** 期間 */
-    KIKANKBN(85, "KIKANKBN", "CHARACTER(1)", "期間"),
+    KIKANKBN(85, "KIKANKBN", "CHAR(1)", "期間"),
     /** 酒級 */
-    SHUKYUKBN(86, "SHUKYUKBN", "SMALLINT", "酒級"),
+    SHUKYUKBN(86, "SHUKYUKBN", "SIGNED", "酒級"),
     /** 度数 */
-    DOSU(87, "DOSU", "SMALLINT", "度数"),
+    DOSU(87, "DOSU", "SIGNED", "度数"),
     /** 陳列形式コード */
-    CHINRETUCD(88, "CHINRETUCD", "CHARACTER(1)", "陳列形式コード"),
+    CHINRETUCD(88, "CHINRETUCD", "CHAR(1)", "陳列形式コード"),
     /** 段積み形式コード */
-    DANTUMICD(89, "DANTUMICD", "CHARACTER(2)", "段積み形式コード"),
+    DANTUMICD(89, "DANTUMICD", "CHAR(2)", "段積み形式コード"),
     /** 重なりコード */
-    KASANARICD(90, "KASANARICD", "CHARACTER(1)", "重なりコード"),
+    KASANARICD(90, "KASANARICD", "CHAR(1)", "重なりコード"),
     /** 重なりサイズ */
-    KASANARISZ(91, "KASANARISZ", "SMALLINT", "重なりサイズ"),
+    KASANARISZ(91, "KASANARISZ", "SIGNED", "重なりサイズ"),
     /** 圧縮率 */
-    ASSHUKURT(92, "ASSHUKURT", "SMALLINT", "圧縮率"),
+    ASSHUKURT(92, "ASSHUKURT", "SIGNED", "圧縮率"),
     /** 種別コード */
-    SHUBETUCD(93, "SHUBETUCD", "CHARACTER(2)", "種別コード"),
+    SHUBETUCD(93, "SHUBETUCD", "CHAR(2)", "種別コード"),
     /** 販売コード */
-    URICD(94, "URICD", "INTEGER", "販売コード"),
+    URICD(94, "URICD", "SIGNED", "販売コード"),
     /** 商品コピー・セールスコメント */
-    SALESCOMKN(95, "SALESCOMKN", "VARCHAR(60)", "商品コピー・セールスコメント"),
+    SALESCOMKN(95, "SALESCOMKN", "CHAR(60)", "商品コピー・セールスコメント"),
     /** 裏貼 */
-    URABARIKBN(96, "URABARIKBN", "SMALLINT", "裏貼"),
+    URABARIKBN(96, "URABARIKBN", "SIGNED", "裏貼"),
     /** プライスカード出力有無 */
-    PCARD_OPFLG(97, "PCARD_OPFLG", "SMALLINT", "プライスカード出力有無"),
+    PCARD_OPFLG(97, "PCARD_OPFLG", "SIGNED", "プライスカード出力有無"),
     /** 親商品コード */
-    PARENTCD(98, "PARENTCD", "CHARACTER(14)", "親商品コード"),
+    PARENTCD(98, "PARENTCD", "CHAR(14)", "親商品コード"),
     /** 便区分 */
-    BINKBN(99, "BINKBN", "SMALLINT", "便区分"),
+    BINKBN(99, "BINKBN", "SIGNED", "便区分"),
     /** 発注曜日_月 */
-    HAT_MONKBN(100, "HAT_MONKBN", "SMALLINT", "発注曜日_月"),
+    HAT_MONKBN(100, "HAT_MONKBN", "SIGNED", "発注曜日_月"),
     /** 発注曜日_火 */
-    HAT_TUEKBN(101, "HAT_TUEKBN", "SMALLINT", "発注曜日_火"),
+    HAT_TUEKBN(101, "HAT_TUEKBN", "SIGNED", "発注曜日_火"),
     /** 発注曜日_水 */
-    HAT_WEDKBN(102, "HAT_WEDKBN", "SMALLINT", "発注曜日_水"),
+    HAT_WEDKBN(102, "HAT_WEDKBN", "SIGNED", "発注曜日_水"),
     /** 発注曜日_木 */
-    HAT_THUKBN(103, "HAT_THUKBN", "SMALLINT", "発注曜日_木"),
+    HAT_THUKBN(103, "HAT_THUKBN", "SIGNED", "発注曜日_木"),
     /** 発注曜日_金 */
-    HAT_FRIKBN(104, "HAT_FRIKBN", "SMALLINT", "発注曜日_金"),
+    HAT_FRIKBN(104, "HAT_FRIKBN", "SIGNED", "発注曜日_金"),
     /** 発注曜日_土 */
-    HAT_SATKBN(105, "HAT_SATKBN", "SMALLINT", "発注曜日_土"),
+    HAT_SATKBN(105, "HAT_SATKBN", "SIGNED", "発注曜日_土"),
     /** 発注曜日_日 */
-    HAT_SUNKBN(106, "HAT_SUNKBN", "SMALLINT", "発注曜日_日"),
+    HAT_SUNKBN(106, "HAT_SUNKBN", "SIGNED", "発注曜日_日"),
     /** リードタイムパターン */
-    READTMPTN(107, "READTMPTN", "SMALLINT", "リードタイムパターン"),
+    READTMPTN(107, "READTMPTN", "SIGNED", "リードタイムパターン"),
     /** 締め回数 */
-    SIMEKAISU(108, "SIMEKAISU", "SMALLINT", "締め回数"),
+    SIMEKAISU(108, "SIMEKAISU", "SIGNED", "締め回数"),
     /** 衣料使い回しフラグ */
-    IRYOREFLG(109, "IRYOREFLG", "SMALLINT", "衣料使い回しフラグ"),
+    IRYOREFLG(109, "IRYOREFLG", "SIGNED", "衣料使い回しフラグ"),
     /** 登録元 */
-    TOROKUMOTO(110, "TOROKUMOTO", "SMALLINT", "登録元"),
+    TOROKUMOTO(110, "TOROKUMOTO", "SIGNED", "登録元"),
     /** 更新区分 */
-    UPDKBN(111, "UPDKBN", "SMALLINT", "更新区分"),
+    UPDKBN(111, "UPDKBN", "SIGNED", "更新区分"),
     /** 送信フラグ */
-    SENDFLG(112, "SENDFLG", "SMALLINT", "送信フラグ"),
+    SENDFLG(112, "SENDFLG", "SIGNED", "送信フラグ"),
     /** オペレータ */
-    OPERATOR(113, "OPERATOR", "VARCHAR(20)", "オペレータ"),
+    OPERATOR(113, "OPERATOR", "CHAR(20)", "オペレータ"),
     /** 登録日 */
-    ADDDT(114, "ADDDT", "TIMESTAMP", "登録日"),
+    ADDDT(114, "ADDDT", "DATETIME", "登録日"),
     /** 更新日 */
-    UPDDT(115, "UPDDT", "TIMESTAMP", "更新日"),
+    UPDDT(115, "UPDDT", "DATETIME", "更新日"),
     /** 保温区分 */
-    K_HONKB(116, "K_HONKB", "SMALLINT", "保温区分"),
+    K_HONKB(116, "K_HONKB", "SIGNED", "保温区分"),
     /** デリカワッペン区分_レギュラー */
-    K_WAPNFLG_R(117, "K_WAPNFLG_R", "SMALLINT", "デリカワッペン区分_レギュラー"),
+    K_WAPNFLG_R(117, "K_WAPNFLG_R", "SIGNED", "デリカワッペン区分_レギュラー"),
     /** デリカワッペン区分_販促 */
-    K_WAPNFLG_H(118, "K_WAPNFLG_H", "SMALLINT", "デリカワッペン区分_販促"),
+    K_WAPNFLG_H(118, "K_WAPNFLG_H", "SIGNED", "デリカワッペン区分_販促"),
     /** 取扱区分 */
-    K_TORIKB(119, "K_TORIKB", "SMALLINT", "取扱区分"),
+    K_TORIKB(119, "K_TORIKB", "SIGNED", "取扱区分"),
     /** ITFコード */
-    ITFCD(120, "ITFCD", "CHARACTER(14)", "ITFコード"),
+    ITFCD(120, "ITFCD", "CHAR(14)", "ITFコード"),
     /** センター入数 */
-    CENTER_IRISU(121, "CENTER_IRISU", "SMALLINT", "センター入数");
+    CENTER_IRISU(121, "CENTER_IRISU", "SIGNED", "センター入数");
 
     private final Integer no;
     private final String col;
@@ -2593,7 +2583,7 @@ public class Reportx004Dao extends ItemDao {
       if (typ.indexOf("DEC") != -1) {
         return DefineReport.DataType.DECIMAL;
       }
-      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMESTAMP") != -1) {
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("DATETIME") != -1) {
         return DefineReport.DataType.DATE;
       }
       return DefineReport.DataType.TEXT;
