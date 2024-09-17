@@ -2519,8 +2519,15 @@ public class ReportTG016Dao extends ItemDao {
           this.createSqlTOKSP_SHNNNDT(userId, array, SqlType.MRG, table);
         }
         /*
-         * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ // ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 = this.createSqlTOKSP_SHNHBDT(userId, dataArrayHB, SqlType.MRG); // ②全特（ア無）_商品納入日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = result7 = this.createSqlTOKSP_SHNNNDT(userId, dataArrayNNDT, SqlType.MRG); }else{ // ③本部個特_商品販売日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 = this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG,
-         * "INATK.TOKHTK_SHNHBDT"); // ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
+         * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ //
+         * ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
+         * this.createSqlTOKSP_SHNHBDT(userId, dataArrayHB, SqlType.MRG); // ②全特（ア無）_商品納入日 催し区分 <>
+         * 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = result7 =
+         * this.createSqlTOKSP_SHNNNDT(userId, dataArrayNNDT, SqlType.MRG); }else{ // ③本部個特_商品販売日
+         * 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
+         * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKHTK_SHNHBDT"); //
+         * ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 =
+         * this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
          */
 
         // ③ 催し部門内部管理、管理番号内部管理：※但し、催し部門内部管理の更新は行わない。※後述
@@ -3072,8 +3079,15 @@ public class ReportTG016Dao extends ItemDao {
       }
 
       /*
-       * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ // ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 = this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKSP_SHNHBDT"); // ②全特（ア無）_商品納入日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKSP_SHNNNDT"); }else{ // ③本部個特_商品販売日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
-       * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKHTK_SHNHBDT"); // ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 = this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
+       * // 3.15.2.2.2．管理テーブル更新 if(!DefineReport.ValKbn10002.VAL3.getVal().equals(szMoyskbn)){ //
+       * ①全特_商品販売日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
+       * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKSP_SHNHBDT"); //
+       * ②全特（ア無）_商品納入日 催し区分 <> 3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 =
+       * this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKSP_SHNNNDT");
+       * }else{ // ③本部個特_商品販売日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result6 =
+       * this.createSqlTOK_CMN_SHNHBDT_DEL(userId, dataArrayHB, SqlType.MRG, "INATK.TOKHTK_SHNHBDT"); //
+       * ④本部個特_商品納入日 催し区分=3の場合、該当催しコード、管理番号をクリア（UPDATFE）する JSONObject result7 =
+       * this.createSqlTOK_CMN_SHNNNDT_DEL(userId, dataArrayNNDT, SqlType.MRG, "INATK.TOKHTK_SHNNNDT"); }
        */
 
       this.createSqlSYS_CMN_DEL(userId, data, SqlType.DEL, "INATK.SYSMOYBMN", isTOKTG);
@@ -4279,8 +4293,16 @@ public class ReportTG016Dao extends ItemDao {
     // ③ 【画面】.A総売価行の「100g総売価」>=【画面】.B総売価行の「100g総売価」>=【画面】.C総売価行の「100g総売価」。
     // ④ 【画面】.A総売価行の「100g総売価」=【画面】.B総売価行の「100g総売価」=【画面】.C総売価行の「100g総売価」は不可。
     /*
-     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_a_baikaam+2 && !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam = id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2)); var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」 ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E
-     * if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >= c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 = C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return "E20547"; } }
+     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_a_baikaam+2 &&
+     * !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue:
+     * $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam =
+     * id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2));
+     * var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue:
+     * $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」
+     * ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >=
+     * c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 =
+     * C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return
+     * "E20547"; } }
      */
 
     // 99.1Kg原価
@@ -4435,8 +4457,16 @@ public class ReportTG016Dao extends ItemDao {
     // ③ 【画面】.A総売価行の「100g総売価」>=【画面】.B総売価行の「100g総売価」>=【画面】.C総売価行の「100g総売価」。
     // ④ 【画面】.A総売価行の「100g総売価」=【画面】.B総売価行の「100g総売価」=【画面】.C総売価行の「100g総売価」は不可。
     /*
-     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_b_baikaam+2 && !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam = id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2)); var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」 ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E
-     * if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >= c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 = C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return "E20547"; } }
+     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_b_baikaam+2 &&
+     * !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue:
+     * $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam =
+     * id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2));
+     * var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue:
+     * $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」
+     * ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >=
+     * c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 =
+     * C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return
+     * "E20547"; } }
      */
     // 106.1Kg原価 表示・入力不可
     // 107.1Kg総売価
@@ -4502,8 +4532,16 @@ public class ReportTG016Dao extends ItemDao {
     // ④ 【画面】.A総売価行の「100g総売価」=【画面】.B総売価行の「100g総売価」=【画面】.C総売価行の「100g総売価」は不可。
     // ⑤ 【画面】.B総売価行の「100g総売価」を入力しないと【画面】.C総売価行の「100g総売価」を入力できない。
     /*
-     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_c_baikaam+2 && !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam = id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2)); var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」 ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E
-     * if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >= c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 = C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return "E20547"; } }
+     * TODO: jsからCOPYしてきた処理だがjava側に渡された時点で1,2の判断は不要の為、保留 if(allcheck && id===$.id_inp.txt_c_baikaam+2 &&
+     * !$.isEmptyVal(newValue)){ var a_baikaam = id===$.id_inp.txt_a_baikaam+2 ? newValue:
+     * $.getInputboxValue($('#'+$.id_inp.txt_a_baikaam+2)); var b_baikaam =
+     * id===$.id_inp.txt_b_baikaam+2 ? newValue: $.getInputboxValue($('#'+$.id_inp.txt_b_baikaam+2));
+     * var c_baikaam = id===$.id_inp.txt_c_baikaam+2 ? newValue:
+     * $.getInputboxValue($('#'+$.id_inp.txt_c_baikaam+2)); // ③E20546 A総売価行の「100g総売価」 ≧ B総売価行の「100g総売価」
+     * ≧ C総売価行の「100g総売価」 の条件で入力してください。 0 E if(!(a_baikaam*1 >= b_baikaam*1 && b_baikaam*1 >=
+     * c_baikaam*1)){ return "E20546"; } // ④E20547 A総売価行の「100g総売価」 = B総売価行の「100g総売価」 =
+     * C総売価行の「100g総売価」は入力できません。 0 E if(a_baikaam*1 == b_baikaam*1 && b_baikaam*1 == c_baikaam*1){ return
+     * "E20547"; } }
      */
     // 113.1Kg原価 表示・入力不可
     // 114.1Kg総売価
@@ -5804,7 +5842,11 @@ public class ReportTG016Dao extends ItemDao {
     // 184.販売日
     // 185.納入日 新規の場合、初期値は非チェック状態に設置する。
     /*
-     * TODO: 不要？ if(allcheck && id===$.id.chk_nndt){ if((that.judgeRepType.frm1||that.judgeRepType.frm2||that.judgeRepType.frm3) && that.judgeRepType.st && (that.judgeRepType.toktg_h||that.judgeRepType.toksp)){ // 16_1,16_2,16_3 // ① 【画面】.「納入期間」入力がある時のみ入力可。 // ② 1日はチェックが必要。 // ③ 【画面】.「納入期間」の範囲内 // E20363 「納入日」に1日はチェックが必要です。 0 E if($("[id^="+$.id.chk_nndt+"]:checked").length === 0){ return "E20363"; } } }
+     * TODO: 不要？ if(allcheck && id===$.id.chk_nndt){
+     * if((that.judgeRepType.frm1||that.judgeRepType.frm2||that.judgeRepType.frm3) &&
+     * that.judgeRepType.st && (that.judgeRepType.toktg_h||that.judgeRepType.toksp)){ // 16_1,16_2,16_3
+     * // ① 【画面】.「納入期間」入力がある時のみ入力可。 // ② 1日はチェックが必要。 // ③ 【画面】.「納入期間」の範囲内 // E20363 「納入日」に1日はチェックが必要です。
+     * 0 E if($("[id^="+$.id.chk_nndt+"]:checked").length === 0){ return "E20363"; } } }
      */
 
     // ランクNo展開配列作成機能
@@ -9414,7 +9456,7 @@ public class ReportTG016Dao extends ItemDao {
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
-    String table = "", colList = "", rows = "", values = "";
+    String table = "", colList = "", colList2 = "", rows = "", values = "";
     System.out.print("data > " + data + "\n");
 
 
@@ -9426,8 +9468,10 @@ public class ReportTG016Dao extends ItemDao {
 
     for (TOK_CMN_TJTENLayout itm : TOK_CMN_TJTENLayout.values()) {
       colList += "," + itm.getCol();
+      colList2 += "," + itm.getCol() + " = VALUES(" + itm.getCol() + ") ";
     }
     colList = StringUtils.removeStart(colList, ",");
+    colList2 = StringUtils.removeStart(colList2, ",");
 
     for (int j = 0; j < data.size(); j++) {
       values = "";
@@ -9441,8 +9485,8 @@ public class ReportTG016Dao extends ItemDao {
         } else if (StringUtils.isEmpty(val.trim()) && j >= 8) {
           values += ",null";
         } else {
-          values += ",cast(? as " + itm.getTyp() + " ) ";
           prmData.add(val);
+          values += ",cast(? as " + itm.getTyp() + " ) ";
         }
       }
 
@@ -9469,8 +9513,8 @@ public class ReportTG016Dao extends ItemDao {
             if (StringUtils.isEmpty(val)) {
               values += qur.getCol() + " = null ";
             } else {
-              values += qur.getCol() + " = ? ";
               prmData.add(val);
+              values += qur.getCol() + " = ? ";
             }
           }
           values += ") as T1 ) ";
@@ -9481,7 +9525,7 @@ public class ReportTG016Dao extends ItemDao {
         }
 
       }
-      rows += ",( " + StringUtils.removeStart(values, ",") + " ) ";
+      rows += ",ROW( " + StringUtils.removeStart(values, ",") + " ) ";
     }
     rows = StringUtils.removeStart(rows, ",");
 
@@ -9493,11 +9537,13 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-
-    sbSQL.append("replace into " + table + "( ");
+    sbSQL.append("insert into " + table + "( ");
     sbSQL.append(colList + " ) ");
-    sbSQL.append("values " + rows);
-
+    sbSQL.append("SELECT * FROM (VALUES " + rows + ") ");
+    sbSQL.append("AS TMP( ");
+    sbSQL.append(colList + " ) ");
+    sbSQL.append(" ON DUPLICATE KEY UPDATE "); // F1 : セッションID
+    sbSQL.append(colList2);
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());

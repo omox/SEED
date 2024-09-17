@@ -2704,7 +2704,8 @@ public class ReportST024Dao extends ItemDao {
             int _hbeddt = Integer.valueOf(_chkhbeddt);
             String _pluSndFlg = _obj.getString(TOKTG_SHNLayout.PLUSNDFLG.getCol());
 
-            // 商品コード、管理番号にかぶりがあるかつPLU配信しないチェックがされてないことかつ!(チェック対象行.販売開始日 < その他行.販売終了日 || チェック対象行.販売終了日 < その他行.販売開始日)
+            // 商品コード、管理番号にかぶりがあるかつPLU配信しないチェックがされてないことかつ!(チェック対象行.販売開始日 < その他行.販売終了日 || チェック対象行.販売終了日 <
+            // その他行.販売開始日)
             if (shncd.equals(_shncd) && kanrino.equals(_kanrino) && ((moyskbn.equals("3") && _moyskbn.equals("3")) || (!moyskbn.equals("3") && !_moyskbn.equals("3")))
                 && (StringUtils.isEmpty(_pluSndFlg) || (!StringUtils.isEmpty(_pluSndFlg) && !_pluSndFlg.equals("1"))) && !(hbstdt > _hbeddt || hbeddt < _hbstdt)) {
               // 重複チェック
