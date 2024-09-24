@@ -114,7 +114,7 @@ public class Reportx007Dao extends ItemDao {
     sbSQL.append(" select ");
     sbSQL.append("  T1.SEQ as F1"); // F1 : 2.入力番号
     sbSQL.append(" , T1.OPERATOR as F2");
-    sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%Y%m%d') as F3");
+    sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%y%m%d') as F3");
     sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%H%i%S') as F4");
     sbSQL.append(" , trim(COMMENTKN) as F5");
     sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%Y%m%d%H%i%s%f') as F6");

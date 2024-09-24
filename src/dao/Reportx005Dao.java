@@ -82,7 +82,7 @@ public class Reportx005Dao extends ItemDao {
     sbSQL.append(" ,T1.RG_WAPNFLG"); // ワッペン区分
     sbSQL.append(" ,T1.RG_IDENFLG"); // 一括区分
     sbSQL.append(" ,T1.SSIRCD"); // 標準仕入先
-    sbSQL.append(" ,right('0'||nvl(T1.BMNCD,0),2)||right('0'||nvl(T1.DAICD,0),2)||right('0'||nvl(T1.CHUCD,0),2)||right('0'||nvl(T1.SHOCD,0),2) as BUNCD"); // 分類コード
+    sbSQL.append(" ,right('0'||COALESCE(T1.BMNCD,0),2)||right('0'||COALESCE(T1.DAICD,0),2)||right('0'||COALESCE(T1.CHUCD,0),2)||right('0'||COALESCE(T1.SHOCD,0),2) as BUNCD"); // 分類コード
     sbSQL.append(" ,T1.SEQ"); // SEQ
     sbSQL.append(" ,T1.INPUTNO"); // 入力番号
     sbSQL.append(" ,T1.CSV_UPDKBN"); // CSV登録区分
@@ -90,13 +90,13 @@ public class Reportx005Dao extends ItemDao {
     sbSQL.append(" ,T1.TENBAIKADT"); // 店売価実施日
     sbSQL.append(" ,trim(T1.SHNCD)");
     sbSQL.append(" ,case when T5.SHNCD is not null then 1 else 0 end"); // 商品コード更新可
-    sbSQL.append(" ,case when T6.SHNCD is null and nvl(T7.CNT,0) = 0 then 1 else 0 end"); // 予約商品新規可
-    sbSQL.append(" ,case when T6.SHNCD is not null and nvl(T7.CNT,0) = 1 then 1 else 0 end"); // 予約商品更新可
+    sbSQL.append(" ,case when T6.SHNCD is null and COALESCE(T7.CNT,0) = 0 then 1 else 0 end"); // 予約商品新規可
+    sbSQL.append(" ,case when T6.SHNCD is not null and COALESCE(T7.CNT,0) = 1 then 1 else 0 end"); // 予約商品更新可
     sbSQL.append(" from INAMS.CSVSHNHEAD T0");
-    sbSQL.append(" inner join INAMS.CSVSHN T1 on T1.SEQ = T0.SEQ and T0.SEQ = '" + szSeq + "' and nvl(T1.UPDKBN, 0) <> 1");
+    sbSQL.append(" inner join INAMS.CSVSHN T1 on T1.SEQ = T0.SEQ and T0.SEQ = '" + szSeq + "' and COALESCE(T1.UPDKBN, 0) <> 1");
     sbSQL.append(" left outer join INAMS.CSVSRCCD T3 on T3.SEQ = T0.SEQ and T1.INPUTNO=T3.INPUTNO and T1.SHNCD = T3.SHNCD and T3.SEQNO = 1");
     sbSQL.append(" " + DefineReport.ID_SQL_MD03111301_JOIN + "");
-    sbSQL.append(" left outer join INAMS.MSTSHN T5 on T1.SHNCD = T5.SHNCD and nvl(T5.UPDKBN, 0) <> 1");
+    sbSQL.append(" left outer join INAMS.MSTSHN T5 on T1.SHNCD = T5.SHNCD and COALESCE(T5.UPDKBN, 0) <> 1");
     sbSQL.append(" left outer join INAMS.MSTSHN_Y T6 on T1.SHNCD = T6.SHNCD and T1.YOYAKUDT = T6.YOYAKUDT and T1.TENBAIKADT = T6.TENBAIKADT and NVL(T6.UPDKBN, 0) <> 1");
     sbSQL.append(
         " left outer join (select T7.SHNCD,count(T7.SHNCD) over(partition by T7.SHNCD) as CNT from INAMS.MSTSHN_Y T7 where NVL(T7.UPDKBN, 0) <> 1 group by T7.SHNCD) T7 on T1.SHNCD = T7.SHNCD");
@@ -130,7 +130,7 @@ public class Reportx005Dao extends ItemDao {
     sbSQL.append(" select ");
     sbSQL.append("  T1.SEQ as F1"); // F1 : 2.入力番号
     sbSQL.append(" , T1.OPERATOR as F2");
-    sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%Y%m%d') as F3");
+    sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%y%m%d') as F3");
     sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%H%i%S') as F4");
     sbSQL.append(" , trim(COMMENTKN) as F5");
     sbSQL.append(" , DATE_FORMAT(T1.INPUT_DATE, '%Y%m%d%H%i%s%f') as F6");
