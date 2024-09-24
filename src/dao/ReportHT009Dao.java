@@ -90,7 +90,9 @@ public class ReportHT009Dao extends ItemDao {
      *
      * if(msgList.size() > 0){ option.put(MsgKey.E.getKey(), msgList); return option; }
      *
-     * // 更新処理 try { option = this.deleteData(map, userInfo, sysdate); } catch (Exception e) { e.printStackTrace(); option.put(MsgKey.E.getKey(), MessageUtility.getMessage(Msg.E00001.getVal())); }
+     * // 更新処理 try { option = this.deleteData(map, userInfo, sysdate); } catch (Exception e) {
+     * e.printStackTrace(); option.put(MsgKey.E.getKey(),
+     * MessageUtility.getMessage(Msg.E00001.getVal())); }
      */
     option.put(MsgKey.S.getKey(), MessageUtility.getMessage(Msg.S00002.getVal()));
     return option;
@@ -622,8 +624,8 @@ public class ReportHT009Dao extends ItemDao {
       sbSQL.append(",CASE WHEN TN.SURYO_SUN IS NULL THEN 0 ELSE TN.SURYO_SUN END AS SURYO "); // F4 : 数量＿日
     }
     sbSQL.append(",TN.OPERATOR "); // F5 : オペレーター
-    sbSQL.append(",DATE_FORMAT(TN.ADDDT,'%y%m%d') AS ADDDT "); // F6 : 登録日
-    sbSQL.append(",DATE_FORMAT(TN.UPDDT,'%y%m%d') AS UPDDT "); // F7 : 更新日
+    sbSQL.append(",DATE_FORMAT(TN.ADDDT,'%y/%m/%d') AS ADDDT "); // F6 : 登録日
+    sbSQL.append(",DATE_FORMAT(TN.UPDDT,'%y/%m/%d') AS UPDDT "); // F7 : 更新日
     sbSQL.append(",DATE_FORMAT(TN.UPDDT,'%Y%m%d%H%i%s%f') as HDN_UPDDT "); // F8 : 更新日時
     if (szYobi.equals("1")) {
       sbSQL.append(",SN.TSKBN_MON as TSKBN"); // F9 : 訂正区分＿月
