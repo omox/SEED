@@ -83,7 +83,7 @@ public class Reportx007Dao extends ItemDao {
 
     sbSQL.append(" from INAMS.CSVSHNHEAD T2");
     sbSQL.append(" inner join INAMS.CSVSHN T1 on T1.SEQ = T2.SEQ and T2.SEQ = '" + szSeq + "'");
-    sbSQL.append(" where nvl(UPDKBN, 0) <> 1 ");
+    sbSQL.append(" where COALESCE(UPDKBN, 0) <> 1 ");
     sbSQL.append(" order by ");
     sbSQL.append("  T1.SHNCD ");
 
