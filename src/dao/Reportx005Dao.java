@@ -97,9 +97,9 @@ public class Reportx005Dao extends ItemDao {
     sbSQL.append(" left outer join INAMS.CSVSRCCD T3 on T3.SEQ = T0.SEQ and T1.INPUTNO=T3.INPUTNO and T1.SHNCD = T3.SHNCD and T3.SEQNO = 1");
     sbSQL.append(" " + DefineReport.ID_SQL_MD03111301_JOIN + "");
     sbSQL.append(" left outer join INAMS.MSTSHN T5 on T1.SHNCD = T5.SHNCD and COALESCE(T5.UPDKBN, 0) <> 1");
-    sbSQL.append(" left outer join INAMS.MSTSHN_Y T6 on T1.SHNCD = T6.SHNCD and T1.YOYAKUDT = T6.YOYAKUDT and T1.TENBAIKADT = T6.TENBAIKADT and NVL(T6.UPDKBN, 0) <> 1");
+    sbSQL.append(" left outer join INAMS.MSTSHN_Y T6 on T1.SHNCD = T6.SHNCD and T1.YOYAKUDT = T6.YOYAKUDT and T1.TENBAIKADT = T6.TENBAIKADT and COALESCE(T6.UPDKBN, 0) <> 1");
     sbSQL.append(
-        " left outer join (select T7.SHNCD,count(T7.SHNCD) over(partition by T7.SHNCD) as CNT from INAMS.MSTSHN_Y T7 where NVL(T7.UPDKBN, 0) <> 1 group by T7.SHNCD) T7 on T1.SHNCD = T7.SHNCD");
+        " left outer join (select T7.SHNCD,count(T7.SHNCD) over(partition by T7.SHNCD) as CNT from INAMS.MSTSHN_Y T7 where COALESCE(T7.UPDKBN, 0) <> 1 group by T7.SHNCD) T7 on T1.SHNCD = T7.SHNCD");
     sbSQL.append(" order by ");
     sbSQL.append("  T1.SHNCD ");
 
