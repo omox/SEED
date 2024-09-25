@@ -925,7 +925,7 @@ public class Reportx112Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append("REPLACE INTO INAMS.MSTTEN (");
+        sbSQL.append("INSERT INTO INAMS.MSTTEN (");
         sbSQL.append("  TENCD"); // F1 ：店コード
         sbSQL.append(", SEIKAAREAKBN"); // F2 ：青果センターエリア
         sbSQL.append(", SENGYOKBN"); // F3 ：鮮魚区分
@@ -1045,7 +1045,7 @@ public class Reportx112Dao extends ItemDao {
         sbSQL.append(",UPDDT"); // 更新日：
 
         sbSQL.append(")");
-        sbSQL.append("VALUES (");
+        sbSQL.append(" SELECT * FROM ( VALUES ROW(");
         sbSQL.append(StringUtils.join(valueData, ",").substring(1));
         sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
         sbSQL.append(", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
@@ -1054,7 +1054,242 @@ public class Reportx112Dao extends ItemDao {
           sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日 新規登録時には登録日の更新も行う。
         }
         sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
+        sbSQL.append(")) AS NEW ( ");
+        sbSQL.append("  TENCD"); // F1 ：店コード
+        sbSQL.append(", SEIKAAREAKBN"); // F2 ：青果センターエリア
+        sbSQL.append(", SENGYOKBN"); // F3 ：鮮魚区分
+        sbSQL.append(", SEINIKUKBN"); // F4 ：精肉区分
+        sbSQL.append(", TENOPENDT"); // F5 ：開設日
+        sbSQL.append(", TENCLOSEDT"); // F6 ：閉鎖日
+        sbSQL.append(", KAISODT1"); // F7 ：改装日（1）
+        sbSQL.append(", KAISODT2"); // F8 ：改装日（2）
+        sbSQL.append(", HANBAIBUCD"); // F9 ：販売部
+        sbSQL.append(", CHIKUCD"); // F10 ：地区
+        sbSQL.append(", URIAERACD"); // F11 ：販売エリア
+        sbSQL.append(", CHIIKICD"); // F12 ：地域
+        sbSQL.append(", YOSANKBN_T"); // F13 ：予算区分_店舗
+        sbSQL.append(", TENKN"); // F14 ：店舗名称（漢字）
+        sbSQL.append(", TENAN"); // F15 ：店舗名称（カナ）
+        sbSQL.append(", YUBINNO_U"); // F16 ：郵便番号_上桁
+        sbSQL.append(", YUBINNO_S"); // F17 ：郵便番号_下桁
+        sbSQL.append(", ADDRKN_T"); // F18 ：住所_都道府県（漢字）
+        sbSQL.append(", ADDRKN_S"); // F19 ：住所_市区町村（漢字）
+        sbSQL.append(", ADDRKN_M"); // F20 ：住所_町字（漢字）
+        sbSQL.append(", ADDRKN_B"); // F21 ：住所_番地（漢字）
+        sbSQL.append(", ADDRAN_T"); // F22 ：住所_都道府県（カナ）
+        sbSQL.append(", ADDRAN_S"); // F23 ：住所_市区町村（カナ）
+        sbSQL.append(", ADDRAN_M"); // F24 ：住所_町字（カナ）
+        sbSQL.append(", ADDRAN_B"); // F25 ：住所_番地（カナ）
+        sbSQL.append(", MOYORIEKIKN"); // F26 ：最寄り駅
+        sbSQL.append(", BUSSTOPKN"); // F27 ：バス停
+        sbSQL.append(", OWNT_NMKN"); // F28 ：オーナー（店）_名前
+        sbSQL.append(", OWNT_ADDRKN_T"); // F29 ：オーナー（店）_住所_都道府県
+        sbSQL.append(", OWNT_ADDRKN_S"); // F30 ：オーナー（店）_住所_市区町村
+        sbSQL.append(", OWNT_ADDRKN_M"); // F31 ：オーナー（店）_住所_町字
+        sbSQL.append(", OWNT_ADDRKN_B"); // F32 ：オーナー（店）_住所_番地
+        sbSQL.append(", OWNP_NMKN"); // F33 ：オーナー（駐車場）_名前
+        sbSQL.append(", OWNP_ADDRKN_T"); // F34 ：オーナー（駐車場）_住所_都道府県
+        sbSQL.append(", OWNP_ADDRKN_S"); // F35 ：オーナー（駐車場）_住所_市区町村
+        sbSQL.append(", OWNP_ADDRKN_M"); // F36 ：オーナー（駐車場）_住所_町字
+        sbSQL.append(", OWNP_ADDRKN_B"); // F37 ：オーナー（駐車場）_住所_番地
+        sbSQL.append(", OWNO_NMKN"); // F38 ：オーナー（その他）_名前
+        sbSQL.append(", OWNO_ADDRKN_T"); // F39 ：オーナー（その他）_住所_都道府県
+        sbSQL.append(", OWNO_ADDRKN_S"); // F40 ：オーナー（その他）_住所_市区町村
+        sbSQL.append(", OWNO_ADDRKN_M"); // F41 ：オーナー（その他）_住所_町村
+        sbSQL.append(", OWNO_ADDRKN_B"); // F42 ：オーナー（その他）_住所_番地
+        sbSQL.append(", TEL1"); // F43 ：電話番号1
+        sbSQL.append(", TEL2"); // F44 ：電話番号2
+        sbSQL.append(", TEL3"); // F45 ：電話番号3
+        sbSQL.append(", TEL4"); // F46 ：電話番号4
+        sbSQL.append(", TEL5"); // F47 ：電話番号5
+        sbSQL.append(", FAX1"); // F48 ：FAX番号1
+        sbSQL.append(", FAX2"); // F49 ：FAX番号2
+        sbSQL.append(", EGYOTM1_STMD"); // F50 ：営業時間1_開始月日
+        sbSQL.append(", EGYOTM1_EDMD"); // F51 ：営業時間1_終了月日
+        sbSQL.append(", EGYOTM1_STHM"); // F52 ：営業時間1_開始時間
+        sbSQL.append(", EGYOTM1_EDHM"); // F53 ：営業時間1_終了時間
+        sbSQL.append(", EGYOTM2_STMD"); // F54 ：営業時間2_開始月日
+        sbSQL.append(", EGYOTM2_EDMD"); // F55 ：営業時間2_終了月日
+        sbSQL.append(", EGYOTM2_STHM"); // F56 ：営業時間2_開始時間
+        sbSQL.append(", EGYOTM2_EDHM"); // F57 ：営業時間2_終了時間
+        sbSQL.append(", AREA_BA"); // F58 ：敷地面積
+        sbSQL.append(", AERA_B1YUKA"); // F59 ：敷地面積_B1_床面積
+        sbSQL.append(", AREA_B1URIBA"); // F60 ：敷地面積_B1_売場面積
+        sbSQL.append(", AREA_1FYUKA"); // F61 ：敷地面積_1F_床面積
+        sbSQL.append(", AREA_FURIBA"); // F62 ：敷地面積_1F_売場面積
+        sbSQL.append(", AREA_2FYUKA"); // F63 ：敷地面積_2F_床面積
+        sbSQL.append(", AREA_2FURIBA"); // F64 ：敷地面積_2F_売場面積
+        sbSQL.append(", AREA_3FYUKA"); // F65 ：敷地面積_3F_床面積
+        sbSQL.append(", AREA_3FURIBA"); // F66 ：敷地面積_3F_売場面積
+        sbSQL.append(", AREA_4FYUKA"); // F67 ：敷地面積_4F_床面積
+        sbSQL.append(", AREA_4FURIBA"); // F68 ：敷地面積_4F_売場面積
+        sbSQL.append(", PARK_NM_BA"); // F69 ：駐車台数_普通車_敷地内
+        sbSQL.append(", PARK_NM_YANE"); // F70 ：駐車台数_普通車_屋上
+        sbSQL.append(", PARK_NM_TOBI"); // F71 ：駐車台数_普通車_飛地
+        sbSQL.append(", PARK_LT_BA"); // F72 ：駐車台数_軽_敷地内
+        sbSQL.append(", PARK_LT_YANE"); // F73 ：駐車台数_軽_屋上
+        sbSQL.append(", PARK_LT_TOBI"); // F74 ：駐車台数_軽_飛地
+        sbSQL.append(", PARK_HC_BA"); // F75 ：駐車台数_障害者_敷地内
+        sbSQL.append(", PARK_HC_YANE"); // F76 ：駐車台数_障害者_屋上
+        sbSQL.append(", PARK_HC_TOBI"); // F77 ：駐車台数_障害者_飛地
+        sbSQL.append(", ELEVTRFLG"); // F78 ：エレベータ
+        sbSQL.append(", ESCALTRFLG"); // F79 ：エスカレータ
+        sbSQL.append(", SEIKACD"); // F80 ：青果市場コード
+        sbSQL.append(", STAFFSU"); // F81 ：実働人員
+        sbSQL.append(", MISEUNYOKBN"); // F82 ：店運用区分
+        sbSQL.append(", TENAGE"); // F83 ：店舗年齢
+        sbSQL.append(", URIDAY"); // F84 ：日商
+        sbSQL.append(", URIZEN"); // F85 ：売上前比
+        sbSQL.append(", ARARI"); // F86 ：荒利率
+        sbSQL.append(", JMREI"); // F87 ：什器メーカー_冷設
+        sbSQL.append(", JMSOU"); // F88 ：什器メーカー_惣菜
+        sbSQL.append(", JMGON"); // F89 ：什器メーカー_ゴンドラ
+        sbSQL.append(", SVIKFLG"); // F90 ：ingfanカード
+        sbSQL.append(", SVPWFLG"); // F91 ：ピュアウォーター
+        sbSQL.append(", SVATMFLG"); // F92 ：ATM
+        sbSQL.append(", SVSRFLG"); // F93 ：お客様お会計レジ
+        sbSQL.append(", SVDIFLG"); // F94 ：ドライアイス
+        sbSQL.append(", SVSSFLG"); // F95 ：証明写真
+        sbSQL.append(", SVDPEFLG"); // F96 ：DPE
+        sbSQL.append(", SVOSFLG"); // F97 ：お届けサービス
+        sbSQL.append(", SVDMFLG"); // F98 ：電子マネー
+        sbSQL.append(", SVPTFLG"); // F99 ：ペット減容器
+        sbSQL.append(", SVAED"); // F100 ：AED
+        sbSQL.append(", SVKSFLG"); // F101 ：くつろぎスペース
+        sbSQL.append(", MODELCD"); // F102 ：モデル店
+        sbSQL.append(", COMP1"); // F103 ：競合店１位
+        sbSQL.append(", COMP2"); // F104 ：競合店２位
+        sbSQL.append(", COMP3"); // F105 ：競合店３位
+        sbSQL.append(", COMP4"); // F106 ：競合店４位
+        sbSQL.append(", COMP5"); // F107 ：競合店５位
+        sbSQL.append(", KAITENRT"); // F108 ：平均回転率
+        sbSQL.append(", DAISU"); // F109 ：必要台数
+        sbSQL.append(", KENTIKU"); // F110 ：建築面積
+        sbSQL.append(",UPDKBN"); // 更新区分：
+        sbSQL.append(",SENDFLG"); // 送信区分：
+        sbSQL.append(",OPERATOR"); // オペレーター：
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(",ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
+        }
+        sbSQL.append(",UPDDT"); // 更新日：
+        sbSQL.append(" ) ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("  TENCD = VALUES(TENCD) "); // F1 ：店コード
+        sbSQL.append(", SEIKAAREAKBN = VALUES(SEIKAAREAKBN) "); // F2 ：青果センターエリア
+        sbSQL.append(", SENGYOKBN = VALUES(SENGYOKBN) "); // F3 ：鮮魚区分
+        sbSQL.append(", SEINIKUKBN = VALUES(SEINIKUKBN) "); // F4 ：精肉区分
+        sbSQL.append(", TENOPENDT = VALUES(TENOPENDT) "); // F5 ：開設日
+        sbSQL.append(", TENCLOSEDT = VALUES(TENCLOSEDT) "); // F6 ：閉鎖日
+        sbSQL.append(", KAISODT1 = VALUES(KAISODT1) "); // F7 ：改装日（1）
+        sbSQL.append(", KAISODT2 = VALUES(KAISODT2) "); // F8 ：改装日（2）
+        sbSQL.append(", HANBAIBUCD = VALUES(HANBAIBUCD) "); // F9 ：販売部
+        sbSQL.append(", CHIKUCD = VALUES(CHIKUCD) "); // F10 ：地区
+        sbSQL.append(", URIAERACD = VALUES(URIAERACD) "); // F11 ：販売エリア
+        sbSQL.append(", CHIIKICD = VALUES(CHIIKICD) "); // F12 ：地域
+        sbSQL.append(", YOSANKBN_T = VALUES(YOSANKBN_T) "); // F13 ：予算区分_店舗
+        sbSQL.append(", TENKN = VALUES(TENKN) "); // F14 ：店舗名称（漢字）
+        sbSQL.append(", TENAN = VALUES(TENAN) "); // F15 ：店舗名称（カナ）
+        sbSQL.append(", YUBINNO_U = VALUES(YUBINNO_U) "); // F16 ：郵便番号_上桁
+        sbSQL.append(", YUBINNO_S = VALUES(YUBINNO_S) "); // F17 ：郵便番号_下桁
+        sbSQL.append(", ADDRKN_T = VALUES(ADDRKN_T) "); // F18 ：住所_都道府県（漢字）
+        sbSQL.append(", ADDRKN_S = VALUES(ADDRKN_S) "); // F19 ：住所_市区町村（漢字）
+        sbSQL.append(", ADDRKN_M = VALUES(ADDRKN_M) "); // F20 ：住所_町字（漢字）
+        sbSQL.append(", ADDRKN_B = VALUES(ADDRKN_B) "); // F21 ：住所_番地（漢字）
+        sbSQL.append(", ADDRAN_T = VALUES(ADDRAN_T) "); // F22 ：住所_都道府県（カナ）
+        sbSQL.append(", ADDRAN_S = VALUES(ADDRAN_S) "); // F23 ：住所_市区町村（カナ）
+        sbSQL.append(", ADDRAN_M = VALUES(ADDRAN_M) "); // F24 ：住所_町字（カナ）
+        sbSQL.append(", ADDRAN_B = VALUES(ADDRAN_B) "); // F25 ：住所_番地（カナ）
+        sbSQL.append(", MOYORIEKIKN = VALUES(MOYORIEKIKN) "); // F26 ：最寄り駅
+        sbSQL.append(", BUSSTOPKN = VALUES(BUSSTOPKN) "); // F27 ：バス停
+        sbSQL.append(", OWNT_NMKN = VALUES(OWNT_NMKN) "); // F28 ：オーナー（店）_名前
+        sbSQL.append(", OWNT_ADDRKN_T = VALUES(OWNT_ADDRKN_T) "); // F29 ：オーナー（店）_住所_都道府県
+        sbSQL.append(", OWNT_ADDRKN_S = VALUES(OWNT_ADDRKN_S) "); // F30 ：オーナー（店）_住所_市区町村
+        sbSQL.append(", OWNT_ADDRKN_M = VALUES(OWNT_ADDRKN_M) "); // F31 ：オーナー（店）_住所_町字
+        sbSQL.append(", OWNT_ADDRKN_B = VALUES(OWNT_ADDRKN_B) "); // F32 ：オーナー（店）_住所_番地
+        sbSQL.append(", OWNP_NMKN = VALUES(OWNP_NMKN) "); // F33 ：オーナー（駐車場）_名前
+        sbSQL.append(", OWNP_ADDRKN_T = VALUES(OWNP_ADDRKN_T) "); // F34 ：オーナー（駐車場）_住所_都道府県
+        sbSQL.append(", OWNP_ADDRKN_S = VALUES(OWNP_ADDRKN_S) "); // F35 ：オーナー（駐車場）_住所_市区町村
+        sbSQL.append(", OWNP_ADDRKN_M = VALUES(OWNP_ADDRKN_M) "); // F36 ：オーナー（駐車場）_住所_町字
+        sbSQL.append(", OWNP_ADDRKN_B = VALUES(OWNP_ADDRKN_B) "); // F37 ：オーナー（駐車場）_住所_番地
+        sbSQL.append(", OWNO_NMKN = VALUES(OWNO_NMKN) "); // F38 ：オーナー（その他）_名前
+        sbSQL.append(", OWNO_ADDRKN_T = VALUES(OWNO_ADDRKN_T) "); // F39 ：オーナー（その他）_住所_都道府県
+        sbSQL.append(", OWNO_ADDRKN_S = VALUES(OWNO_ADDRKN_S) "); // F40 ：オーナー（その他）_住所_市区町村
+        sbSQL.append(", OWNO_ADDRKN_M = VALUES(OWNO_ADDRKN_M) "); // F41 ：オーナー（その他）_住所_町村
+        sbSQL.append(", OWNO_ADDRKN_B = VALUES(OWNO_ADDRKN_B) "); // F42 ：オーナー（その他）_住所_番地
+        sbSQL.append(", TEL1 = VALUES(TEL1) "); // F43 ：電話番号1
+        sbSQL.append(", TEL2 = VALUES(TEL2) "); // F44 ：電話番号2
+        sbSQL.append(", TEL3 = VALUES(TEL3) "); // F45 ：電話番号3
+        sbSQL.append(", TEL4 = VALUES(TEL4) "); // F46 ：電話番号4
+        sbSQL.append(", TEL5 = VALUES(TEL5) "); // F47 ：電話番号5
+        sbSQL.append(", FAX1 = VALUES(FAX1) "); // F48 ：FAX番号1
+        sbSQL.append(", FAX2 = VALUES(FAX2) "); // F49 ：FAX番号2
+        sbSQL.append(", EGYOTM1_STMD = VALUES(EGYOTM1_STMD) "); // F50 ：営業時間1_開始月日
+        sbSQL.append(", EGYOTM1_EDMD = VALUES(EGYOTM1_EDMD) "); // F51 ：営業時間1_終了月日
+        sbSQL.append(", EGYOTM1_STHM = VALUES(EGYOTM1_STHM) "); // F52 ：営業時間1_開始時間
+        sbSQL.append(", EGYOTM1_EDHM = VALUES(EGYOTM1_EDHM) "); // F53 ：営業時間1_終了時間
+        sbSQL.append(", EGYOTM2_STMD = VALUES(EGYOTM2_STMD) "); // F54 ：営業時間2_開始月日
+        sbSQL.append(", EGYOTM2_EDMD = VALUES(EGYOTM2_EDMD) "); // F55 ：営業時間2_終了月日
+        sbSQL.append(", EGYOTM2_STHM = VALUES(EGYOTM2_STHM) "); // F56 ：営業時間2_開始時間
+        sbSQL.append(", EGYOTM2_EDHM = VALUES(EGYOTM2_EDHM) "); // F57 ：営業時間2_終了時間
+        sbSQL.append(", AREA_BA = VALUES(AREA_BA) "); // F58 ：敷地面積
+        sbSQL.append(", AERA_B1YUKA = VALUES(AERA_B1YUKA) "); // F59 ：敷地面積_B1_床面積
+        sbSQL.append(", AREA_B1URIBA = VALUES(AREA_B1URIBA) "); // F60 ：敷地面積_B1_売場面積
+        sbSQL.append(", AREA_1FYUKA = VALUES(AREA_1FYUKA) "); // F61 ：敷地面積_1F_床面積
+        sbSQL.append(", AREA_FURIBA = VALUES(AREA_FURIBA) "); // F62 ：敷地面積_1F_売場面積
+        sbSQL.append(", AREA_2FYUKA = VALUES(AREA_2FYUKA) "); // F63 ：敷地面積_2F_床面積
+        sbSQL.append(", AREA_2FURIBA = VALUES(AREA_2FURIBA) "); // F64 ：敷地面積_2F_売場面積
+        sbSQL.append(", AREA_3FYUKA = VALUES(AREA_3FYUKA) "); // F65 ：敷地面積_3F_床面積
+        sbSQL.append(", AREA_3FURIBA = VALUES(AREA_3FURIBA) "); // F66 ：敷地面積_3F_売場面積
+        sbSQL.append(", AREA_4FYUKA = VALUES(AREA_4FYUKA) "); // F67 ：敷地面積_4F_床面積
+        sbSQL.append(", AREA_4FURIBA = VALUES(AREA_4FURIBA) "); // F68 ：敷地面積_4F_売場面積
+        sbSQL.append(", PARK_NM_BA = VALUES(PARK_NM_BA) "); // F69 ：駐車台数_普通車_敷地内
+        sbSQL.append(", PARK_NM_YANE = VALUES(PARK_NM_YANE) "); // F70 ：駐車台数_普通車_屋上
+        sbSQL.append(", PARK_NM_TOBI = VALUES(PARK_NM_TOBI) "); // F71 ：駐車台数_普通車_飛地
+        sbSQL.append(", PARK_LT_BA = VALUES(PARK_LT_BA) "); // F72 ：駐車台数_軽_敷地内
+        sbSQL.append(", PARK_LT_YANE = VALUES(PARK_LT_YANE) "); // F73 ：駐車台数_軽_屋上
+        sbSQL.append(", PARK_LT_TOBI = VALUES(PARK_LT_TOBI) "); // F74 ：駐車台数_軽_飛地
+        sbSQL.append(", PARK_HC_BA = VALUES(PARK_HC_BA) "); // F75 ：駐車台数_障害者_敷地内
+        sbSQL.append(", PARK_HC_YANE = VALUES(PARK_HC_YANE) "); // F76 ：駐車台数_障害者_屋上
+        sbSQL.append(", PARK_HC_TOBI = VALUES(PARK_HC_TOBI) "); // F77 ：駐車台数_障害者_飛地
+        sbSQL.append(", ELEVTRFLG = VALUES(ELEVTRFLG) "); // F78 ：エレベータ
+        sbSQL.append(", ESCALTRFLG = VALUES(ESCALTRFLG) "); // F79 ：エスカレータ
+        sbSQL.append(", SEIKACD = VALUES(SEIKACD) "); // F80 ：青果市場コード
+        sbSQL.append(", STAFFSU = VALUES(STAFFSU) "); // F81 ：実働人員
+        sbSQL.append(", MISEUNYOKBN = VALUES(MISEUNYOKBN) "); // F82 ：店運用区分
+        sbSQL.append(", TENAGE = VALUES(TENAGE) "); // F83 ：店舗年齢
+        sbSQL.append(", URIDAY = VALUES(URIDAY) "); // F84 ：日商
+        sbSQL.append(", URIZEN = VALUES(URIZEN) "); // F85 ：売上前比
+        sbSQL.append(", ARARI = VALUES(ARARI) "); // F86 ：荒利率
+        sbSQL.append(", JMREI = VALUES(JMREI) "); // F87 ：什器メーカー_冷設
+        sbSQL.append(", JMSOU = VALUES(JMSOU) "); // F88 ：什器メーカー_惣菜
+        sbSQL.append(", JMGON = VALUES(SVIKFLG) "); // F89 ：什器メーカー_ゴンドラ
+        sbSQL.append(", SVIKFLG = VALUES(SVIKFLG) "); // F90 ：ingfanカード
+        sbSQL.append(", SVPWFLG = VALUES(SVPWFLG) "); // F91 ：ピュアウォーター
+        sbSQL.append(", SVATMFLG = VALUES(SVATMFLG) "); // F92 ：ATM
+        sbSQL.append(", SVSRFLG = VALUES(SVSRFLG) "); // F93 ：お客様お会計レジ
+        sbSQL.append(", SVDIFLG = VALUES(SVDIFLG) "); // F94 ：ドライアイス
+        sbSQL.append(", SVSSFLG = VALUES(SVSSFLG) "); // F95 ：証明写真
+        sbSQL.append(", SVDPEFLG = VALUES(SVDPEFLG) "); // F96 ：DPE
+        sbSQL.append(", SVOSFLG = VALUES(SVOSFLG) "); // F97 ：お届けサービス
+        sbSQL.append(", SVDMFLG = VALUES(SVDMFLG) "); // F98 ：電子マネー
+        sbSQL.append(", SVPTFLG = VALUES(SVPTFLG) "); // F99 ：ペット減容器
+        sbSQL.append(", SVAED = VALUES(SVAED) "); // F100 ：AED
+        sbSQL.append(", SVKSFLG = VALUES(SVKSFLG) "); // F101 ：くつろぎスペース
+        sbSQL.append(", MODELCD = VALUES(MODELCD) "); // F102 ：モデル店
+        sbSQL.append(", COMP1 = VALUES(COMP1) "); // F103 ：競合店１位
+        sbSQL.append(", COMP2 = VALUES(COMP2) "); // F104 ：競合店２位
+        sbSQL.append(", COMP3 = VALUES(COMP3) "); // F105 ：競合店３位
+        sbSQL.append(", COMP4 = VALUES(COMP4) "); // F106 ：競合店４位
+        sbSQL.append(", COMP5 = VALUES(COMP5) "); // F107 ：競合店５位
+        sbSQL.append(", KAITENRT = VALUES(KAITENRT) "); // F108 ：平均回転率
+        sbSQL.append(", DAISU = VALUES(DAISU) "); // F109 ：必要台数
+        sbSQL.append(", KENTIKU = VALUES(KENTIKU) "); // F110 ：建築面積
+        sbSQL.append(",UPDKBN = VALUES(UPDKBN) "); // 更新区分：
+        sbSQL.append(",SENDFLG = VALUES(SENDFLG) "); // 送信区分：
+        sbSQL.append(",OPERATOR = VALUES(OPERATOR) "); // オペレーター：
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(",ADDDT = VALUES(ADDDT) ");// 登録日 新規登録時には登録日の更新も行う。
+        }
+        sbSQL.append(",UPDDT = VALUES(UPDDT)"); // 更新日：
 
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -1110,10 +1345,10 @@ public class Reportx112Dao extends ItemDao {
             prmData.add(data.optString("F1"));
             prmData.add(String.valueOf(j));
             if (StringUtils.isEmpty(data.optString("F" + (k + 20)))) {
-              values += ",(?,?,NULL";
+              values += ",ROW(?,?,NULL";
             } else {
               prmData.add(data.optString("F" + (k + 20)));
-              values += ",(?,?,?";
+              values += ",ROW(?,?,?";
             }
             values += (", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分：
             values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分：
@@ -1130,7 +1365,7 @@ public class Reportx112Dao extends ItemDao {
       updateRows = StringUtils.removeStart(values, ",");
       if (!values.isEmpty()) {
         sbSQL = new StringBuffer();
-        sbSQL.append("REPLACE INTO INAMS.MSTTENTENANT (");
+        sbSQL.append("INSERT INTO INAMS.MSTTENTENANT (");
         sbSQL.append("  TENCD"); // 店コード
         sbSQL.append(", TENANTKB"); // テント種別
         sbSQL.append(", TENANTKN"); // テナント社名
@@ -1141,8 +1376,30 @@ public class Reportx112Dao extends ItemDao {
           sbSQL.append(", ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
         }
         sbSQL.append(", UPDDT"); // 更新日：
-        sbSQL.append(") VALUES");
+        sbSQL.append(") SELECT * FROM ( VALUES ");
         sbSQL.append(" " + updateRows + " ");
+        sbSQL.append(") AS NEW ( ");
+        sbSQL.append("  TENCD"); // 店コード
+        sbSQL.append(", TENANTKB"); // テント種別
+        sbSQL.append(", TENANTKN"); // テナント社名
+        sbSQL.append(", SENDFLG"); // 送信区分：
+        sbSQL.append(", UPDKBN"); // 更新区分：
+        sbSQL.append(", OPERATOR"); // オペレーター：
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(", ADDDT ");// 登録日 新規登録時には登録日の更新も行う。
+        }
+        sbSQL.append(", UPDDT"); // 更新日：
+        sbSQL.append(")  ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("  TENCD = VALUES(TENCD)  "); // 店コード
+        sbSQL.append(", TENANTKB = VALUES(TENANTKB) "); // テント種別
+        sbSQL.append(", TENANTKN = VALUES(TENANTKN) "); // テナント社名
+        sbSQL.append(", SENDFLG = VALUES(SENDFLG) "); // 送信区分：
+        sbSQL.append(", UPDKBN = VALUES(UPDKBN) "); // 更新区分：
+        sbSQL.append(", OPERATOR = VALUES(OPERATOR) "); // オペレーター：
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(", ADDDT = VALUES(ADDDT) ");// 登録日 新規登録時には登録日の更新も行う。
+        }
+        sbSQL.append(", UPDDT = VALUES(UPDDT) "); // 更新日：
 
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -1192,10 +1449,10 @@ public class Reportx112Dao extends ItemDao {
           prmData.add(data.optString("F1"));
           prmData.add(data.optString(key));
           if (StringUtils.isEmpty(data.optString("F" + (k - 20)))) {
-            values += ",(?, ?, null";
+            values += ",ROW(?, ?, null";
           } else {
             prmData.add(data.optString("F" + (k - 20)));
-            values += ",(?, ?, ?";
+            values += ",ROW(?, ?, ?";
           }
           values += (", " + DefineReport.Values.SENDFLG_UN.getVal() + " "); // 送信区分
           values += (", " + DefineReport.ValUpdkbn.NML.getVal() + " "); // 更新区分
@@ -1210,7 +1467,7 @@ public class Reportx112Dao extends ItemDao {
       updateRows = StringUtils.removeStart(values, ",");
       if (!values.isEmpty()) {
         sbSQL = new StringBuffer();
-        sbSQL.append("REPLACE INTO INAMS.MSTTENBMNSK (");
+        sbSQL.append("INSERT INTO INAMS.MSTTENBMNSK (");
         sbSQL.append("  TENCD"); // 店コード
         sbSQL.append(", BMNCD"); // 部門コード
         sbSQL.append(", SYAKU"); // 尺数
@@ -1221,9 +1478,30 @@ public class Reportx112Dao extends ItemDao {
           sbSQL.append(", ADDDT"); // 登録日 新規登録時には登録日の更新も行う。
         }
         sbSQL.append(", UPDDT"); // 更新日
-        sbSQL.append(") VALUES");
+        sbSQL.append(") SELECT * FROM ( VALUES ");
         sbSQL.append(" " + updateRows + " ");
-
+        sbSQL.append(") AS NEW ( ");
+        sbSQL.append("  TENCD"); // 店コード
+        sbSQL.append(", BMNCD"); // 部門コード
+        sbSQL.append(", SYAKU"); // 尺数
+        sbSQL.append(", SENDFLG"); // 送信区分
+        sbSQL.append(", UPDKBN"); // 更新区分
+        sbSQL.append(", OPERATOR"); // オペレーター
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(", ADDDT"); // 登録日 新規登録時には登録日の更新も行う。
+        }
+        sbSQL.append(", UPDDT"); // 更新日
+        sbSQL.append(")  ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("  TENCD = VALUES(TENCD) "); // 店コード
+        sbSQL.append(", BMNCD = VALUES(BMNCD) "); // 部門コード
+        sbSQL.append(", SYAKU = VALUES(SYAKU) "); // 尺数
+        sbSQL.append(", SENDFLG = VALUES(SENDFLG) "); // 送信区分
+        sbSQL.append(", UPDKBN = VALUES(UPDKBN) "); // 更新区分
+        sbSQL.append(", OPERATOR = VALUES(OPERATOR) "); // オペレーター
+        if (StringUtils.equals(DefineReport.Button.NEW.getObj(), sendBtnid)) {
+          sbSQL.append(", ADDDT = VALUES(ADDDT) "); // 登録日 新規登録時には登録日の更新も行う。
+        }
+        sbSQL.append(", UPDDT = VALUES(UPDDT) "); // 更新日
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
         }

@@ -4411,8 +4411,13 @@ public class Reportx002Dao extends ItemDao {
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
+    System.out.println(tbl.getVal());
+    System.out.println(TblType.YYK.getVal());
     sbSQL.append("INSERT INTO " + szTable + " ( ");
     sbSQL.append("SHNCD ");
+    if (tbl.getVal() == 2) {
+      sbSQL.append(",YOYAKUDT ");
+    }
     sbSQL.append(",UPDKBN ");
     sbSQL.append(",TOROKUMOTO ");
     if (TblType.CSV.getVal() != tbl.getVal()) {
@@ -4423,27 +4428,48 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ,ADDDT "); // F114: 登録日
     }
     sbSQL.append(",UPDDT ");
-    sbSQL.append(")VALUE( ");
+    sbSQL.append(")SELECT * FROM( VALUES ROW( ");
     sbSQL.append(" " + values + " ");
     if (TblType.CSV.getVal() != tbl.getVal() && DefineReport.Button.CSV_IMPORT_YYK.getObj().equals(btnId)) {
       sbSQL.append(" ,CURRENT_TIMESTAMP"); // F114: 登録日
     }
     sbSQL.append(" ,CURRENT_TIMESTAMP "); // 更新日
-    sbSQL.append(") AS NEW ");
+    sbSQL.append(")) AS NEW ");
+    sbSQL.append("( ");
+    sbSQL.append("SHNCD ");
+    if (tbl.getVal() == 2) {
+      sbSQL.append(",YOYAKUDT ");
+    }
+    sbSQL.append(",UPDKBN ");
+    sbSQL.append(",TOROKUMOTO ");
+    if (TblType.CSV.getVal() != tbl.getVal()) {
+      sbSQL.append(" ,SENDFLG ");
+    }
+    sbSQL.append(",OPERATOR ");
+    if (TblType.CSV.getVal() != tbl.getVal() && DefineReport.Button.CSV_IMPORT_YYK.getObj().equals(btnId)) {
+      sbSQL.append(" ,ADDDT "); // F114: 登録日
+    }
+    sbSQL.append(",UPDDT ");
+    sbSQL.append(") ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
-    sbSQL.append("SHNCD = NEW.SHNCD ");
-    sbSQL.append(",UPDKBN = NEW.UPDKBN ");
-    sbSQL.append(",TOROKUMOTO = NEW.TOROKUMOTO ");
+
+    sbSQL.append("SHNCD = VALUES(SHNCD)  ");
+    if (tbl.getVal() == 2) {
+      sbSQL.append(",YOYAKUDT = VALUES(YOYAKUDT) ");
+    }
+    sbSQL.append(",UPDKBN = VALUES(UPDKBN)  ");
+    sbSQL.append(",TOROKUMOTO = VALUES(TOROKUMOTO)  ");
 
     if (TblType.CSV.getVal() != tbl.getVal()) {
-      sbSQL.append(",SENDFLG = NEW.SENDFLG");
+      sbSQL.append(",SENDFLG = VALUES(SENDFLG) ");
     }
-    sbSQL.append(",OPERATOR = NEW.OPERATOR ");
+    sbSQL.append(",OPERATOR = VALUES(OPERATOR)  ");
     if (TblType.CSV.getVal() != tbl.getVal() && DefineReport.Button.CSV_IMPORT_YYK.getObj().equals(btnId)) {
-      sbSQL.append(",ADDDT = NEW.ADDDT"); // F114: 登録日
+      sbSQL.append(",ADDDT = VALUES(ADDDT) "); // F114: 登録日
     }
 
-    sbSQL.append(",UPDDT = NEW.UPDDT");
+    sbSQL.append(",UPDDT = VALUES(UPDDT) ");
+
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
