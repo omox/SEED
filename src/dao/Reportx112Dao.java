@@ -1261,7 +1261,7 @@ public class Reportx112Dao extends ItemDao {
         sbSQL.append(", ARARI = VALUES(ARARI) "); // F86 ：荒利率
         sbSQL.append(", JMREI = VALUES(JMREI) "); // F87 ：什器メーカー_冷設
         sbSQL.append(", JMSOU = VALUES(JMSOU) "); // F88 ：什器メーカー_惣菜
-        sbSQL.append(", JMGON = VALUES(SVIKFLG) "); // F89 ：什器メーカー_ゴンドラ
+        sbSQL.append(", JMGON = VALUES(JMGON) "); // F89 ：什器メーカー_ゴンドラ
         sbSQL.append(", SVIKFLG = VALUES(SVIKFLG) "); // F90 ：ingfanカード
         sbSQL.append(", SVPWFLG = VALUES(SVPWFLG) "); // F91 ：ピュアウォーター
         sbSQL.append(", SVATMFLG = VALUES(SVATMFLG) "); // F92 ：ATM
