@@ -590,8 +590,8 @@ public class ReportHT007Dao extends ItemDao {
     sbSQL.append(",CASE WHEN TN.SURYO_SAT IS NULL THEN 0 ELSE TN.SURYO_SAT END AS SURYO_SAT "); // F9 : 数量＿土
     sbSQL.append(",CASE WHEN TN.SURYO_SUN IS NULL THEN 0 ELSE TN.SURYO_SUN END AS SURYO_SUN "); // F10 : 数量＿日
     sbSQL.append(",TN.OPERATOR "); // F11 : オペレーター
-    sbSQL.append(",DATE_FORMAT(TN.ADDDT,'%y%m%d') AS ADDDT "); // F12 : 登録日
-    sbSQL.append(",DATE_FORMAT(TN.UPDDT,'%y%m%d') AS UPDDT "); // F13 : 更新日
+    sbSQL.append(",DATE_FORMAT(TN.ADDDT,'%y/%m/%d') AS ADDDT "); // F12 : 登録日
+    sbSQL.append(",DATE_FORMAT(TN.UPDDT,'%y/%m/%d') AS UPDDT "); // F13 : 更新日
     sbSQL.append(",DATE_FORMAT(TN.UPDDT,'%Y%m%d%H%i%s%f') as HDN_UPDDT "); // F14 : 更新日時
     sbSQL.append(",SN.TSKBN_MON "); // F15 : 訂正区分_月
     sbSQL.append(",SN.TSKBN_TUE "); // F16 : 訂正区分_火
