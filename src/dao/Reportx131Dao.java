@@ -463,7 +463,7 @@ public class Reportx131Dao extends ItemDao {
     sbSQL.append(" SENDFLG = 0");
     sbSQL.append(",UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
     sbSQL.append(",OPERATOR='" + userId + "'");
-    sbSQL.append(",UPDDT= CURRENT_TIMESTAMP ");
+    sbSQL.append(",UPDDT= UPDDT ");
     sbSQL.append(" WHERE TENCD = ?");
     sbSQL.append(" and BMNCD = ?");
 
