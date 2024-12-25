@@ -308,7 +308,7 @@ public class Reportx122Dao extends ItemDao {
     // 基本INSERT/UPDATE文
     StringBuffer sbSQL = new StringBuffer();
     // 配送グループマスタの登録・更新
-    sbSQL.append("REPLACE INTO INAMS.MSTTENBMN ( ");
+    sbSQL.append("INSERT INTO INAMS.MSTTENBMN ( ");
     sbSQL.append(" TENCD");
     sbSQL.append(", BMNCD");
     sbSQL.append(", READTMPTN");
@@ -347,7 +347,37 @@ public class Reportx122Dao extends ItemDao {
     sbSQL.append(", '" + userId + "' "); // オペレーター：
     sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日：
     sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日：
-    sbSQL.append(")");
+    sbSQL.append(") AS NEW ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" TENCD=NEW.TENCD ");
+    sbSQL.append(", BMNCD=NEW.BMNCD ");
+    sbSQL.append(", READTMPTN=NEW.READTMPTN ");
+    sbSQL.append(", BMNKN=NEW.BMNKN ");
+    sbSQL.append(", GROUPNO=NEW.GROUPNO ");
+    sbSQL.append(", BMNRECEIPTKN=NEW.BMNRECEIPTKN ");
+    sbSQL.append(", BMNRECEIPTAN=NEW.BMNRECEIPTAN ");
+    sbSQL.append(", MIOKBN=NEW.MIOKBN ");
+    sbSQL.append(", SHUKEICD=NEW.SHUKEICD ");
+    sbSQL.append(", WARIBIKIKBN=NEW.WARIBIKIKBN ");
+    sbSQL.append(", BMNGENKART=NEW.BMNGENKART ");
+    sbSQL.append(", TENANTKBN=NEW.TENANTKBN ");
+    sbSQL.append(", LOSSTKBN=NEW.LOSSTKBN ");
+    sbSQL.append(", YOSANKBN_B=NEW.YOSANKBN_B ");
+    sbSQL.append(", TANAOROTKBN=NEW.TANAOROTKBN ");
+    sbSQL.append(", PCARD_SHUKBN=NEW.PCARD_SHUKBN ");
+    sbSQL.append(", PCARD_IROKBN=NEW.PCARD_IROKBN ");
+    sbSQL.append(", AREACD=NEW.AREACD ");
+    sbSQL.append(", URIFLG=NEW.URIFLG ");
+    sbSQL.append(", TENANTCD=NEW.TENANTCD ");
+    sbSQL.append(", BMN_ATR1=NEW.BMN_ATR1 ");
+    sbSQL.append(", BMN_ATR2=NEW.BMN_ATR2 ");
+    sbSQL.append(", BMN_ATR3=NEW.BMN_ATR3 ");
+    sbSQL.append(", BMN_ATR4=NEW.BMN_ATR4 ");
+    sbSQL.append(", BMN_ATR5=NEW.BMN_ATR5 ");
+    sbSQL.append(", SENDFLG=NEW.SENDFLG  "); // 送信フラグ：
+    sbSQL.append(", UPDKBN=NEW.UPDKBN  "); // 更新区分：
+    sbSQL.append(", OPERATOR=NEW.OPERATOR  "); // オペレーター：
+    sbSQL.append(", UPDDT=NEW.UPDDT  "); // 更新日：
 
     String targetTable = " INAMS.MSTTENBMN ";
     String targetWhere = "";

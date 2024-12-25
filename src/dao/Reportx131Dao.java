@@ -463,7 +463,7 @@ public class Reportx131Dao extends ItemDao {
     sbSQL.append(" SENDFLG = 0");
     sbSQL.append(",UPDKBN=" + DefineReport.ValUpdkbn.DEL.getVal());
     sbSQL.append(",OPERATOR='" + userId + "'");
-    sbSQL.append(",UPDDT= UPDDT ");
+    sbSQL.append(",UPDDT= CURRENT_TIMESTAMP ");
     sbSQL.append(" WHERE TENCD = ?");
     sbSQL.append(" and BMNCD = ?");
 
@@ -691,6 +691,12 @@ public class Reportx131Dao extends ItemDao {
           }
 
           if (k == maxField) {
+            values += " ," + DefineReport.ValUpdkbn.NML.getVal() + " ";
+            values = values + ", 0"; // 送信フラグ
+            values = values + ", '" + userId + "' "; // オペレーター
+            values = values + ", CURRENT_TIMESTAMP "; // 登録日
+            values = values + ", CURRENT_TIMESTAMP "; // 更新日
+            values = "(" + values.substring(1) + ")";
             valueData = ArrayUtils.add(valueData, values);
             values = "";
           }
@@ -699,7 +705,7 @@ public class Reportx131Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
 
-        sbSQL.append(" REPLACE INTO INAMS.MSTTENYOBIHTBMN (");
+        sbSQL.append(" INSERT INTO INAMS.MSTTENYOBIHTBMN (");
         sbSQL.append(" TENCD"); // 店コード
         sbSQL.append(", BMNCD"); // 部門
         sbSQL.append(", HATFLG_MON"); // 発注可能フラグ_月
@@ -715,14 +721,23 @@ public class Reportx131Dao extends ItemDao {
         sbSQL.append(", ADDDT ");// 登録日
         sbSQL.append(", UPDDT "); // 更新日：
         sbSQL.append(") ");
-        sbSQL.append("VALUES (");
-        sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", " + DefineReport.ValUpdkbn.NML.getVal()); // 更新区分
-        sbSQL.append(", 0"); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
-        sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-        sbSQL.append(")");
+        sbSQL.append("VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + "AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("  TENCD=NEW.TENCD "); // 店コード
+        sbSQL.append(", BMNCD=NEW.BMNCD "); // 部門
+        sbSQL.append(", HATFLG_MON=NEW.HATFLG_MON "); // 発注可能フラグ_月
+        sbSQL.append(", HATFLG_TUE=NEW.HATFLG_TUE "); // 発注可能フラグ_火
+        sbSQL.append(", HATFLG_WED=NEW.HATFLG_WED "); // 発注可能フラグ_水
+        sbSQL.append(", HATFLG_THU=NEW.HATFLG_THU "); // 発注可能フラグ_木
+        sbSQL.append(", HATFLG_FRI=NEW.HATFLG_FRI "); // 発注可能フラグ_金
+        sbSQL.append(", HATFLG_SAT=NEW.HATFLG_SAT "); // 発注可能フラグ_土
+        sbSQL.append(", HATFLG_SUN=NEW.HATFLG_SUN "); // 発注可能フラグ_日
+        sbSQL.append(", UPDKBN=NEW.UPDKBN "); // 更新区分：
+        sbSQL.append(", SENDFLG=NEW.SENDFLG "); // 送信フラグ
+        sbSQL.append(", OPERATOR=NEW.OPERATOR "); // オペレーター：
+        sbSQL.append(", UPDDT=NEW.UPDDT "); // 更新日：
+
 
         if (DefineReport.ID_DEBUG_MODE) {
           System.out.println("/* " + this.getClass().getName() + " */ " + sbSQL.toString());
