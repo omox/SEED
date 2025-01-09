@@ -588,6 +588,7 @@ public class ReportTG001Dao extends ItemDao {
     sbSQL.append(" ,UPDDT"); // F25: 更新日
     sbSQL.append(")values(");
     for (TOKTG_KHNLayout itm : TOKTG_KHNLayout.values()) {
+      String TYP;
       if (ArrayUtils.contains(notTarget, itm.getId())) {
         continue;
       } // パラメータ不要
@@ -599,20 +600,27 @@ public class ReportTG001Dao extends ItemDao {
         if (StringUtils.equals(itm.getId(), TOKTG_KHNLayout.QADEVSTDT.getCol())) {
           value = StringUtils.defaultIfEmpty(value, "0");
         }
+        if (itm.getTyp() == "SMALLINT" || itm.getTyp() == "INTEGER") {
+          TYP = "SIGNED";
+        } else if (itm.getTyp() == "TIMESTAMP") {
+          TYP = "DATETIME";
+        } else {
+          TYP = "CHAR(20)";
+        }
         if (StringUtils.isNotEmpty(value)) {
           prmData.add(value);
-          sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+          sbSQL.append("cast(? as " + TYP + ") ");
         } else {
-          sbSQL.append("cast(null as " + itm.getTyp() + ") as " + itm.getCol());
+          sbSQL.append("cast(null as " + TYP + ") ");
         }
       } else {
-        sbSQL.append("null as " + itm.getCol());
+        sbSQL.append("null ");
       }
     }
     sbSQL.append(" ," + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
     sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
     sbSQL.append(" ,'" + userId + "'"); // F23: オペレータ
-    // sbSQL.append(" ,current_timestamp"); // F24: 登録日
+    sbSQL.append(" ,current_timestamp"); // F24: 登録日
     sbSQL.append(" ,current_timestamp"); // F25: 更新日
     sbSQL.append(" )");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
@@ -673,42 +681,62 @@ public class ReportTG001Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("merge into INATK.TOKTG_KHN as T");
-    sbSQL.append(" using (select ");
+    sbSQL.append("INSERT INTO INATK.TOKTG_KHN ( ");
+    sbSQL.append("  MOYSKBN"); // F1 : 催し区分
+    sbSQL.append(" ,MOYSSTDT"); // F2 : 催し開始日
+    sbSQL.append(" ,MOYSRBAN"); // F3 : 催し連番
+    sbSQL.append(" ,QAYYYYMM"); // F8 : アンケート月度
+    sbSQL.append(" ,QAENO"); // F9 : アンケート月度枝番
+    sbSQL.append(" ,QARCREDT"); // F11: アンケート再作成日
+    sbSQL.append(" ,UPDKBN"); // F21: 更新区分
+    sbSQL.append(" ,SENDFLG"); // F22: 送信フラグ
+    sbSQL.append(" ,OPERATOR"); // F23: オペレータ
+    sbSQL.append(" ,UPDDT"); // F25: 更新日
+    sbSQL.append(")values(");
     for (TOKTG_KHNLayout itm : TOKTG_KHNLayout.values()) {
+      String TYP2;
       if (!ArrayUtils.contains(target, itm.getId())) {
         continue;
       } // 対象外
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
+      if (itm.getTyp() == "SMALLINT" || itm.getTyp() == "INTEGER") {
+        TYP2 = "SIGNED";
+      } else if (itm.getTyp() == "TIMESTAMP") {
+        TYP2 = "DATETIME";
+      } else {
+        TYP2 = "CHAR(20)";
+      }
       if (data.containsKey(itm.getId())) {
         String value = StringUtils.strip(data.optString(itm.getId()));
         if (StringUtils.isNotEmpty(value)) {
           prmData.add(value);
-          sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+          sbSQL.append("cast(? as " + TYP2 + ") ");
         } else {
-          sbSQL.append("cast(null as " + itm.getTyp() + ") as " + itm.getCol());
+          sbSQL.append("cast(null as " + TYP2 + ") ");
         }
       } else {
-        sbSQL.append("null as " + itm.getCol());
+        sbSQL.append("null ");
       }
     }
-    sbSQL.append(" from SYSIBM.SYSDUMMY1");
-    sbSQL.append(" ) as RE on (");
-    sbSQL.append(" not(T.MOYSKBN = RE.MOYSKBN and T.MOYSSTDT = RE.MOYSSTDT and T.MOYSRBAN = RE.MOYSRBAN)");
-    sbSQL.append(" and T.QAYYYYMM=RE.QAYYYYMM"); // F8 : アンケート月度
-    sbSQL.append(" and T.QAENO=RE.QAENO"); // F8 : アンケート月度枝番
-    sbSQL.append(" and T.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
+    sbSQL.append(" ," + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
+    sbSQL.append(" ,'" + userId + "'"); // F23: オペレータ
+    sbSQL.append(" ,current_timestamp"); // F25: 更新日
+
     sbSQL.append(" )");
-    sbSQL.append(" when matched then ");
-    sbSQL.append(" update set");
-    sbSQL.append("  QARCREDT=RE.QARCREDT"); // F11: アンケート再作成日
-    sbSQL.append(" ,UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
-    sbSQL.append(" ,SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
-    sbSQL.append(" ,OPERATOR='" + userId + "'"); // F23: オペレータ
-    // sbSQL.append(" ,ADDDT=RE.ADDDT"); // F24: 登録日
-    sbSQL.append(" ,UPDDT=current_timestamp"); // F25: 更新日
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("  MOYSKBN=VALUES(MOYSKBN) "); // F1 : 催し区分
+    sbSQL.append(" ,MOYSSTDT=VALUES(MOYSSTDT) "); // F2 : 催し開始日
+    sbSQL.append(" ,MOYSRBAN=VALUES(MOYSRBAN) "); // F3 : 催し連番
+    sbSQL.append(" ,QAYYYYMM=VALUES(QAYYYYMM) "); // F8 : アンケート月度
+    sbSQL.append(" ,QAENO=VALUES(QAENO) "); // F9 : アンケート月度枝番
+    sbSQL.append(" ,QARCREDT=VALUES(QARCREDT) "); // F11: アンケート再作成日
+    sbSQL.append(" ,UPDKBN=VALUES(UPDKBN) "); // F21: 更新区分
+    sbSQL.append(" ,SENDFLG=VALUES(SENDFLG) "); // F22: 送信フラグ
+    sbSQL.append(" ,OPERATOR=VALUES(OPERATOR) "); // F23: オペレータ
+    sbSQL.append(" ,UPDDT=VALUES(UPDDT) "); // F25: 更新日
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
