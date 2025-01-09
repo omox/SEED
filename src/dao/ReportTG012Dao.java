@@ -294,8 +294,7 @@ public class ReportTG012Dao extends ItemDao {
       values += ", " + DefineReport.Values.SENDFLG_UN.getVal();
       values += ", '" + userId + "'";
       values += ", CURRENT_TIMESTAMP ";
-      values += ", CURRENT_TIMESTAMP ";
-      updateRows += ",(" + values + ")";
+      updateRows += ",(" + values + ") ";
     }
     updateRows = StringUtils.removeStart(updateRows, ",");
 
@@ -306,20 +305,32 @@ public class ReportTG012Dao extends ItemDao {
     // 基本INSERT/UPDATE文
     StringBuffer sbSQL = new StringBuffer();;
 
-    sbSQL.append("REPLACE INTO INATK.TOKTG_KHN ( ");
-    sbSQL.append("  MOYSKBN"); // 配送グループ：
-    sbSQL.append(", MOYSSTDT"); // 配送グループ名称（カナ）：
-    sbSQL.append(", MOYSRBAN"); // 配送グループ名称（漢字）：
-    sbSQL.append(", SIMEFLG1_LD"); // エリア区分：
-    sbSQL.append(", SIMEFLG2_LD"); // エリア区分：
-    sbSQL.append(", SIMEFLG_MB"); // エリア区分：
-    sbSQL.append(", UPDKBN"); // 更新区分：
-    sbSQL.append(", SENDFLG");// 送信区分：
-    sbSQL.append(", OPERATOR "); // オペレーター：
-    sbSQL.append(", ADDDT "); // 登録日：
-    sbSQL.append(", UPDDT "); // 更新日：
+    sbSQL.append("INSERT INTO INATK.TOKTG_KHN ( ");
+    sbSQL.append("MOYSKBN "); // 配送グループ：
+    sbSQL.append(",MOYSSTDT "); // 配送グループ名称（カナ）：
+    sbSQL.append(",MOYSRBAN "); // 配送グループ名称（漢字）：
+    sbSQL.append(",SIMEFLG1_LD "); // エリア区分：
+    sbSQL.append(",SIMEFLG2_LD "); // エリア区分：
+    sbSQL.append(",SIMEFLG_MB "); // エリア区分：
+    sbSQL.append(",UPDKBN "); // 更新区分：
+    sbSQL.append(",SENDFLG ");// 送信区分：
+    sbSQL.append(",OPERATOR "); // オペレーター：
+    sbSQL.append(",UPDDT "); // 更新日：
     sbSQL.append(") VALUES ");
     sbSQL.append(updateRows);
+    sbSQL.append(" AS NEW ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("MOYSKBN= NEW.MOYSKBN ");
+    sbSQL.append(",MOYSSTDT= NEW.MOYSSTDT ");
+    sbSQL.append(",MOYSRBAN= NEW.MOYSRBAN ");
+    sbSQL.append(",SIMEFLG1_LD= NEW.SIMEFLG1_LD ");
+    sbSQL.append(",SIMEFLG2_LD= NEW.SIMEFLG2_LD ");
+    sbSQL.append(",SIMEFLG_MB= NEW.SIMEFLG_MB ");
+    sbSQL.append(",UPDKBN= NEW.UPDKBN ");
+    sbSQL.append(",SENDFLG= NEW.SENDFLG ");
+    sbSQL.append(",OPERATOR= NEW.OPERATOR ");
+    sbSQL.append(",UPDDT= NEW.UPDDT ");
+
 
     if (msg.size() > 0) {
       // 重複チェック_エラー時
