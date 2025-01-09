@@ -395,7 +395,7 @@ public class Reportx152Dao extends ItemDao {
 
     // 仕入先マスタの登録・更新
     StringBuffer sbSQL = new StringBuffer();
-    sbSQL.append(" REPLACE INTO INAMS.MSTSIR ( ");
+    sbSQL.append(" INSERT INTO INAMS.MSTSIR ( ");
     sbSQL.append(" SIRCD"); // 仕入先コード
     sbSQL.append(", SIRAN"); // 仕入先名（カナ）
     sbSQL.append(", SIRKN"); // 仕入先名（漢字）
@@ -460,7 +460,63 @@ public class Reportx152Dao extends ItemDao {
     sbSQL.append(", '" + userId + "' "); // オペレーター
     sbSQL.append(", CURRENT_TIMESTAMP "); // 登録日
     sbSQL.append(", CURRENT_TIMESTAMP "); // 更新日
-    sbSQL.append(")");
+    sbSQL.append(") AS NEW ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("SIRCD = NEW.SIRCD");
+    sbSQL.append(", SIRAN = NEW.SIRAN");
+    sbSQL.append(", SIRKN = NEW.SIRKN");
+    sbSQL.append(", ADDRKN_T = NEW.ADDRKN_T");
+    sbSQL.append(", ADDRKN_S = NEW.ADDRKN_S");
+    sbSQL.append(", ADDRKN_M = NEW.ADDRKN_M");
+    sbSQL.append(", ADDR_B = NEW.ADDR_B");
+    sbSQL.append(", BUSHOKN = NEW.BUSHOKN");
+    sbSQL.append(", YUBINNO_U = NEW.YUBINNO_U");
+    sbSQL.append(", YUBINNO_S = NEW.YUBINNO_S");
+    sbSQL.append(", TEL = NEW.TEL");
+    sbSQL.append(", NAISEN = NEW.NAISEN");
+    sbSQL.append(", FAX = NEW.FAX");
+    sbSQL.append(", DSIRCD = NEW.DSIRCD");
+    sbSQL.append(", DOYASIRCD = NEW.DOYASIRCD");
+    sbSQL.append(", STARTDT = NEW.STARTDT");
+    sbSQL.append(", EDI_RKBN = NEW.EDI_RKBN");
+    sbSQL.append(", EDI_SKBN = NEW.EDI_SKBN");
+    sbSQL.append(", SIRYOTOKBN = NEW.SIRYOTOKBN");
+    sbSQL.append(", INAZAIKOKBN = NEW.INAZAIKOKBN");
+    sbSQL.append(", KAKGAKEKBN = NEW.KAKGAKEKBN");
+    sbSQL.append(", NOZEISHANO = NEW.NOZEISHANO");
+    sbSQL.append(", SYORTANKAAM = NEW.SYORTANKAAM");
+    sbSQL.append(", KHNRYOKINAM = NEW.KHNRYOKINAM");
+    sbSQL.append(", STOPFLG = NEW.STOPFLG");
+    sbSQL.append(", DOHOCD = NEW.DOHOCD");
+    sbSQL.append(", DDENPKBN = NEW.DDENPKBN");
+    sbSQL.append(", DSHUHKBN = NEW.DSHUHKBN");
+    sbSQL.append(", DWAPNKBN = NEW.DWAPNKBN");
+    sbSQL.append(", DF_IDENKBN = NEW.DF_IDENKBN");
+    sbSQL.append(", DF_TENDENFLG = NEW.DF_TENDENFLG");
+    sbSQL.append(", DF_VANKBN = NEW.DF_VANKBN");
+    sbSQL.append(", DF_UNYOKBN = NEW.DF_UNYOKBN");
+    sbSQL.append(", DF_DENPKBN = NEW.DF_DENPKBN");
+    sbSQL.append(", DF_SHUHKBN = NEW.DF_SHUHKBN");
+    sbSQL.append(", DF_PICKDKBN = NEW.DF_PICKDKBN");
+    sbSQL.append(", DF_PICKLKBN = NEW.DF_PICKLKBN");
+    sbSQL.append(", DF_WAPNKBN = NEW.DF_WAPNKBN");
+    sbSQL.append(", DF_IDENPKBN = NEW.DF_IDENPKBN");
+    sbSQL.append(", DF_KAKOSJKBN = NEW.DF_KAKOSJKBN");
+    sbSQL.append(", DF_RYUTSUKBN = NEW.DF_RYUTSUKBN");
+    sbSQL.append(", DF_ZDENPKBN = NEW.DF_ZDENPKBN");
+    sbSQL.append(", DF_ZSHUHKBN = NEW.DF_ZSHUHKBN");
+    sbSQL.append(", DF_ZPICKDKBN = NEW.DF_ZPICKDKBN");
+    sbSQL.append(", DF_ZPICKLKBN = NEW.DF_ZPICKLKBN");
+    sbSQL.append(", DF_RSIRCD = NEW.DF_RSIRCD");
+    sbSQL.append(", DF_YKNSHKBN = NEW.DF_YKNSHKBN");
+    sbSQL.append(", DF_YDENPKBN = NEW.DF_YDENPKBN");
+    sbSQL.append(", DF_YSHUHKBN = NEW.DF_YSHUHKBN");
+    sbSQL.append(", BMSKBN = NEW.BMSKBN");
+    sbSQL.append(", AUTOKBN = NEW.AUTOKBN");
+    sbSQL.append(", UPDKBN = NEW.UPDKBN");
+    sbSQL.append(", SENDFLG = NEW.SENDFLG");
+    sbSQL.append(", OPERATOR = NEW.OPERATOR");
+    sbSQL.append(", UPDDT = NEW.UPDDT");
 
     if (DefineReport.ID_DEBUG_MODE) {
       System.out.println("/* " + this.getClass().getName() + " */ " + sbSQL.toString());
