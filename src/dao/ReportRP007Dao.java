@@ -213,16 +213,16 @@ public class ReportRP007Dao extends ItemDao {
     }
 
     // 更新データ
-    updateRows += " select";
+    updateRows += " SELECT";
     updateRows += " BMNCD";
     updateRows += ", RANKNO";
     updateRows += ", RANKKN";
     updateRows += ", (" + header + "||" + cpfromno + "||" + footer + ") AS TENRANK_ARR";
-    updateRows += ", " + DefineReport.ValUpdkbn.NML.getVal() + "";
-    updateRows += ", 0";
-    updateRows += ", '" + userId + "' ";
-    updateRows += ", CURRENT_TIMESTAMP";
-    updateRows += ", CURRENT_TIMESTAMP";
+    updateRows += ", " + DefineReport.ValUpdkbn.NML.getVal() + " AS UPDKBN ";
+    updateRows += ", 0 AS SENDFLG";
+    updateRows += ", '" + userId + "'  AS OPERATOR";
+    updateRows += ", CURRENT_TIMESTAMP AS ADDDT";
+    updateRows += ", CURRENT_TIMESTAMP AS UPDDT";
     updateRows += " from INATK.TOKRANK";
     updateRows += " where BMNCD= ? ";
 
@@ -231,7 +231,7 @@ public class ReportRP007Dao extends ItemDao {
     updateRows += " ";
 
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO INATK.TOKRANK (");
+    sbSQL.append("INSERT INTO INATK.TOKRANK (");
     sbSQL.append(" BMNCD"); // F1 : 部門
     sbSQL.append(", RANKNO"); // F2 : ランクNo.
     sbSQL.append(", RANKKN"); // F3 : ランク名称
@@ -242,7 +242,18 @@ public class ReportRP007Dao extends ItemDao {
     sbSQL.append(", ADDDT "); // 登録日：
     sbSQL.append(", UPDDT "); // 更新日：
     sbSQL.append(" ) ");
-    sbSQL.append("  " + updateRows + "");
+    sbSQL.append("SELECT * FROM (");
+    sbSQL.append("  " + updateRows + " ) AS NEW");
+    sbSQL.append(" ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(" BMNCD = NEW.BMNCD ");
+    sbSQL.append(" , RANKNO = NEW.RANKNO ");
+    sbSQL.append(" , RANKKN = NEW.RANKKN ");
+    sbSQL.append(" , TENRANK_ARR = NEW.TENRANK_ARR ");
+    sbSQL.append(" , UPDKBN = NEW.UPDKBN ");
+    sbSQL.append(" , SENDFLG = NEW.SENDFLG ");
+    sbSQL.append(" , OPERATOR = NEW.OPERATOR ");
+    sbSQL.append(" , UPDDT = NEW.UPDDT ");
+    
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
