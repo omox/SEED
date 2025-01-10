@@ -6944,8 +6944,8 @@
 		getInputboxParams: function(that, id, newValue, key){
 			// 情報取得
 			var values = {};
-			//values["value"] = newValue;
-			values["value"] = that.jsonHidden[9].value;
+		  values["value"] = newValue;
+			//values["value"] = that.jsonHidden[9].value;
 			if(key){
 				values["KEY"] = key;
 			}
