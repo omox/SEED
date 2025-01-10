@@ -6112,7 +6112,7 @@ public class DefineReport {
   public final static String ID_SQL_TENBETUSU = "select TEN.TENCD, TEN.TENKN, 0 as SURYO from INAMS.MSTTEN TEN where TEN.MISEUNYOKBN <> 9 and TEN.TENCD <= 400";
 
   // SQL：店番一括入力チェック
-  public final static String ID_SQL_TENBMN = "select COUNT(1) as value from INAMS.MSTTEN T1 left join INAMS.MSTTENBMN T2 on T1.TENCD = T2.TENCD and T2.UPDKBN <> 1 where T1.TENCD = ? and T2.BMNCD = ? "
+  public final static String ID_SQL_TENBMN = "select COUNT(1) as VALUE from INAMS.MSTTEN T1 left join INAMS.MSTTENBMN T2 on T1.TENCD = T2.TENCD and T2.UPDKBN <> 1 where T1.TENCD = ? and T2.BMNCD = ? "
       + "and T1.MISEUNYOKBN <> 9 and T1.TENCD <= 400 and T1.UPDKBN <> 1 ";
 
   // // TODO

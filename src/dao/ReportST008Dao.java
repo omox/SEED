@@ -196,7 +196,7 @@ public class ReportST008Dao extends ItemDao {
 
     if (StringUtils.isNotEmpty(tentenArr)) {
       // 実績点数配列より点数を展開する。
-      colZitten = "case when trim(T5.SURYO) = '' then null else int(trim(T5.SURYO)) end";
+      colZitten = "case when trim(T5.SURYO) = '' then null else CAST(trim(T5.SURYO) AS SIGNED) end";
       sortParam = "case when TRIM(T5.SURYO) = '' then '2' else '1' end";
       joinTable = " left join ARRWK_TENSU as T5 on T5.IDX = T1.IDX ";
       sbSQL.append(", WK_TENSU as (select");
