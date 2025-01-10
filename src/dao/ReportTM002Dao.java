@@ -605,11 +605,11 @@ public class ReportTM002Dao extends ItemDao {
 
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
   /**
    * 更新処理実行
@@ -710,7 +710,7 @@ public class ReportTM002Dao extends ItemDao {
     // 排他チェック実行
     String targetTable = "INATK.TOKMOYSYU";
     String targetWhere = " SHUNO= ? and UPDKBN = 0";
-    ArrayList<String> targetParam = new ArrayList<String>();
+    ArrayList<String> targetParam = new ArrayList<>();
     targetParam.add(data.optString(TOKMOYSYULayout.SHUNO.getId()));
     if (!super.checkExclusion(targetTable, targetWhere, targetParam, data.optString("F8"))) {
       msg.add(MessageUtility.getDbMessageExclusion(FieldType.DEFAULT, new String[] {}));
@@ -718,7 +718,7 @@ public class ReportTM002Dao extends ItemDao {
       return option;
     }
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -818,175 +818,7 @@ public class ReportTM002Dao extends ItemDao {
     String login_dt = sysdate1; // 処理日付
     login_dt.substring(2, 6);
 
-    // // 基本データチェック:入力値がテーブル定義と矛盾してないか確認、
-    // // 1.催し週
-    // String ErrTblNm = "MSTSHN";
-    // for(MSTSHNLayout colinf: MSTSHNLayout.values()){
-    // String val = StringUtils.trim(data.optString(colinf.getId()));
-    // if(StringUtils.isNotEmpty(val)){
-    // DataType dtype = null;
-    // int[] digit = null;
-    // try {
-    // DefineReport.InpText inpsetting = DefineReport.InpText.valueOf(colinf.getCol());
-    // dtype = inpsetting.getType();
-    // digit = new int[]{inpsetting.getDigit1(), inpsetting.getDigit2()};
-    // }catch (IllegalArgumentException e){
-    // dtype = colinf.getDataType();
-    // digit = colinf.getDigit();
-    // }
-    // // ①データ型による文字種チェック
-    // if(!InputChecker.checkDataType(dtype, val)){
-    // JSONObject o = mu.getDbMessageObjDataTypeErr(dtype, new String[]{});
-    // msg.add(o);
-    // if(!colinf.isText()){
-    // data.element(colinf.getId(), ""); // CSVトラン用に空
-    // }
-    // }
-    // // ②データ桁チェック
-    // if(!InputChecker.checkDataLen(dtype, val, digit)){
-    // JSONObject o = mu.getDbMessageObjLen(dtype, new String[]{});
-    // msg.add(o);
-    // data.element(colinf.getId(), ""); // CSVトラン用に空
-    // }
-    // }
-    // }
-    // // 3.催しコード：スポット
-    // ErrTblNm = "MSTSIRGPSHN";
-    // for (int i = 0; i < dataArrayMOYCD.size(); i++) {
-    // JSONObject jo = dataArrayMOYCD.optJSONObject(i);
-    // for(MSTSIRGPSHNLayout colinf: MSTSIRGPSHNLayout.values()){
-    // String val = StringUtils.trim(jo.optString(colinf.getId()));
-    // if(StringUtils.isNotEmpty(val)){
-    // DataType dtype = null;
-    // int[] digit = null;
-    // try {
-    // DefineReport.InpText inpsetting = DefineReport.InpText.valueOf(colinf.getCol());
-    // dtype = inpsetting.getType();
-    // digit = new int[]{inpsetting.getDigit1(), inpsetting.getDigit2()};
-    // }catch (IllegalArgumentException e){
-    // dtype = colinf.getDataType();
-    // digit = colinf.getDigit();
-    // }
-    // // ①データ型による文字種チェック
-    // if(!InputChecker.checkDataType(dtype, val)){
-    // JSONObject o = mu.getDbMessageObjDataTypeErr(dtype, new String[]{});
-    // msg.add(o);
-    // if(!colinf.isText()){
-    // jo.element(colinf.getId(), ""); // CSVトラン用に空
-    // }
-    // }
-    // // ②データ桁チェック
-    // if(!InputChecker.checkDataLen(dtype, val, digit)){
-    // JSONObject o = mu.getDbMessageObjLen(dtype, new String[]{});
-    // msg.add(o);
-    // jo.element(colinf.getId(), ""); // CSVトラン用に空
-    // }
-    // }
-    // }
-    // }
-    // // 4.催しコード：特売
-    // ErrTblNm = "MSTBAIKACTL";
-    // for (int i = 0; i < dataArrayMOYCDDel.size(); i++) {
-    // JSONObject jo = dataArrayMOYCDDel.optJSONObject(i);
-    // for(MSTBAIKACTLLayout colinf: MSTBAIKACTLLayout.values()){
-    // String val = StringUtils.trim(jo.optString(colinf.getId()));
-    // if(StringUtils.isNotEmpty(val)){
-    // DataType dtype = null;
-    // int[] digit = null;
-    // try {
-    // DefineReport.InpText inpsetting = DefineReport.InpText.valueOf(colinf.getCol());
-    // dtype = inpsetting.getType();
-    // digit = new int[]{inpsetting.getDigit1(), inpsetting.getDigit2()};
-    // }catch (IllegalArgumentException e){
-    // dtype = colinf.getDataType();
-    // digit = colinf.getDigit();
-    // }
-    // // ①データ型による文字種チェック
-    // if(!InputChecker.checkDataType(dtype, val)){
-    // JSONObject o = mu.getDbMessageObjDataTypeErr(dtype, new String[]{});
-    // msg.add(o);
-    // if(!colinf.isText()){
-    // jo.element(colinf.getId(), ""); // CSVトラン用に空
-    // }
-    // }
-    // // ②データ桁チェック
-    // if(!InputChecker.checkDataLen(dtype, val, digit)){
-    // JSONObject o = mu.getDbMessageObjLen(dtype, new String[]{});
-    // msg.add(o);
-    // jo.element(colinf.getId(), ""); // CSVトラン用に空
-    // }
-    // }
-    // }
-    // }
-    // if(msg.size() > 0){
-    // return msg;
-    // }
-    //
-    // // 新規(正) 1.1 必須入力項目チェックを行う。
-    // // 変更(正) 1.1 必須入力項目チェックを行う。
-    // ErrTblNm = "MSTSHN";
-    // MSTSHNLayout[] targetCol = null;
-    /// * if(isNew){
-    // targetCol = new
-    // MSTSHNLayout[]{MSTSHNLayout.SHNAN,MSTSHNLayout.PCARD_SHUKBN,MSTSHNLayout.PCARD_IROKBN,MSTSHNLayout.BMNCD,MSTSHNLayout.DAICD,MSTSHNLayout.CHUCD,MSTSHNLayout.SHOCD
-    // ,MSTSHNLayout.TEIKEIKBN,MSTSHNLayout.TEISHIKBN,MSTSHNLayout.SHNKBN,MSTSHNLayout.PCKBN,MSTSHNLayout.TEIKANKBN,MSTSHNLayout.KAKOKBN,MSTSHNLayout.TANAOROKBN,MSTSHNLayout.ZEIKBN,MSTSHNLayout.SIMEKAISU,MSTSHNLayout.BINKBN,MSTSHNLayout.RG_IDENFLG};
-    // }else if(isChange){
-    // targetCol = new
-    // MSTSHNLayout[]{MSTSHNLayout.SHUNO,MSTSHNLayout.SHNAN,MSTSHNLayout.PCARD_SHUKBN,MSTSHNLayout.PCARD_IROKBN,MSTSHNLayout.BMNCD
-    // ,MSTSHNLayout.TEIKEIKBN,MSTSHNLayout.TEISHIKBN,MSTSHNLayout.SHNKBN,MSTSHNLayout.PCKBN,MSTSHNLayout.TEIKANKBN,MSTSHNLayout.KAKOKBN,MSTSHNLayout.TANAOROKBN,MSTSHNLayout.ZEIKBN,MSTSHNLayout.SIMEKAISU,MSTSHNLayout.BINKBN,MSTSHNLayout.RG_IDENFLG};
-    // }*/
-    // for(MSTSHNLayout colinf: targetCol){
-    // if(StringUtils.isEmpty(data.optString(colinf.getId()))){
-    // JSONObject o = mu.getDbMessageObj("E00001", new String[]{});
-    // msg.add(o);
-    // return msg;
-    // }
-    // }
-    //
-    // String txt_shuno = "";
-    // String txt_shuno_new = "";
-    // if(isNew){
-    //
-    //
-    // // 新規(正) 1.3 取得された商品コードが催し週テーブルに存在する場合、エラー。
-    // if(this.checkMstExist(DefineReport.Select.SHUNO.getObj(), txt_shuno)){
-    // JSONObject o = mu.getDbMessageObj("E20162", new String[]{});
-    // msg.add(o);
-    // return msg;
-    // }
-    // }else{
-    //
-    // if(!this.checkMstExist(DefineReport.Select.SHUNO.getObj(), txt_shuno)){
-    // JSONObject o = mu.getDbMessageObj("E20124", new String[]{});
-    // msg.add(o);
-    // return msg;
-    // }
-    // }
-    //
-    // // 催しコード
-    // ErrTblNm = "MSTTENKABUTSU";
-    // ArrayList<JSONObject> tenkabcds1= new ArrayList<JSONObject>(), tenkabcds2= new
-    // ArrayList<JSONObject>();
-    // TreeSet<String> tenkabcds1_ = new TreeSet<String>(), tenkabcds2_ = new TreeSet<String>();
-    // for (int i=0; i<dataArrayMOYCD.size(); i++){
-    // String kbn = dataArrayMOYCD.optJSONObject(i).optString(MSTTENKABUTSULayout.TENKABKBN.getId());
-    // String val = dataArrayMOYCD.optJSONObject(i).optString(MSTTENKABUTSULayout.TENKABCD.getId());
-    // if(StringUtils.isNotEmpty(val)){
-    // tenkabcds1.add(dataArrayMOYCD.optJSONObject(i));
-    // tenkabcds1_.add(val);
-    // }
-    // }
-    // // 同じ添加物がある場合、エラー。
-    // if(tenkabcds1.size() != tenkabcds1_.size()){
-    // JSONObject o = mu.getDbMessageObj("E11133", new String[]{});
-    // msg.add(o);
-    // return msg;
-    // }
-    // if(tenkabcds2.size() != tenkabcds2_.size()){
-    // JSONObject o = mu.getDbMessageObj("E11133", new String[]{});
-    // msg.add(o);
-    // return msg;
-    // }
+
 
     return msg;
   }
@@ -997,10 +829,9 @@ public class ReportTM002Dao extends ItemDao {
    * @throws Exception
    */
   public JSONArray getMstData(String sqlcommand, ArrayList<String> paramData) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
     return array;
   }
 
@@ -1010,10 +841,9 @@ public class ReportTM002Dao extends ItemDao {
    * @throws Exception
    */
   public boolean checkMstExist(String outobj, String value) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
 
     String tbl = "";
@@ -1058,7 +888,7 @@ public class ReportTM002Dao extends ItemDao {
       }
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
       if (array.size() > 0 && NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) > 0) {
         return true;
       }
@@ -1078,7 +908,7 @@ public class ReportTM002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     for (int i = 1; i <= 2; i++) {
       String col = "F" + i;
       prmData.add(StringUtils.trim(data.optString(col)));
@@ -1139,7 +969,7 @@ public class ReportTM002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 更新列設定
     TOKMOYCDLayout[] cols = new TOKMOYCDLayout[] {};
@@ -1249,9 +1079,11 @@ public class ReportTM002Dao extends ItemDao {
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
     if (SqlType.DEL.getVal() == sql.getVal()) {
       sbSQL.append("UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal());
+      sbSQL.append(",OPERATOR=  '" + userId + "' ");
+      sbSQL.append(",SENDFLG= " + DefineReport.Values.SENDFLG_UN.getVal() + " ");
       sbSQL.append(",UPDDT = VALUES(UPDDT)");
     } else {
-      sbSQL.append("MOYSKBN = VALUES(MOYSKBN)");
+      sbSQL.append(" MOYSKBN = VALUES(MOYSKBN)");
       sbSQL.append(",MOYSSTDT = VALUES(MOYSSTDT)");
       sbSQL.append(",MOYSRBAN = VALUES(MOYSRBAN)");
       sbSQL.append(",SHUNO = VALUES(SHUNO)");
@@ -1296,7 +1128,7 @@ public class ReportTM002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "", names = "", rows = "";
 
@@ -1375,7 +1207,7 @@ public class ReportTM002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "", names = "", rows = "";
     // 列別名設定
