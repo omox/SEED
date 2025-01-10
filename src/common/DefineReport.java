@@ -3081,7 +3081,7 @@ public class DefineReport {
     /** 削除 */
     ,DEL("chk_del", "削除")
     /** 使用 */
-    ,USE("chk_use", "使用")
+    ,USEF("chk_use", "使用")
     /** 選択 */
     ,SEL("chk_sel", "選択")
     /** CSV対象 */

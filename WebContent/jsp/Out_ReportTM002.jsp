@@ -97,7 +97,7 @@
 	<!-- Editor参照用 -->
 	<div class="ref_editor" style="display: none;">
 		<input type="checkbox" tabindex="-1" id="<%=DefineReport.Checkbox.DEL.getObj()%>"/>
-		<input type="checkbox" tabindex="-1" id="<%=DefineReport.Checkbox.USE.getObj()%>"/>
+		<input type="checkbox" tabindex="-1" id="<%=DefineReport.Checkbox.USEF.getObj()%>"/>
 		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.MOYSKBN.getObj()%>"/>
 		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.MOYSSTDT.getObj()%>" check='<%=DefineReport.InpText.MOYSSTDT.getMaxlenTag()%>'/>
 		<input class="easyui-numberbox" tabindex="-1" id="<%=DefineReport.InpText.MOYSRBANINP.getObj()%>" check='<%=DefineReport.InpText.MOYSRBANINP.getMaxlenTag()%>'/>

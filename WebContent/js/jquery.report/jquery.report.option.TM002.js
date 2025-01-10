@@ -937,7 +937,7 @@
 								// 催し連番
 								$.setInputBoxDisable($('#'+$.id_inp.txt_moysrbaninp+"_"));
 							}
-							if(row["USE"] === $.id.value_on || row["UPDDT"]===undefined){
+							if(row["USEF"] === $.id.value_on || row["UPDDT"]===undefined){
 								// 催し連番
 								$.setInputBoxDisable($('#'+$.id.chk_del+"_"));
 							}
@@ -1008,7 +1008,7 @@
 			if(that.judgeRepType.sei_new||that.judgeRepType.sei_upd){
 				if(that.judgeRepType.sei_upd){
 					columnBottom.push({field:'DEL',	title:'削除',	width:35,	align:'center',	formatter:cformatter,	editor:{type:'checkbox'},	styler:cstyler});
-					columnBottom.push({field:'USE',	title:'使用',	width:35,	align:'center',	formatter:cformatter,	styler:function(value,row,index){return 'background-color:#f5f5f5;color:red;font-weight: bold;';}});
+					columnBottom.push({field:'USEF',	title:'使用',	width:35,	align:'center',	formatter:cformatter,	styler:function(value,row,index){return 'background-color:#f5f5f5;color:red;font-weight: bold;';}});
 				}
 				columnBottom.push({field:fields[0],	title:titles[0],	width:20,	align:'center',	styler:bcstyler});
 				columnBottom.push({field:fields[1],	title:titles[1],	width:72,	align:'left',	editor:{type:'numberbox'}});
@@ -1035,7 +1035,7 @@
 					}
 				}
 			}else{
-				columnBottom.push({field:'USE',	title:'使用',		width:35,	align:'left',	formatter:cformatter,	styler:function(value,row,index){return 'background-color:#f5f5f5;color:red;font-weight: bold;';}});
+				columnBottom.push({field:'USEF',	title:'使用',		width:35,	align:'left',	formatter:cformatter,	styler:function(value,row,index){return 'background-color:#f5f5f5;color:red;font-weight: bold;';}});
 				columnBottom.push({field:fields[0],	title:titles[0],	width:20,	align:'left',	styler:bcstyler});
 				columnBottom.push({field:fields[1],	title:titles[1],	width:72,	align:'left'});
 				columnBottom.push({field:fields[2],	title:titles[2],	width:30,	align:'left',	formatter:function(value,row,index){ return $.getFormatLPad(value, $.len.rban);}});

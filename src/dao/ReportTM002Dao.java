@@ -468,7 +468,7 @@ public class ReportTM002Dao extends ItemDao {
       sbSQL.append(" ,T1.UPDDT as UPDDT"); // F20: 更新日
       sbSQL.append(" ,row_number() over (partition by T1.MOYSKBN order by T1.MOYSSTDT,T1.MOYSRBAN) as IDX ");
       if (StringUtils.isNotEmpty(col_chk_use)) {
-        sbSQL.append(" ,case when " + col_chk_use + " > 0 then 1 else 0 end  ");
+        sbSQL.append(" ,case when " + col_chk_use + " > 0 then 1 else 0 end as USEF ");
       } else {
         sbSQL.append(" ,0 ");
       }
