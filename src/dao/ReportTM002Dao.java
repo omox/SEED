@@ -170,13 +170,13 @@ public class ReportTM002Dao extends ItemDao {
 
 
     sqlcommand.append(" with WK as (select");
-    sqlcommand.append(" cast(? as SMALLINT) as MOYSKBN");
-    sqlcommand.append(" , cast(? as INTEGER) as MOYSSTDT");
-    sqlcommand.append(" , cast(? as SMALLINT) as MOYSRBAN");
+    sqlcommand.append(" cast(? as SIGNED) as MOYSKBN");
+    sqlcommand.append(" , cast(? as SIGNED) as MOYSSTDT");
+    sqlcommand.append(" , cast(? as SIGNED) as MOYSRBAN");
     for (int i = 1; i <= count; i++) {
-      sqlcommand.append(" , cast(? as SMALLINT) as BMNCD" + i);
+      sqlcommand.append(" , cast(? as SIGNED) as BMNCD" + i);
     }
-    sqlcommand.append(" from SYSIBM.SYSDUMMY1)");
+    sqlcommand.append(" from (SELECT 1 AS DUMMY) DUMMY) ");
     sqlcommand.append(" SELECT SUM(CNT) as VALUE FROM (");
     sqlcommand.append(" SELECT COUNT(*) AS CNT");
     sqlcommand.append(" FROM INATK.TOKTG_SHN as T1");
@@ -256,7 +256,7 @@ public class ReportTM002Dao extends ItemDao {
     for (int i = 2; i <= count; i++) {
       sqlcommand.append(" ,WK.BMNCD" + i);
     }
-    sqlcommand.append(") )");
+    sqlcommand.append(") )MT1");
 
 
 
@@ -520,7 +520,7 @@ public class ReportTM002Dao extends ItemDao {
           sbSQL.append(" , max(case T1.RNO when " + i + " then T1.BMNCD end) as BMNCD_" + i);
         }
         sbSQL.append("  from (");
-        sbSQL.append("    select ROW_NUMBER() over (PARTITION BY T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN) as RNO, T1.MOYSKBN, T1.MOYSSTDT, T1.MOYSRBAN, T3.BMNCD");
+        sbSQL.append("    select ROW_NUMBER() over (PARTITION BY T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN ORDER BY T3.BMNCD) as RNO, T1.MOYSKBN, T1.MOYSSTDT, T1.MOYSRBAN, T3.BMNCD");
         sbSQL.append("    from INATK.TOKMOYCD T1");
         sbSQL.append("    inner join INATK.TOKCHIRASBMN T3 on T1.MOYSKBN = T3.MOYSKBN and T1.MOYSSTDT = T3.MOYSSTDT and T1.MOYSRBAN = T3.MOYSRBAN");
         sbSQL.append("    and COALESCE(T1.UPDKBN, 0) = 0");
