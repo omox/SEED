@@ -94,7 +94,7 @@
 	<div class="ref_editor" style="display: none;">
 	<input type="checkbox" tabindex="-1" id="<%=DefineReport.Checkbox.DEL.getObj()%>"/>
 	<input type="checkbox" tabindex="-1" id="<%=DefineReport.Checkbox.SEL.getObj()%>"/>
-	<input type="checkbox" tabindex="-1" id="<%=DefineReport.Checkbox.USE.getObj()%>"/>
+	<input type="checkbox" tabindex="-1" id="<%=DefineReport.Checkbox.USEF.getObj()%>"/>
 	</div>
  		<div style="display: none;">
 	<!-- 非表示でデータを保持 -->
