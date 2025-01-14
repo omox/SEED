@@ -573,17 +573,17 @@ public class ReportSO003Dao extends ItemDao {
       sbSQL.append(", CSO.A_BAIKAAM");
       sbSQL.append("," + DefineReport.ID_SQL_TOKBAIKA_COL_HON.replaceAll("@BAIKA", "CSO.A_BAIKAAM").replaceAll("@DT", "MYCD.MOYSSTDT") + " as A_HONBAIK");
       sbSQL.append(", CSO.A_RANKNO");
-      sbSQL.append(", null");
+      sbSQL.append(", null as '13'");
       sbSQL.append(", CSO.B_BAIKAAM");
       sbSQL.append(
           ",case when CSO.B_BAIKAAM is null then null else " + DefineReport.ID_SQL_TOKBAIKA_COL_HON.replaceAll("@BAIKA", "CSO.B_BAIKAAM").replaceAll("@DT", "MYCD.MOYSSTDT") + " end as B_HONBAIK");
       sbSQL.append(", CSO.B_RANKNO");
-      sbSQL.append(", null");
+      sbSQL.append(", null as '17'");
       sbSQL.append(", CSO.C_BAIKAAM");
       sbSQL.append(
           ",case when CSO.C_BAIKAAM is null then null else " + DefineReport.ID_SQL_TOKBAIKA_COL_HON.replaceAll("@BAIKA", "CSO.C_BAIKAAM").replaceAll("@DT", "MYCD.MOYSSTDT") + " end as C_HONBAIK");
       sbSQL.append(", CSO.C_RANKNO");
-      sbSQL.append(", null");
+      sbSQL.append(", null as '21'");
       sbSQL.append(", CSO.POPCD");
       sbSQL.append(", CSO.POPSZ");
       sbSQL.append(", CSO.POPSU");
@@ -619,7 +619,7 @@ public class ReportSO003Dao extends ItemDao {
       sbSQL.append(" where CSO.SEQ = " + szSeq);
       sbSQL.append(" and COALESCE(CSO.ERRCD, 0) <> 4");
       sbSQL.append(" and COALESCE(CSO.UPDKBN , 0) <> 1");
-      sbSQL.append(" ) T2 on T1.IDX = T2.IDX");
+      sbSQL.append(" ) T2 ");
       sbSQL.append(" order by T2.SHNCD");
 
     } else {
