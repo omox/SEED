@@ -878,6 +878,11 @@ public class Reportx031Dao extends ItemDao {
             }
 
             if (k == maxField) {
+              values += ", '" + DefineReport.ValUpdkbn.DEL.getVal() + "' ";//更新区分
+              values += ",0 ";//送信フラグ
+              values += ", '" + userId + "' ";//オペレータ
+              values += ", CURRENT_TIMESTAMP";//更新日時
+              values  = "(" + values.substring(1) + " )";
               valueData = ArrayUtils.add(valueData, values);
               values = "";
             }
@@ -889,20 +894,23 @@ public class Reportx031Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append(" REPLACE INTO " + tablename + " (");
+        sbSQL.append(" INSERT INTO " + tablename + " (");
         sbSQL.append(" BMNCD"); // 部門
         sbSQL.append(", DAICD"); // 大分類
         sbSQL.append(", UPDKBN"); // 更新区分：
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター：
         sbSQL.append(", UPDDT "); // 更新日：
-        sbSQL.append(") VALUES ( ");
-        sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", " + DefineReport.ValUpdkbn.DEL.getVal() + " "); // 更新区分：
-        sbSQL.append(", 0 "); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター：
-        sbSQL.append(", CURRENT_TIMESTAMP ) "); // 更新日：
-
+        sbSQL.append(") VALUES  ");
+        sbSQL.append(StringUtils.join(valueData, ",") + " AS NEW ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("BMNCD = NEW.BMNCD ");
+        sbSQL.append(", DAICD = NEW.DAICD ");
+        sbSQL.append(", UPDKBN = NEW.UPDKBN ");
+        sbSQL.append(", SENDFLG = NEW.SENDFLG ");
+        sbSQL.append(", OPERATOR = NEW.OPERATOR ");
+        sbSQL.append(", UPDDT = NEW.UPDDT ");
+        
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -2082,7 +2090,7 @@ public class Reportx031Dao extends ItemDao {
     }
 
     sqlcommand = "select @C from @T";
-    sqlcommand = sqlcommand.replace("@T", tbl).replace("@C", col) + sqlwhere + " fetch first 1 rows only";
+    sqlcommand = sqlcommand.replace("@T", tbl).replace("@C", col) + sqlwhere + "  limit 1 ";
     @SuppressWarnings("static-access")
     JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
     if (array.size() > 0) {
