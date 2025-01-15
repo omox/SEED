@@ -200,7 +200,7 @@ public class Reportx002Dao extends ItemDao {
     }
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     StringBuffer sbSQL = new StringBuffer();
 
@@ -685,11 +685,11 @@ public class Reportx002Dao extends ItemDao {
   }
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
 
   /** 商品マスタ列数 */
@@ -1000,7 +1000,7 @@ public class Reportx002Dao extends ItemDao {
     // 排他チェック実行
     String targetTable = null;
     String targetWhere = "COALESCE(UPDKBN, 0) <> 1";
-    ArrayList<String> targetParam = new ArrayList<String>();
+    ArrayList<String> targetParam = new ArrayList<>();
     // EX.CSVエラー修正
     if (isCsverr) {
       targetTable = "INAMS.CSVSHN";
@@ -1028,7 +1028,7 @@ public class Reportx002Dao extends ItemDao {
       return option;
     }
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -1198,7 +1198,7 @@ public class Reportx002Dao extends ItemDao {
     // 排他チェック実行
     String targetTable = null;
     String targetWhere = "COALESCE(UPDKBN, 0) <> 1";
-    ArrayList<String> targetParam = new ArrayList<String>();
+    ArrayList<String> targetParam = new ArrayList<>();
     // EX.CSVエラー修正
     if (isCsverr) {
       targetTable = "INAMS.CSVSHN";
@@ -1227,7 +1227,7 @@ public class Reportx002Dao extends ItemDao {
     }
 
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -1352,7 +1352,7 @@ public class Reportx002Dao extends ItemDao {
 
     MessageUtility mu = new MessageUtility();
 
-    List<JSONObject> msgList = new ArrayList<JSONObject>();
+    List<JSONObject> msgList = new ArrayList<>();
     // CSV情報を削除する場合は無条件チェックなし
     if (!isCsverr) {
       msgList = this.checkDataDel(isNew, isChange, isYoyaku1, isYoyaku2, false, map, userInfo, sysdate, mu, dataArray, dataArraySRCCD, dataArrayTENGP3, dataArrayTENGP2, dataArrayTENGP1,
@@ -1915,8 +1915,8 @@ public class Reportx002Dao extends ItemDao {
       // コード整合性チェック：チェックデジット算出コード取得
       if (txt_shncd_new.length() == 8) {
         JSONObject resShn2 = NumberingUtility.calcCheckdigitSHNCD(userInfo, txt_shncd_new);
-        if (StringUtils.isNotEmpty(resShn2.optString(mu.ID))) {
-          JSONObject o = mu.getDbMessageObj(resShn2.optString(mu.ID), new String[] {});
+        if (StringUtils.isNotEmpty(resShn2.optString(MessageUtility.ID))) {
+          JSONObject o = mu.getDbMessageObj(resShn2.optString(MessageUtility.ID), new String[] {});
           this.setCsvshnErrinfo(o, errTbl, MSTSHNLayout.SHNCD, txt_shncd_new);
           msg.add(o);
           return msg;
@@ -1932,8 +1932,8 @@ public class Reportx002Dao extends ItemDao {
 
       if (StringUtils.isEmpty(dataOther.optString(MSTSHNLayout.SHNCD.getCol() + "_NEW")) || DefineReport.ValKbn143.VAL2.getVal().equals(kbn143)) {
         JSONObject result = NumberingUtility.execGetNewSHNCD(userInfo, txt_shncd_new, kbn143, txt_bmncd);
-        if (StringUtils.isNotEmpty(result.optString(mu.ID))) {
-          JSONObject o = mu.getDbMessageObj(result.optString(mu.ID), new String[] {});
+        if (StringUtils.isNotEmpty(result.optString(MessageUtility.ID))) {
+          JSONObject o = mu.getDbMessageObj(result.optString(MessageUtility.ID), new String[] {});
           this.setCsvshnErrinfo(o, errTbl, MSTSHNLayout.SHNCD, txt_shncd_new);
           msg.add(o);
           return msg;
@@ -1953,8 +1953,8 @@ public class Reportx002Dao extends ItemDao {
 
         // 付番済商品コードを仮押さえ
         JSONObject resShn = NumberingUtility.execHoldNewSHNCD(userInfo, txt_shncd_new);
-        if (StringUtils.isNotEmpty(resShn.optString(mu.ID))) {
-          JSONObject o = mu.getDbMessageObj(resShn.optString(mu.ID), new String[] {});
+        if (StringUtils.isNotEmpty(resShn.optString(MessageUtility.ID))) {
+          JSONObject o = mu.getDbMessageObj(resShn.optString(MessageUtility.ID), new String[] {});
           this.setCsvshnErrinfo(o, errTbl, MSTSHNLayout.SHNCD, txt_shncd_new);
           msg.add(o);
           return msg;
@@ -1965,8 +1965,8 @@ public class Reportx002Dao extends ItemDao {
 
       // 添付資料（MD03100902）の販売コード付番機能
       JSONObject resUri = NumberingUtility.execHoldNewURICD(userInfo, txt_shncd_new);
-      if (StringUtils.isNotEmpty(resUri.optString(mu.ID))) {
-        JSONObject o = mu.getDbMessageObj(resUri.optString(mu.ID), new String[] {});
+      if (StringUtils.isNotEmpty(resUri.optString(MessageUtility.ID))) {
+        JSONObject o = mu.getDbMessageObj(resUri.optString(MessageUtility.ID), new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTSHNLayout.URICD, txt_shncd_new);
         msg.add(o);
         return msg;
@@ -2114,8 +2114,8 @@ public class Reportx002Dao extends ItemDao {
 
     // ソースコード系
     // ソースコード取得
-    ArrayList<JSONObject> srccds = new ArrayList<JSONObject>();
-    HashSet<String> srccds_ = new HashSet<String>();
+    ArrayList<JSONObject> srccds = new ArrayList<>();
+    HashSet<String> srccds_ = new HashSet<>();
     for (int i = 0; i < dataArraySRCCD.size(); i++) {
       String val = dataArraySRCCD.optJSONObject(i).optString(MSTSRCCDLayout.SRCCD.getId());
       if (StringUtils.isNotEmpty(val)) {
@@ -2226,13 +2226,8 @@ public class Reportx002Dao extends ItemDao {
       }
 
       // SEQNOチェック
-      if (!ArrayUtils.contains(allseqnos, seqno)) {
-        JSONObject o = mu.getDbMessageObj("EX1051", new String[] {"ソースコードの順位は、"});
-        this.setCsvshnErrinfo(o, errTbl, MSTSRCCDLayout.SEQNO, dataArraySRCCD.optJSONObject(i));
-        msg.add(o);
-        return msg;
-      }
-      if (ArrayUtils.contains(new String[] {DefineReport.ValSrccdSeqno.SRC1.getVal(), DefineReport.ValSrccdSeqno.SRC2.getVal()}, seqno) && ArrayUtils.contains(seqnos, seqno)) {
+      if (!ArrayUtils.contains(allseqnos, seqno)
+          || (ArrayUtils.contains(new String[] {DefineReport.ValSrccdSeqno.SRC1.getVal(), DefineReport.ValSrccdSeqno.SRC2.getVal()}, seqno) && ArrayUtils.contains(seqnos, seqno))) {
         JSONObject o = mu.getDbMessageObj("EX1051", new String[] {"ソースコードの順位は、"});
         this.setCsvshnErrinfo(o, errTbl, MSTSRCCDLayout.SEQNO, dataArraySRCCD.optJSONObject(i));
         msg.add(o);
@@ -2292,8 +2287,8 @@ public class Reportx002Dao extends ItemDao {
       // コード整合性チェック：チェックデジット算出コード取得
       // ソースコードに問題がある場合は、エラー情報が返ってくる（E11165,E11167,E11168,E11169,E11171,E11172,E11224）
       JSONObject result = NumberingUtility.calcCheckdigitSRCCD(userInfo, txt_srccd, sourcekbn);
-      if (StringUtils.isNotEmpty(result.optString(mu.ID))) {
-        JSONObject o = mu.getDbMessageObj(result.optString(mu.ID), new String[] {});
+      if (StringUtils.isNotEmpty(result.optString(MessageUtility.ID))) {
+        JSONObject o = mu.getDbMessageObj(result.optString(MessageUtility.ID), new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTSRCCDLayout.SRCCD, dataArraySRCCD.optJSONObject(i));
         msg.add(o);
         return msg;
@@ -2313,9 +2308,9 @@ public class Reportx002Dao extends ItemDao {
 
     // 店別異部門
     errTbl = RefTable.MSTSHNTENBMN;
-    ArrayList<JSONObject> tengp4s = new ArrayList<JSONObject>();
-    TreeSet<String> tengp4s_ = new TreeSet<String>();
-    TreeSet<String> tengp4keys = new TreeSet<String>();
+    ArrayList<JSONObject> tengp4s = new ArrayList<>();
+    TreeSet<String> tengp4s_ = new TreeSet<>();
+    TreeSet<String> tengp4keys = new TreeSet<>();
     String[] tenshncds = new String[] {};
     String areakbn4 = "";
     for (int i = 0; i < dataArrayTENGP4.size(); i++) {
@@ -2390,8 +2385,8 @@ public class Reportx002Dao extends ItemDao {
 
     // 品揃えグループ
     errTbl = RefTable.MSTSHINAGP;
-    ArrayList<JSONObject> tengp3s = new ArrayList<JSONObject>();
-    TreeSet<String> tengp3s_ = new TreeSet<String>();
+    ArrayList<JSONObject> tengp3s = new ArrayList<>();
+    TreeSet<String> tengp3s_ = new TreeSet<>();
     String areakbn3 = "";
     for (int i = 0; i < dataArrayTENGP3.size(); i++) {
       String val = dataArrayTENGP3.optJSONObject(i).optString(MSTSHINAGPLayout.TENGPCD.getId());
@@ -2567,7 +2562,7 @@ public class Reportx002Dao extends ItemDao {
       return msg;
     }
     if (ArrayUtils.contains(new Integer[] {4, 5, 6, 43}, NumberUtils.toInt(txt_bmncd))) {
-      JSONArray mstsir_rows = this.getMstData(DefineReport.ID_SQL_SIR_, new ArrayList<String>(Arrays.asList(txt_ssircd)));
+      JSONArray mstsir_rows = this.getMstData(DefineReport.ID_SQL_SIR_, new ArrayList<>(Arrays.asList(txt_ssircd)));
 
       boolean err = false;
       if (mstsir_rows.size() != 1) {
@@ -2662,8 +2657,8 @@ public class Reportx002Dao extends ItemDao {
     String txt_itfcd = data.optString(MSTSHNLayout.ITFCD.getId());
     if (!this.isEmptyVal(txt_itfcd, false)) {
       JSONObject result = NumberingUtility.calcCheckdigitITFCD(userInfo, txt_itfcd);
-      if (StringUtils.isNotEmpty(result.optString(mu.ID))) {
-        JSONObject o = mu.getDbMessageObj(result.optString(mu.ID), new String[] {"ITFコード"});
+      if (StringUtils.isNotEmpty(result.optString(MessageUtility.ID))) {
+        JSONObject o = mu.getDbMessageObj(result.optString(MessageUtility.ID), new String[] {"ITFコード"});
         this.setCsvshnErrinfo(o, errTbl, MSTSHNLayout.ITFCD, data);
         msg.add(o);
         return msg;
@@ -2673,8 +2668,8 @@ public class Reportx002Dao extends ItemDao {
     // 売価グループ
     // レギュラー取扱フラグのチェックがない場合、この売価コントロール部分は設定不可。
     errTbl = RefTable.MSTBAIKACTL;
-    ArrayList<JSONObject> tengp2s = new ArrayList<JSONObject>();
-    TreeSet<String> tengp2s_ = new TreeSet<String>();
+    ArrayList<JSONObject> tengp2s = new ArrayList<>();
+    TreeSet<String> tengp2s_ = new TreeSet<>();
     String areakbn2 = "";
     for (int i = 0; i < dataArrayTENGP2.size(); i++) {
       String val = dataArrayTENGP2.optJSONObject(i).optString(MSTBAIKACTLLayout.TENGPCD.getId());
@@ -2725,10 +2720,10 @@ public class Reportx002Dao extends ItemDao {
 
     // 仕入グループ
     errTbl = RefTable.MSTSIRGPSHN;
-    ArrayList<JSONObject> tengp1s = new ArrayList<JSONObject>();
-    TreeSet<String> tengp1s_ = new TreeSet<String>();
-    TreeSet<String> tengp1keys = new TreeSet<String>();
-    ArrayList<String> sircdList = new ArrayList<String>();
+    ArrayList<JSONObject> tengp1s = new ArrayList<>();
+    TreeSet<String> tengp1s_ = new TreeSet<>();
+    TreeSet<String> tengp1keys = new TreeSet<>();
+    ArrayList<String> sircdList = new ArrayList<>();
     String areakbn1 = "";
     for (int i = 0; i < dataArrayTENGP1.size(); i++) {
       String val = dataArrayTENGP1.optJSONObject(i).optString(MSTSIRGPSHNLayout.TENGPCD.getId());
@@ -2750,10 +2745,10 @@ public class Reportx002Dao extends ItemDao {
       return msg;
     }
     // 店グループに入力がある場合、仕入先コード、配送パターンは必須入力。
-    for (int i = 0; i < tengp1s.size(); i++) {
-      if (StringUtils.isEmpty(tengp1s.get(i).optString(MSTSIRGPSHNLayout.SIRCD.getId())) || StringUtils.isEmpty(tengp1s.get(i).optString(MSTSIRGPSHNLayout.HSPTN.getId()))) {
+    for (JSONObject tengp1 : tengp1s) {
+      if (StringUtils.isEmpty(tengp1.optString(MSTSIRGPSHNLayout.SIRCD.getId())) || StringUtils.isEmpty(tengp1.optString(MSTSIRGPSHNLayout.HSPTN.getId()))) {
         JSONObject o = mu.getDbMessageObj("E11123", new String[] {});
-        this.setCsvshnErrinfo(o, errTbl, MSTSIRGPSHNLayout.TENGPCD, tengp1s.get(i));
+        this.setCsvshnErrinfo(o, errTbl, MSTSIRGPSHNLayout.TENGPCD, tengp1);
         msg.add(o);
         return msg;
       }
@@ -2767,7 +2762,7 @@ public class Reportx002Dao extends ItemDao {
     }
     if (tengp1s_.size() > 0) {
       // 店グループで展開し、店コードが重複する場合はエラー。
-      ArrayList<String> paramData = new ArrayList<String>(Arrays.asList(DefineReport.ValGpkbn.SIR.getVal(), txt_bmncd, areakbn1));
+      ArrayList<String> paramData = new ArrayList<>(Arrays.asList(DefineReport.ValGpkbn.SIR.getVal(), txt_bmncd, areakbn1));
       String rep = "";
       for (String cd : tengp1s_) {
         rep += ", ?";
@@ -2783,8 +2778,7 @@ public class Reportx002Dao extends ItemDao {
       }
 
       // 仕入先コード:仕入先マスタに存在しない場合エラー
-      for (int i = 0; i < sircdList.size(); i++) {
-        String sircd = sircdList.get(i);
+      for (String sircd : sircdList) {
         if (!this.checkMstExist(DefineReport.InpText.SIRCD.getObj(), sircd)) {
           JSONObject o = mu.getDbMessageObj("E11099", new String[] {});
           this.setCsvshnErrinfo(o, errTbl, MSTSIRGPSHNLayout.SIRCD, "");
@@ -2906,8 +2900,8 @@ public class Reportx002Dao extends ItemDao {
 
     // 添加物
     errTbl = RefTable.MSTTENKABUTSU;
-    ArrayList<JSONObject> tenkabcds1 = new ArrayList<JSONObject>(), tenkabcds2 = new ArrayList<JSONObject>();
-    TreeSet<String> tenkabcds1_ = new TreeSet<String>(), tenkabcds2_ = new TreeSet<String>();
+    ArrayList<JSONObject> tenkabcds1 = new ArrayList<>(), tenkabcds2 = new ArrayList<>();
+    TreeSet<String> tenkabcds1_ = new TreeSet<>(), tenkabcds2_ = new TreeSet<>();
     for (int i = 0; i < dataArrayTENKABUTSU.size(); i++) {
       String kbn = dataArrayTENKABUTSU.optJSONObject(i).optString(MSTTENKABUTSULayout.TENKABKBN.getId());
       String val = dataArrayTENKABUTSU.optJSONObject(i).optString(MSTTENKABUTSULayout.TENKABCD.getId());
@@ -2922,13 +2916,7 @@ public class Reportx002Dao extends ItemDao {
       }
     }
     // 同じ添加物がある場合、エラー。
-    if (tenkabcds1.size() != tenkabcds1_.size()) {
-      JSONObject o = mu.getDbMessageObj("E11133", new String[] {});
-      this.setCsvshnErrinfo(o, errTbl, MSTTENKABUTSULayout.TENKABCD, "");
-      msg.add(o);
-      return msg;
-    }
-    if (tenkabcds2.size() != tenkabcds2_.size()) {
+    if ((tenkabcds1.size() != tenkabcds1_.size()) || (tenkabcds2.size() != tenkabcds2_.size())) {
       JSONObject o = mu.getDbMessageObj("E11133", new String[] {});
       this.setCsvshnErrinfo(o, errTbl, MSTTENKABUTSULayout.TENKABCD, "");
       msg.add(o);
@@ -2937,8 +2925,8 @@ public class Reportx002Dao extends ItemDao {
 
     // グループ分類名
     errTbl = RefTable.MSTGRP;
-    ArrayList<JSONObject> mstgrps = new ArrayList<JSONObject>();
-    TreeSet<String> mstgrps_ = new TreeSet<String>();
+    ArrayList<JSONObject> mstgrps = new ArrayList<>();
+    TreeSet<String> mstgrps_ = new TreeSet<>();
     for (int i = 0; i < dataArrayGROUP.size(); i++) {
       String val = dataArrayGROUP.optJSONObject(i).optString(MSTGRPLayout.GRPKN.getId());
       if (StringUtils.isNotEmpty(val)) {
@@ -2955,8 +2943,8 @@ public class Reportx002Dao extends ItemDao {
     }
     // 自動発注
     errTbl = RefTable.MSTAHS;
-    ArrayList<JSONObject> mstahss = new ArrayList<JSONObject>();
-    TreeSet<String> mstahss_ = new TreeSet<String>();
+    ArrayList<JSONObject> mstahss = new ArrayList<>();
+    TreeSet<String> mstahss_ = new TreeSet<>();
     for (int i = 0; i < dataArrayAHS.size(); i++) {
       // 自動発注区分は0,1で登録しなければならない
       if (!ArrayUtils.contains(new String[] {DefineReport.Values.ON.getVal(), DefineReport.Values.OFF.getVal()}, dataArrayAHS.optJSONObject(i).optString(MSTAHSLayout.AHSKB.getId()))) {
@@ -3093,7 +3081,7 @@ public class Reportx002Dao extends ItemDao {
 
     // 新規(正) 1.5 商品登録数は商品登録限度数テーブルの登録限度数を超えた場合は、エラー。
     if (isNew) {
-      JSONArray shnchk_rows = this.getMstData(DefineReport.ID_SQL_SHN_CHK_UPDATECNT, new ArrayList<String>(Arrays.asList(sysdate)));
+      JSONArray shnchk_rows = this.getMstData(DefineReport.ID_SQL_SHN_CHK_UPDATECNT, new ArrayList<>(Arrays.asList(sysdate)));
       if (shnchk_rows.size() < 1) {
         JSONObject o = mu.getDbMessageObj("E11241", new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTSHNLayout.SHNCD, data);
@@ -3121,7 +3109,7 @@ public class Reportx002Dao extends ItemDao {
       // 添付資料（MD03112501）のメーカーコードの取得方法
       String value = srccds.get(0).optString(MSTSRCCDLayout.SRCCD.getId());
       String kbn = srccds.get(0).optString(MSTSRCCDLayout.SOURCEKBN.getId());
-      ArrayList<String> paramData = new ArrayList<String>(Arrays.asList(value, kbn, txt_bmncd));
+      ArrayList<String> paramData = new ArrayList<>(Arrays.asList(value, kbn, txt_bmncd));
       JSONArray makercd_row = this.getMstData(DefineReport.ID_SQL_MD03112501, paramData); // ソースコードからメーカーコード取得
       String txt_makercd_src = "";
       if (makercd_row.size() > 0) {
@@ -3206,7 +3194,7 @@ public class Reportx002Dao extends ItemDao {
     // TODO:確認 ①②に関しては、登録画面ではJSで実施、CSV取込ではエラー扱いとしてCSVトラン登録
     if (isCsvUpload && isChange) { // 変更(正)
       JSONArray mstbmn_row = this.getMstData(DefineReport.ID_SQL_BUMON_C + DefineReport.ID_SQL_CMN_WHERE + DefineReport.ID_SQL_BMN_BUMON_WHERE + DefineReport.ID_SQL_BUMON_FOOTER_C,
-          new ArrayList<String>(Arrays.asList(txt_bmncd))); // 部門マスタから評価方法区分取得
+          new ArrayList<>(Arrays.asList(txt_bmncd))); // 部門マスタから評価方法区分取得
       if (mstbmn_row.size() > 0) {
         String txt_rg_baikaam_ = seiJsonObject.optString(MSTSHNLayout.RG_BAIKAAM.getId());
         if (DefineReport.ValKbn504.VAL2.getVal().equals(mstbmn_row.optJSONObject(0).optString("HYOKAKBN")) && NumberUtils.toInt(txt_rg_baikaam) != NumberUtils.toInt(txt_rg_baikaam_)) {
@@ -3434,9 +3422,7 @@ public class Reportx002Dao extends ItemDao {
   }
 
   private double calcNeireRit(String txt_genkaam, String txt_baikaam) {
-    if (txt_genkaam.length() == 0)
-      return 0;
-    if (txt_baikaam.length() == 0)
+    if ((txt_genkaam.length() == 0) || (txt_baikaam.length() == 0))
       return 0;
 
     double genka = NumberUtils.toDouble(txt_genkaam);
@@ -3489,7 +3475,7 @@ public class Reportx002Dao extends ItemDao {
 
     JSONArray array = new JSONArray();
     if (!szSelShncd.isEmpty()) {
-      ArrayList<String> paramData = new ArrayList<String>();
+      ArrayList<String> paramData = new ArrayList<>();
       paramData.add(szSelShncd.replace("-", "") + "%");
 
       StringBuffer sbSQL = new StringBuffer();
@@ -3502,9 +3488,9 @@ public class Reportx002Dao extends ItemDao {
       }
       sbSQL.append(" from INAMS.MSTSHN where SHNCD like ? and COALESCE(UPDKBN, 0) <> 1");
 
-      ItemList iL = new ItemList();
+      new ItemList();
       @SuppressWarnings("static-access")
-      JSONArray array0 = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      JSONArray array0 = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
       array.addAll(array0);
     }
     return array;
@@ -3520,7 +3506,7 @@ public class Reportx002Dao extends ItemDao {
 
     JSONArray array = new JSONArray();
     if (!szSelShncd.isEmpty()) {
-      ArrayList<String> paramData = new ArrayList<String>();
+      ArrayList<String> paramData = new ArrayList<>();
       paramData.add(szSelShncd.replace("-", "") + "%");
 
       StringBuffer sbSQL = new StringBuffer();
@@ -3533,9 +3519,9 @@ public class Reportx002Dao extends ItemDao {
       }
       sbSQL.append(" from INAMS.MSTSHN_Y where SHNCD like ? and COALESCE(UPDKBN, 0) <> 1 order by YOYAKUDT");
 
-      ItemList iL = new ItemList();
+      new ItemList();
       @SuppressWarnings("static-access")
-      JSONArray array0 = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      JSONArray array0 = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
       array.addAll(array0);
     }
 
@@ -3548,11 +3534,10 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public String getJNLSHN_SEQ() {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     String sqlColCommand = "SELECT INAMS.nextval('SEQ002') AS \"2\"";
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
     if (array.size() > 0) {
       value = array.optJSONObject(0).optString("1");
@@ -3566,10 +3551,9 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public String getMSTSHN_SHNCD_(String inpshncd, String ketakbn, String bmncd) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
 
     if (((DefineReport.ValKbn143.VAL0.getVal().equals(ketakbn) && StringUtils.length(inpshncd) == 0)
@@ -3583,7 +3567,7 @@ public class Reportx002Dao extends ItemDao {
     String value = "";
     if (sqlcommand.length() > 0) {
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
       if (array.size() > 0) {
         value = array.optJSONObject(0).optString("VALUE");
       }
@@ -3598,10 +3582,9 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public JSONObject getNewSHNCD(String inpshncd, String ketakbn, String bmncd) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
     String sqlcommand2 = "";
     JSONObject returndata = new JSONObject();
@@ -3620,7 +3603,7 @@ public class Reportx002Dao extends ItemDao {
       JSONObject data = new JSONObject();
       if (sqlcommand.length() > 0) {
         @SuppressWarnings("static-access")
-        JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+        JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         if (array.size() > 0) {
           data = array.optJSONObject(0);
           if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
@@ -3645,7 +3628,7 @@ public class Reportx002Dao extends ItemDao {
         if (sqlcommand.length() > 0) {
           data = new JSONObject();
           @SuppressWarnings("static-access")
-          JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+          JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
           try {
             // コネクションの取得
             con = DBConnection.getConnection(this.JNDIname);
@@ -3683,7 +3666,7 @@ public class Reportx002Dao extends ItemDao {
         // 空き番を取得出来なかった場合
         if (dowhile) {
           @SuppressWarnings("static-access")
-          JSONArray array = iL.selectJSONArray(searchCommand, paramData, Defines.STR_JNDI_DS);
+          JSONArray array = ItemList.selectJSONArray(searchCommand, paramData, Defines.STR_JNDI_DS);
           if (array.size() == 0 || StringUtils.isEmpty(array.optJSONObject(0).optString("VALUE"))) {
             // 取得できる空き番が存在しない場合は取得処理を終了する。
             dowhile = false;
@@ -3702,10 +3685,9 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public JSONObject getNewURICD(String shncd) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
     String sqlcommand2 = "";
     int upCount = 0;
@@ -3724,9 +3706,9 @@ public class Reportx002Dao extends ItemDao {
           .replace("select 'X' from INAAD.SYSSHNCD_FU T2 where CAST(left(@C, 2) AS SIGNED ) = T2.BMNCD and NOT CAST(substr(@C, 3, 5) AS SIGNED ) between T2.STARTNO and T2.ENDNO", "@C", "?");
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(chksqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(chksqlcommand, paramData, Defines.STR_JNDI_DS);
 
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       // 衣料使い回しの範囲の場合
       if (array.size() > 0) {
         paramData.add(shncd);
@@ -3735,7 +3717,7 @@ public class Reportx002Dao extends ItemDao {
         sqlcommand = "" + sqlcommand + "";
 
         @SuppressWarnings("static-access")
-        JSONArray array2 = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+        JSONArray array2 = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         try {
           // コネクションの取得
           con = DBConnection.getConnection(this.JNDIname);
@@ -3777,11 +3759,11 @@ public class Reportx002Dao extends ItemDao {
     int SUMINO = 0; // 付番済番号
     boolean useAki = false;
 
-    paramData = new ArrayList<String>();
+    paramData = new ArrayList<>();
     sqlcommand = "select STARTNO, ENDNO, SUMINO from INAAD.SYSURICD_FU LIMIT 1";
     if (sqlcommand.length() > 0) {
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
       if (array.size() > 0) {
         JSONObject data = array.optJSONObject(0);
 
@@ -3794,12 +3776,12 @@ public class Reportx002Dao extends ItemDao {
     if (ENDNO > SUMINO) {
       // 終了番号 > 付番済番号
       // 販売コード付番管理テーブルからデータを取得し、登録を行う。
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       sqlcommand2 = "update INAAD.SYSURICD_FU set SUMINO = SUMINO + 1 where ENDNO > SUMINO";
       sqlcommand = "select SUMINO as VALUE from INAAD.SYSURICD_FU  where ENDNO > SUMINO)";
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
       try {
         // コネクションの取得
         con = DBConnection.getConnection(this.JNDIname);
@@ -3840,14 +3822,14 @@ public class Reportx002Dao extends ItemDao {
     if (ENDNO == SUMINO || useAki) {
       // 終了番号 == 付番済番号
       // 販売コード空き番管理テーブルからデータを取得し、登録を行う。
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       paramData.add("" + STARTNO);
       paramData.add("" + ENDNO);
       sqlcommand2 =
           "update INAAD.SYSURICD_AKI set USEFLG = 1, UPDDT = current_timestamp where USEFLG = 0 and URICD = (select MIN(URICD) as URICD from (SELECT * FROM INAAD.SYSURICD_AKI) T1 where URICD between ? and ? and COALESCE(USEFLG, 0) <> 1)";
       sqlcommand = "select MIN(URICD) as VALUE from INAAD.SYSURICD_AKI where URICD between ? and ? and COALESCE(USEFLG, 0) <> 1";
       String searchCommand = DefineReport.ID_SQL_MD03100902;
-      ArrayList<String> searchParamData = new ArrayList<String>();
+      ArrayList<String> searchParamData = new ArrayList<>();
 
       boolean dowhile = true;
       JSONObject data = new JSONObject();
@@ -3856,7 +3838,7 @@ public class Reportx002Dao extends ItemDao {
         if (sqlcommand.length() > 0) {
           data = new JSONObject();
           @SuppressWarnings("static-access")
-          JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+          JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
           try {
             // コネクションの取得
             con = DBConnection.getConnection(this.JNDIname);
@@ -3895,7 +3877,7 @@ public class Reportx002Dao extends ItemDao {
         // 空き番を取得出来なかった場合
         if (dowhile) {
           @SuppressWarnings("static-access")
-          JSONArray array = iL.selectJSONArray(searchCommand, searchParamData, Defines.STR_JNDI_DS);
+          JSONArray array = ItemList.selectJSONArray(searchCommand, searchParamData, Defines.STR_JNDI_DS);
           if (array.size() == 0 || StringUtils.isEmpty(array.optJSONObject(0).optString("VALUE"))) {
             // 取得できる空き番が存在しない場合は取得処理を終了する。
             dowhile = false;
@@ -3914,10 +3896,9 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public JSONArray getMstData(String sqlcommand, ArrayList<String> paramData) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
     return array;
   }
 
@@ -3927,10 +3908,9 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public boolean checkMstExist(String outobj, String value) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
     String dataLength = ""; // 複数データの存在チェックを行う場合に使用
 
@@ -4028,7 +4008,7 @@ public class Reportx002Dao extends ItemDao {
       }
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
       if (array.size() > 0 && NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) > 0) {
         if (StringUtils.isNotEmpty(dataLength)) {
           if (NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) == Integer.parseInt(dataLength)) {
@@ -4052,15 +4032,14 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public String[] checkMsttgpExist(TreeSet<String> tengpcd, String gpkbn, String bmncd, String areakbn) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
 
     String tbl = "INAMS.MSTSHNTENGP";
     String col = "TENGPCD";
-    TreeSet<String> tengpcdNum = new TreeSet<String>();
+    TreeSet<String> tengpcdNum = new TreeSet<>();
 
     String[] errcds = new String[] {};
     if (tengpcd.size() > 0) {
@@ -4081,7 +4060,7 @@ public class Reportx002Dao extends ItemDao {
       sqlcommand = DefineReport.ID_SQL_CHK_TBL_SEL.replace("@T", tbl).replaceAll("@C", col).replace("?", rep) + " and GPKBN = ? and BMNCD = ? and AREAKBN = ?";
 
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
 
       for (int i = 0; i < array.size(); i++) {
         String val = array.optJSONObject(i).optString("VALUE");
@@ -4104,10 +4083,9 @@ public class Reportx002Dao extends ItemDao {
    * @throws Exception
    */
   public JSONObject checkMstbmnExist(MessageUtility mu, RefTable errTbl, String bmncd, String daicd, String chucd, String shocd, String sshocd, String tbl_suffix) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
 
     paramData.add(StringUtils.defaultIfEmpty(bmncd, "-1"));
@@ -4118,7 +4096,7 @@ public class Reportx002Dao extends ItemDao {
     sqlcommand = StringUtils.replace(DefineReport.ID_SQL_BMN_CHK, "@", tbl_suffix);
 
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
 
 
     String messageId = "";
@@ -4187,7 +4165,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "";
     int colNum = mstshn_col_num;
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -4335,12 +4313,12 @@ public class Reportx002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "";
 
     new StringBuffer();
-    List<String> keyColList = new ArrayList<String>();
-    List<String> keyValList = new ArrayList<String>();
+    List<String> keyColList = new ArrayList<>();
+    List<String> keyValList = new ArrayList<>();
     if (TblType.SEI.getVal() == tbl.getVal()) {
       keyColList.add(MSTSHNLayout.SHNCD.getId());
       keyValList.add(data.optString(MSTSHNLayout.SHNCD.getId()));
@@ -5006,7 +4984,7 @@ public class Reportx002Dao extends ItemDao {
   public JSONObject createSqlMSTSIRGPSHN(String userId, String btnId, JSONArray dataArray, TblType tbl, SqlType sql) {
     JSONObject result = new JSONObject();
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
 
     int colNum = MSTSIRGPSHNLayout.values().length; // テーブル列数
@@ -5158,7 +5136,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     int colNum = MSTBAIKACTLLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -5305,7 +5283,7 @@ public class Reportx002Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     int colNum = MSTSRCCDLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -5523,7 +5501,7 @@ public class Reportx002Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     int colNum = MSTTENKABUTSULayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -5659,7 +5637,7 @@ public class Reportx002Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     int colNum = MSTSHINAGPLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -5796,7 +5774,7 @@ public class Reportx002Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     int colNum = MSTSHNTENBMNLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -5910,8 +5888,13 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append("REPLACE INTO " + szTable + " ( ");
     sbSQL.append("  SHNCD"); // F1 : 商品コード
     sbSQL.append(" ,TENSHNCD"); // F2 : 店別異部門商品コード
-    sbSQL.append(" ,TENGPCD"); // F3 : 店グループ
-    sbSQL.append(" ,YOYAKUDT"); // F4 : マスタ変更予定日
+    if (SqlType.DEL.getVal() == sql.getVal()) {
+      sbSQL.append(" ,YOYAKUDT"); // F3 : マスタ変更予定日
+      sbSQL.append(" ,TENGPCD"); // F4 : 店グループ
+    } else {
+      sbSQL.append(" ,TENGPCD"); // F3 : 店グループ
+      sbSQL.append(" ,YOYAKUDT"); // F4 : マスタ変更予定日
+    }
     sbSQL.append(" ,AREAKBN"); // F5 : エリア区分
     sbSQL.append(" ,SENDFLG"); // F6 : 送信フラグ
     sbSQL.append(" ,OPERATOR"); // F7 : オペレータ
@@ -5947,7 +5930,7 @@ public class Reportx002Dao extends ItemDao {
     // 関連情報取得
     ItemList iL = new ItemList();
     // 配列準備
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "", rows = "";
     for (int j = 0; j < dataArray.size(); j++) {
@@ -5989,7 +5972,7 @@ public class Reportx002Dao extends ItemDao {
     // 更新処理後、IDを取得する
     String sqlcommand = DefineReport.ID_SQL_MSTGROUP2.replace("@V", rows);
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlcommand, prmData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, prmData, Defines.STR_JNDI_DS);
 
 
     // 更新結果をIDとしてセット
@@ -6014,7 +5997,7 @@ public class Reportx002Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     int colNum = 8; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -6150,7 +6133,7 @@ public class Reportx002Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "", rows = "";
     int colNum = MSTAHSLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
@@ -6288,7 +6271,7 @@ public class Reportx002Dao extends ItemDao {
 
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "";
     int colNum = 10; // テーブル列数
     for (int i = 1; i <= colNum; i++) {
@@ -6379,7 +6362,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject inf = this.createSqlSYSSHNCD_AKI(userId, data, sql);
 
     JSONArray prm = inf.optJSONArray("PRM");
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     for (int i = 0; i < prm.size(); i++) {
       prmData.add(prm.optString(i));
     }
@@ -6403,7 +6386,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "";
     int colNum = 3; // テーブル列数
     for (int i = 1; i <= colNum; i++) {
@@ -6466,7 +6449,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String szTable = "INAAD.SYSURICD_FU";
     StringBuffer sbSQL;
@@ -6501,7 +6484,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject inf = this.createSqlSYSURICD_AKI(userId, data, sql);
 
     JSONArray prm = inf.optJSONArray("PRM");
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     for (int i = 0; i < prm.size(); i++) {
       prmData.add(prm.optString(i));
     }
@@ -6524,7 +6507,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     String values = "", names = "";
     int colNum = 2; // テーブル列数
     for (int i = 1; i <= colNum; i++) {
@@ -6587,7 +6570,7 @@ public class Reportx002Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String sysdate = this.getSHORIDT();
 
@@ -6617,15 +6600,15 @@ public class Reportx002Dao extends ItemDao {
   // 処理日付取得
   public String getSHORIDT() {
 
-    ItemList iL = new ItemList();
+    new ItemList();
     StringBuffer sbSQL = new StringBuffer();
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String value = "";
 
     sbSQL.append(DefineReport.ID_SQLSHORIDT);
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
     if (array.size() > 0) {
       value = array.getJSONObject(0).optString("VALUE");
     }

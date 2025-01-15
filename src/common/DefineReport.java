@@ -5922,15 +5922,15 @@ public class DefineReport {
   public final static String ID_SQL_TENGP_BAIKA = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.MSTBAIKACTL AS TA1 where SHNCD like ? and AREAKBN = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
-      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
+      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD IS NULL asc, T2.TENGPCD  asc";
   public final static String ID_SQL_TENGP_BAIKA_Y = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.MSTBAIKACTL_Y AS TA1 where SHNCD like ?  and YOYAKUDT = ? and AREAKBN = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
-      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
+      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD IS NULL asc, T2.TENGPCD  asc";
   public final static String ID_SQL_TENGP_BAIKA_C = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.GENKAAM, T2.BAIKAAM, '' as BG_SOUBAIKA, '' as BG_NEIRE, T2.IRISU, T2.AREAKBN from T1"
       + " left outer join (select ROW_NUMBER() over (order by TENGPCD) as IDX, TA1.* from INAMS.CSVBAIKACTL AS TA1 where SEQ = ? and INPUTNO = ? order by TENGPCD LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTSHNTENGP T3 on T2.TENGPCD = T3.TENGPCD and T2.AREAKBN = T3.AREAKBN and T3.GPKBN = " + ValGpkbn.BAIKA.getVal()
-      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD ";
+      + " and T3.BMNCD = ? and COALESCE(T3.UPDKBN,0) <> 1 ORDER BY T2.TENGPCD IS NULL asc, T2.TENGPCD  asc";
 
   /** 品揃えグループ（INAMS.MSTSHINAGP） */
   public final static String ID_SQL_TENGP_SHINA = ID_SQL_GRD_CMN + "select T2.TENGPCD, T3.TENGPKN, T2.ATSUKKBN||'" + SEPARATOR + "'||T4.NMKN as ATSUKKBN, T2.AREAKBN from T1"
