@@ -5786,11 +5786,19 @@ public class Reportx002Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      if (j == 1) {
-        values += "( ";
-      } else {
-        values += ",( ";
 
+      if (SqlType.DEL.getVal() == sql.getVal()) {
+        if (j == 1) {
+          values += " row( ";
+        } else {
+          values += ", row( ";
+        }
+      } else {
+        if (j == 1) {
+          values += "( ";
+        } else {
+          values += ",( ";
+        }
       }
       for (int i = 1; i <= colNum; i++) {
         String col = "F" + i;
@@ -5885,32 +5893,43 @@ public class Reportx002Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO " + szTable + " ( ");
-    sbSQL.append("  SHNCD"); // F1 : 商品コード
-    sbSQL.append(" ,TENSHNCD"); // F2 : 店別異部門商品コード
+
     if (SqlType.DEL.getVal() == sql.getVal()) {
-      sbSQL.append(" ,YOYAKUDT"); // F3 : マスタ変更予定日
-      sbSQL.append(" ,TENGPCD"); // F4 : 店グループ
+      sbSQL.append(" WITH T1 AS (");
+      sbSQL.append(" select");
+      sbSQL.append(" cast(" + MSTGRPLayout.SHNCD.getId() + " as CHAR(14)) as " + MSTGRPLayout.SHNCD.getCol() + " ");
+      sbSQL.append(" ,cast(F3 as SIGNED) as " + MSTGRPLayout.YOYAKUDT.getCol() + " ");
+      sbSQL.append(" from(values" + values + ") as RE(" + names + ")");
+      sbSQL.append(" ) ");
+      sbSQL.append(" DELETE FROM " + szTable + " as T ");
+      sbSQL.append(" where ");
+      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTGRPLayout.SHNCD.getCol() + " from T1) ");
+      if (SqlType.DEL.getVal() != sql.getVal()) {
+        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTGRPLayout.YOYAKUDT.getCol() + " from T1) ");
+      }
     } else {
+      sbSQL.append("REPLACE INTO " + szTable + " ( ");
+      sbSQL.append("  SHNCD"); // F1 : 商品コード
+      sbSQL.append(" ,TENSHNCD"); // F2 : 店別異部門商品コード
       sbSQL.append(" ,TENGPCD"); // F3 : 店グループ
       sbSQL.append(" ,YOYAKUDT"); // F4 : マスタ変更予定日
+      sbSQL.append(" ,AREAKBN"); // F5 : エリア区分
+      sbSQL.append(" ,SENDFLG"); // F6 : 送信フラグ
+      sbSQL.append(" ,OPERATOR"); // F7 : オペレータ
+      sbSQL.append(" ,ADDDT"); // F8 : 登録日
+      sbSQL.append(" ,UPDDT"); // F9 : 更新日
+      sbSQL.append(" ,SRCCD"); // F10: ソースコード
+      if (TblType.JNL.getVal() == tbl.getVal()) {
+        sbSQL.append(" ,SEQ"); // SEQ
+        sbSQL.append(" ,RENNO"); // RENNO
+      }
+      if (TblType.CSV.getVal() == tbl.getVal()) {
+        sbSQL.append(" ,SEQ"); // F1 : SEQ
+        sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
+        sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
+      }
+      sbSQL.append(" )VALUES " + values + "");
     }
-    sbSQL.append(" ,AREAKBN"); // F5 : エリア区分
-    sbSQL.append(" ,SENDFLG"); // F6 : 送信フラグ
-    sbSQL.append(" ,OPERATOR"); // F7 : オペレータ
-    sbSQL.append(" ,ADDDT"); // F8 : 登録日
-    sbSQL.append(" ,UPDDT"); // F9 : 更新日
-    sbSQL.append(" ,SRCCD"); // F10: ソースコード
-    if (TblType.JNL.getVal() == tbl.getVal()) {
-      sbSQL.append(" ,SEQ"); // SEQ
-      sbSQL.append(" ,RENNO"); // RENNO
-    }
-    if (TblType.CSV.getVal() == tbl.getVal()) {
-      sbSQL.append(" ,SEQ"); // F1 : SEQ
-      sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
-      sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-    }
-    sbSQL.append(" )VALUES " + values + "");
     return sbSQL.toString();
   }
 
