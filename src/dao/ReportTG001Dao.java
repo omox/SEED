@@ -111,7 +111,7 @@ public class ReportTG001Dao extends ItemDao {
     if (userInfo == null) {
       return "";
     }
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String szStym = getMap().get("STYM"); // 表示年月From
     String szEnym = getMap().get("ENYM"); // 表示年月To
@@ -122,7 +122,7 @@ public class ReportTG001Dao extends ItemDao {
      */
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     // 一覧表情報
     StringBuffer sbSQL = new StringBuffer();
@@ -402,11 +402,11 @@ public class ReportTG001Dao extends ItemDao {
   boolean isTest = true;
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
   /**
    * 更新処理実行
@@ -439,11 +439,11 @@ public class ReportTG001Dao extends ItemDao {
 
     // 最新情報取得
     String sqlNewWhere = " and MOYSKBN = ? and MOYSSTDT = ? and MOYSRBAN = ?";
-    ArrayList<String> sqlNewParam = new ArrayList<String>();
+    ArrayList<String> sqlNewParam = new ArrayList<>();
     sqlNewParam.add(data.optString(TOKTG_KHNLayout.MOYSKBN.getId()));
     sqlNewParam.add(data.optString(TOKTG_KHNLayout.MOYSSTDT.getId()));
     sqlNewParam.add(data.optString(TOKTG_KHNLayout.MOYSRBAN.getId()));
-    JSONArray newArray = this.getJSONArrayTOKTG_KHN(sqlNewWhere, sqlNewParam);
+    JSONArray newArray = ReportTG001Dao.getJSONArrayTOKTG_KHN(sqlNewWhere, sqlNewParam);
     if (newArray.size() == 0 || !StringUtils.equals(data.optString(TOKTG_KHNLayout.QARCREDT.getId()), newArray.optJSONObject(0).optString(TOKTG_KHNLayout.QARCREDT.getCol()))) {
       this.createSqlTOKTG_KHN_RE(userId, data);
     }
@@ -451,7 +451,7 @@ public class ReportTG001Dao extends ItemDao {
     // 排他チェック実行
     String targetTable = "INATK.TOKTG_KHN";
     String targetWhere = " MOYSKBN= ? and MOYSSTDT= ? and MOYSRBAN= ? and UPDKBN = 0";
-    ArrayList<String> targetParam = new ArrayList<String>();
+    ArrayList<String> targetParam = new ArrayList<>();
     targetParam.add(data.optString(TOKTG_KHNLayout.MOYSKBN.getId()));
     targetParam.add(data.optString(TOKTG_KHNLayout.MOYSSTDT.getId()));
     targetParam.add(data.optString(TOKTG_KHNLayout.MOYSRBAN.getId()));
@@ -461,7 +461,7 @@ public class ReportTG001Dao extends ItemDao {
       return option;
     }
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -478,10 +478,10 @@ public class ReportTG001Dao extends ItemDao {
       } else {
         // 更新情報取得
         String sqlUpdWhere = " and QAYYYYMM = ? and QAENO = ?";
-        ArrayList<String> sqlUpdParam = new ArrayList<String>();
+        ArrayList<String> sqlUpdParam = new ArrayList<>();
         sqlUpdParam.add(data.optString(TOKTG_KHNLayout.QAYYYYMM.getId()));
         sqlUpdParam.add(data.optString(TOKTG_KHNLayout.QAENO.getId()));
-        JSONArray updArray = this.getJSONArrayTOKTG_KHN(sqlUpdWhere, sqlUpdParam);
+        JSONArray updArray = ReportTG001Dao.getJSONArrayTOKTG_KHN(sqlUpdWhere, sqlUpdParam);
         option.put("rows_upd", updArray);
         option.put(MsgKey.S.getKey(), MessageUtility.getMessage(Msg.S00001.getVal()));
       }
@@ -553,7 +553,7 @@ public class ReportTG001Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String[] notTarget = new String[] {TOKTG_KHNLayout.UPDKBN.getId(), TOKTG_KHNLayout.SENDFLG.getId(), TOKTG_KHNLayout.OPERATOR.getId(), TOKTG_KHNLayout.ADDDT.getId(), TOKTG_KHNLayout.UPDDT.getId()};
 
@@ -673,33 +673,23 @@ public class ReportTG001Dao extends ItemDao {
     JSONObject result = new JSONObject();
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
+    new JSONObject();
 
     String[] target = new String[] {TOKTG_KHNLayout.MOYSKBN.getId(), TOKTG_KHNLayout.MOYSSTDT.getId(), TOKTG_KHNLayout.MOYSRBAN.getId(), TOKTG_KHNLayout.QAYYYYMM.getId(),
         TOKTG_KHNLayout.QAENO.getId(), TOKTG_KHNLayout.QARCREDT.getId()};
 
-    // 基本Merge文
-    StringBuffer sbSQL;
-    sbSQL = new StringBuffer();
-    sbSQL.append("INSERT INTO INATK.TOKTG_KHN ( ");
-    sbSQL.append("  MOYSKBN"); // F1 : 催し区分
-    sbSQL.append(" ,MOYSSTDT"); // F2 : 催し開始日
-    sbSQL.append(" ,MOYSRBAN"); // F3 : 催し連番
-    sbSQL.append(" ,QAYYYYMM"); // F8 : アンケート月度
-    sbSQL.append(" ,QAENO"); // F9 : アンケート月度枝番
-    sbSQL.append(" ,QARCREDT"); // F11: アンケート再作成日
-    sbSQL.append(" ,UPDKBN"); // F21: 更新区分
-    sbSQL.append(" ,SENDFLG"); // F22: 送信フラグ
-    sbSQL.append(" ,OPERATOR"); // F23: オペレータ
-    sbSQL.append(" ,UPDDT"); // F25: 更新日
-    sbSQL.append(")values(");
+
+    // valuesのデータ
+    StringBuffer values;
+    values = new StringBuffer();
     for (TOKTG_KHNLayout itm : TOKTG_KHNLayout.values()) {
       String TYP2;
       if (!ArrayUtils.contains(target, itm.getId())) {
         continue;
       } // 対象外
       if (itm.getNo() > 1) {
-        sbSQL.append(",");
+        values.append(",");
       }
       if (itm.getTyp() == "SMALLINT" || itm.getTyp() == "INTEGER") {
         TYP2 = "SIGNED";
@@ -712,31 +702,35 @@ public class ReportTG001Dao extends ItemDao {
         String value = StringUtils.strip(data.optString(itm.getId()));
         if (StringUtils.isNotEmpty(value)) {
           prmData.add(value);
-          sbSQL.append("cast(? as " + TYP2 + ") ");
+          values.append("cast(? as " + TYP2 + ") ");
         } else {
-          sbSQL.append("cast(null as " + TYP2 + ") ");
+          values.append("cast(null as " + TYP2 + ") ");
         }
       } else {
-        sbSQL.append("null ");
+        values.append("null ");
       }
     }
-    sbSQL.append(" ," + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
-    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
-    sbSQL.append(" ,'" + userId + "'"); // F23: オペレータ
-    sbSQL.append(" ,current_timestamp"); // F25: 更新日
+    values.append(" ," + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
+    values.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
+    values.append(" ,'" + userId + "'"); // F23: オペレータ
+    values.append(" ,current_timestamp"); // F25: 更新日
 
+    StringBuffer sbSQL;
+    sbSQL = new StringBuffer();
+    sbSQL.append(" WITH RE AS ( select MOYSKBN,MOYSSTDT,MOYSRBAN,QAYYYYMM,QAENO,QARCREDT,UPDKBN,SENDFLG,OPERATOR,UPDDT FROM (values ROW(");
+    sbSQL.append(" " + values + ")) AS RE(MOYSKBN,MOYSSTDT,MOYSRBAN,QAYYYYMM,QAENO,QARCREDT,UPDKBN,SENDFLG,OPERATOR,UPDDT)");
     sbSQL.append(" )");
-    sbSQL.append("ON DUPLICATE KEY UPDATE ");
-    sbSQL.append("  MOYSKBN=VALUES(MOYSKBN) "); // F1 : 催し区分
-    sbSQL.append(" ,MOYSSTDT=VALUES(MOYSSTDT) "); // F2 : 催し開始日
-    sbSQL.append(" ,MOYSRBAN=VALUES(MOYSRBAN) "); // F3 : 催し連番
-    sbSQL.append(" ,QAYYYYMM=VALUES(QAYYYYMM) "); // F8 : アンケート月度
-    sbSQL.append(" ,QAENO=VALUES(QAENO) "); // F9 : アンケート月度枝番
-    sbSQL.append(" ,QARCREDT=VALUES(QARCREDT) "); // F11: アンケート再作成日
-    sbSQL.append(" ,UPDKBN=VALUES(UPDKBN) "); // F21: 更新区分
-    sbSQL.append(" ,SENDFLG=VALUES(SENDFLG) "); // F22: 送信フラグ
-    sbSQL.append(" ,OPERATOR=VALUES(OPERATOR) "); // F23: オペレータ
-    sbSQL.append(" ,UPDDT=VALUES(UPDDT) "); // F25: 更新日
+    sbSQL.append(" UPDATE INATK.TOKTG_KHN T set");
+    sbSQL.append("  T.QARCREDT=(select QARCREDT  FROM RE)"); // F11: アンケート再作成日
+    sbSQL.append(" ,T.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
+    sbSQL.append(" ,T.SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal()); // F22: 送信フラグ
+    sbSQL.append(" ,T.OPERATOR='" + userId + "'"); // F23: オペレータ
+    sbSQL.append(" ,UPDDT=current_timestamp"); // F25: 更新日
+    sbSQL.append(" where not(T.MOYSKBN = (select MOYSSTDT  FROM RE) and T.MOYSSTDT = (select MOYSSTDT FROM RE) and T.MOYSRBAN = (select MOYSRBAN  FROM RE))");
+    sbSQL.append(" and T.QAYYYYMM=(select QAYYYYMM  FROM RE)"); // F8 : アンケート月度
+    sbSQL.append(" and T.QAENO=(select QAENO  FROM RE)"); // F8 : アンケート月度枝番
+    sbSQL.append(" and T.UPDKBN=" + DefineReport.ValUpdkbn.NML.getVal()); // F21: 更新区分
+
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -762,9 +756,9 @@ public class ReportTG001Dao extends ItemDao {
     sbSQL.append(" from INATK.TOKTG_KHN T1");
     sbSQL.append(" where COALESCE(T1.UPDKBN, 0) <> 1" + sqlWhere);
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
     return array;
   }
 
@@ -774,7 +768,7 @@ public class ReportTG001Dao extends ItemDao {
    * @throws Exception
    */
   public static JSONObject checkQACREDTAndQAENO(User userInfo, JSONObject cond) {
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     paramData.add(cond.optString(TOKTG_KHNLayout.QAYYYYMM.getCol()));
     paramData.add(cond.optString(TOKTG_KHNLayout.QAENO.getCol()));
     paramData.add(cond.optString(TOKTG_KHNLayout.QACREDT.getCol()));
@@ -808,7 +802,7 @@ public class ReportTG001Dao extends ItemDao {
    * @throws Exception
    */
   public static JSONObject checkQADEVSTDTAndQAENO(User userInfo, JSONObject cond) {
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     paramData.add(cond.optString(TOKTG_KHNLayout.QAYYYYMM.getCol()));
     paramData.add(cond.optString(TOKTG_KHNLayout.QAENO.getCol()));
     paramData.add(cond.optString(TOKTG_KHNLayout.QADEVSTDT.getCol()));
