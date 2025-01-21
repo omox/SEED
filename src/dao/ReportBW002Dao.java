@@ -67,7 +67,7 @@ public class ReportBW002Dao extends ItemDao {
     String szSeisi = getMap().get("SEISI"); // ボタンID
 
     // DB検索用パラメータ
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     paramData.add(szHbstdt);
     paramData.add(szBmncd);
     paramData.add(szWaribiki);
@@ -77,7 +77,7 @@ public class ReportBW002Dao extends ItemDao {
 
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(" select");
@@ -153,10 +153,10 @@ public class ReportBW002Dao extends ItemDao {
     getMap().get("SENDBTNID");
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     // DB検索用パラメータ
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     for (int i = 0; i < 9; i++) {
       paramData.add(szHbstdt);
     }
@@ -311,7 +311,7 @@ public class ReportBW002Dao extends ItemDao {
   public JSONArray getTOKMOYCDData(HashMap<String, String> map) {
     String szSEQ = map.get("SEQ"); // 催し区分
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     paramData.add(szSEQ);
     setParamData(paramData);
@@ -338,9 +338,9 @@ public class ReportBW002Dao extends ItemDao {
     sbSQL.append(" and MMSH2.MEISHOKBN = 10303");
     sbSQL.append(" where CTRK.SEQ = ? ");
 
-    ItemList iL = new ItemList();
+    new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
@@ -589,10 +589,9 @@ public class ReportBW002Dao extends ItemDao {
    * @throws Exception
    */
   public boolean checkMstExist(String outobj, String value) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
 
     String tbl = "";
@@ -605,7 +604,7 @@ public class ReportBW002Dao extends ItemDao {
     sqlcommand = DefineReport.ID_SQL_CHK_TBL.replace("@T", tbl).replaceAll("@C", col);
 
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
     if (array.size() > 0 && NumberUtils.toInt(array.getJSONObject(0).optString("VALUE")) > 0) {
       return false;
     }
@@ -626,7 +625,7 @@ public class ReportBW002Dao extends ItemDao {
     String szWaribiki = map.get("WARIBIKI"); // 割引率区分
     String szSeisi = map.get("SEISI"); // 正視・カット
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     // タイトル情報(任意)設定
 
     StringBuffer sbSQL = new StringBuffer();
@@ -672,9 +671,9 @@ public class ReportBW002Dao extends ItemDao {
       sbSQL.append(szDummycd);
       sbSQL.append(" and COALESCE(TRSH.UPDKBN, 0) <> 1)");
 
-      ItemList iL = new ItemList();
+      new ItemList();
       @SuppressWarnings("static-access")
-      JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+      JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
       // 企画に新しい冷凍食品レコードの場合
       if (array.size() > 0) {
@@ -695,9 +694,9 @@ public class ReportBW002Dao extends ItemDao {
         sbSQL.append(" and SYSR.DUMMYCD = ");
         sbSQL.append(szDummycd);
 
-        iL = new ItemList();
+        new ItemList();
         @SuppressWarnings("static-access")
-        JSONArray array2 = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        JSONArray array2 = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
         int kanriNo;
         boolean New;
         if (array2.size() == 0) {
@@ -709,7 +708,7 @@ public class ReportBW002Dao extends ItemDao {
         }
         String shncd = "";
         int newColNum = 13;
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
         for (int i = 0; i < dataArray.size(); i++) {
           shncd = dataArray.optJSONObject(i).optString("F1").trim();;
           for (int j = 0; j < array.size(); j++) {
@@ -782,7 +781,7 @@ public class ReportBW002Dao extends ItemDao {
                 }
               }
               // updateRows += ",("+values+")";
-              updateRows += ",(" + StringUtils.removeStart(values, ",") + ")";
+              updateRows += ",row(" + StringUtils.removeStart(values, ",") + ")";
             }
           }
         }
@@ -847,7 +846,7 @@ public class ReportBW002Dao extends ItemDao {
         sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
         sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
         sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
-        sbSQL.append(" FROM (values ROW" + updateRows + ") as T1(");
+        sbSQL.append(" FROM (values " + updateRows + ") as T1(");
         sbSQL.append(" HBSTDT"); // 販売開始日
         sbSQL.append(",BMNCD"); // 部門
         sbSQL.append(",WRITUKBN"); // 割引率区分
@@ -884,7 +883,7 @@ public class ReportBW002Dao extends ItemDao {
           msgObj.put(MsgKey.E.getKey(), getMessage());
           return msgObj;
         }
-        paramData = new ArrayList<String>();
+        paramData = new ArrayList<>();
         sbSQL = new StringBuffer();
         if (New) {
           sbSQL.append("REPLACE INTO INATK.SYSRS ( ");
@@ -946,7 +945,7 @@ public class ReportBW002Dao extends ItemDao {
 
       // 企画に既存の冷凍食品レコードの場合の処理
       updateRows = "";
-      paramData = new ArrayList<String>();
+      paramData = new ArrayList<>();
       for (int j = 0; j < dataArray.size(); j++) {
         shnValues = "";
         if (isTest) {
@@ -987,10 +986,10 @@ public class ReportBW002Dao extends ItemDao {
         sbSQL.append(updateRows);
         sbSQL.append(" ) ");
 
-        iL = new ItemList();
+        new ItemList();
         @SuppressWarnings("static-access")
-        JSONArray array2 = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
-        paramData = new ArrayList<String>();
+        JSONArray array2 = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+        paramData = new ArrayList<>();
         if (array2.size() > 0) {
           // 更新情報
           values = "";
@@ -1064,7 +1063,7 @@ public class ReportBW002Dao extends ItemDao {
                   }
                 }
 
-                updateRows += ",(" + StringUtils.removeStart(values, ",") + ")";
+                updateRows += ",row(" + StringUtils.removeStart(values, ",") + ")";
               }
             }
           }
@@ -1132,7 +1131,7 @@ public class ReportBW002Dao extends ItemDao {
           sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
           sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
           sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
-          sbSQL.append(" FROM (values ROW" + updateRows + ") as T1(");
+          sbSQL.append(" FROM (values " + updateRows + ") as T1(");
           sbSQL.append(" HBSTDT"); // 販売開始日
           sbSQL.append(",BMNCD"); // 部門
           sbSQL.append(",WRITUKBN"); // 割引率区分
@@ -1174,7 +1173,7 @@ public class ReportBW002Dao extends ItemDao {
 
 
     // 削除処理
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
     updateRows = "";
     int delColNum = 6;
     for (int i = 0; i < dataArray.size(); i++) {
@@ -1216,7 +1215,7 @@ public class ReportBW002Dao extends ItemDao {
           }
         }
 
-        updateRows += ",(" + StringUtils.removeStart(values, ",") + ")";
+        updateRows += ",row(" + StringUtils.removeStart(values, ",") + ")";
 
       }
     }
@@ -1264,7 +1263,7 @@ public class ReportBW002Dao extends ItemDao {
     sbSQL.append(", '" + userId + "' AS OPERATOR "); // オペレーター：
     sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT "); // 登録日：
     sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT "); // 更新日：
-    sbSQL.append(" FROM (values ROW" + updateRows + ") as T1(");
+    sbSQL.append(" FROM (values " + updateRows + ") as T1(");
     sbSQL.append(" HBSTDT"); // 販売開始日 F1
     sbSQL.append(",BMNCD"); // 部門 F2
     sbSQL.append(",WRITUKBN"); // 割引率区分 F3
@@ -1295,7 +1294,7 @@ public class ReportBW002Dao extends ItemDao {
     }
 
     // 全部削除された場合
-    prmData = new ArrayList<String>();
+    prmData = new ArrayList<>();
     sbSQL = new StringBuffer();
     sbSQL.append("  UPDATE INATK.TOKRS_KKK AS TRKK ");
     sbSQL.append(" INNER JOIN ( ");
@@ -1379,7 +1378,7 @@ public class ReportBW002Dao extends ItemDao {
 
     // 基本INSERT/UPDATE文
     StringBuffer sbSQL;
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 削除処理：更新区分に"1"（削除）を登録
     sbSQL = new StringBuffer();
