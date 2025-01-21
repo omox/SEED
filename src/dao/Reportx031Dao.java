@@ -121,7 +121,7 @@ public class Reportx031Dao extends ItemDao {
     if (userInfo == null) {
       return "";
     }
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String bmoncd = getMap().get("BUMON"); // 部門コード
     String bunrui = getMap().get("BUNRUI"); // 検索条件分類区分
     String tablename = ""; // 検索テーブル名
@@ -145,7 +145,7 @@ public class Reportx031Dao extends ItemDao {
     }
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
 
     StringBuffer sbSQL = new StringBuffer();
@@ -212,11 +212,11 @@ public class Reportx031Dao extends ItemDao {
   boolean isTest = true;
 
   /** SQLリスト保持用変数 */
-  ArrayList<String> sqlList = new ArrayList<String>();
+  ArrayList<String> sqlList = new ArrayList<>();
   /** SQLのパラメータリスト保持用変数 */
-  ArrayList<ArrayList<String>> prmList = new ArrayList<ArrayList<String>>();
+  ArrayList<ArrayList<String>> prmList = new ArrayList<>();
   /** SQLログ用のラベルリスト保持用変数 */
-  ArrayList<String> lblList = new ArrayList<String>();
+  ArrayList<String> lblList = new ArrayList<>();
 
   /** 処理対象テーブル名称 大分類 */
   String tableNameDAI = "";
@@ -241,7 +241,7 @@ public class Reportx031Dao extends ItemDao {
    */
   public String createSqlDai(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "";
     Object[] valueData = new Object[] {};
@@ -354,7 +354,7 @@ public class Reportx031Dao extends ItemDao {
         lblList.add("大分類マスタ");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -372,7 +372,7 @@ public class Reportx031Dao extends ItemDao {
    */
   public String createSqlChu(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "";
     Object[] valueData = new Object[] {};
@@ -491,7 +491,7 @@ public class Reportx031Dao extends ItemDao {
         lblList.add("中分類マスタ");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -509,7 +509,7 @@ public class Reportx031Dao extends ItemDao {
    */
   public String createSqlSho(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "";
     Object[] valueData = new Object[] {};
@@ -637,7 +637,7 @@ public class Reportx031Dao extends ItemDao {
         lblList.add("小分類マスタ");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -655,7 +655,7 @@ public class Reportx031Dao extends ItemDao {
    */
   public String createSqlSsho(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String updateRows = ""; // 更新データ
 
@@ -720,7 +720,7 @@ public class Reportx031Dao extends ItemDao {
 
       if (!StringUtils.isEmpty(sshocd)) {
         // 未入力新規登録データを省く
-        updateRows += ",(" + values + ")";
+        updateRows += ",row(" + values + ")";
       }
     }
     updateRows = StringUtils.removeStart(updateRows, ",");
@@ -824,7 +824,7 @@ public class Reportx031Dao extends ItemDao {
    */
   public String createDelSqlDai(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "";
     Object[] valueData = new Object[] {};
@@ -878,11 +878,11 @@ public class Reportx031Dao extends ItemDao {
             }
 
             if (k == maxField) {
-              values += ", '" + DefineReport.ValUpdkbn.DEL.getVal() + "' ";//更新区分
-              values += ",0 ";//送信フラグ
-              values += ", '" + userId + "' ";//オペレータ
-              values += ", CURRENT_TIMESTAMP";//更新日時
-              values  = "(" + values.substring(1) + " )";
+              values += ", '" + DefineReport.ValUpdkbn.DEL.getVal() + "' ";// 更新区分
+              values += ",0 ";// 送信フラグ
+              values += ", '" + userId + "' ";// オペレータ
+              values += ", CURRENT_TIMESTAMP";// 更新日時
+              values = "(" + values.substring(1) + " )";
               valueData = ArrayUtils.add(valueData, values);
               values = "";
             }
@@ -910,7 +910,7 @@ public class Reportx031Dao extends ItemDao {
         sbSQL.append(", SENDFLG = NEW.SENDFLG ");
         sbSQL.append(", OPERATOR = NEW.OPERATOR ");
         sbSQL.append(", UPDDT = NEW.UPDDT ");
-        
+
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -919,7 +919,7 @@ public class Reportx031Dao extends ItemDao {
         lblList.add("大分類マスタ");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -937,7 +937,7 @@ public class Reportx031Dao extends ItemDao {
    */
   public String createDelSqlChu(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "";
     Object[] valueData = new Object[] {};
@@ -996,6 +996,11 @@ public class Reportx031Dao extends ItemDao {
             }
 
             if (k == maxField) {
+              values += ", '" + DefineReport.ValUpdkbn.DEL.getVal() + "' ";// 更新区分
+              values += ",0 ";// 送信フラグ
+              values += ", '" + userId + "' ";// オペレータ
+              values += ", CURRENT_TIMESTAMP";// 更新日時
+              values = "(" + values.substring(1) + " )";
               valueData = ArrayUtils.add(valueData, values);
               values = "";
             }
@@ -1033,7 +1038,7 @@ public class Reportx031Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append(" REPLACE INTO " + tablename + " (");
+        sbSQL.append(" INSERT INTO " + tablename + " (");
         sbSQL.append(" BMNCD"); // 部門
         sbSQL.append(", DAICD"); // 大分類
         sbSQL.append(", CHUCD"); // 中分類
@@ -1041,12 +1046,16 @@ public class Reportx031Dao extends ItemDao {
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター：
         sbSQL.append(", UPDDT "); // 更新日：
-        sbSQL.append(") VALUES (");
-        sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", " + DefineReport.ValUpdkbn.DEL.getVal() + " "); // 更新区分：
-        sbSQL.append(", 0 "); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター：
-        sbSQL.append(", CURRENT_TIMESTAMP ) "); // 更新日：
+        sbSQL.append(") VALUES ");
+        sbSQL.append(StringUtils.join(valueData, ",") + " AS NEW ");
+        sbSQL.append(" ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("  BMNCD = NEW.BMNCD ");
+        sbSQL.append(", DAICD = NEW.DAICD ");
+        sbSQL.append(", CHUCD = NEW.CHUCD ");
+        sbSQL.append(", UPDKBN = NEW.UPDKBN ");
+        sbSQL.append(", SENDFLG = NEW.SENDFLG ");
+        sbSQL.append(", OPERATOR = NEW.OPERATOR ");
+        sbSQL.append(", UPDDT = NEW.UPDDT ");
 
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -1056,7 +1065,7 @@ public class Reportx031Dao extends ItemDao {
         lblList.add("中分類マスタ");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -1074,7 +1083,7 @@ public class Reportx031Dao extends ItemDao {
    */
   public String createDelSqlSho(JSONArray dataArray, String bunrui, HashMap<String, String> map, User userInfo) {
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     String values = "";
     Object[] valueData = new Object[] {};
@@ -1138,6 +1147,11 @@ public class Reportx031Dao extends ItemDao {
             }
 
             if (k == maxField) {
+              values += ", '" + DefineReport.ValUpdkbn.DEL.getVal() + "' ";// 更新区分
+              values += ",0 ";// 送信フラグ
+              values += ", '" + userId + "' ";// オペレータ
+              values += ", CURRENT_TIMESTAMP";// 更新日時
+              values = "(" + values.substring(1) + " )";
               valueData = ArrayUtils.add(valueData, values);
               values = "";
             }
@@ -1151,7 +1165,7 @@ public class Reportx031Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append(" REPLACE INTO " + tablename + " (");
+        sbSQL.append(" INSERT INTO " + tablename + " (");
         sbSQL.append(" BMNCD"); // 部門
         sbSQL.append(", DAICD"); // 大分類
         sbSQL.append(", CHUCD"); // 中分類
@@ -1160,13 +1174,17 @@ public class Reportx031Dao extends ItemDao {
         sbSQL.append(", SENDFLG"); // 送信フラグ
         sbSQL.append(", OPERATOR "); // オペレーター：
         sbSQL.append(", UPDDT "); // 登録日：
-
-        sbSQL.append(") VALUES ( "); // 登録日：
-        sbSQL.append(StringUtils.join(valueData, ",").substring(1));
-        sbSQL.append(", " + DefineReport.ValUpdkbn.DEL.getVal() + " "); // 更新区分：
-        sbSQL.append(", 0 "); // 送信フラグ
-        sbSQL.append(", '" + userId + "' "); // オペレーター：
-        sbSQL.append(", CURRENT_TIMESTAMP ) "); // 登録日：
+        sbSQL.append(") VALUES  "); // 登録日：
+        sbSQL.append(StringUtils.join(valueData, ",") + " AS NEW ");
+        sbSQL.append(" ON DUPLICATE KEY UPDATE "); // 更新区分：
+        sbSQL.append("  BMNCD = NEW.BMNCD ");
+        sbSQL.append(", CHUCD = NEW.CHUCD ");
+        sbSQL.append(", SHOCD = NEW.SHOCD ");
+        sbSQL.append(", DAICD = NEW.DAICD ");
+        sbSQL.append(", UPDKBN = NEW.UPDKBN ");
+        sbSQL.append(", SENDFLG = NEW.SENDFLG ");
+        sbSQL.append(", OPERATOR = NEW.OPERATOR ");
+        sbSQL.append(", UPDDT = NEW.UPDDT ");
 
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
@@ -1176,7 +1194,7 @@ public class Reportx031Dao extends ItemDao {
         lblList.add("小分類マスタ");
 
         // クリア
-        prmData = new ArrayList<String>();
+        prmData = new ArrayList<>();
         valueData = new Object[] {};
         values = "";
       }
@@ -1280,7 +1298,7 @@ public class Reportx031Dao extends ItemDao {
     // 排他チェック実行
     String targetTable = null;
     String targetWhere = null;
-    ArrayList<String> targetParam = new ArrayList<String>();
+    ArrayList<String> targetParam = new ArrayList<>();
     // ⑨CSVエラー修正
 
     // 排他チェック：大分類グリッド
@@ -1297,7 +1315,7 @@ public class Reportx031Dao extends ItemDao {
         daicd = data.optString("F1");
         targetTable = tableNameDAI;
         targetWhere = " COALESCE(UPDKBN, 0) <> " + DefineReport.ValUpdkbn.DEL.getVal() + " and BMNCD = ? and DAICD = ?";
-        targetParam = new ArrayList<String>();
+        targetParam = new ArrayList<>();
         targetParam.add(bmoncd);
         targetParam.add(daicd);
 
@@ -1326,7 +1344,7 @@ public class Reportx031Dao extends ItemDao {
         daicd = data.optString("F18");
         targetTable = tableNameCHU;
         targetWhere = " COALESCE(UPDKBN, 0) <> " + DefineReport.ValUpdkbn.DEL.getVal() + " and BMNCD = ? and DAICD = ? and CHUCD = ?";
-        targetParam = new ArrayList<String>();
+        targetParam = new ArrayList<>();
         targetParam.add(bmoncd);
         targetParam.add(daicd);
         targetParam.add(chucd);
@@ -1358,7 +1376,7 @@ public class Reportx031Dao extends ItemDao {
         chucd = data.optString("F19");
         targetTable = tableNameSHO;
         targetWhere = " COALESCE(UPDKBN, 0) <> " + DefineReport.ValUpdkbn.DEL.getVal() + " and BMNCD = ? and DAICD = ? and CHUCD = ? and SHOCD = ?";
-        targetParam = new ArrayList<String>();
+        targetParam = new ArrayList<>();
         targetParam.add(bmoncd);
         targetParam.add(daicd);
         targetParam.add(chucd);
@@ -1374,26 +1392,17 @@ public class Reportx031Dao extends ItemDao {
     }
     // 排他チェック：小小分類グリッド
     /*
-     * if(dataArraySsho.size() > 0){ String daicd = map.get("DAICD"); // 検索用：大分類コード String chucd =
-     * map.get("CHUCD"); // 検索用：中分類コード String shocd = map.get("SHOCD"); // 検索用：小分類コード String sshocd =
-     * ""; // 検索用：小小分類コード String rownum = ""; // エラー行数
+     * if(dataArraySsho.size() > 0){ String daicd = map.get("DAICD"); // 検索用：大分類コード String chucd = map.get("CHUCD"); // 検索用：中分類コード String shocd = map.get("SHOCD"); // 検索用：小分類コード String sshocd = ""; // 検索用：小小分類コード String rownum = ""; // エラー行数
      *
-     * for (int i = 0; i < dataArraySsho.size(); i++) { JSONObject data =
-     * dataArraySsho.getJSONObject(i); if(data.isEmpty()){ continue; }
+     * for (int i = 0; i < dataArraySsho.size(); i++) { JSONObject data = dataArraySsho.getJSONObject(i); if(data.isEmpty()){ continue; }
      *
-     * sshocd = data.optString("F1"); targetTable = "INAMS.MSTSSHOBRUI"; targetWhere =
-     * " NVL(UPDKBN, 0) <> "+DefineReport.ValUpdkbn.DEL.getVal()
-     * +" and BMNCD = ? and DAICD = ? and CHUCD = ? and SHOCD = ? and SSHOCD = ?"; targetParam = new
-     * ArrayList<String>(); targetParam.add(bmoncd); targetParam.add(daicd); targetParam.add(chucd);
-     * targetParam.add(shocd); targetParam.add(sshocd);
+     * sshocd = data.optString("F1"); targetTable = "INAMS.MSTSSHOBRUI"; targetWhere = " NVL(UPDKBN, 0) <> "+DefineReport.ValUpdkbn.DEL.getVal() +" and BMNCD = ? and DAICD = ? and CHUCD = ? and SHOCD = ? and SSHOCD = ?"; targetParam = new ArrayList<String>(); targetParam.add(bmoncd); targetParam.add(daicd); targetParam.add(chucd); targetParam.add(shocd); targetParam.add(sshocd);
      *
-     * if(!super.checkExclusion(targetTable, targetWhere, targetParam, data.optString("F15"))){ rownum =
-     * data.optString("idx"); msg.add(MessageUtility.getDbMessageExclusion(FieldType.GRID, new
-     * String[]{rownum})); option.put(MsgKey.E.getKey(), msg); return option; } } }
+     * if(!super.checkExclusion(targetTable, targetWhere, targetParam, data.optString("F15"))){ rownum = data.optString("idx"); msg.add(MessageUtility.getDbMessageExclusion(FieldType.GRID, new String[]{rownum})); option.put(MsgKey.E.getKey(), msg); return option; } } }
      */
 
 
-    ArrayList<Integer> countList = new ArrayList<Integer>();
+    ArrayList<Integer> countList = new ArrayList<>();
     if (sqlList.size() > 0) {
       countList = super.executeSQLs(sqlList, prmList);
     }
@@ -1437,7 +1446,7 @@ public class Reportx031Dao extends ItemDao {
     new ItemList();
     new JSONArray();
     StringBuffer sbSQL;
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     if (StringUtils.equals(DefineReport.OptionBunruiKubun.HYOJUN.getVal(), bunrui)) {
       tablenameChu = "INAMS.MSTCHUBRUI";
@@ -1471,7 +1480,7 @@ public class Reportx031Dao extends ItemDao {
 
     // 削除処理：小分類マスタの更新区分に"1"（削除）するSQLを設定
     sbSQL = new StringBuffer();
-    prmData = new ArrayList<String>();
+    prmData = new ArrayList<>();
     sbSQL.append("update " + tablenameSho + " SHO set");
     sbSQL.append(" SHO.UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal());
     sbSQL.append(", SHO.SENDFLG = 0");
@@ -1509,7 +1518,7 @@ public class Reportx031Dao extends ItemDao {
     new ItemList();
     new JSONArray();
     StringBuffer sbSQL;
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     if (StringUtils.equals(DefineReport.OptionBunruiKubun.HYOJUN.getVal(), bunrui)) {
       tablenameSho = "INAMS.MSTSHOBRUI";
@@ -1524,7 +1533,7 @@ public class Reportx031Dao extends ItemDao {
 
     // 削除処理：小分類マスタの更新区分に"1"（削除）するSQLを設定
     sbSQL = new StringBuffer();
-    prmData = new ArrayList<String>();
+    prmData = new ArrayList<>();
     sbSQL.append("update " + tablenameSho + " SHO set");
     sbSQL.append(" SHO.UPDKBN = " + DefineReport.ValUpdkbn.DEL.getVal() + "");
     sbSQL.append(", SHO.SENDFLG = 0");
@@ -1567,11 +1576,10 @@ public class Reportx031Dao extends ItemDao {
     JSONObject msgObj = new JSONObject();
 
 
-    // 基本INSERT/UPDATE文
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     StringBuffer sbSQL;
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 中分類マスタ_他中分類検索
     // 削除件数を比較
@@ -1596,7 +1604,7 @@ public class Reportx031Dao extends ItemDao {
         sbSQL.append(" and SHO.DAICD = " + daicd);
         sbSQL.append(" and SHO.CHUCD = " + chucd);
         sbSQL.append(" and COALESCE(SHO.UPDKBN, 0) <> 1");
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
 
         if (Dletedata.optInt("COUNT") == dbDatas.getJSONObject(i).getInt("COUNT")) {
           // 削除する中分類データを保持
@@ -1625,7 +1633,7 @@ public class Reportx031Dao extends ItemDao {
         sbSQL.append(" where CHU.BMNCD = " + bmoncd);
         sbSQL.append(" and CHU.DAICD = " + daicd);
         sbSQL.append(" and COALESCE(CHU.UPDKBN, 0) <> 1");
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
 
         if (Dletedata.optInt("COUNT") == dbDatas.getJSONObject(l).getInt("COUNT")) {
           // 中分類全権削除の場合
@@ -1650,7 +1658,7 @@ public class Reportx031Dao extends ItemDao {
           sbSQL.append(", DAI.UPDDT = CURRENT_TIMESTAMP");
           sbSQL.append(" where COALESCE(DAI.UPDKBN,0) <> 1 and DAI.BMNCD = ? and DAI.DAICD = ?");
 
-          prmData = new ArrayList<String>();
+          prmData = new ArrayList<>();
           prmData.add(bmoncd);
           prmData.add(daicd);
           sqlList.add(sbSQL.toString());
@@ -1684,11 +1692,10 @@ public class Reportx031Dao extends ItemDao {
     JSONObject msgObj = new JSONObject();
 
 
-    // 基本INSERT/UPDATE文
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     StringBuffer sbSQL;
-    ArrayList<String> prmData = new ArrayList<String>();
+    ArrayList<String> prmData = new ArrayList<>();
 
     // 中分類マスタ_他中分類検索
     // 削除件数を比較
@@ -1711,7 +1718,7 @@ public class Reportx031Dao extends ItemDao {
         sbSQL.append(" and SHO.DAICD = " + daicd);
         sbSQL.append(" and SHO.CHUCD = " + chucd);
         sbSQL.append(" and COALESCE(SHO.UPDKBN, 0) <> 1");
-        dbDatas = iL.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
+        dbDatas = ItemList.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
 
         if (Dletedata.optInt("COUNT") == dbDatas.getJSONObject(l).getInt("COUNT")) {
           // 小分類全権削除の場合
@@ -1738,7 +1745,7 @@ public class Reportx031Dao extends ItemDao {
           sbSQL.append(", CHU.UPDDT = CURRENT_TIMESTAMP");
           sbSQL.append(" where COALESCE(CHU.UPDKBN,0) <> 1 and CHU.BMNCD = ? and CHU.DAICD = ? and CHU.CHUCD = ?");
 
-          prmData = new ArrayList<String>();
+          prmData = new ArrayList<>();
           prmData.add(bmoncd);
           prmData.add(daicd);
           prmData.add(chucd);
@@ -1907,8 +1914,7 @@ public class Reportx031Dao extends ItemDao {
     // 入力値を取得
     // JSONObject data = dataArray;
 
-    // 基本INSERT/UPDATE文
-    ItemList iL = new ItemList();
+    new ItemList();
     JSONArray dbDatas = new JSONArray();
     StringBuffer sbSQL;
     new ArrayList<String>();
@@ -1942,7 +1948,7 @@ public class Reportx031Dao extends ItemDao {
         if (StringUtils.equals(data.optString("F13"), "1")) {
           sbSQL = new StringBuffer();
           sbSQL.append("select * from " + tablenameDAI + " DAI where COALESCE(DAI.UPDKBN, 0) = 0 and DAI.BMNCD = " + bmoncd + " and DAI.DAICD = " + daicd);
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
           if (dbDatas.size() > 0) {
             JSONObject o = mu.getDbMessageObj("E00004", "大分類コード");
             msg.add(o);
@@ -1983,7 +1989,7 @@ public class Reportx031Dao extends ItemDao {
         if (StringUtils.equals(data.optString("F13"), "1")) {
           sbSQL = new StringBuffer();
           sbSQL.append("select * from " + tablenameCHU + " CHU where COALESCE(CHU.UPDKBN, 0) = 0 and CHU.BMNCD = " + bmoncd + " and CHU.DAICD = " + daicd + " and CHU.CHUCD = " + chucd);
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
           if (dbDatas.size() > 0) {
             JSONObject o = mu.getDbMessageObj("E00004", "中分類コード");
             msg.add(o);
@@ -2028,7 +2034,7 @@ public class Reportx031Dao extends ItemDao {
           sbSQL = new StringBuffer();
           sbSQL.append("select * from " + tablenameSHO + " SHO where COALESCE(SHO.UPDKBN, 0) = 0 and SHO.BMNCD = " + bmoncd + " and SHO.DAICD = " + daicd + " and SHO.CHUCD = " + chucd
               + " and SHO.SHOCD = " + shocd);
-          dbDatas = iL.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
+          dbDatas = ItemList.selectJSONArray(sbSQL.toString(), null, Defines.STR_JNDI_DS);
           if (dbDatas.size() > 0) {
             JSONObject o = mu.getDbMessageObj("E00004", "小分類コード");
             msg.add(o);
@@ -2047,10 +2053,9 @@ public class Reportx031Dao extends ItemDao {
    * @throws Exception
    */
   public boolean checkShnMstExist(String outobj, ArrayList<String> Pramdates, String bunrui) {
-    // 関連情報取得
-    ItemList iL = new ItemList();
+    new ItemList();
     // 配列準備
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
     String sqlcommand = "";
     String tbl = "";
     String col = "";
@@ -2092,7 +2097,7 @@ public class Reportx031Dao extends ItemDao {
     sqlcommand = "select @C from @T";
     sqlcommand = sqlcommand.replace("@T", tbl).replace("@C", col) + sqlwhere + "  limit 1 ";
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
     if (array.size() > 0) {
       return true;
     }
