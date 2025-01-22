@@ -560,7 +560,9 @@ public class ReportHT002Dao extends ItemDao {
         sqlWhere_ks += "WHERE BMNCD=null ";
       } else {
         sqlWhere_ks += "WHERE BMNCD=? ";
+        sqlWhere_ks += "AND TENCD=? ";
         paramData.add(String.valueOf(Integer.valueOf(szBumon.substring(0, 2))));
+        paramData.add(szTencd);
       }
     } else {
       sqlWhere_ks += "WHERE SHNCD=? ";
