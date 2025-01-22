@@ -521,6 +521,7 @@ public class ReportHT007Dao extends ItemDao {
 
     // DB検索用パラメータ
     String sqlWhere = "";
+    String sqlWhere_ks = "";
     ArrayList<String> paramData = new ArrayList<>();
 
     // タイトル情報(任意)設定
@@ -556,6 +557,24 @@ public class ReportHT007Dao extends ItemDao {
       sqlWhere += "SHNCD=? ";
       paramData.add(szShncd);
     }
+    
+    
+    // 商品コードが未入力の場合は部門で検索
+    if (StringUtils.isEmpty(szShncd)) {
+
+      if (StringUtils.isEmpty(szBumon) || szBumon.equals("-1")) {
+        sqlWhere_ks += "WHERE BMNCD=null ";
+      } else {
+        sqlWhere_ks += "WHERE BMNCD=? ";
+        paramData.add(String.valueOf(Integer.valueOf(szBumon.substring(0, 2))));
+      }
+    } else {
+      sqlWhere_ks += "WHERE SHNCD=? ";
+      sqlWhere_ks += "AND TENCD=? ";
+      paramData.add(szShncd);
+      paramData.add(szTencd);
+    }
+
 
 
     sbSQL.append("WITH MS AS ( ");
@@ -573,6 +592,7 @@ public class ReportHT007Dao extends ItemDao {
     sbSQL.append(", TENCD ");
     sbSQL.append("FROM ");
     sbSQL.append("INAMS.MSTKSPAGE ");
+    sbSQL.append(sqlWhere_ks);
     sbSQL.append(") ");
 
     if (szIndex.equals("2")) {
