@@ -4224,9 +4224,7 @@ public class Reportx002Dao extends ItemDao {
     for (int i = 1; i <= colNum; i++) {
       String col = "F" + i;
       String val = StringUtils.trim(data.optString(col));
-      if (i == MSTSHNLayout.SHNCD.getNo()) {
-        val = " '" + SHCD + "' ";
-      } else if (i == MSTSHNLayout.SHNKN.getNo()) { // 商品名（漢字）:未入力またはスペースの場合、商品名（カナ）項目を全角変換して設定。
+      if (i == MSTSHNLayout.SHNKN.getNo()) { // 商品名（漢字）:未入力またはスペースの場合、商品名（カナ）項目を全角変換して設定。
         val = shnkn;
       } else if (i == MSTSHNLayout.RECEIPTAN.getNo() && StringUtils.isEmpty(val)) { // レシート名（カナ）:半角大文字。未入力またはスペースの場合、商品名（カナ）項目をコピーする
         val = data.optString(MSTSHNLayout.SHNAN.getId());
@@ -6016,9 +6014,7 @@ public class Reportx002Dao extends ItemDao {
           values += " ,";
           names += " ,";
         }
-        if (i == 1) {
-          values += " " + SHCD + " ";
-        } else if ((i == 8 || i == 9)) {
+        if ((i == 8 || i == 9)) {
           values += " current_timestamp";
         } else if (StringUtils.isEmpty(val)) {
           values += " null";
