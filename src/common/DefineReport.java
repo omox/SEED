@@ -5889,7 +5889,7 @@ public class DefineReport {
       + " left outer join (select ROW_NUMBER() over (order by GRPID) as IDX, TA1.* from INAMS.MSTGRP_Y AS TA1 where SHNCD like ? and YOYAKUDT = ? order by GRPID LIMIT @M ) T2 on T1.IDX = T2.IDX"
       + " left outer join INAMS.MSTGROUP T3 on T2.GRPID = T3.GRPID";
   public static final String ID_SQL_MSTGROUP = "select GRPID as " + VAL + ", GRPKN as " + TXT + " from INAMS.MSTGROUP " + ID_SQL_CMN_WHERE + " and GRPKN like ? order by GRPKN LIMIT @M  ";
-  public static final String ID_SQL_MSTGROUP2 = "with INP as (select IDX, GRPKN from (values @V) as X(IDX, GRPKN))"
+  public static final String ID_SQL_MSTGROUP2 = "with INP as (select IDX, GRPKN from (values @V) as X(IDX, GRPKN,T3,T4,T5,T6,T7))"
       + "select T2.GRPID, T1.GRPKN from INP T1 left outer join INAMS.MSTGROUP T2 on T1.GRPKN = T2.GRPKN and COALESCE(T2.UPDKBN,0) <> 1 order by T1.IDX, T2.GRPID";
 
   // SQL：商品店グループ TODO:
@@ -6168,7 +6168,7 @@ public class DefineReport {
   public final static String ID_SQL_MD03112501 = "with INP as (select CD, KBN, BMNCD from (values ROW(cast(? as CHAR (14)), cast(? as CHAR (2)), cast(? as CHAR (2)))) as X(CD, KBN, BMNCD))"
       + "select case when CD='' then right('0'||BMNCD,2)||'00001'" + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1)<= 5 then left(CD,7)"
       + " when KBN='1' and left(CD,2)='45' and SUBSTR(CD,3,1) > 5 then left(CD,9)" + " when KBN='1' and left(CD,2)='49' then left(CD,7)" + " when KBN='2' then left(CD,6)"
-      + " else right('0'||BMNCD,2)||'00002' end as value" + " from INP";
+      + " else right('0'||BMNCD,2)||'00002' end as VALUE" + " from INP";
 
   /** SQL:添付資料（MD03111301）の総売価の取得 */
   public final static String ID_SQL_MD03111301_IN =

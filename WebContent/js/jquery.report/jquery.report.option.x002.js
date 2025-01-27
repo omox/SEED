@@ -1337,9 +1337,37 @@
 			param["SHOCD"] = txt_shocd;
 			param["SSHOCD"]= "";
 			var bumon_row = $.getSelectListData(that.name, $.id.action_check,  $.id_inp.txt_bmncd, [param]);
-			// ①部門マスタに無い場合エラー
+			var DAI = [];
+			var CHU = [];
+			var SHO = [];
+			var DAICK = 0;
+			var CHUCK = 0;
+			var SHOCK = 0;
+			DAI  = this.baseData[0]['F132'].split(',');
+			CHU  = this.baseData[0]['F133'].split(',');
+			SHO  = this.baseData[0]['F134'].split(',');
 			
-			if(bumon_row[0][1].length===0){
+			var checkcode1 = txt_bmncd + '-' + txt_daicd;
+			var checkcode2 = txt_bmncd + '-' + txt_daicd+'-'+txt_chucd;
+			var checkcode3 = txt_bmncd + '-' + txt_daicd+'-'+txt_chucd+'-'+txt_shocd;
+			for(var i = 0;i<DAI.length;i++){
+				if(DAI[i]==checkcode1){
+					DAICK +=1;
+				}
+			}
+			for(var i = 0;i<CHU.length;i++){
+				if(CHU[i]==checkcode2){
+					CHUCK +=1;
+				}
+			}
+			for(var i = 0;i<SHO.length;i++){
+				if(SHO[i]==checkcode3){
+					SHOCK +=1;
+				}
+			}
+			
+			// ①部門マスタに無い場合エラー
+			if(bumon_row[0][1]===0){
 				$.showMessage('E11044', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_bmncd), true)});
 				return false;
 			}
@@ -1355,17 +1383,20 @@
 				}
 			}
 			// 標準-大分類コード：大分類マスタに無い場合エラー
-			if(!$.isEmptyVal(txt_daicd)&&bumon_row[0][2].length===0){
+			//if(!$.isEmptyVal(txt_daicd)&&bumon_row[0][2].length===0){
+			if(DAICK === 0 && !$.isEmptyVal(txt_daicd)){
 				$.showMessage('E11135', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_daicd), true)});
 				return false;
 			}
 			// 標準-中分類コード：中分類マスタに無い場合エラー
-			if(!$.isEmptyVal(txt_chucd)&&bumon_row[0][3].length===0){
+			//if(!$.isEmptyVal(txt_chucd)&&bumon_row[0][3].length===0){
+				if(CHUCK === 0 && !$.isEmptyVal(txt_chucd)){
 				$.showMessage('E11136', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_chucd), true)});
 				return false;
 			}
 			// 標準-小分類コード：小分類マスタに無い場合エラー
-			if(!$.isEmptyVal(txt_shocd)&&bumon_row[0][4].length===0){
+			//if(!$.isEmptyVal(txt_shocd)&&bumon_row[0][4].length===0){
+			if(SHOCK === 0 && !$.isEmptyVal(txt_shocd)){
 				$.showMessage('E11137', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_shocd), true)});
 				return false;
 			}
@@ -1378,6 +1409,27 @@
 			param["SHOCD"] = inpdata["F7"];
 			param["SSHOCD"]= "";
 			bumon_row = $.getSelectListData(that.name, $.id.action_check,  $.id_inp.txt_yot_bmncd, [param]);
+			var DAICK2 = 0;
+			var CHUCK2 = 0;
+			var SHOCK2 = 0;
+			var checkcode11 = inpdata["F4"] + '-' + inpdata["F5"];
+			var checkcode12 = inpdata["F4"] + '-' + inpdata["F5"]+'-'+inpdata["F6"];
+			var checkcode13 = inpdata["F4"] + '-' + inpdata["F5"]+'-'+inpdata["F6"]+'-'+inpdata["F7"];
+			for(var i = 0;i<DAI.length;i++){
+				if(DAI[i]==checkcode11){
+					DAICK2 +=1;
+				}
+			}
+			for(var i = 0;i<CHU.length;i++){
+				if(CHU[i]==checkcode12){
+					CHUCK2 +=1;
+				}
+			}
+			for(var i = 0;i<SHO.length;i++){
+				if(SHO[i]==checkcode13){
+					SHOCK2 +=1;
+				}
+			}
 			// 用途-部門コード：部門マスタに無い場合エラー
 			if(!$.isEmptyVal(inpdata["F4"],true)&&bumon_row[0][1].length===0){
 			$.showMessage('E11044', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_yot_bmncd), true)});
@@ -1387,17 +1439,17 @@
 			// 部門に0以外のコードが入力された場合
 			if (!$.isEmptyVal(inpdata["F4"],true)) {
 				// 用途-大分類コード：大分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F5"])&&bumon_row[0][2].length===0){
+				if(!$.isEmptyVal(inpdata["F5"])&&DAICK2 === 0){
 					$.showMessage('E11135', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_yot_daicd), true)});
 					return false;
 				}
 				// 用途-中分類コード：中分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F6"])&&bumon_row[0][3].length===0){
+				if(!$.isEmptyVal(inpdata["F6"])&&CHUCK2 === 0){
 					$.showMessage('E11136', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_yot_chucd), true)});
 					return false;
 				}
 				// 用途-小分類コード：小分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F7"])&&bumon_row[0][4].length===0){
+				if(!$.isEmptyVal(inpdata["F7"])&&SHOCK2 === 0){
 					$.showMessage('E11137', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_yot_shocd), true)});
 					return false;
 				}
@@ -1405,17 +1457,17 @@
 			// 部門コードに0が入力された場合
 			} else if (!$.isEmptyVal(inpdata["F4"])){
 				// 用途-大分類コード：大分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F5"],true)&&bumon_row[0][2].length===0){
+				if(!$.isEmptyVal(inpdata["F5"],true)&&DAICK2 === 0){
 					$.showMessage('E11135', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_yot_daicd), true)});
 					return false;
 				}
 				// 用途-中分類コード：中分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F6"],true)&&bumon_row[0][3].length===0){
+				if(!$.isEmptyVal(inpdata["F6"],true)&&CHUCK2 === 0){
 					$.showMessage('E11136', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_yot_chucd), true)});
 					return false;
 				}
 				// 用途-小分類コード：小分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F7"],true)&&bumon_row[0][4].length===0){
+				if(!$.isEmptyVal(inpdata["F7"],true)&&SHOCK2 === 0){
 					$.showMessage('E11137', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_yot_shocd), true)});
 					return false;
 				}
@@ -1444,6 +1496,29 @@
 			param["SHOCD"] = inpdata["F11"];
 			param["SSHOCD"]= "";
 			bumon_row = $.getSelectListData(that.name, $.id.action_check,  $.id_inp.txt_uri_bmncd, [param]);
+			
+			var DAICK3 = 0;
+			var CHUCK3 = 0;
+			var SHOCK3 = 0;
+			var checkcode21 = inpdata["F8"] + '-' + inpdata["F9"];
+			var checkcode22 = inpdata["F8"] + '-' + inpdata["F9"]+'-'+inpdata["F10"];
+			var checkcode23 = inpdata["F8"] + '-' + inpdata["F9"]+'-'+inpdata["F10"]+'-'+inpdata["F11"];
+			for(var i = 0;i<DAI.length;i++){
+				if(DAI[i]==checkcode21){
+					DAICK3 +=1;
+				}
+			}
+			for(var i = 0;i<CHU.length;i++){
+				if(CHU[i]==checkcode22){
+					CHUCK3 +=1;
+				}
+			}
+			for(var i = 0;i<SHO.length;i++){
+				if(SHO[i]==checkcode23){
+					SHOCK3 +=1;
+				}
+			}
+			
 			// 売場-部門コード：部門マスタに無い場合エラー
 			if(!$.isEmptyVal(inpdata["F8"],true)&&bumon_row[0][1].length===0){
 				$.showMessage('E11044', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_uri_bmncd), true)});
@@ -1453,17 +1528,17 @@
 			// 部門に0以外のコードが入力された場合
 			if (!$.isEmptyVal(inpdata["F8"],true)) {
 				// 売場-大分類コード：大分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F9"])&&bumon_row[0][2].length===0){
+				if(!$.isEmptyVal(inpdata["F9"])&&DAICK3 === 0){
 					$.showMessage('E11135', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_uri_daicd), true)});
 					return false;
 				}
 				// 売場-中分類コード：中分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F10"])&&bumon_row[0][3].length===0){
+				if(!$.isEmptyVal(inpdata["F10"])&&CHUCK3 === 0){
 					$.showMessage('E11136', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_uri_chucd), true)});
 					return false;
 				}
 				// 売場-小分類コード：小分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F11"])&&bumon_row[0][4].length===0){
+				if(!$.isEmptyVal(inpdata["F11"])&&SHOCK3 === 0){
 					$.showMessage('E11137', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_uri_shocd), true)});
 					return false;
 				}
@@ -1471,17 +1546,17 @@
 			// 部門コードに0が入力された場合
 			} else if (!$.isEmptyVal(inpdata["F8"])) {
 				// 売場-大分類コード：大分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F9"],true)&&bumon_row[0][2].length===0){
+				if(!$.isEmptyVal(inpdata["F9"],true)&&DAICK3 === 0){
 					$.showMessage('E11135', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_uri_daicd), true)});
 					return false;
 				}
 				// 売場-中分類コード：中分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F10"],true)&&bumon_row[0][3].length===0){
+				if(!$.isEmptyVal(inpdata["F10"],true)&&CHUCK3 === 0){
 					$.showMessage('E11136', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_uri_chucd), true)});
 					return false;
 				}
 				// 売場-小分類コード：小分類マスタに無い場合エラー
-				if(!$.isEmptyVal(inpdata["F11"],true)&&bumon_row[0][4].length===0){
+				if(!$.isEmptyVal(inpdata["F11"],true)&&SHOCK3 === 0){
 					$.showMessage('E11137', undefined, function(){$.addErrState(that, $('#'+$.id_inp.txt_uri_shocd), true)});
 					return false;
 				}

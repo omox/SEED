@@ -184,8 +184,8 @@ public class Reportx001Dao extends ItemDao {
     sbSQL.append("  ,max('\"'||T.SALESCOMKN||'\"')"); // 商品コメント・セールスコピー（漢字）
     sbSQL.append("  ,max('\"'||T.POPKN||'\"')"); // ＰＯＰ名称（漢字）
     sbSQL.append("  ,max('\"'||T.KIKKN||'\"')"); // 規格
-    sbSQL.append("  ,max(T.RG_ATSUKFLG),max(RTRIM(TRIM('0' FROM T.RG_GENKAAM))),max(T.RG_BAIKAAM),max(T.RG_IRISU),rtrim(max(T.RG_IDENFLG)),rtrim(max(T.RG_WAPNFLG))"); // レギュラー情報_取扱フラグ、原価、売価、店入数、一括伝票、ワッペン
-    sbSQL.append("  ,max(T.HS_ATSUKFLG),max(RTRIM(TRIM('0' FROM T.HS_GENKAAM))),max(T.HS_BAIKAAM),max(T.HS_IRISU),rtrim(max(T.HS_WAPNFLG)),rtrim(max(T.HP_SWAPNFLG))"); // 販促情報_取扱フラグ、原価、売価、店入数、ワッペン、特売ワッペン
+    sbSQL.append("  ,max(T.RG_ATSUKFLG),max(TRIM('.' FROM TRIM('0' FROM T.RG_GENKAAM))),max(T.RG_BAIKAAM),max(T.RG_IRISU),rtrim(max(T.RG_IDENFLG)),rtrim(max(T.RG_WAPNFLG))"); // レギュラー情報_取扱フラグ、原価、売価、店入数、一括伝票、ワッペン
+    sbSQL.append("  ,max(T.HS_ATSUKFLG),max(TRIM('.' FROM TRIM('0' FROM T.HS_GENKAAM))),max(T.HS_BAIKAAM),max(T.HS_IRISU),rtrim(max(T.HS_WAPNFLG)),rtrim(max(T.HP_SWAPNFLG))"); // 販促情報_取扱フラグ、原価、売価、店入数、ワッペン、特売ワッペン
     sbSQL.append("  ,max(T.BINKBN)"); // 便区分
     sbSQL.append("  ,max(T.SIMEKAISU)"); // 締め回数
     sbSQL.append("  ,max(right('00'||T.KOMONOKBM,2))"); // 小物区分
