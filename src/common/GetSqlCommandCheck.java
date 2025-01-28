@@ -303,6 +303,27 @@ public class GetSqlCommandCheck {
           paramData.add(chucd);
         }
       }
+      // 小分類コード
+      if (outobj.equals(DefineReport.InpText.SHOCD.getObj()) && value.length() > 0) {
+        System.out.println("TEST4 2025/1/28");
+        System.out.println(outobj);
+        tbl = "INAMS.MSTSHOBRUI";
+        col = "BMNCD";
+
+        String bmncd = value.split(",")[0];
+        String adicd = value.split(",")[1];
+        String chucd = value.split(",")[2];
+        String shocd = value.split(",")[3];
+        rep += bmncd;
+        szWhere += " and DAICD = ?";
+        szWhere += " and CHUCD = ?";
+        szWhere += " and SHOCD = ?";
+        szWhere += " and COALESCE(UPDKBN, 0) = 0";
+        paramData.add(adicd);
+        paramData.add(chucd);
+        paramData.add(shocd);
+
+      }
       // ランクNo.
       if (outobj.equals(DefineReport.InpText.RANKNO.getObj()) && value.length() > 1) {
         tbl = "INATK.TOKRANK";
