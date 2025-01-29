@@ -5720,7 +5720,7 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.YYK.getVal() == tbl.getVal()) {
       szTable += "_Y";
     } else if (TblType.JNL.getVal() == tbl.getVal()) {
-      // szTable = "INAAD.JNLTENKABUTSU";
+      szTable = "INAAD.JNLTENKABUTSU";
     } else if (TblType.CSV.getVal() == tbl.getVal()) {
       szTable = "INAMS.CSVTENKABUTSU";
     }
@@ -5888,7 +5888,7 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.YYK.getVal() == tbl.getVal()) {
       szTable += "_Y";
     } else if (TblType.JNL.getVal() == tbl.getVal()) {
-      // szTable = "INAAD.JNLSHINAGP";
+      szTable = "INAAD.JNLSHINAGP";
     } else if (TblType.CSV.getVal() == tbl.getVal()) {
       szTable = "INAMS.CSVSHINAGP";
     }
