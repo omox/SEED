@@ -287,15 +287,6 @@ public class Reportx002Dao extends ItemDao {
 
     // 完全新規
     if (isNew) {
-      sbSQL.append(" WITH CD1 AS( ");
-      sbSQL.append(" select GROUP_CONCAT(CONCAT(BMNCD,'-',DAICD)) AS VALUE FROM INAMS.MSTDAIBRUI  ");
-      sbSQL.append(" )");
-      sbSQL.append(" , CD2 AS( ");
-      sbSQL.append(" select GROUP_CONCAT(CONCAT(BMNCD,'-',DAICD,'-',CHUCD)) AS VALUE FROM INAMS.MSTCHUBRUI  ");
-      sbSQL.append(" )");
-      sbSQL.append(" , CD3 AS( ");
-      sbSQL.append(" select GROUP_CONCAT(CONCAT(BMNCD,'-',DAICD,'-',CHUCD,'-',SHOCD)) AS VALUE FROM INAMS.MSTSHOBRUI  ");
-      sbSQL.append(" )");
       sbSQL.append(" select ");
       sbSQL.append("   null as SHNCD"); // F1
       sbSQL.append(" , 0 as YOYAKUDT");
@@ -431,22 +422,10 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" , " + DefineReport.ValKbn135.VAL1.getVal() + " as AREAKBN_BAIKA"); // F129
       sbSQL.append(" , " + DefineReport.ValKbn135.VAL0.getVal() + " as AREAKBN_SIR"); // F130
       sbSQL.append(" , " + DefineReport.ValKbn135.VAL0.getVal() + " as AREAKBN_TBMN"); // F131
-      sbSQL.append(",(SELECT * FROM CD1) AS CD1 ");
-      sbSQL.append(",(SELECT * FROM CD2) AS CD2 ");
-      sbSQL.append(",(SELECT * FROM CD3) AS CD3 ");
       sbSQL.append(" from (SELECT 1 AS DUMMY) DUMMY ");
 
       // 流用新規・変更
     } else {
-      sbSQL.append(" WITH CD1 AS( ");
-      sbSQL.append(" select GROUP_CONCAT(CONCAT(BMNCD,'-',DAICD)) AS VALUE FROM INAMS.MSTDAIBRUI ");
-      sbSQL.append(" )");
-      sbSQL.append(" , CD2 AS( ");
-      sbSQL.append(" select GROUP_CONCAT(CONCAT(BMNCD,'-',DAICD,'-',CHUCD)) AS VALUE FROM INAMS.MSTCHUBRUI ");
-      sbSQL.append(" )");
-      sbSQL.append(" , CD3 AS( ");
-      sbSQL.append(" select GROUP_CONCAT(CONCAT(BMNCD,'-',DAICD,'-',CHUCD,'-',SHOCD)) AS VALUE FROM INAMS.MSTSHOBRUI ");
-      sbSQL.append(" )");
 
       // 流用新規の場合、商品コード、ソースコード、ソース区分、定計区分、メーカーコードは元データを参照しない
       sbSQL.append(" select ");
@@ -631,9 +610,6 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" , COALESCE((select max(AREAKBN) from " + szTableBaika + " T1 " + szWhereTable + ")," + DefineReport.ValKbn135.VAL1.getVal() + ") as AREAKBN_BAIKA"); // F129
       sbSQL.append(" , COALESCE((select max(AREAKBN) from " + szTableSir + " T1 " + szWhereTable + ")," + DefineReport.ValKbn135.VAL0.getVal() + ") as AREAKBN_SIR"); // F130
       sbSQL.append(" , COALESCE((select max(AREAKBN) from " + szTableTbmn + " T1 " + szWhereTable + ")," + DefineReport.ValKbn135.VAL0.getVal() + ") as AREAKBN_TBMN"); // F131
-      sbSQL.append(",(SELECT * FROM CD1) AS CD1 ");
-      sbSQL.append(",(SELECT * FROM CD2) AS CD2 ");
-      sbSQL.append(",(SELECT * FROM CD3) AS CD3 ");
       sbSQL.append(" from " + szTableShn + " T1 ");
       sbSQL.append(" " + szWhereTable + " and COALESCE(UPDKBN, 0) <> 1 ");
       sbSQL.append(super.getFechSql("1"));
@@ -2357,7 +2333,8 @@ public class Reportx002Dao extends ItemDao {
       }
     }
     // 商品マスタに存在しない場合、エラー。
-    if (tenshncds.length > 0) {
+    // 店別異部門商品コードが0の場合エラーを出さない(CSV取込エラーの回避)
+    if (tenshncds.length > 0 && !(StringUtils.join(tenshncds, ",").equals("0"))) {
       if (!this.checkMstExist(DefineReport.InpText.TENSHNCD.getObj(), StringUtils.join(tenshncds, ","))) {
         JSONObject o = mu.getDbMessageObj("E11098", new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTSHNTENBMNLayout.TENSHNCD, "");
@@ -2366,8 +2343,9 @@ public class Reportx002Dao extends ItemDao {
       }
     }
     // 商品店グループに存在しないコードはエラー
+    // エリア区分がないor店グループが0ならエラーを出さない(CSV取込エラーの回避)
     String[] errtengps4 = this.checkMsttgpExist(tengp4s_, DefineReport.ValGpkbn.BAIKA.getVal(), txt_bmncd, areakbn4);
-    if (errtengps4.length > 0) {
+    if (errtengps4.length > 0 && areakbn4.length() > 0 && !StringUtils.join(tengp4s_, ",").equals("0")) {
       JSONObject o = mu.getDbMessageObj("E11140", new String[] {});
       this.setCsvshnErrinfo(o, errTbl, MSTSHNTENBMNLayout.TENGPCD, StringUtils.join(errtengps4, ","));
       msg.add(o);
@@ -2382,8 +2360,9 @@ public class Reportx002Dao extends ItemDao {
         return msg;
       }
       // ソースコードが設定しているソースコードの中に無い場合エラー
+      // ソースコードの文字列長が0ならエラーを出さない(CSV取込エラーの回避)
       String srccd = dataArrayTENGP4.optJSONObject(i).optString(MSTSHNTENBMNLayout.SRCCD.getId());
-      if (!srccds_.contains(srccd)) {
+      if (!srccds_.contains(srccd) && srccd.length() > 0) {
         JSONObject o = mu.getDbMessageObj("EX1047", new String[] {"ソースコードにあるJANコード"});
         this.setCsvshnErrinfo(o, errTbl, MSTSHNTENBMNLayout.SRCCD, dataArrayTENGP4.optJSONObject(i));
         msg.add(o);
@@ -2422,8 +2401,9 @@ public class Reportx002Dao extends ItemDao {
     }
     // 店グループ:商品店グループに存在しないコードはエラー。
     // 商品店グループに存在しないコードはエラー
+    // エリア区分がないor店グループが0の場合はエラーを出さない(CSV取込エラーの回避)
     String[] errtengps = this.checkMsttgpExist(tengp3s_, DefineReport.ValGpkbn.SHINA.getVal(), txt_bmncd, areakbn3);
-    if (errtengps.length > 0) {
+    if (errtengps.length > 0 && areakbn3.length() > 0 && !StringUtils.join(tengp3s_, ",").equals("0")) {
       JSONObject o = mu.getDbMessageObj("E11140", new String[] {});
       this.setCsvshnErrinfo(o, errTbl, MSTSHINAGPLayout.TENGPCD, StringUtils.join(errtengps, ","));
       msg.add(o);
@@ -2432,7 +2412,7 @@ public class Reportx002Dao extends ItemDao {
     // 扱い区分:店グループに入力がある場合、扱い区分未入力はエラー
     for (int i = 0; i < tengp3s.size(); i++) {
       // 店グループに入力がある場合、扱い区分未入力はエラー
-      if (StringUtils.isEmpty(tengp3s.get(i).optString(MSTSHINAGPLayout.ATSUKKBN.getId()))) {
+      if (!StringUtils.join(tengp3s_, ",").equals("0") && StringUtils.isEmpty(tengp3s.get(i).optString(MSTSHINAGPLayout.ATSUKKBN.getId()))) {
         JSONObject o = mu.getDbMessageObj("EX1001", new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTSHINAGPLayout.TENGPCD, dataArrayTENGP3.optJSONObject(i));
         msg.add(o);
@@ -2708,7 +2688,14 @@ public class Reportx002Dao extends ItemDao {
     // 店グループ:商品店グループに存在しないコードはエラー。
     // 商品店グループに存在しないコードはエラー
     errtengps = this.checkMsttgpExist(tengp2s_, DefineReport.ValGpkbn.BAIKA.getVal(), txt_bmncd, areakbn2);
-    if (errtengps.length > 0) {
+    System.out.println("店グループ(売価):商品店グループに存在しないコードはエラー。");
+    System.out.println(errtengps);
+    System.out.println(tengp2s_);
+    System.out.println(DefineReport.ValGpkbn.BAIKA.getVal());
+    System.out.println(txt_bmncd);
+    System.out.println(areakbn2);
+    System.out.println(errtengps.length);
+    if (errtengps.length > 0 && areakbn2.length() > 0 && !StringUtils.join(tengp2s_, ",").equals("0")) {
       JSONObject o = mu.getDbMessageObj("E11140", new String[] {});
       this.setCsvshnErrinfo(o, errTbl, MSTBAIKACTLLayout.TENGPCD, StringUtils.join(errtengps, ","));
       msg.add(o);
@@ -2718,7 +2705,9 @@ public class Reportx002Dao extends ItemDao {
       // 店グループに入力がある場合、原価、売価、店入数のすべてが未入力だとエラー。
       isAllEmpty = this.isEmptyVal(tengp2s.get(i).optString(MSTBAIKACTLLayout.GENKAAM.getId()), true) && this.isEmptyVal(tengp2s.get(i).optString(MSTBAIKACTLLayout.BAIKAAM.getId()), true)
           && this.isEmptyVal(tengp2s.get(i).optString(MSTBAIKACTLLayout.IRISU.getId()), true);
-      if (isAllEmpty) {
+      System.out.println(isAllEmpty);
+      System.out.println(tengp2s);
+      if (!StringUtils.join(tengp2s_, ",").equals("0") && isAllEmpty) {
         JSONObject o = mu.getDbMessageObj("E11122", new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTBAIKACTLLayout.TENGPCD, dataArrayTENGP2.optJSONObject(i));
         msg.add(o);
@@ -2761,8 +2750,9 @@ public class Reportx002Dao extends ItemDao {
     }
     // 店グループ:商品店グループに存在しないコードはエラー。
     // 商品店グループに存在しないコードはエラー
+    // エリア区分がないor店グループが0の場合はエラーを出さない(CSV取込エラーの回避)
     errtengps = this.checkMsttgpExist(tengp1s_, DefineReport.ValGpkbn.SIR.getVal(), txt_bmncd, areakbn1);
-    if (errtengps.length > 0) {
+    if (errtengps.length > 0 && areakbn1.length() > 0 && !StringUtils.join(tengp1s_, ",").equals("0")) {
       JSONObject o = mu.getDbMessageObj("E11140", new String[] {});
       this.setCsvshnErrinfo(o, errTbl, MSTSIRGPSHNLayout.TENGPCD, StringUtils.join(errtengps, ","));
       msg.add(o);
@@ -2770,7 +2760,8 @@ public class Reportx002Dao extends ItemDao {
     }
     // 店グループに入力がある場合、仕入先コード、配送パターンは必須入力。
     for (JSONObject tengp1 : tengp1s) {
-      if (StringUtils.isEmpty(tengp1.optString(MSTSIRGPSHNLayout.SIRCD.getId())) || StringUtils.isEmpty(tengp1.optString(MSTSIRGPSHNLayout.HSPTN.getId()))) {
+      if (!StringUtils.join(tengp1s_, ",").equals("0")
+          && (StringUtils.isEmpty(tengp1.optString(MSTSIRGPSHNLayout.SIRCD.getId())) || StringUtils.isEmpty(tengp1.optString(MSTSIRGPSHNLayout.HSPTN.getId())))) {
         JSONObject o = mu.getDbMessageObj("E11123", new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTSIRGPSHNLayout.TENGPCD, tengp1);
         msg.add(o);
@@ -2802,8 +2793,9 @@ public class Reportx002Dao extends ItemDao {
       }
 
       // 仕入先コード:仕入先マスタに存在しない場合エラー
+      // 仕入先コードがない場合はエラーを出さない(CSV取込エラーの回避)
       for (String sircd : sircdList) {
-        if (!this.checkMstExist(DefineReport.InpText.SIRCD.getObj(), sircd)) {
+        if (sircd.length() > 0 && !this.checkMstExist(DefineReport.InpText.SIRCD.getObj(), sircd)) {
           JSONObject o = mu.getDbMessageObj("E11099", new String[] {});
           this.setCsvshnErrinfo(o, errTbl, MSTSIRGPSHNLayout.SIRCD, "");
           msg.add(o);
@@ -2812,7 +2804,8 @@ public class Reportx002Dao extends ItemDao {
       }
 
       // 仕入先コード、配送パターンで配送パターン仕入先マスタの存在チェック
-      if (!this.checkMstExist("MSTHSPTNSIR", StringUtils.join(tengp1keys, ","))) {
+      // 仕入先コード、配送パターンがどちらもない場合はエラーを出さない(CSV取込エラーの回避)
+      if (!StringUtils.join(tengp1keys, ",").equals("-") && !this.checkMstExist("MSTHSPTNSIR", StringUtils.join(tengp1keys, ","))) {
         JSONObject o = mu.getDbMessageObj("E11142", new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTSIRGPSHNLayout.TENGPCD, "");
         msg.add(o);
@@ -4005,7 +3998,9 @@ public class Reportx002Dao extends ItemDao {
     }
 
     // 店別商品コード
+    // ここかも
     if (outobj.equals(DefineReport.InpText.TENSHNCD.getObj())) {
+      System.out.println("商品コードが0になっていないか? ");
       tbl = "INAMS.MSTSHN";
       col = "SHNCD";
       whr = DefineReport.ID_SQL_CMN_WHERE2;
@@ -4043,8 +4038,15 @@ public class Reportx002Dao extends ItemDao {
 
     if (tbl.length() > 0 && col.length() > 0) {
       if (paramData.size() > 0 && rep.length() > 0) {
+        System.out.println("THIS USED 22. ");
+        System.out.println(tbl);
+        System.out.println(col);
+        System.out.println(paramData);
+        System.out.println(rep);
         sqlcommand = DefineReport.ID_SQL_CHK_TBL.replace("@T", tbl).replaceAll("@C", col).replace("?", rep) + whr;
+        System.out.println(sqlcommand);
       } else {
+        System.out.println("THIS USED 222. ");
         paramData.add(value);
         sqlcommand = DefineReport.ID_SQL_CHK_TBL.replace("@T", tbl).replaceAll("@C", col) + whr;
       }
@@ -4073,6 +4075,7 @@ public class Reportx002Dao extends ItemDao {
    *
    * @throws Exception
    */
+  // 要修正
   public String[] checkMsttgpExist(TreeSet<String> tengpcd, String gpkbn, String bmncd, String areakbn) {
     new ItemList();
     // 配列準備
@@ -4273,7 +4276,7 @@ public class Reportx002Dao extends ItemDao {
       } else if (i == MSTSHNLayout.TOROKUMOTO.getNo()) { // 登録元
         if (DefineReport.Button.ERR_CHANGE.getObj().equals(btnId)) {
           val = "1";
-        } else if (StringUtils.isEmpty(val) || !val.equals("1")) {
+        } else if (StringUtils.isEmpty(val) || val.equals("1")) {
           val = "0";
         }
       } else if (i == MSTSHNLayout.UPDKBN.getNo()) { // 更新区分
@@ -4394,7 +4397,7 @@ public class Reportx002Dao extends ItemDao {
           val = data.getString(MSTSHNLayout.TOROKUMOTO.getId());
         }
 
-        if (StringUtils.isEmpty(val) || !val.equals("1")) {
+        if (StringUtils.isEmpty(val) || val.equals("1")) {
           val = "0";
         }
       }
@@ -5076,8 +5079,8 @@ public class Reportx002Dao extends ItemDao {
         }
         if ((i == 1) && StringUtils.isEmpty(val)) {
           values += " " + SHCD + " ";
-        } else if ((i == 2) && StringUtils.isEmpty(val)) {
-          set += "1";
+        } else if ((i == 2) && (StringUtils.isEmpty(val) || val.equals("0"))) {
+          set = "1";
           values += " null";
         } else if ((i == 9 || i == 10)) {
           values += " current_timestamp";
@@ -5258,8 +5261,8 @@ public class Reportx002Dao extends ItemDao {
         }
         if ((i == 1) && StringUtils.isEmpty(val)) {
           values += " " + SHCD + " ";
-        } else if ((i == 2) && StringUtils.isEmpty(val)) {
-          set += "1";
+        } else if ((i == 2) && StringUtils.isEmpty(val) || val.equals("0")) {
+          set = "1";
           values += " null";
         } else if (i == 10 || i == 11) {
           values += " current_timestamp";
@@ -5445,7 +5448,7 @@ public class Reportx002Dao extends ItemDao {
         if ((i == 1) && StringUtils.isEmpty(val)) {
           values += " " + SHCD + " ";
         } else if ((i == 2) && StringUtils.isEmpty(val)) {
-          set += "1";
+          set = "1";
           values += " null";
         } else if ((i == 8 || i == 9)) {
           values += " current_timestamp";
@@ -5626,7 +5629,7 @@ public class Reportx002Dao extends ItemDao {
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
-    String values = "", names = "", rows = "";
+    String values = "", names = "", rows = "", set = "";
     int colNum = MSTTENKABUTSULayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
       colNum += JNLCMNLayout.values().length;
@@ -5664,7 +5667,10 @@ public class Reportx002Dao extends ItemDao {
           values += " ,";
           names += " ,";
         }
-        if ((i == 7 || i == 8)) {
+        if (((i == 2) || (i == 3)) && StringUtils.isEmpty(val) || val.equals("0")) {
+          set = "1";
+          values += " null";
+        } else if ((i == 7 || i == 8)) {
           values += " current_timestamp";
         } else if (StringUtils.isEmpty(val)) {
           values += " null";
@@ -5685,7 +5691,7 @@ public class Reportx002Dao extends ItemDao {
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append(this.createMergeCmnCommandMSTTENKABUTSU(tbl, sql, rows, names));
+    sbSQL.append(this.createMergeCmnCommandMSTTENKABUTSU(tbl, sql, rows, names, set));
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -5706,7 +5712,7 @@ public class Reportx002Dao extends ItemDao {
    *
    * @throws Exception
    */
-  public String createMergeCmnCommandMSTTENKABUTSU(TblType tbl, SqlType sql, String values, String names) {
+  public String createMergeCmnCommandMSTTENKABUTSU(TblType tbl, SqlType sql, String values, String names, String set) {
 
     String szTable = "INAMS.MSTTENKABUTSU";
     if (SqlType.DEL.getVal() != sql.getVal()) {
@@ -5714,7 +5720,7 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.YYK.getVal() == tbl.getVal()) {
       szTable += "_Y";
     } else if (TblType.JNL.getVal() == tbl.getVal()) {
-      szTable = "INAAD.JNLTENKABUTSU";
+      // szTable = "INAAD.JNLTENKABUTSU";
     } else if (TblType.CSV.getVal() == tbl.getVal()) {
       szTable = "INAMS.CSVTENKABUTSU";
     }
@@ -5722,7 +5728,7 @@ public class Reportx002Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    if (SqlType.DEL.getVal() == sql.getVal()) {
+    if (set.equals("1")) {
       sbSQL.append(" WITH T1 AS (");
       sbSQL.append(" select");
       sbSQL.append(" cast(" + MSTTENKABUTSULayout.SHNCD.getId() + " as CHAR(14)) as " + MSTTENKABUTSULayout.SHNCD.getCol() + " ");
@@ -5732,9 +5738,7 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
       sbSQL.append(" T.SHNCD = " + " (select T1." + MSTTENKABUTSULayout.SHNCD.getCol() + " from T1) ");
-      if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTTENKABUTSULayout.YOYAKUDT.getCol() + " from T1) ");
-      }
+
     } else {
       sbSQL.append("INSERT INTO " + szTable + " ( ");
       sbSQL.append("  SHNCD"); // F1 : 商品コード
@@ -5793,7 +5797,7 @@ public class Reportx002Dao extends ItemDao {
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
-    String values = "", names = "", rows = "";
+    String values = "", names = "", rows = "", set = "";
     int colNum = MSTSHINAGPLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
       colNum += 2;
@@ -5831,7 +5835,10 @@ public class Reportx002Dao extends ItemDao {
           values += " ,";
           names += " ,";
         }
-        if ((i == 8 || i == 9)) {
+        if ((i == 2) && StringUtils.isEmpty(val) || val.equals("0")) {
+          set = "1";
+          values += " null";
+        } else if ((i == 8 || i == 9)) {
           values += " current_timestamp";
         } else if (StringUtils.isEmpty(val)) {
           values += " null";
@@ -5852,7 +5859,7 @@ public class Reportx002Dao extends ItemDao {
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append(this.createMergeCmnCommandMSTSHINAGP(tbl, sql, rows, names));
+    sbSQL.append(this.createMergeCmnCommandMSTSHINAGP(tbl, sql, rows, names, set));
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -5873,7 +5880,7 @@ public class Reportx002Dao extends ItemDao {
    *
    * @throws Exception
    */
-  public String createMergeCmnCommandMSTSHINAGP(TblType tbl, SqlType sql, String values, String names) {
+  public String createMergeCmnCommandMSTSHINAGP(TblType tbl, SqlType sql, String values, String names, String set) {
 
     String szTable = "INAMS.MSTSHINAGP";
     if (SqlType.DEL.getVal() != sql.getVal()) {
@@ -5881,7 +5888,7 @@ public class Reportx002Dao extends ItemDao {
     if (TblType.YYK.getVal() == tbl.getVal()) {
       szTable += "_Y";
     } else if (TblType.JNL.getVal() == tbl.getVal()) {
-      szTable = "INAAD.JNLSHINAGP";
+      // szTable = "INAAD.JNLSHINAGP";
     } else if (TblType.CSV.getVal() == tbl.getVal()) {
       szTable = "INAMS.CSVSHINAGP";
     }
@@ -5889,7 +5896,7 @@ public class Reportx002Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    if (SqlType.DEL.getVal() == sql.getVal()) {
+    if (set.equals("1")) {
       sbSQL.append(" WITH T1 AS (");
       sbSQL.append(" select");
       sbSQL.append("  cast(" + MSTSHINAGPLayout.SHNCD.getId() + " as CHAR(14)) as " + MSTSHINAGPLayout.SHNCD.getCol() + " ");
@@ -5962,7 +5969,7 @@ public class Reportx002Dao extends ItemDao {
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
-    String values = "", names = "", rows = "";
+    String values = "", names = "", rows = "", set = "";
     int colNum = MSTSHNTENBMNLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
       colNum += 2;
@@ -5982,9 +5989,9 @@ public class Reportx002Dao extends ItemDao {
         }
       } else {
         if (j == 1) {
-          values += "( ";
+          values += "row( ";
         } else {
-          values += ",( ";
+          values += ",row( ";
         }
       }
       for (int i = 1; i <= colNum; i++) {
@@ -6014,7 +6021,10 @@ public class Reportx002Dao extends ItemDao {
           values += " ,";
           names += " ,";
         }
-        if ((i == 8 || i == 9)) {
+        if (((i == 2) || (i == 3)) && StringUtils.isEmpty(val) || val.equals("0")) {
+          set = "1";
+          values += " null";
+        } else if ((i == 8 || i == 9)) {
           values += " current_timestamp";
         } else if (StringUtils.isEmpty(val)) {
           values += " null";
@@ -6036,7 +6046,7 @@ public class Reportx002Dao extends ItemDao {
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append(this.createMergeCmnCommandMSTSHNTENBMN(tbl, sql, rows, names));
+    sbSQL.append(this.createMergeCmnCommandMSTSHNTENBMN(tbl, sql, rows, names, set));
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -6057,7 +6067,7 @@ public class Reportx002Dao extends ItemDao {
    *
    * @throws Exception
    */
-  public String createMergeCmnCommandMSTSHNTENBMN(TblType tbl, SqlType sql, String values, String names) {
+  public String createMergeCmnCommandMSTSHNTENBMN(TblType tbl, SqlType sql, String values, String names, String set) {
 
     String szTable = "INAMS.MSTSHNTENBMN";
     if (SqlType.DEL.getVal() != sql.getVal()) {
@@ -6074,12 +6084,12 @@ public class Reportx002Dao extends ItemDao {
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
 
-    if (SqlType.DEL.getVal() == sql.getVal()) {
+    if (set.equals("1")) {
       sbSQL.append(" WITH T1 AS (");
       sbSQL.append(" select");
       sbSQL.append(" cast(" + MSTGRPLayout.SHNCD.getId() + " as CHAR(14)) as " + MSTGRPLayout.SHNCD.getCol() + " ");
       sbSQL.append(" ,cast(F3 as SIGNED) as " + MSTGRPLayout.YOYAKUDT.getCol() + " ");
-      sbSQL.append(" from(values" + values + ") as RE(" + names + ")");
+      sbSQL.append(" from(values " + values + ") as RE(" + names + ")");
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
@@ -6263,7 +6273,7 @@ public class Reportx002Dao extends ItemDao {
           names += " ,";
         }
         if ((i == 2) && StringUtils.isEmpty(val)) {
-          set += "1";
+          set = "1";
           values += " null";
         } else if ((i == 7 || i == 8)) {
           values += " current_timestamp";

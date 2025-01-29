@@ -144,7 +144,6 @@ public class NumberingUtility {
       // 失敗した場合取得できなかったエラーにする
       return MessageUtility.getDbMessageIdObj("E00005", new String[] {});
     }
-
     return data;
   }
 

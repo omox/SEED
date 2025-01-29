@@ -305,8 +305,6 @@ public class GetSqlCommandCheck {
       }
       // 小分類コード
       if (outobj.equals(DefineReport.InpText.SHOCD.getObj()) && value.length() > 0) {
-        System.out.println("TEST4 2025/1/28");
-        System.out.println(outobj);
         tbl = "INAMS.MSTSHOBRUI";
         col = "BMNCD";
 
