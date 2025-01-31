@@ -1358,7 +1358,7 @@
 			}
 			var param_s = {};
 			var s_check="";
-			if(!$.isEmptyVal(txt_chucd)){
+			if(!$.isEmptyVal(txt_shocd)){
 			var param_s = {};
 			param_s["KEY"] =  "MST_CNT";
 			param_s["value"] = txt_bmncd+ ','+ txt_daicd+ ','+txt_chucd+ ','+txt_shocd;			
@@ -2324,6 +2324,7 @@
 					param["4"] =  "MD03112501";
 					txt_makercd_src = $.getInputboxData(that.name, $.id.action_change,  $.id_inp.txt_makercd, [param]);
 				}
+				console.log(txt_makercd_src);
 				// メーカーコードが入力有の場合
 				if(txt_makercd.length > 0){
 					// メーカーコードの存在チェック

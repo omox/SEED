@@ -2687,14 +2687,8 @@ public class Reportx002Dao extends ItemDao {
 
     // 店グループ:商品店グループに存在しないコードはエラー。
     // 商品店グループに存在しないコードはエラー
+    // エリア区分がないor店グループが0の場合はエラーを出さない(CSV取込)
     errtengps = this.checkMsttgpExist(tengp2s_, DefineReport.ValGpkbn.BAIKA.getVal(), txt_bmncd, areakbn2);
-    System.out.println("店グループ(売価):商品店グループに存在しないコードはエラー。");
-    System.out.println(errtengps);
-    System.out.println(tengp2s_);
-    System.out.println(DefineReport.ValGpkbn.BAIKA.getVal());
-    System.out.println(txt_bmncd);
-    System.out.println(areakbn2);
-    System.out.println(errtengps.length);
     if (errtengps.length > 0 && areakbn2.length() > 0 && !StringUtils.join(tengp2s_, ",").equals("0")) {
       JSONObject o = mu.getDbMessageObj("E11140", new String[] {});
       this.setCsvshnErrinfo(o, errTbl, MSTBAIKACTLLayout.TENGPCD, StringUtils.join(errtengps, ","));
@@ -2705,8 +2699,6 @@ public class Reportx002Dao extends ItemDao {
       // 店グループに入力がある場合、原価、売価、店入数のすべてが未入力だとエラー。
       isAllEmpty = this.isEmptyVal(tengp2s.get(i).optString(MSTBAIKACTLLayout.GENKAAM.getId()), true) && this.isEmptyVal(tengp2s.get(i).optString(MSTBAIKACTLLayout.BAIKAAM.getId()), true)
           && this.isEmptyVal(tengp2s.get(i).optString(MSTBAIKACTLLayout.IRISU.getId()), true);
-      System.out.println(isAllEmpty);
-      System.out.println(tengp2s);
       if (!StringUtils.join(tengp2s_, ",").equals("0") && isAllEmpty) {
         JSONObject o = mu.getDbMessageObj("E11122", new String[] {});
         this.setCsvshnErrinfo(o, errTbl, MSTBAIKACTLLayout.TENGPCD, dataArrayTENGP2.optJSONObject(i));
@@ -3623,9 +3615,6 @@ public class Reportx002Dao extends ItemDao {
         JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
         if (array.size() > 0) {
           data = array.optJSONObject(0);
-          System.out.println("test 8桁商品コード取得");
-          System.out.println(data.optString("VALUE"));
-          System.out.println(data);
           if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
             SHCD = data.optString("VALUE");
             returndata = data;
@@ -3655,10 +3644,6 @@ public class Reportx002Dao extends ItemDao {
             data = array.optJSONObject(0);
             if (StringUtils.isNotEmpty(data.optString("VALUE"))) {
               SHCD = data.optString("VALUE");
-              System.out.println("test 商品コード取得");
-              System.out.println(SHCD);
-              System.out.println(data.optString("VALUE"));
-              System.out.println(data);
               try {
                 // コネクションの取得
                 con = DBConnection.getConnection(this.JNDIname);
@@ -3928,12 +3913,6 @@ public class Reportx002Dao extends ItemDao {
     new ItemList();
     @SuppressWarnings("static-access")
     JSONArray array = ItemList.selectJSONArray(sqlcommand, paramData, Defines.STR_JNDI_DS);
-    System.out.println("");
-    System.out.println("----SQL実行確認----");
-    System.out.println(sqlcommand);
-    System.out.println(paramData);
-    System.out.println(array);
-    System.out.println("");
     return array;
   }
 
@@ -3998,9 +3977,7 @@ public class Reportx002Dao extends ItemDao {
     }
 
     // 店別商品コード
-    // ここかも
     if (outobj.equals(DefineReport.InpText.TENSHNCD.getObj())) {
-      System.out.println("商品コードが0になっていないか? ");
       tbl = "INAMS.MSTSHN";
       col = "SHNCD";
       whr = DefineReport.ID_SQL_CMN_WHERE2;
@@ -4038,15 +4015,8 @@ public class Reportx002Dao extends ItemDao {
 
     if (tbl.length() > 0 && col.length() > 0) {
       if (paramData.size() > 0 && rep.length() > 0) {
-        System.out.println("THIS USED 22. ");
-        System.out.println(tbl);
-        System.out.println(col);
-        System.out.println(paramData);
-        System.out.println(rep);
         sqlcommand = DefineReport.ID_SQL_CHK_TBL.replace("@T", tbl).replaceAll("@C", col).replace("?", rep) + whr;
-        System.out.println(sqlcommand);
       } else {
-        System.out.println("THIS USED 222. ");
         paramData.add(value);
         sqlcommand = DefineReport.ID_SQL_CHK_TBL.replace("@T", tbl).replaceAll("@C", col) + whr;
       }
@@ -4332,8 +4302,6 @@ public class Reportx002Dao extends ItemDao {
     }
     values = StringUtils.removeStart(values, ",");
     names = StringUtils.removeStart(names, ",");
-    System.out.println("2025/1/20 test ");
-    System.out.println(prmData);
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
@@ -4436,8 +4404,6 @@ public class Reportx002Dao extends ItemDao {
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    System.out.println(tbl.getVal());
-    System.out.println(TblType.YYK.getVal());
     sbSQL.append("INSERT INTO " + szTable + " ( ");
     sbSQL.append("SHNCD ");
     if (tbl.getVal() == 2) {
@@ -5045,9 +5011,9 @@ public class Reportx002Dao extends ItemDao {
       values = "";
       names = "";
       if (j == 1) {
-        values += "( ";
+        values += "ROW( ";
       } else {
-        values += ",( ";
+        values += ",ROW( ";
 
       }
       for (int i = 1; i <= colNum; i++) {
@@ -5147,13 +5113,13 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" select");
       sbSQL.append(" cast(" + MSTSIRGPSHNLayout.SHNCD.getId() + " as CHAR(14)) as " + MSTSIRGPSHNLayout.SHNCD.getCol() + " ");
       sbSQL.append(" ,cast(" + MSTSIRGPSHNLayout.YOYAKUDT.getId() + " as SIGNED) as " + MSTSIRGPSHNLayout.YOYAKUDT.getCol() + " ");
-      sbSQL.append(" from(VALUES ROW" + values + ") as RE(" + names + ")");
+      sbSQL.append(" from(VALUES " + values + ") as RE(" + names + ")");
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTSIRGPSHNLayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTSIRGPSHNLayout.SHNCD.getCol() + " from T1) ");
       if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTSIRGPSHNLayout.YOYAKUDT.getCol() + " from T1) ");
+        sbSQL.append(" AND T.TENGPCD IN " + " (select T1." + MSTSIRGPSHNLayout.YOYAKUDT.getCol() + " from T1) ");
       }
     } else {
       sbSQL.append("INSERT INTO " + szTable + " (");
@@ -5227,9 +5193,9 @@ public class Reportx002Dao extends ItemDao {
       values = "";
       names = "";
       if (j == 1) {
-        values += "( ";
+        values += "ROW( ";
       } else {
-        values += ",( ";
+        values += ",ROW( ";
 
       }
       for (int i = 1; i <= colNum; i++) {
@@ -5324,13 +5290,13 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" select");
       sbSQL.append(" cast(" + MSTBAIKACTLLayout.SHNCD.getId() + " as CHAR(14)) as " + MSTBAIKACTLLayout.SHNCD.getCol() + " ");
       sbSQL.append(" ,cast(" + MSTBAIKACTLLayout.YOYAKUDT.getId() + " as SIGNED) as " + MSTBAIKACTLLayout.YOYAKUDT.getCol() + " ");
-      sbSQL.append(" from(VALUES ROW" + values + ") as RE(" + names + ")");
+      sbSQL.append(" from(VALUES " + values + ") as RE(" + names + ")");
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTBAIKACTLLayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTBAIKACTLLayout.SHNCD.getCol() + " from T1) ");
       if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTBAIKACTLLayout.YOYAKUDT.getCol() + " from T1) ");
+        sbSQL.append(" AND T.TENGPCD IN " + " (select T1." + MSTBAIKACTLLayout.YOYAKUDT.getCol() + " from T1) ");
       }
     } else {
       sbSQL.append("INSERT INTO " + szTable + " (");
@@ -5517,9 +5483,9 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTSRCCDLayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTSRCCDLayout.SHNCD.getCol() + " from T1) ");
       if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTSRCCDLayout.YOYAKUDT.getCol() + " from T1) ");
+        sbSQL.append(" AND T.TENGPCD IN " + " (select T1." + MSTSRCCDLayout.YOYAKUDT.getCol() + " from T1) ");
       }
     } else {
 
@@ -5737,7 +5703,7 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTTENKABUTSULayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTTENKABUTSULayout.SHNCD.getCol() + " from T1) ");
 
     } else {
       sbSQL.append("INSERT INTO " + szTable + " ( ");
@@ -5905,9 +5871,9 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTSHINAGPLayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTSHINAGPLayout.SHNCD.getCol() + " from T1) ");
       if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTSHINAGPLayout.YOYAKUDT.getCol() + " from T1) ");
+        sbSQL.append(" AND T.TENGPCD IN " + " (select T1." + MSTSHINAGPLayout.YOYAKUDT.getCol() + " from T1) ");
       }
     } else {
       sbSQL.append("INSERT INTO " + szTable + " ( ");
@@ -6093,9 +6059,9 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTGRPLayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTGRPLayout.SHNCD.getCol() + " from T1) ");
       if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTGRPLayout.YOYAKUDT.getCol() + " from T1) ");
+        sbSQL.append(" AND T.TENGPCD IN " + " (select T1." + MSTGRPLayout.YOYAKUDT.getCol() + " from T1) ");
       }
     } else {
       sbSQL.append("INSERT INTO " + szTable + " ( ");
@@ -6376,7 +6342,7 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM INAMS.MSTGRP as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTGRPLayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTGRPLayout.SHNCD.getCol() + " from T1) ");
 
     }
     return sbSQL.toString();
@@ -6503,9 +6469,9 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ) ");
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD = " + " (select T1." + MSTAHSLayout.SHNCD.getCol() + " from T1) ");
+      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTAHSLayout.SHNCD.getCol() + " from T1) ");
       if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD = " + " (select T1." + MSTAHSLayout.YOYAKUDT.getCol() + " from T1) ");
+        sbSQL.append(" AND T.TENGPCD IN " + " (select T1." + MSTAHSLayout.YOYAKUDT.getCol() + " from T1) ");
       }
     } else {
       sbSQL.append("INSERT INTO " + szTable + " ( ");
