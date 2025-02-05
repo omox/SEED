@@ -6839,16 +6839,20 @@ public class Reportx002Dao extends ItemDao {
     String szTable = "INAAD.SYSSHNCOUNT";
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("REPLACE INTO " + szTable + " (");
+    sbSQL.append("INSERT INTO " + szTable + " (");
     sbSQL.append(" UPDATEDT ");
     sbSQL.append(",UPDATECNT ");
     sbSQL.append(",UPDDT ");
     sbSQL.append(") VALUES ( ");
 
     sbSQL.append(" " + sysdate + " ");
-    sbSQL.append(", UPDATECNT+1 ");
-    sbSQL.append(",current_timestamp ");
+    sbSQL.append(", 1 ");
+    sbSQL.append(",CURRENT_TIMESTAMP ");
     sbSQL.append(") ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("UPDATEDT = VALUES(UPDATEDT) ");
+    sbSQL.append(",UPDATECNT = VALUES(UPDATECNT)+1 ");
+
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
