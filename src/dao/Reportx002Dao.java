@@ -5178,10 +5178,23 @@ public class Reportx002Dao extends ItemDao {
    */
   public JSONObject createSqlMSTBAIKACTL(String userId, String btnId, JSONArray dataArray, TblType tbl, SqlType sql) {
     JSONObject result = new JSONObject();
+    String szTable = "INAMS.MSTBAIKACTL";
+    String szWhere = "T.SHNCD = RE.SHNCD";
+
+    if (TblType.YYK.getVal() == tbl.getVal()) {
+      szTable += "_Y";
+
+    } else if (TblType.JNL.getVal() == tbl.getVal()) {
+      szTable = "INAAD.JNLBAIKACTL";
+
+    } else if (TblType.CSV.getVal() == tbl.getVal()) {
+      szTable = "INAMS.CSVBAIKACTL";
+
+    }
 
     // 更新情報
-    ArrayList<String> prmData = new ArrayList<>();
-    String values = "", names = "", rows = "", set = "";
+    ArrayList<String> prmData = new ArrayList<String>();
+    String values = "", names = "", rows = "";
     int colNum = MSTBAIKACTLLayout.values().length; // テーブル列数
     if (TblType.JNL.getVal() == tbl.getVal()) {
       colNum += JNLCMNLayout.values().length;
@@ -5192,12 +5205,6 @@ public class Reportx002Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      if (j == 1) {
-        values += "ROW( ";
-      } else {
-        values += ",ROW( ";
-
-      }
       for (int i = 1; i <= colNum; i++) {
         String col = "F" + i;
         String val = dataArray.optJSONObject(j).optString(col);
@@ -5221,34 +5228,84 @@ public class Reportx002Dao extends ItemDao {
             val = csvshn_seq;
           }
         }
-        if (i != 1) {
-          values += " ,";
-          names += " ,";
-        }
-        if ((i == 1) && StringUtils.isEmpty(val)) {
-          values += " " + SHCD + " ";
-        } else if ((i == 2) && StringUtils.isEmpty(val) || val.equals("0")) {
-          set = "1";
-          values += " null";
-        } else if (i == 10 || i == 11) {
-          values += " current_timestamp";
-        } else if (StringUtils.isEmpty(val)) {
-          values += " null";
+
+
+        if (StringUtils.isEmpty(val)) {
+          values += ", null";
         } else {
-          prmData.add(val);
-          values += " ? ";
+          if (isTest) {
+            values += ", '" + val + "'";
+          } else {
+            prmData.add(val);
+            values += ", ? ";
+          }
         }
-        names += " " + col;
+        names += ", " + col;
       }
-      values += ") ";
-      rows += "," + StringUtils.removeStart(values, ",") + "";
+      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
 
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append(this.createMergeCmnCommandMSTBAIKACTL(tbl, sql, rows, names, set));
+    if (SqlType.DEL.getVal() == sql.getVal()) {
+      sbSQL.append("DELETE FROM " + szTable + " WHERE SHNCD = (");
+      sbSQL.append("SELECT SHNCD FROM ( ");
+      sbSQL.append(this.createMergeCmnCommandMSTBAIKACTL(tbl, sql, rows, names));
+      sbSQL.append(") ");
+    } else {
+      sbSQL.append("INSERT INTO " + szTable + "( ");
+      sbSQL.append("  SHNCD"); // F1 : 商品コード
+      sbSQL.append(" ,TENGPCD"); // F2 : 店グループ
+      sbSQL.append(" ,YOYAKUDT"); // F3 : マスタ変更予定日
+      sbSQL.append(" ,AREAKBN"); // F4 : エリア区分
+      sbSQL.append(" ,GENKAAM"); // F5 : 原価
+      sbSQL.append(" ,BAIKAAM"); // F6 : 売価
+      sbSQL.append(" ,IRISU"); // F7 : 店入数
+      sbSQL.append(" ,SENDFLG"); // F8 : 送信フラグ
+      sbSQL.append(" ,OPERATOR"); // F9 : オペレータ
+      sbSQL.append(" ,ADDDT"); // F10: 登録日
+      sbSQL.append(" ,UPDDT"); // F11: 更新日
+
+      if (TblType.JNL.getVal() == tbl.getVal()) {
+        sbSQL.append(" ,SEQ"); // SEQ
+        sbSQL.append(" ,RENNO"); // RENNO
+
+      }
+      if (TblType.CSV.getVal() == tbl.getVal()) {
+        sbSQL.append(" ,SEQ"); // F1 : SEQ
+        sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
+        sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
+      }
+
+      sbSQL.append(") ");
+      sbSQL.append("SELECT * FROM ( ");
+
+      sbSQL.append(this.createMergeCmnCommandMSTBAIKACTL(tbl, sql, rows, names));
+      sbSQL.append("ON DUPLICATE KEY UPDATE ");
+
+      if (TblType.JNL.getVal() == tbl.getVal()) {
+        sbSQL.append("  SEQ = VALUES(SEQ) "); // SEQ
+        sbSQL.append(" ,RENNO = VALUES(RENNO) "); // RENNO
+        sbSQL.append(" ,");
+      }
+      if (TblType.CSV.getVal() == tbl.getVal()) {
+        sbSQL.append("  SEQ = VALUES(SEQ) "); // F1 : SEQ
+        sbSQL.append(" ,INPUTNO = VALUES(INPUTNO) "); // F2 : 入力番号
+        sbSQL.append(" ,INPUTEDANO = VALUES(INPUTEDANO) "); // F3 : 入力枝番
+        sbSQL.append(" ,");
+      }
+      sbSQL.append("  SHNCD = VALUES(SHNCD) "); // F1 : 商品コード
+      sbSQL.append(" ,TENGPCD = VALUES(TENGPCD) "); // F2 : 店グループ
+      sbSQL.append(" ,YOYAKUDT = VALUES(YOYAKUDT) "); // F3 : マスタ変更予定日
+      sbSQL.append(" ,AREAKBN = VALUES(AREAKBN) "); // F4 : エリア区分
+      sbSQL.append(" ,GENKAAM = VALUES(GENKAAM) "); // F5 : 原価
+      sbSQL.append(" ,BAIKAAM = VALUES(BAIKAAM) "); // F6 : 売価
+      sbSQL.append(" ,IRISU = VALUES(IRISU) "); // F7 : 店入数
+      sbSQL.append(" ,UPDDT = CURRENT_TIMESTAMP "); // F11: 更新日
+    }
+
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
 
@@ -5269,80 +5326,58 @@ public class Reportx002Dao extends ItemDao {
    *
    * @throws Exception
    */
-  public String createMergeCmnCommandMSTBAIKACTL(TblType tbl, SqlType sql, String values, String names, String set) {
+  public String createMergeCmnCommandMSTBAIKACTL(TblType tbl, SqlType sql, String values, String names) {
 
     String szTable = "INAMS.MSTBAIKACTL";
+    String szWhere = "T.SHNCD = RE.SHNCD";
     if (SqlType.DEL.getVal() != sql.getVal()) {
+      szWhere += " and T.TENGPCD = RE.TENGPCD";
+
     }
     if (TblType.YYK.getVal() == tbl.getVal()) {
       szTable += "_Y";
+      szWhere += " and T.YOYAKUDT = RE.YOYAKUDT ";
     } else if (TblType.JNL.getVal() == tbl.getVal()) {
       szTable = "INAAD.JNLBAIKACTL";
+      szWhere = "T.SEQ = RE.SEQ";
     } else if (TblType.CSV.getVal() == tbl.getVal()) {
       szTable = "INAMS.CSVBAIKACTL";
+      szWhere = "T.SEQ = RE.SEQ and T.INPUTNO = RE.INPUTNO and T.INPUTEDANO = RE.INPUTEDANO";
     }
 
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    if (set.equals("1")) {
-      sbSQL.append(" WITH T1 AS (");
-      sbSQL.append(" select");
-      sbSQL.append(" cast(" + MSTBAIKACTLLayout.SHNCD.getId() + " as CHAR(14)) as " + MSTBAIKACTLLayout.SHNCD.getCol() + " ");
-      sbSQL.append(" ,cast(" + MSTBAIKACTLLayout.YOYAKUDT.getId() + " as SIGNED) as " + MSTBAIKACTLLayout.YOYAKUDT.getCol() + " ");
-      sbSQL.append(" from(VALUES " + values + ") as RE(" + names + ")");
-      sbSQL.append(" ) ");
-      sbSQL.append(" DELETE FROM " + szTable + " as T ");
-      sbSQL.append(" where ");
-      sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTBAIKACTLLayout.SHNCD.getCol() + " from T1) ");
-      if (SqlType.DEL.getVal() != sql.getVal()) {
-        sbSQL.append(" AND T.TENGPCD IN " + " (select T1." + MSTBAIKACTLLayout.YOYAKUDT.getCol() + " from T1) ");
-      }
+
+    sbSQL.append("SELECT ");
+    if (SqlType.DEL.getVal() == sql.getVal()) {
+      sbSQL.append(MSTBAIKACTLLayout.SHNCD.getId() + " as " + MSTBAIKACTLLayout.SHNCD.getCol()); // 商品コード
+      sbSQL.append(" ," + MSTBAIKACTLLayout.YOYAKUDT.getId() + " as " + MSTBAIKACTLLayout.YOYAKUDT.getCol()); // マスタ変更予定日
     } else {
-      sbSQL.append("INSERT INTO " + szTable + " (");
-      sbSQL.append("  SHNCD"); // F1 : 商品コード
-      sbSQL.append(" ,TENGPCD"); // F2 : 店グループ
-      sbSQL.append(" ,YOYAKUDT"); // F3 : マスタ変更予定日
-      sbSQL.append(" ,AREAKBN"); // F4 : エリア区分
-      sbSQL.append(" ,GENKAAM"); // F5 : 原価
-      sbSQL.append(" ,BAIKAAM"); // F6 : 売価
-      sbSQL.append(" ,IRISU"); // F7 : 店入数
-      sbSQL.append(" ,SENDFLG"); // F8 : 送信フラグ
-      sbSQL.append(" ,OPERATOR"); // F9 : オペレータ
-      sbSQL.append(" ,ADDDT"); // F10: 登録日
-      sbSQL.append(" ,UPDDT"); // F11: 更新日
+      int baseCnt = MSTBAIKACTLLayout.values().length;
+      for (MSTBAIKACTLLayout itm : MSTBAIKACTLLayout.values()) {
+        if (itm.getNo() > 1) {
+          sbSQL.append(" ,");
+        }
+        sbSQL.append(itm.getId() + " as " + itm.getCol());
+      }
       if (TblType.JNL.getVal() == tbl.getVal()) {
-        sbSQL.append(" ,SEQ"); // SEQ
-        sbSQL.append(" ,RENNO"); // RENNO
+        for (JNLCMNLayout itm : JNLCMNLayout.values()) {
+
+          sbSQL.append(" ," + itm.getId2(baseCnt) + " as " + itm.getCol());
+        }
       }
       if (TblType.CSV.getVal() == tbl.getVal()) {
-        sbSQL.append(" ,SEQ"); // F1 : SEQ
-        sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
-        sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
-      }
-      sbSQL.append(" )VALUES " + values + "");
-      sbSQL.append("ON DUPLICATE KEY UPDATE ");
-      sbSQL.append("  SHNCD=VALUES(SHNCD)"); // F1 : 商品コード
-      sbSQL.append(" ,TENGPCD=VALUES(TENGPCD)"); // F2 : 店グループ
-      sbSQL.append(" ,YOYAKUDT=VALUES(YOYAKUDT)"); // F3 : マスタ変更予定日
-      sbSQL.append(" ,AREAKBN=VALUES(AREAKBN)"); // F4 : エリア区分
-      sbSQL.append(" ,GENKAAM=VALUES(GENKAAM)"); // F5 : 原価
-      sbSQL.append(" ,BAIKAAM=VALUES(BAIKAAM)"); // F6 : 売価
-      sbSQL.append(" ,IRISU=VALUES(IRISU)"); // F7 : 店入数
-      sbSQL.append(" ,SENDFLG=VALUES(SENDFLG)"); // F8 : 送信フラグ
-      sbSQL.append(" ,OPERATOR=VALUES(OPERATOR)"); // F9 : オペレータ
-      // sbSQL.append(" ,ADDDT=VALUES(ADDDT)"); // F10: 登録日
-      sbSQL.append(" ,UPDDT=VALUES(UPDDT)"); // F11: 更新日
-      if (TblType.JNL.getVal() == tbl.getVal()) {
-        sbSQL.append(" ,SEQ=VALUES(SEQ)"); // SEQ
-        sbSQL.append(" ,RENNO=VALUES(RENNO)"); // RENNO
-      }
-      if (TblType.CSV.getVal() == tbl.getVal()) {
-        sbSQL.append(" ,SEQ=VALUES(SEQ)"); // F1 : SEQ
-        sbSQL.append(" ,INPUTNO=VALUES(INPUTNO)"); // F2 : 入力番号
-        sbSQL.append(" ,INPUTEDANO=VALUES(INPUTEDANO)"); // F3 : 入力枝番
+        for (CSVCMNLayout itm : CSVCMNLayout.values()) {
+          if (itm.getNo() > 1) {
+            sbSQL.append(" ,");
+          }
+          sbSQL.append(" ," + itm.getId2(baseCnt) + " as " + itm.getCol());
+        }
       }
     }
+    sbSQL.append(" from (values ROW " + values + ") as T1(" + names + ") )AS T1 ");
+
     return sbSQL.toString();
   }
 
