@@ -4365,7 +4365,7 @@ public class Reportx002Dao extends ItemDao {
           val = data.getString(MSTSHNLayout.TOROKUMOTO.getId());
         }
 
-        if (StringUtils.isEmpty(val) || val.equals("1")) {
+        if (StringUtils.isEmpty(val) || !val.equals("1")) {
           val = "0";
         }
       }
