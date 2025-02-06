@@ -4244,7 +4244,7 @@ public class Reportx002Dao extends ItemDao {
       } else if (i == MSTSHNLayout.HAT_SUNKBN.getNo() && StringUtils.isEmpty(val)) { // 発注曜日_日がnullの場合"0"を設定
         val = "0";
       } else if (i == MSTSHNLayout.TOROKUMOTO.getNo()) { // 登録元
-        if (DefineReport.Button.ERR_CHANGE.getObj().equals(btnId)) {
+        if (DefineReport.Button.ERR_CHANGE.getObj().equals(btnId) || TblType.CSV.getVal() == tbl.getVal()) {
           val = "1";
         } else if (StringUtils.isEmpty(val) || val.equals("1")) {
           val = "0";
@@ -4365,7 +4365,9 @@ public class Reportx002Dao extends ItemDao {
           val = data.getString(MSTSHNLayout.TOROKUMOTO.getId());
         }
 
-        if (StringUtils.isEmpty(val) || !val.equals("1")) {
+        if (TblType.CSV.getVal() == tbl.getVal()) {
+          val = "1";
+        } else if (StringUtils.isEmpty(val) || val.equals("1")) {
           val = "0";
         }
       }
