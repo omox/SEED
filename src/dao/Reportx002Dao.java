@@ -6886,7 +6886,8 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(") ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
     sbSQL.append("UPDATEDT = VALUES(UPDATEDT) ");
-    sbSQL.append(",UPDATECNT = VALUES(UPDATECNT)+1 ");
+    sbSQL.append(",UPDATECNT = UPDATECNT + 1 ");
+    sbSQL.append(",UPDDT= VALUES(UPDDT) ");
 
 
     if (DefineReport.ID_DEBUG_MODE)
