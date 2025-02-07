@@ -514,15 +514,20 @@ public class Reportx217Dao extends ItemDao {
             values += (", '" + userId + "' "); // オペレーター
             values += (", CURRENT_TIMESTAMP ");
             values += (", CURRENT_TIMESTAMP "); // 更新日
-            valueData = ArrayUtils.add(valueData, "(" + values + ")");
-            values = "";
+            if (i > 1) {
+              valueData = ArrayUtils.add(valueData, ", ROW(" + values + ")");
+              values = "";
+            } else {
+              valueData = ArrayUtils.add(valueData, "ROW(" + values + ")");
+              values = "";
+            }
           }
         }
       }
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append("REPLACE INTO INAMS.TRNPCARDSU ( ");
+        sbSQL.append("INSERT INTO INAMS.TRNPCARDSU ( ");
         sbSQL.append("  INPUTNO"); // 入力No：
         sbSQL.append(", UPDKBN"); // 更新区分：
         sbSQL.append(", SENDFLG"); // 送信区分：
@@ -532,8 +537,40 @@ public class Reportx217Dao extends ItemDao {
         sbSQL.append(", OPERATOR "); // オペレーター：
         sbSQL.append(", ADDDT "); // 登録日：
         sbSQL.append(", UPDDT "); // 更新日：
-        sbSQL.append(") VALUES ");
+        sbSQL.append(") SELECT * FROM ( ");
+        sbSQL.append("SELECT ");
+        sbSQL.append("  INPUTNO"); // 入力No：
+        sbSQL.append(", UPDKBN"); // 更新区分：
+        sbSQL.append(", SENDFLG"); // 送信区分：
+        sbSQL.append(", TENCD"); // 店コード：
+        sbSQL.append(", SHNCD"); // 商品コード：
+        sbSQL.append(", SEQ"); // SEQ：
+        sbSQL.append(", OPERATOR "); // オペレーター：
+        sbSQL.append(", ADDDT "); // 登録日：
+        sbSQL.append(", UPDDT "); // 更新日：
+        sbSQL.append("FROM ( ");
+        sbSQL.append(" VALUES ");
         sbSQL.append(" " + StringUtils.join(valueData, ",") + " ");
+        sbSQL.append(") AS T1 ( ");
+        sbSQL.append("  INPUTNO"); // 入力No：
+        sbSQL.append(", UPDKBN"); // 更新区分：
+        sbSQL.append(", SENDFLG"); // 送信区分：
+        sbSQL.append(", TENCD"); // 店コード：
+        sbSQL.append(", SHNCD"); // 商品コード：
+        sbSQL.append(", SEQ"); // SEQ：
+        sbSQL.append(", OPERATOR "); // オペレーター：
+        sbSQL.append(", ADDDT "); // 登録日：
+        sbSQL.append(", UPDDT "); // 更新日：
+        sbSQL.append(") ) AS T1 ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("  INPUTNO = VALUES(INPUTNO) "); // 入力No：
+        sbSQL.append(", UPDKBN = VALUES(UPDKBN) "); // 更新区分：
+        sbSQL.append(", SENDFLG = VALUES(SENDFLG) "); // 送信区分：
+        sbSQL.append(", TENCD = VALUES(TENCD) "); // 店コード：
+        sbSQL.append(", SHNCD = VALUES(SHNCD) "); // 商品コード：
+        sbSQL.append(", SEQ = VALUES(SEQ) "); // SEQ：
+        sbSQL.append(", OPERATOR = VALUES(OPERATOR) "); // オペレーター：
+        sbSQL.append(", UPDDT = VALUES(UPDDT) "); // 更新日：
 
 
         if (DefineReport.ID_DEBUG_MODE) {
