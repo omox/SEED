@@ -6644,7 +6644,7 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,OPERATOR"); // F8 : オペレータ
     sbSQL.append(" ,ADDDT"); // F9 : 登録日
     sbSQL.append(" ,UPDDT"); // F10: 更新日
-    sbSQL.append(" )VALUES (" + values + ")");
+    sbSQL.append(" )VALUES " + values + "");
     return sbSQL.toString();
   }
 
