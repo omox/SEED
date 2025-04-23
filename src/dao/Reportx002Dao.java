@@ -899,7 +899,6 @@ public class Reportx002Dao extends ItemDao {
     if (dataArraySRCCD.size() > 0) {
       this.createSqlMSTSRCCD(userId, sendBtnid, dataArraySRCCD, baseTblType, SqlType.INS);
     }
-
     this.createSqlMSTTENKABUTSU(userId, sendBtnid, dataArrayDelTENKABUTSU, baseTblType, SqlType.DEL);
     if (dataArrayTENKABUTSU.size() > 0) {
       this.createSqlMSTTENKABUTSU(userId, sendBtnid, dataArrayTENKABUTSU, baseTblType, SqlType.INS);
@@ -4244,10 +4243,9 @@ public class Reportx002Dao extends ItemDao {
       } else if (i == MSTSHNLayout.HAT_SUNKBN.getNo() && StringUtils.isEmpty(val)) { // 発注曜日_日がnullの場合"0"を設定
         val = "0";
       } else if (i == MSTSHNLayout.TOROKUMOTO.getNo()) { // 登録元
-         if (DefineReport.Button.ERR_CHANGE.getObj().equals(btnId)) {
+        if (DefineReport.Button.ERR_CHANGE.getObj().equals(btnId)) {
           val = "1";
-        }
-         else if (StringUtils.isEmpty(val) || !val.equals("1")) {
+        } else if (StringUtils.isEmpty(val) || !val.equals("1")) {
           val = "0";
         }
       } else if (i == MSTSHNLayout.UPDKBN.getNo()) { // 更新区分
@@ -4369,7 +4367,6 @@ public class Reportx002Dao extends ItemDao {
         if (StringUtils.isEmpty(val) || !val.equals("1")) {
           val = "0";
         }
-        
       }
       if (TblType.CSV.getVal() != tbl.getVal()) {
         if (itm == MSTSHNLayout.SENDFLG) { // 送信フラグ
@@ -5687,7 +5684,11 @@ public class Reportx002Dao extends ItemDao {
         }
         names += " " + col;
       }
-      rows += "," + StringUtils.removeStart(values, ",") + "";
+      if (SqlType.DEL.getVal() == sql.getVal()) {
+        rows += "," + StringUtils.removeStart(values, ",") + "";
+      }else {
+      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      }
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -5731,7 +5732,7 @@ public class Reportx002Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    if (set.equals("1")) {
+    if (SqlType.DEL.getVal() == sql.getVal()) {
       sbSQL.append(" WITH T1 AS (");
       sbSQL.append(" select");
       sbSQL.append(" cast(" + MSTTENKABUTSULayout.SHNCD.getId() + " as CHAR(14)) as " + MSTTENKABUTSULayout.SHNCD.getCol() + " ");
@@ -5741,7 +5742,6 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" DELETE FROM " + szTable + " as T ");
       sbSQL.append(" where ");
       sbSQL.append(" T.SHNCD IN " + " (select T1." + MSTTENKABUTSULayout.SHNCD.getCol() + " from T1) ");
-
     } else {
       sbSQL.append("INSERT INTO " + szTable + " ( ");
       sbSQL.append("  SHNCD"); // F1 : 商品コード
@@ -5761,8 +5761,8 @@ public class Reportx002Dao extends ItemDao {
         sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
         sbSQL.append(" ,INPUTEDANO"); // F3 : 入力枝番
       }
-      sbSQL.append(" )VALUES (" + values + ")");
-      sbSQL.append("ON DUPLICATE KEY UPDATE ");
+      sbSQL.append(" )VALUES " + values + "");      
+      sbSQL.append(" ON DUPLICATE KEY UPDATE ");
       sbSQL.append("  SHNCD=VALUES(SHNCD)"); // F1 : 商品コード
       sbSQL.append(" ,TENKABKBN=VALUES(TENKABKBN)"); // F2 : 添加物区分
       sbSQL.append(" ,TENKABCD=VALUES(TENKABCD)"); // F3 : 添加物コード
