@@ -4244,9 +4244,10 @@ public class Reportx002Dao extends ItemDao {
       } else if (i == MSTSHNLayout.HAT_SUNKBN.getNo() && StringUtils.isEmpty(val)) { // 発注曜日_日がnullの場合"0"を設定
         val = "0";
       } else if (i == MSTSHNLayout.TOROKUMOTO.getNo()) { // 登録元
-        if (DefineReport.Button.ERR_CHANGE.getObj().equals(btnId)) {
+         if (DefineReport.Button.ERR_CHANGE.getObj().equals(btnId)) {
           val = "1";
-        } else if (StringUtils.isEmpty(val) || !val.equals("1")) {
+        }
+         else if (StringUtils.isEmpty(val) || !val.equals("1")) {
           val = "0";
         }
       } else if (i == MSTSHNLayout.UPDKBN.getNo()) { // 更新区分
@@ -4368,6 +4369,7 @@ public class Reportx002Dao extends ItemDao {
         if (StringUtils.isEmpty(val) || !val.equals("1")) {
           val = "0";
         }
+        
       }
       if (TblType.CSV.getVal() != tbl.getVal()) {
         if (itm == MSTSHNLayout.SENDFLG) { // 送信フラグ
@@ -4946,7 +4948,7 @@ public class Reportx002Dao extends ItemDao {
     sbSQL.append(" ,READTMPTN = VALUES(READTMPTN) "); // F107: リードタイムパターン
     sbSQL.append(" ,SIMEKAISU = VALUES(SIMEKAISU) "); // F108: 締め回数
     sbSQL.append(" ,IRYOREFLG = VALUES(IRYOREFLG) "); // F109: 衣料使い回しフラグ
-    sbSQL.append(" ,TOROKUMOTO = VALUES(UPDKBN) "); // F110: 登録元
+    sbSQL.append(" ,TOROKUMOTO = VALUES(TOROKUMOTO) "); // F110: 登録元
     sbSQL.append(" ,UPDKBN = VALUES(UPDKBN) "); // F111: 更新区分
     if (TblType.CSV.getVal() != tbl.getVal()) {
       sbSQL.append(" ,SENDFLG = VALUES(SENDFLG) "); // F112: 送信フラグ
