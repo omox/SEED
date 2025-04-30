@@ -2237,7 +2237,12 @@ public class ReportTJ005Dao extends ItemDao {
     paramData = new ArrayList<>();
     for (int i = 0; i < dataArraySHN.size(); i++) {
       paramData.add(this.get_SEQ_TOKTJ001()); // F1 : SEQ
-      values += ",(SELECT ? , ";
+      if (i == 0) {
+        values += "SELECT ? , ";
+      }else {
+        values += " UNION ALL SELECT ? , ";
+      }
+      
       for (int j = 1; j <= shnColNum; j++) {
         shnValues = dataArraySHN.optJSONObject(i).optString("F" + j);
 
@@ -2250,7 +2255,6 @@ public class ReportTJ005Dao extends ItemDao {
             values += " AND BMNCD =" + Bumon;
             values += " AND HYOSEQNO =" + No;
             values += " AND TENCD =" + Tenpo;
-            values += ") ";
           } else {
             values += " null,PAGENO,0 ,'" + userId + "' ,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP ";
             values += "FROM INATK.TOKTJ_TEN ";
@@ -2258,7 +2262,6 @@ public class ReportTJ005Dao extends ItemDao {
             values += " AND BMNCD =" + Bumon;
             values += " AND HYOSEQNO =" + No;
             values += " AND TENCD =" + Tenpo;
-            values += ") ";
           }
         } else if (j == 1) { // F2 : リスト№
           if (!StringUtils.isEmpty(shnValues)) {
@@ -2370,7 +2373,72 @@ public class ReportTJ005Dao extends ItemDao {
       sbSQL.append(" ,ADDDT"); // F60: 登録日
       sbSQL.append(" ,UPDDT"); // F61: 更新日
       sbSQL.append(") ");
+      sbSQL.append("SELECT * FROM  ");
+      sbSQL.append("( ");
       sbSQL.append(values);
+      sbSQL.append(") AS TMP( ");
+      sbSQL.append("  SEQ"); // F1 : SEQ
+      sbSQL.append(" ,LSTNO"); // F2 : リスト№
+      sbSQL.append(" ,BMNCD"); // F3 : 部門
+      sbSQL.append(" ,HYOSEQNO"); // F4 : 表示順番
+      sbSQL.append(" ,TENCD"); // F5 : 店コード
+      sbSQL.append(" ,IRISU_RG"); // F6 : 入数_標準
+      sbSQL.append(" ,IRISU_TB"); // F7 : 入数_特売
+      sbSQL.append(" ,SBAIKAAM_TB"); // F8 : 特売総額売価
+      sbSQL.append(" ,BAIKAAM_TB"); // F9 : 特売本体売価
+      sbSQL.append(" ,SBAIKAAM_RG"); // F10: 標準総額売価
+      sbSQL.append(" ,BAIKAAM_RG"); // F11: 標準本体売価
+      sbSQL.append(" ,GENKAAM_MAE"); // F12: 事前原価
+      sbSQL.append(" ,GENKAAM_ATO"); // F13: 追加原価
+      sbSQL.append(" ,GENKAAM_RG"); // F14: 標準原価
+      sbSQL.append(" ,GENKAAM_PACK"); // F15: パック原価
+      sbSQL.append(" ,BAIKAAM_PACK"); // F16: パック売価
+      sbSQL.append(" ,JTDT_01"); // F17: 日付_01
+      sbSQL.append(" ,JTDT_02"); // F18: 日付_02
+      sbSQL.append(" ,JTDT_03"); // F19: 日付_03
+      sbSQL.append(" ,JTDT_04"); // F20: 日付_04
+      sbSQL.append(" ,JTDT_05"); // F21: 日付_05
+      sbSQL.append(" ,JTDT_06"); // F22: 日付_06
+      sbSQL.append(" ,JTDT_07"); // F23: 日付_07
+      sbSQL.append(" ,JTDT_08"); // F24: 日付_08
+      sbSQL.append(" ,JTDT_09"); // F25: 日付_09
+      sbSQL.append(" ,JTDT_10"); // F26: 日付_10
+      sbSQL.append(" ,TSEIKBN_01"); // F27: 訂正区分_01
+      sbSQL.append(" ,TSEIKBN_02"); // F28: 訂正区分_02
+      sbSQL.append(" ,TSEIKBN_03"); // F29: 訂正区分_03
+      sbSQL.append(" ,TSEIKBN_04"); // F30: 訂正区分_04
+      sbSQL.append(" ,TSEIKBN_05"); // F31: 訂正区分_05
+      sbSQL.append(" ,TSEIKBN_06"); // F32: 訂正区分_06
+      sbSQL.append(" ,TSEIKBN_07"); // F33: 訂正区分_07
+      sbSQL.append(" ,TSEIKBN_08"); // F34: 訂正区分_08
+      sbSQL.append(" ,TSEIKBN_09"); // F35: 訂正区分_09
+      sbSQL.append(" ,TSEIKBN_10"); // F36: 訂正区分_10
+      sbSQL.append(" ,SHNKBN_01"); // F37: 商品区分_01
+      sbSQL.append(" ,SHNKBN_02"); // F38: 商品区分_02
+      sbSQL.append(" ,SHNKBN_03"); // F39: 商品区分_03
+      sbSQL.append(" ,SHNKBN_04"); // F40: 商品区分_04
+      sbSQL.append(" ,SHNKBN_05"); // F41: 商品区分_05
+      sbSQL.append(" ,SHNKBN_06"); // F42: 商品区分_06
+      sbSQL.append(" ,SHNKBN_07"); // F43: 商品区分_07
+      sbSQL.append(" ,SHNKBN_08"); // F44: 商品区分_08
+      sbSQL.append(" ,SHNKBN_09"); // F45: 商品区分_09
+      sbSQL.append(" ,SHNKBN_10"); // F46: 商品区分_10
+      sbSQL.append(" ,HTSU_01"); // F47: 発注数_01
+      sbSQL.append(" ,HTSU_02"); // F48: 発注数_02
+      sbSQL.append(" ,HTSU_03"); // F49: 発注数_03
+      sbSQL.append(" ,HTSU_04"); // F50: 発注数_04
+      sbSQL.append(" ,HTSU_05"); // F51: 発注数_05
+      sbSQL.append(" ,HTSU_06"); // F52: 発注数_06
+      sbSQL.append(" ,HTSU_07"); // F53: 発注数_07
+      sbSQL.append(" ,HTSU_08"); // F54: 発注数_08
+      sbSQL.append(" ,HTSU_09"); // F55: 発注数_09
+      sbSQL.append(" ,HTSU_10"); // F56: 発注数_10
+      sbSQL.append(" ,PAGENO"); // F57: ページ番号
+      sbSQL.append(" ,SENDFLG"); // F58: 送信フラグ
+      sbSQL.append(" ,OPERATOR"); // F59: オペレータ
+      sbSQL.append(" ,ADDDT"); // F60: 登録日
+      sbSQL.append(" ,UPDDT"); // F61: 更新日
+      sbSQL.append(") ");
       sbSQL.append(" ON DUPLICATE KEY UPDATE ");
       sbSQL.append("  SEQ = VALUES(SEQ)"); // F1 : SEQ
       sbSQL.append(" ,LSTNO = VALUES(LSTNO)"); // F2 : リスト№
