@@ -5329,6 +5329,7 @@ public class Reportx002Dao extends ItemDao {
 
     String szTable = "INAMS.MSTBAIKACTL";
     String szWhere = "T.SHNCD = RE.SHNCD";
+    String szROW = "";
     if (SqlType.DEL.getVal() != sql.getVal()) {
       szWhere += " and T.TENGPCD = RE.TENGPCD";
 
@@ -5375,7 +5376,8 @@ public class Reportx002Dao extends ItemDao {
         }
       }
     }
-    sbSQL.append(" from (values ROW " + values + ") as T1(" + names + ") )AS T1 ");
+    szROW = " ROW "+ values.replaceAll("\\)\\s*,\\s*\\(", "), ROW (");
+    sbSQL.append(" from (values " + szROW + ") as T1(" + names + ") )AS T1 ");
 
     return sbSQL.toString();
   }
