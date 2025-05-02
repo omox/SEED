@@ -9667,7 +9667,7 @@ public class ReportTG016Dao extends ItemDao {
         }
         names += ", " + col;
       }
-      rows += ",(" + StringUtils.removeStart(values, ",") + ")";
+      rows += ",ROW(" + StringUtils.removeStart(values, ",") + ")";
     }
     rows = StringUtils.removeStart(rows, ",");
     names = StringUtils.removeStart(names, ",");
@@ -9675,37 +9675,62 @@ public class ReportTG016Dao extends ItemDao {
     // 基本Merge文
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
-    sbSQL.append("replace into INATK.TOKTG_NNDT ( ");
-
+    sbSQL.append("INSERT INTO INATK.TOKTG_NNDT ");
+    sbSQL.append(" ( ");
     for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
-      if (ArrayUtils.contains(notUse, itm.getId())) {
-        continue;
-      } // 不要
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
-    sbSQL.append(")values(");
+    sbSQL.append(") SELECT ");
+    for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+    }
+
+    sbSQL.append(" FROM ( SELECT ");
+    // キー情報はロックのため後で追加する
     for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      sbSQL.append("cast(? as " + itm.getTyp() + ") ");
+      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+    }
+    for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
+      // 不要
+      // パラメータ不要
+      if (ArrayUtils.contains(notUse, itm.getId()) || ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
+        continue;
+      } // 上記で実施
+      sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
     }
     sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
-    sbSQL.append(" ,'" + userId + "'"); // オペレータ
-    sbSQL.append(" ,current_timestamp"); // 登録日
-    sbSQL.append(" ,current_timestamp"); // 更新日
-    sbSQL.append(")");
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
+    sbSQL.append(" ,current_timestamp AS ADDDT "); // 登録日
+    sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
 
+    sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
+    sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
+
+    for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol() + "=VALUES(" + itm.getCol() + ") ");
+    }
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
     lblList.add("全店特売(アンケート有)_納入日");
     return result;
   }
+
+
 
   /**
    * 全店特売(アンケート無)_納入日 SQL作成処理
