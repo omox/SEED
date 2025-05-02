@@ -1597,15 +1597,15 @@ public class ReportBM015Dao extends ItemDao {
     if (StringUtils.isEmpty(htasu)) {
       sqlWhereNndt += "T2.HTASU IS NULL AND ";
     } else {
-      sqlWhereNndt += "NVL(T2.HTASU,0)=? AND ";
+      sqlWhereNndt += "IFNULL(T2.HTASU,0)=? AND ";
       paramData.add(htasu);
     }
 
     // パターン№
     if (StringUtils.isEmpty(ptnno)) {
-      sqlWhereNndt += "NVL(T2.PTNNO,0)=null ";
+      sqlWhereNndt += "IFNULL(T2.PTNNO,0)=null ";
     } else {
-      sqlWhereNndt += "NVL(T2.PTNNO,0)=? ";
+      sqlWhereNndt += "IFNULL(T2.PTNNO,0)=? ";
       paramData.add(ptnno);
     }
 

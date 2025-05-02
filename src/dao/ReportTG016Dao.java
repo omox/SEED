@@ -8365,7 +8365,7 @@ public class ReportTG016Dao extends ItemDao {
       if (valueData.length >= 100 || (i + 1 == dataArray.size() && valueData.length > 0)) {
         sbSQL = new StringBuffer();
         if (isToktg) {
-          sbSQL.append("INSERT INTO INATK.TOKTG_NNDT (SELECT ");
+          sbSQL.append("INSERT INTO INATK.TOKTG_NNDT ( ");
         } else {
           sbSQL.append("INSERT INTO INATK.TOKSP_NNDT ( ");
         }
@@ -8527,7 +8527,7 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append(set);
       sbSQL.append(",SENDFLG=" + DefineReport.Values.SENDFLG_UN.getVal());
       sbSQL.append(",OPERATOR='" + userId + "'");
-      sbSQL.append(",UPDDT=current timestamp ");
+      sbSQL.append(",UPDDT=current_timestamp ");
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere);
 
