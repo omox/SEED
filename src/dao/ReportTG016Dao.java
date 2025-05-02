@@ -6615,9 +6615,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            msg.add(o);
-            return msg;
+            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+            // msg.add(o);
+            // return msg;
           }
         }
       }
@@ -6654,9 +6654,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            msg.add(o);
-            return msg;
+            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+            // msg.add(o);
+            // return msg;
           }
         }
       }
@@ -7244,9 +7244,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            msg.add(o);
-            return msg;
+            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+            // msg.add(o);
+            // return msg;
           }
         }
       }
@@ -7294,9 +7294,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              msg.add(o);
-              return msg;
+              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+              // msg.add(o);
+              // return msg;
             }
           }
         }
@@ -7339,9 +7339,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              msg.add(o);
-              return msg;
+              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+              // msg.add(o);
+              // return msg;
             }
           }
         }
@@ -7878,9 +7878,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              msg.add(o);
-              return msg;
+              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+              // msg.add(o);
+              // return msg;
             }
           }
         }
@@ -7932,9 +7932,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            msg.add(o);
-            return msg;
+            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+            // msg.add(o);
+            // return msg;
           }
         }
       }
@@ -8019,9 +8019,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              msg.add(o);
-              return msg;
+              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+              // msg.add(o);
+              // return msg;
             }
           }
         }
