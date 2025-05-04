@@ -1363,9 +1363,9 @@ public class ReportST024Dao extends ItemDao {
     }
 
     if (!nhtaishoChk) {
-      JSONObject o = mu.getDbMessageObj("E20363", new String[] {reqNo});
-      msgList.add(o);
-      return msgList;
+      //JSONObject o = mu.getDbMessageObj("E20363", new String[] {reqNo});
+      //msgList.add(o);
+      //return msgList;
     }
 
     if (tkanplukbn.equals("2")) {
