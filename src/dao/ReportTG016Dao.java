@@ -6615,9 +6615,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            // msg.add(o);
-            // return msg;
+             JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+             msg.add(o);
+             return msg;
           }
         }
       }
@@ -6654,9 +6654,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            // msg.add(o);
-            // return msg;
+             JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+             msg.add(o);
+             return msg;
           }
         }
       }
@@ -7244,9 +7244,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            // msg.add(o);
-            // return msg;
+             JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+             msg.add(o);
+             return msg;
           }
         }
       }
@@ -7294,9 +7294,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              // msg.add(o);
-              // return msg;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+               msg.add(o);
+               return msg;
             }
           }
         }
@@ -7339,9 +7339,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              // msg.add(o);
-              // return msg;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+               msg.add(o);
+               return msg;
             }
           }
         }
@@ -7818,9 +7818,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              // msg.add(o);
-              // return msg;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+               msg.add(o);
+               return msg;
             }
           }
         }
@@ -7878,9 +7878,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              // msg.add(o);
-              // return msg;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+               msg.add(o);
+               return msg;
             }
           }
         }
@@ -7932,9 +7932,9 @@ public class ReportTG016Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, val, digit)) {
             // エラー発生箇所を保存
-            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-            // msg.add(o);
-            // return msg;
+             JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+             msg.add(o);
+             return msg;
           }
         }
       }
@@ -7978,9 +7978,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              // msg.add(o);
-              // return msg;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+               msg.add(o);
+               return msg;
             }
           }
         }
@@ -8019,9 +8019,9 @@ public class ReportTG016Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
-              // msg.add(o);
-              // return msg;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + txt});
+               msg.add(o);
+               return msg;
             }
           }
         }
@@ -9039,12 +9039,12 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOK_CMN_BMN(String userId, JSONObject data, SqlType sql, boolean isTOKTG) {
     JSONObject result = new JSONObject();
 
-    TOK_CMN_BMNLayout.UPDKBN.getId();
-    TOK_CMN_BMNLayout.SENDFLG.getId();
-    TOK_CMN_BMNLayout.OPERATOR.getId();
-    TOK_CMN_BMNLayout.ADDDT.getId();
-    TOK_CMN_BMNLayout.UPDDT.getId();
-    this.getIds(TOK_CMNLayout.values());
+    TOK_CMN_BMN_MySQL_Layout.UPDKBN.getId();
+    TOK_CMN_BMN_MySQL_Layout.SENDFLG.getId();
+    TOK_CMN_BMN_MySQL_Layout.OPERATOR.getId();
+    TOK_CMN_BMN_MySQL_Layout.ADDDT.getId();
+    TOK_CMN_BMN_MySQL_Layout.UPDDT.getId();
+    this.getIds(TOK_CMN_MySQL_Layout.values());
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -9057,14 +9057,14 @@ public class ReportTG016Dao extends ItemDao {
       sbSQL.append("INSERT into INATK.TOKSP_BMN ");
     }
     sbSQL.append("(  ");
-    for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
+    for (TOK_CMN_BMN_MySQL_Layout itm : TOK_CMN_BMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
+    for (TOK_CMN_BMN_MySQL_Layout itm : TOK_CMN_BMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9072,7 +9072,7 @@ public class ReportTG016Dao extends ItemDao {
     }
     sbSQL.append(" FROM ( SELECT ");
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9086,7 +9086,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,CURRENT_TIMESTAMP AS UPDDT "); // 更新日
     sbSQL.append("FROM (SELECT 1 DUMMY) AS DUMMY ");
     sbSQL.append(") AS DUMMY ON DUPLICATE KEY UPDATE ");
-    for (TOK_CMN_BMNLayout itm : TOK_CMN_BMNLayout.values()) {
+    for (TOK_CMN_BMN_MySQL_Layout itm : TOK_CMN_BMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9124,12 +9124,12 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("with VAL as (  ");
     sbSQL.append("select ");
     sbSQL.append("MOYSKBN,MOYSSTDT,MOYSRBAN,BMNCD ");
-    sbSQL.append(",sum(case when KANRINO = " + data.optString(TOK_CMNLayout.KANRINO.getId()) + " then 0 else 1 end) as CNT ");
+    sbSQL.append(",sum(case when KANRINO = " + data.optString(TOK_CMN_MySQL_Layout.KANRINO.getId()) + " then 0 else 1 end) as CNT ");
     sbSQL.append("from " + szTableShn + "  where ");
-    sbSQL.append("MOYSKBN  = " + data.optString(TOK_CMNLayout.MOYSKBN.getId()) + " ");
-    sbSQL.append("and MOYSSTDT = " + data.optString(TOK_CMNLayout.MOYSSTDT.getId()) + " ");
-    sbSQL.append("and MOYSRBAN = " + data.optString(TOK_CMNLayout.MOYSRBAN.getId()) + " ");
-    sbSQL.append("and BMNCD    = " + data.optString(TOK_CMNLayout.BMNCD.getId()) + " ");
+    sbSQL.append("MOYSKBN  = " + data.optString(TOK_CMN_MySQL_Layout.MOYSKBN.getId()) + " ");
+    sbSQL.append("and MOYSSTDT = " + data.optString(TOK_CMN_MySQL_Layout.MOYSSTDT.getId()) + " ");
+    sbSQL.append("and MOYSRBAN = " + data.optString(TOK_CMN_MySQL_Layout.MOYSRBAN.getId()) + " ");
+    sbSQL.append("and BMNCD    = " + data.optString(TOK_CMN_MySQL_Layout.BMNCD.getId()) + " ");
     sbSQL.append("group by MOYSKBN,MOYSSTDT,MOYSRBAN,BMNCD ) ");
 
     sbSQL.append("update " + szTableBmn + " as MT ");
@@ -9166,8 +9166,8 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOKTG_SHN(String userId, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOKTG_SHNLayout.UPDKBN.getId(), TOKTG_SHNLayout.SENDFLG.getId(), TOKTG_SHNLayout.OPERATOR.getId(), TOKTG_SHNLayout.ADDDT.getId(), TOKTG_SHNLayout.UPDDT.getId()};
-    String[] keys = this.getIds(TOK_CMNLayout.values());
+    String[] notTarget = new String[] {TOKTG_SHN_MySQL_Layout.UPDKBN.getId(), TOKTG_SHN_MySQL_Layout.SENDFLG.getId(), TOKTG_SHN_MySQL_Layout.OPERATOR.getId(), TOKTG_SHN_MySQL_Layout.ADDDT.getId(), TOKTG_SHN_MySQL_Layout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -9176,20 +9176,20 @@ public class ReportTG016Dao extends ItemDao {
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO INATK.TOKTG_SHN ( ");
-    for (TOKTG_SHNLayout itm : TOKTG_SHNLayout.values()) {
+    for (TOKTG_SHN_MySQL_Layout itm : TOKTG_SHN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(")values(");
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") ");
     }
-    for (TOKTG_SHNLayout itm : TOKTG_SHNLayout.values()) {
+    for (TOKTG_SHN_MySQL_Layout itm : TOKTG_SHN_MySQL_Layout.values()) {
       // パラメータ不要
       if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
@@ -9197,10 +9197,10 @@ public class ReportTG016Dao extends ItemDao {
       if (data.containsKey(itm.getId())) {
         String value = StringUtils.strip(data.optString(itm.getId()));
         // 配列系項目はスペースを取り除かない
-        if (itm.getCol().equals(TOKTG_SHNLayout.TENRANK_ARR.getCol())) {
+        if (itm.getCol().equals(TOKTG_SHN_MySQL_Layout.TENRANK_ARR.getCol())) {
           value = new ReportJU012Dao(JNDIname).spaceArr(data.optString(itm.getId()), 1);
-        } else if (itm.getCol().equals(TOKTG_SHNLayout.GENKAAM_MAE.getCol()) && data.containsKey(TOKTG_SHNLayout.TKANPLUKBN.getId())) {
-          String tkanplukbn = StringUtils.strip(data.optString(TOKTG_SHNLayout.TKANPLUKBN.getId()));
+        } else if (itm.getCol().equals(TOKTG_SHN_MySQL_Layout.GENKAAM_MAE.getCol()) && data.containsKey(TOKTG_SHN_MySQL_Layout.TKANPLUKBN.getId())) {
+          String tkanplukbn = StringUtils.strip(data.optString(TOKTG_SHN_MySQL_Layout.TKANPLUKBN.getId()));
           if (tkanplukbn.equals("2") && StringUtils.isEmpty(value)) {
             value = "0";
           }
@@ -9348,8 +9348,8 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOKSP_SHN(String userId, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOKSP_SHNLayout.UPDKBN.getId(), TOKSP_SHNLayout.SENDFLG.getId(), TOKSP_SHNLayout.OPERATOR.getId(), TOKSP_SHNLayout.ADDDT.getId(), TOKSP_SHNLayout.UPDDT.getId()};
-    String[] keys = this.getIds(TOK_CMNLayout.values());
+    String[] notTarget = new String[] {TOKSP_SHN_MySQL_Layout.UPDKBN.getId(), TOKSP_SHN_MySQL_Layout.SENDFLG.getId(), TOKSP_SHN_MySQL_Layout.OPERATOR.getId(), TOKSP_SHN_MySQL_Layout.ADDDT.getId(), TOKSP_SHN_MySQL_Layout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -9359,14 +9359,14 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO INATK.TOKSP_SHN ");
     sbSQL.append("( ");
-    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+    for (TOKSP_SHN_MySQL_Layout itm : TOKSP_SHN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+    for (TOKSP_SHN_MySQL_Layout itm : TOKSP_SHN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9375,13 +9375,13 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" FROM ( SELECT ");
 
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+    for (TOKSP_SHN_MySQL_Layout itm : TOKSP_SHN_MySQL_Layout.values()) {
       // パラメータ不要
       if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
@@ -9390,10 +9390,10 @@ public class ReportTG016Dao extends ItemDao {
         String value = StringUtils.strip(data.optString(itm.getId()));
 
         // 配列系項目はスペースを取り除かない
-        if (itm.getCol().equals(TOKSP_SHNLayout.TENRANK_ARR.getCol())) {
+        if (itm.getCol().equals(TOKSP_SHN_MySQL_Layout.TENRANK_ARR.getCol())) {
           value = new ReportJU012Dao(JNDIname).spaceArr(data.optString(itm.getId()), 1);
-        } else if (itm.getCol().equals(TOKSP_SHNLayout.GENKAAM_MAE.getCol()) && data.containsKey(TOKSP_SHNLayout.TKANPLUKBN.getId())) {
-          String tkanplukbn = StringUtils.strip(data.optString(TOKSP_SHNLayout.TKANPLUKBN.getId()));
+        } else if (itm.getCol().equals(TOKSP_SHN_MySQL_Layout.GENKAAM_MAE.getCol()) && data.containsKey(TOKSP_SHN_MySQL_Layout.TKANPLUKBN.getId())) {
+          String tkanplukbn = StringUtils.strip(data.optString(TOKSP_SHN_MySQL_Layout.TKANPLUKBN.getId()));
           if (tkanplukbn.equals("2") && StringUtils.isEmpty(value)) {
             value = "0";
           }
@@ -9416,7 +9416,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,CURRENT_TIMESTAMP AS UPDDT "); // F103: 更新日
     sbSQL.append("FROM (SELECT 1 DUMMY) AS DUMMY ");
     sbSQL.append(") AS DUMMY ON DUPLICATE KEY UPDATE ");
-    for (TOKSP_SHNLayout itm : TOKSP_SHNLayout.values()) {
+    for (TOKSP_SHN_MySQL_Layout itm : TOKSP_SHN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9454,7 +9454,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("with VAL as ( ");
     sbSQL.append("select ");
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9496,7 +9496,7 @@ public class ReportTG016Dao extends ItemDao {
    */
   private JSONObject createSqlTOK_CMN_TJTEN(String userId, JSONArray data, SqlType sql, boolean isTOKTG) {// ks_point
     JSONObject result = new JSONObject();
-    String[] notTarget = new String[] {TOK_CMN_TJTENLayout.SENDFLG.getId(), TOK_CMN_TJTENLayout.OPERATOR.getId(), TOK_CMN_TJTENLayout.ADDDT.getId(), TOK_CMN_TJTENLayout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId(), TOK_CMN_TJTEN_MySQL_Layout.OPERATOR.getId(), TOK_CMN_TJTEN_MySQL_Layout.ADDDT.getId(), TOK_CMN_TJTEN_MySQL_Layout.UPDDT.getId()};
 
 
     // 更新情報
@@ -9511,7 +9511,7 @@ public class ReportTG016Dao extends ItemDao {
       table = "INATK.TOKSP_TJTEN";
     }
 
-    for (TOK_CMN_TJTENLayout itm : TOK_CMN_TJTENLayout.values()) {
+    for (TOK_CMN_TJTEN_MySQL_Layout itm : TOK_CMN_TJTEN_MySQL_Layout.values()) {
       colList += "," + itm.getCol();
       colList2 += "," + itm.getCol() + " = VALUES(" + itm.getCol() + ") ";
     }
@@ -9520,7 +9520,7 @@ public class ReportTG016Dao extends ItemDao {
 
     for (int j = 0; j < data.size(); j++) {
       values = "";
-      for (TOK_CMN_TJTENLayout itm : TOK_CMN_TJTENLayout.values()) {
+      for (TOK_CMN_TJTEN_MySQL_Layout itm : TOK_CMN_TJTEN_MySQL_Layout.values()) {
         if (ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
@@ -9535,20 +9535,20 @@ public class ReportTG016Dao extends ItemDao {
         }
       }
 
-      for (TOK_CMN_TJTENLayout itm : TOK_CMN_TJTENLayout.values()) {
+      for (TOK_CMN_TJTEN_MySQL_Layout itm : TOK_CMN_TJTEN_MySQL_Layout.values()) {
         if (!ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
-        if (itm.getId().equals(TOK_CMN_TJTENLayout.SENDFLG.getId())) {
+        if (itm.getId().equals(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId())) {
           values += "," + DefineReport.Values.SENDFLG_UN.getVal() + " ";
         }
-        if (itm.getId().equals(TOK_CMN_TJTENLayout.OPERATOR.getId())) {
+        if (itm.getId().equals(TOK_CMN_TJTEN_MySQL_Layout.OPERATOR.getId())) {
           values += ",'" + userId + "' ";
         }
-        if (itm.getId().equals(TOK_CMN_TJTENLayout.ADDDT.getId())) {
+        if (itm.getId().equals(TOK_CMN_TJTEN_MySQL_Layout.ADDDT.getId())) {
           values += ",(select * from(select case when count(*) = 0 or ifnull(ADDDT,0) = 0 then current_timestamp ";
           values += "else ADDDT end ADDDT from " + table + " ";
-          for (TOK_CMNLayout qur : TOK_CMNLayout.values()) {
+          for (TOK_CMN_MySQL_Layout qur : TOK_CMN_MySQL_Layout.values()) {
             String val = data.optJSONObject(j).optString(qur.getId());
             if (qur.getNo() == 1) {
               values += "where ";
@@ -9565,7 +9565,7 @@ public class ReportTG016Dao extends ItemDao {
           values += ") as T1 ) ";
 
         }
-        if (itm.getId().equals(TOK_CMN_TJTENLayout.UPDDT.getId())) {
+        if (itm.getId().equals(TOK_CMN_TJTEN_MySQL_Layout.UPDDT.getId())) {
           values += ",current_timestamp";
         }
 
@@ -9613,8 +9613,8 @@ public class ReportTG016Dao extends ItemDao {
     // まったく使用しない項目
     String[] notUse = new String[] {}; // new String[]{TOKTG_NNDTLayout.bat_ctlflg01.getId()};
     // 直接値設定する項目
-    String[] notTarget = new String[] {TOKTG_NNDTLayout.OPERATOR.getId(), TOKTG_NNDTLayout.ADDDT.getId(), TOKTG_NNDTLayout.UPDDT.getId()};
-    String[] keys = this.getIds(TOK_CMNLayout.values());
+    String[] notTarget = new String[] {TOKTG_NNDT_MySQL_Layout.OPERATOR.getId(), TOKTG_NNDT_MySQL_Layout.ADDDT.getId(), TOKTG_NNDT_MySQL_Layout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -9628,7 +9628,7 @@ public class ReportTG016Dao extends ItemDao {
 
       values = "";
       names = "";
-      for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
+      for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
         // 不要
         // パラメータ不要
         if (ArrayUtils.contains(notUse, itm.getId()) || ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
@@ -9638,7 +9638,7 @@ public class ReportTG016Dao extends ItemDao {
         String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
 
-        if (itm.getId().equals(TOKTG_NNDTLayout.TENHTSU_ARR.getId())) {
+        if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getId())) {
           val = getHtsuArr(dataArray.optJSONObject(j), data, true);
 
           if (!StringUtils.isEmpty(val)) {
@@ -9653,9 +9653,9 @@ public class ReportTG016Dao extends ItemDao {
             }
           }
           val = arr;
-        } else if (itm.getId().equals(TOKTG_NNDTLayout.TENKAISU.getId())) {
+        } else if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.TENKAISU.getId())) {
           val = tenkaisu;
-        } else if (itm.getId().equals(TOKTG_NNDTLayout.TENCHGFLG_ARR.getId())) {
+        } else if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.TENCHGFLG_ARR.getId())) {
           val = tenchg;
         }
 
@@ -9677,14 +9677,14 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO INATK.TOKTG_NNDT ");
     sbSQL.append(" ( ");
-    for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
+    for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
+    for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9693,13 +9693,13 @@ public class ReportTG016Dao extends ItemDao {
 
     sbSQL.append(" FROM ( SELECT ");
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    for (TOKTG_NNDTLayout itm : TOKTG_NNDTLayout.values()) {
+    for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
       // 不要
       // パラメータ不要
       if (ArrayUtils.contains(notUse, itm.getId()) || ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
@@ -9715,7 +9715,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
     sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
 
-    for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9743,8 +9743,8 @@ public class ReportTG016Dao extends ItemDao {
   protected JSONObject createSqlTOKSP_NNDT(String userId, JSONArray dataArray, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOKSP_NNDTLayout.OPERATOR.getId(), TOKSP_NNDTLayout.ADDDT.getId(), TOKSP_NNDTLayout.UPDDT.getId()};
-    String[] keys = this.getIds(TOK_CMNLayout.values());
+    String[] notTarget = new String[] {TOKSP_NNDT_MySQL_Layout.OPERATOR.getId(), TOKSP_NNDT_MySQL_Layout.ADDDT.getId(), TOKSP_NNDT_MySQL_Layout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -9757,7 +9757,7 @@ public class ReportTG016Dao extends ItemDao {
 
       values = "";
       names = "";
-      for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+      for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
         // パラメータ不要
         if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
           continue;
@@ -9766,7 +9766,7 @@ public class ReportTG016Dao extends ItemDao {
         String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
 
-        if (itm.getId().equals(TOKSP_NNDTLayout.TENHTSU_ARR.getId())) {
+        if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getId())) {
           val = getHtsuArr(dataArray.optJSONObject(j), data, true);
 
           if (!StringUtils.isEmpty(val)) {
@@ -9779,7 +9779,7 @@ public class ReportTG016Dao extends ItemDao {
             }
           }
           val = arr;
-        } else if (itm.getId().equals(TOKSP_NNDTLayout.TENKAISU.getId())) {
+        } else if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.TENKAISU.getId())) {
           val = tenkaisu;
         }
 
@@ -9801,14 +9801,14 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO INATK.TOKSP_NNDT ");
     sbSQL.append(" ( ");
-    for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9817,13 +9817,13 @@ public class ReportTG016Dao extends ItemDao {
 
     sbSQL.append(" FROM ( SELECT ");
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       // パラメータ不要
       if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
@@ -9837,7 +9837,7 @@ public class ReportTG016Dao extends ItemDao {
 
     sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
     sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
-    for (TOKSP_NNDTLayout itm : TOKSP_NNDTLayout.values()) {
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9984,7 +9984,7 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOKSP_HB(String userId, JSONArray dataArray, HashMap<Integer, String> tenAtsuk, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOKSP_HBLayout.SENDFLG.getId(), TOKSP_HBLayout.OPERATOR.getId(), TOKSP_HBLayout.ADDDT.getId(), TOKSP_HBLayout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOKSP_HB_MySQL_Layout.SENDFLG.getId(), TOKSP_HB_MySQL_Layout.OPERATOR.getId(), TOKSP_HB_MySQL_Layout.ADDDT.getId(), TOKSP_HB_MySQL_Layout.UPDDT.getId()};
     String[] keys = this.getIds(TOK_CMNLayout.values());
 
     // 更新情報
@@ -9993,7 +9993,7 @@ public class ReportTG016Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      for (TOKSP_HBLayout itm : TOKSP_HBLayout.values()) {
+      for (TOKSP_HB_MySQL_Layout itm : TOKSP_HB_MySQL_Layout.values()) {
         // パラメータ不要
         if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
           continue;
@@ -10030,27 +10030,27 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO INATK.TOKSP_HB");
     sbSQL.append("( ");
-    for (TOKSP_HBLayout itm : TOKSP_HBLayout.values()) {
+    for (TOKSP_HB_MySQL_Layout itm : TOKSP_HB_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOKSP_HBLayout itm : TOKSP_HBLayout.values()) {
+    for (TOKSP_HB_MySQL_Layout itm : TOKSP_HB_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(" FROM ( SELECT ");
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    for (TOKSP_HBLayout itm : TOKSP_HBLayout.values()) {
+    for (TOKSP_HB_MySQL_Layout itm : TOKSP_HB_MySQL_Layout.values()) {
       // パラメータ不要
       if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
@@ -10064,7 +10064,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("FROM (SELECT 1 DUMMY) AS DUMMY ");
     sbSQL.append(") AS DUMMY ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
-    for (TOKSP_HBLayout itm : TOKSP_HBLayout.values()) {
+    for (TOKSP_HB_MySQL_Layout itm : TOKSP_HB_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10096,7 +10096,7 @@ public class ReportTG016Dao extends ItemDao {
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
 
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       String val = data.optJSONObject(0).optString(itm.getId());
       if (StringUtils.isEmpty(val)) {
         values += ",null";
@@ -10156,7 +10156,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("with VAL as ( ");
     sbSQL.append("select ");
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10199,7 +10199,7 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOKSP_SHNHBDT(String userId, JSONArray dataArray, SqlType sql, String table) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOK_CMN_SHNHBDTLayout.OPERATOR.getId(), TOK_CMN_SHNHBDTLayout.ADDDT.getId(), TOK_CMN_SHNHBDTLayout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOK_CMN_SHNHBDT_MySQL_Layout.OPERATOR.getId(), TOK_CMN_SHNHBDT_MySQL_Layout.ADDDT.getId(), TOK_CMN_SHNHBDT_MySQL_Layout.UPDDT.getId()};
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -10207,14 +10207,14 @@ public class ReportTG016Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+      for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
         if (ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
 
         String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
-        if (itm.getId().equals(TOK_CMN_SHNHBDTLayout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNHBDTLayout.KANRINO_ARR.getId())) {
+        if (itm.getId().equals(TOK_CMN_SHNHBDT_MySQL_Layout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNHBDT_MySQL_Layout.KANRINO_ARR.getId())) {
           val = StringUtils.isEmpty(dataArray.optJSONObject(j).optString(itm.getId()).trim()) ? "" : dataArray.optJSONObject(j).optString(itm.getId());
         }
         if (StringUtils.isEmpty(val)) {
@@ -10235,14 +10235,14 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO " + table + " ");
     sbSQL.append("  ( ");
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10250,13 +10250,13 @@ public class ReportTG016Dao extends ItemDao {
     }
     sbSQL.append(" FROM ( SELECT ");
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (ArrayUtils.contains(notTarget, itm.getId())) {
         continue;
       } // パラメータ不要
@@ -10268,7 +10268,7 @@ public class ReportTG016Dao extends ItemDao {
 
     sbSQL.append("  from (values " + rows + ") as T1(" + names + ")");
     sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10296,7 +10296,7 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOK_CMN_SHNHBDT_DEL(String userId, JSONArray dataArray, SqlType sql, String szTable) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOK_CMN_SHNHBDTLayout.OPERATOR.getId(), TOK_CMN_SHNHBDTLayout.ADDDT.getId(), TOK_CMN_SHNHBDTLayout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOK_CMN_SHNHBDT_MySQL_Layout.OPERATOR.getId(), TOK_CMN_SHNHBDT_MySQL_Layout.ADDDT.getId(), TOK_CMN_SHNHBDT_MySQL_Layout.UPDDT.getId()};
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -10304,14 +10304,14 @@ public class ReportTG016Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+      for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
         if (ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
 
         String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
-        if (itm.getId().equals(TOK_CMN_SHNHBDTLayout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNHBDTLayout.KANRINO_ARR.getId())) {
+        if (itm.getId().equals(TOK_CMN_SHNHBDT_MySQL_Layout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNHBDT_MySQL_Layout.KANRINO_ARR.getId())) {
           val = StringUtils.isEmpty(dataArray.optJSONObject(j).optString(itm.getId()).trim()) ? "" : dataArray.optJSONObject(j).optString(itm.getId());
         }
         if (StringUtils.isEmpty(val)) {
@@ -10332,14 +10332,14 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO " + szTable + " ");
     sbSQL.append(" ( ");
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10347,7 +10347,7 @@ public class ReportTG016Dao extends ItemDao {
     }
     sbSQL.append(" FROM ( SELECT ");
 
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (ArrayUtils.contains(notTarget, itm.getId())) {
         continue;
       } // パラメータ不要
@@ -10364,7 +10364,7 @@ public class ReportTG016Dao extends ItemDao {
 
     sbSQL.append("  from (values " + rows + ") as T1(" + names + ")");
     sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
-    for (TOK_CMN_SHNHBDTLayout itm : TOK_CMN_SHNHBDTLayout.values()) {
+    for (TOK_CMN_SHNHBDT_MySQL_Layout itm : TOK_CMN_SHNHBDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10391,7 +10391,7 @@ public class ReportTG016Dao extends ItemDao {
   protected JSONObject createSqlTOKSP_SHNNNDT(String userId, JSONArray dataArray, SqlType sql, String table) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOK_CMN_SHNNNDTLayout.OPERATOR.getId(), TOK_CMN_SHNNNDTLayout.ADDDT.getId(), TOK_CMN_SHNNNDTLayout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOK_CMN_SHNNNDT_MySQL_Layout.OPERATOR.getId(), TOK_CMN_SHNNNDT_MySQL_Layout.ADDDT.getId(), TOK_CMN_SHNNNDT_MySQL_Layout.UPDDT.getId()};
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<>();
@@ -10399,7 +10399,7 @@ public class ReportTG016Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+      for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
         if (ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
@@ -10407,7 +10407,7 @@ public class ReportTG016Dao extends ItemDao {
         itm.getCol();
         String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
-        if (itm.getId().equals(TOK_CMN_SHNNNDTLayout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getId())) {
+        if (itm.getId().equals(TOK_CMN_SHNNNDT_MySQL_Layout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNNNDT_MySQL_Layout.KANRINO_ARR.getId())) {
           val = dataArray.optJSONObject(j).optString(itm.getId());
         }
         if (StringUtils.isEmpty(val)) {
@@ -10429,7 +10429,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO " + table + " ");
     sbSQL.append("  ( ");
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10437,7 +10437,7 @@ public class ReportTG016Dao extends ItemDao {
     }
     sbSQL.append(") SELECT ");
 
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10446,13 +10446,13 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" FROM ( SELECT ");
 
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (ArrayUtils.contains(notTarget, itm.getId())) {
         continue;
       } // パラメータ不要
@@ -10463,7 +10463,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
     sbSQL.append("  from (values " + rows + ") as T1(" + names + ")");
     sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10490,12 +10490,12 @@ public class ReportTG016Dao extends ItemDao {
   private JSONObject createSqlTOK_CMN_SHNNNDT_DEL(String userId, JSONArray dataArray, SqlType sql, String szTable) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOK_CMN_SHNNNDTLayout.OPERATOR.getId(), TOK_CMN_SHNNNDTLayout.ADDDT.getId(), TOK_CMN_SHNNNDTLayout.UPDDT.getId()};
-    TOK_CMN_SHNNNDTLayout.MOYCD_ARR.getId();
-    TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getId();
-    TOK_CMN_SHNNNDTLayout.OPERATOR.getId();
-    TOK_CMN_SHNNNDTLayout.ADDDT.getId();
-    TOK_CMN_SHNNNDTLayout.UPDDT.getId();
+    String[] notTarget = new String[] {TOK_CMN_SHNNNDT_MySQL_Layout.OPERATOR.getId(), TOK_CMN_SHNNNDT_MySQL_Layout.ADDDT.getId(), TOK_CMN_SHNNNDT_MySQL_Layout.UPDDT.getId()};
+    TOK_CMN_SHNNNDT_MySQL_Layout.MOYCD_ARR.getId();
+    TOK_CMN_SHNNNDT_MySQL_Layout.KANRINO_ARR.getId();
+    TOK_CMN_SHNNNDT_MySQL_Layout.OPERATOR.getId();
+    TOK_CMN_SHNNNDT_MySQL_Layout.ADDDT.getId();
+    TOK_CMN_SHNNNDT_MySQL_Layout.UPDDT.getId();
 
 
     // 更新情報
@@ -10504,14 +10504,14 @@ public class ReportTG016Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+      for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
         if (ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
 
         String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
-        if (itm.getId().equals(TOK_CMN_SHNNNDTLayout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getId())) {
+        if (itm.getId().equals(TOK_CMN_SHNNNDT_MySQL_Layout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNNNDT_MySQL_Layout.KANRINO_ARR.getId())) {
           val = dataArray.optJSONObject(j).optString(itm.getId());
         }
         if (StringUtils.isEmpty(val)) {
@@ -10532,14 +10532,14 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO " + szTable + " ");
     sbSQL.append("  ( ");
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10548,7 +10548,7 @@ public class ReportTG016Dao extends ItemDao {
 
     sbSQL.append(" FROM ( SELECT ");
 
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (ArrayUtils.contains(notTarget, itm.getId())) {
         continue;
       } // パラメータ不要
@@ -10563,7 +10563,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
     sbSQL.append("  from (values " + rows + ") as T1(" + names + ")");
     sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10586,10 +10586,10 @@ public class ReportTG016Dao extends ItemDao {
   public JSONObject createSqlSYSMOYBMN_SEL(JSONObject data) {
     JSONObject result = new JSONObject();
 
-    String szMoyskbn = data.optString(TOK_CMNLayout.MOYSKBN.getId()); // 催し区分
-    String szMoysstdt = data.optString(TOK_CMNLayout.MOYSSTDT.getId()); // 催しコード（催し開始日）
-    String szMoysrban = data.optString(TOK_CMNLayout.MOYSRBAN.getId()); // 催し連番
-    String szBmncd = data.optString(TOK_CMNLayout.BMNCD.getId()); // 部門コード
+    String szMoyskbn = data.optString(TOK_CMN_MySQL_Layout.MOYSKBN.getId()); // 催し区分
+    String szMoysstdt = data.optString(TOK_CMN_MySQL_Layout.MOYSSTDT.getId()); // 催しコード（催し開始日）
+    String szMoysrban = data.optString(TOK_CMN_MySQL_Layout.MOYSRBAN.getId()); // 催し連番
+    String szBmncd = data.optString(TOK_CMN_MySQL_Layout.BMNCD.getId()); // 部門コード
 
     new ArrayList<String>();
 
@@ -10633,7 +10633,7 @@ public class ReportTG016Dao extends ItemDao {
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT into INATK.SYSMOYBMN ( ");
-    for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
+    for (SYSMOYBMN_MySQL_Layout itm : SYSMOYBMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10641,7 +10641,7 @@ public class ReportTG016Dao extends ItemDao {
     }
     sbSQL.append(") ");
     sbSQL.append("SELECT ");
-    for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
+    for (SYSMOYBMN_MySQL_Layout itm : SYSMOYBMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10654,7 +10654,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" FROM ");
     sbSQL.append("( SELECT ");
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10672,7 +10672,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("FROM (SELECT 1 AS DUMMY) AS DUMMY ");
     sbSQL.append(") AS DUMMY ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
-    for (SYSMOYBMNLayout itm : SYSMOYBMNLayout.values()) {
+    for (SYSMOYBMN_MySQL_Layout itm : SYSMOYBMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10697,11 +10697,11 @@ public class ReportTG016Dao extends ItemDao {
   public JSONObject createSqlSYSMOYKANRIENO_SEL(JSONObject data) {
     JSONObject result = new JSONObject();
 
-    String szMoyskbn = data.optString(TOK_CMNLayout.MOYSKBN.getId()); // 催し区分
-    String szMoysstdt = data.optString(TOK_CMNLayout.MOYSSTDT.getId()); // 催しコード（催し開始日）
-    String szMoysrban = data.optString(TOK_CMNLayout.MOYSRBAN.getId()); // 催し連番
-    String szBmncd = data.optString(TOK_CMNLayout.BMNCD.getId()); // 部門コード
-    String szKanrino = data.optString(TOK_CMNLayout.KANRINO.getId()); // 管理番号
+    String szMoyskbn = data.optString(TOK_CMN_MySQL_Layout.MOYSKBN.getId()); // 催し区分
+    String szMoysstdt = data.optString(TOK_CMN_MySQL_Layout.MOYSSTDT.getId()); // 催しコード（催し開始日）
+    String szMoysrban = data.optString(TOK_CMN_MySQL_Layout.MOYSRBAN.getId()); // 催し連番
+    String szBmncd = data.optString(TOK_CMN_MySQL_Layout.BMNCD.getId()); // 部門コード
+    String szKanrino = data.optString(TOK_CMN_MySQL_Layout.KANRINO.getId()); // 管理番号
 
     new ArrayList<String>();
 
@@ -10744,14 +10744,14 @@ public class ReportTG016Dao extends ItemDao {
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
     sbSQL.append("replace into INATK.SYSMOYKANRIENO ( ");
-    for (SYSMOYKANRIENOLayout itm : SYSMOYKANRIENOLayout.values()) {
+    for (SYSMOYKANRIENO_MySQL_Layout itm : SYSMOYKANRIENO_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(")values(");
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -10799,16 +10799,16 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("  select T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN,T1.BMNCD");
       if ((isTOKTG && j == 0) || (!isTOKTG && j == 1)) {
-        sbSQL.append("  ,sum(case when T1.KANRINO = " + data.optString(TOK_CMNLayout.KANRINO.getId()) + " then 0 else 1 end) as CNT");
+        sbSQL.append("  ,sum(case when T1.KANRINO = " + data.optString(TOK_CMN_MySQL_Layout.KANRINO.getId()) + " then 0 else 1 end) as CNT");
       } else {
         sbSQL.append("  ,sum(1) as CNT");
       }
       sbSQL.append("  from " + szTableshn[j] + " T1");
       sbSQL.append("  where T1.UPDKBN = 0 ");
-      sbSQL.append("    and T1.MOYSKBN  = " + data.optString(TOK_CMNLayout.MOYSKBN.getId()) + "");
-      sbSQL.append("    and T1.MOYSSTDT = " + data.optString(TOK_CMNLayout.MOYSSTDT.getId()) + "");
-      sbSQL.append("    and T1.MOYSRBAN = " + data.optString(TOK_CMNLayout.MOYSRBAN.getId()) + "");
-      sbSQL.append("    and T1.BMNCD    = " + data.optString(TOK_CMNLayout.BMNCD.getId()) + "");
+      sbSQL.append("    and T1.MOYSKBN  = " + data.optString(TOK_CMN_MySQL_Layout.MOYSKBN.getId()) + "");
+      sbSQL.append("    and T1.MOYSSTDT = " + data.optString(TOK_CMN_MySQL_Layout.MOYSSTDT.getId()) + "");
+      sbSQL.append("    and T1.MOYSRBAN = " + data.optString(TOK_CMN_MySQL_Layout.MOYSRBAN.getId()) + "");
+      sbSQL.append("    and T1.BMNCD    = " + data.optString(TOK_CMN_MySQL_Layout.BMNCD.getId()) + "");
       sbSQL.append("  group by T1.MOYSKBN,T1.MOYSSTDT,T1.MOYSRBAN,T1.BMNCD");
     }
     sbSQL.append("  ) T1");
@@ -10871,18 +10871,17 @@ public class ReportTG016Dao extends ItemDao {
   /** 全店特売_共通レイアウト() */
   public enum TOK_CMNLayout implements MSTLayout {
     /** 催し区分 */
-    MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
     /** 催し開始日 */
-    MOYSSTDT(2, "MOYSSTDT", "SIGNED", "催し開始日"),
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
     /** 催し連番 */
-    MOYSRBAN(3, "MOYSRBAN", "SIGNED", "催し連番"),
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
     /** 部門 */
-    BMNCD(4, "BMNCD", "SIGNED", "部門"),
-
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
     /** 管理番号 */
-    KANRINO(5, "KANRINO", "SIGNED", "管理番号"),
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
     /** 枝番 */
-    KANRIENO(6, "KANRIENO", "SIGNED", "枝番");
+    KANRIENO(6,"KANRIENO","SMALLINT","枝番");
 
     private final Integer no;
     private final String col;
@@ -10970,23 +10969,23 @@ public class ReportTG016Dao extends ItemDao {
   /** 全店特売(アンケート有/無)_部門レイアウト() */
   public enum TOK_CMN_BMNLayout implements MSTLayout {
     /** 催し区分 */
-    MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
     /** 催し開始日 */
-    MOYSSTDT(2, "MOYSSTDT", "SIGNED", "催し開始日"),
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
     /** 催し連番 */
-    MOYSRBAN(3, "MOYSRBAN", "SIGNED", "催し連番"),
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
     /** 部門 */
-    BMNCD(4, "BMNCD", "SIGNED", "部門"),
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
     /** 更新区分 */
-    UPDKBN(5, "UPDKBN", "SIGNED", "更新区分"),
+    UPDKBN(5,"UPDKBN","SMALLINT","更新区分"),
     /** 送信フラグ */
-    SENDFLG(6, "SENDFLG", "SIGNED", "送信フラグ"),
+    SENDFLG(6,"SENDFLG","SMALLINT","送信フラグ"),
     /** オペレータ */
-    OPERATOR(7, "OPERATOR", "CHAR(20)", "オペレータ"),
+    OPERATOR(7,"OPERATOR","VARCHAR(20)","オペレータ"),
     /** 登録日 */
-    ADDDT(8, "ADDDT", "TIMESTAMP", "登録日"),
+    ADDDT(8,"ADDDT","TIMESTAMP","登録日"),
     /** 更新日 */
-    UPDDT(9, "UPDDT", "TIMESTAMP", "更新日");
+    UPDDT(9,"UPDDT","TIMESTAMP","更新日");
 
     private final Integer no;
     private final String col;
@@ -11074,6 +11073,1688 @@ public class ReportTG016Dao extends ItemDao {
 
   /** 全店特売(アンケート有)_商品レイアウト() */
   public enum TOKTG_SHNLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 管理番号 */
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
+    /** 枝番 */
+    KANRIENO(6,"KANRIENO","SMALLINT","枝番"),
+    /** 登録種別 */
+    ADDSHUKBN(7,"ADDSHUKBN","SMALLINT","登録種別"),
+    /** 1日遅スライド_販売 */
+    HBSLIDEFLG(8,"HBSLIDEFLG","SMALLINT","1日遅スライド_販売"),
+    /** 1日遅スライド_納品 */
+    NHSLIDEFLG(9,"NHSLIDEFLG","SMALLINT","1日遅スライド_納品"),
+    /** BYコード */
+    BYCD(10,"BYCD","INTEGER","BYコード"),
+    /** 商品コード */
+    SHNCD(11,"SHNCD","CHARACTER(14)","商品コード"),
+    /** 親No */
+    PARNO(12,"PARNO","CHARACTER(3)","親No"),
+    /** 子No */
+    CHLDNO(13,"CHLDNO","SMALLINT","子No"),
+    /** 日替フラグ */
+    HIGAWRFLG(14,"HIGAWRFLG","SMALLINT","日替フラグ"),
+    /** 販売期間_開始日 */
+    HBSTDT(15,"HBSTDT","INTEGER","販売期間_開始日"),
+    /** 販売期間_終了日 */
+    HBEDDT(16,"HBEDDT","INTEGER","販売期間_終了日"),
+    /** 納入期間_開始日 */
+    NNSTDT(17,"NNSTDT","INTEGER","納入期間_開始日"),
+    /** 納入期間_終了日 */
+    NNEDDT(18,"NNEDDT","INTEGER","納入期間_終了日"),
+    /** チラシ未掲載 */
+    CHIRASFLG(19,"CHIRASFLG","SMALLINT","チラシ未掲載"),
+    /** 対象店ランク */
+    RANKNO_ADD(20,"RANKNO_ADD","SMALLINT","対象店ランク"),
+    /** 販売予定数 */
+    HBYOTEISU(21,"HBYOTEISU","INTEGER","販売予定数"),
+    /** 原価_特売事前 */
+    GENKAAM_MAE(22,"GENKAAM_MAE","DECIMAL(8,2)","原価_特売事前"),
+    /** 原価_特売追加 */
+    GENKAAM_ATO(23,"GENKAAM_ATO","DECIMAL(8,2)","原価_特売追加"),
+    /** A売価（100ｇ） */
+    A_BAIKAAM(24,"A_BAIKAAM","INTEGER","A売価（100ｇ）"),
+    /** B売価（100ｇ） */
+    B_BAIKAAM(25,"B_BAIKAAM","INTEGER","B売価（100ｇ）"),
+    /** C売価（100ｇ） */
+    C_BAIKAAM(26,"C_BAIKAAM","INTEGER","C売価（100ｇ）"),
+    /** 入数 */
+    IRISU(27,"IRISU","SMALLINT","入数"),
+    /** 発注原売価適用フラグ */
+    HTGENBAIKAFLG(28,"HTGENBAIKAFLG","SMALLINT","発注原売価適用フラグ"),
+    /** A売価_割引率区分 */
+    A_WRITUKBN(29,"A_WRITUKBN","SMALLINT","A売価_割引率区分"),
+    /** B売価_割引率区分 */
+    B_WRITUKBN(30,"B_WRITUKBN","SMALLINT","B売価_割引率区分"),
+    /** C売価_割引率区分 */
+    C_WRITUKBN(31,"C_WRITUKBN","SMALLINT","C売価_割引率区分"),
+    /** 定貫PLU・不定貫区分 */
+    TKANPLUKBN(32,"TKANPLUKBN","SMALLINT","定貫PLU・不定貫区分"),
+    /** A売価_1㎏ */
+    A_GENKAAM_1KG(33,"A_GENKAAM_1KG","INTEGER","A売価_1㎏"),
+    /** B売価_1㎏ */
+    B_GENKAAM_1KG(34,"B_GENKAAM_1KG","INTEGER","B売価_1㎏"),
+    /** C売価_1㎏ */
+    C_GENKAAM_1KG(35,"C_GENKAAM_1KG","INTEGER","C売価_1㎏"),
+    /** パック原価 */
+    GENKAAM_PACK(36,"GENKAAM_PACK","DECIMAL(8,2)","パック原価"),
+    /** A売価_パック */
+    A_BAIKAAM_PACK(37,"A_BAIKAAM_PACK","INTEGER","A売価_パック"),
+    /** B売価_パック */
+    B_BAIKAAM_PACK(38,"B_BAIKAAM_PACK","INTEGER","B売価_パック"),
+    /** C売価_パック */
+    C_BAIKAAM_PACK(39,"C_BAIKAAM_PACK","INTEGER","C売価_パック"),
+    /** A売価_100ｇ相当 */
+    A_BAIKAAM_100G(40,"A_BAIKAAM_100G","INTEGER","A売価_100ｇ相当"),
+    /** B売価_100ｇ相当 */
+    B_BAIKAAM_100G(41,"B_BAIKAAM_100G","INTEGER","B売価_100ｇ相当"),
+    /** C売価_100ｇ相当 */
+    C_BAIKAAM_100G(42,"C_BAIKAAM_100G","INTEGER","C売価_100ｇ相当"),
+    /** 原価_1㎏ */
+    GENKAAM_1KG(43,"GENKAAM_1KG","DECIMAL(8,2)","原価_1㎏"),
+    /** PLU配信フラグ */
+    PLUSNDFLG(44,"PLUSNDFLG","SMALLINT","PLU配信フラグ"),
+    /** 展開方法 */
+    TENKAIKBN(45,"TENKAIKBN","SMALLINT","展開方法"),
+    /** 実績率パタン数値 */
+    JSKPTNSYUKBN(46,"JSKPTNSYUKBN","SMALLINT","実績率パタン数値"),
+    /** 実績率パタン前年同月 */
+    JSKPTNZNENMKBN(47,"JSKPTNZNENMKBN","SMALLINT","実績率パタン前年同月"),
+    /** 実績率パタン前年同週 */
+    JSKPTNZNENWKBN(48,"JSKPTNZNENWKBN","SMALLINT","実績率パタン前年同週"),
+    /** 大分類 */
+    DAICD(49,"DAICD","SMALLINT","大分類"),
+    /** 中分類 */
+    CHUCD(50,"CHUCD","SMALLINT","中分類"),
+    /** 産地 */
+    SANCHIKN(51,"SANCHIKN","VARCHAR(40)","産地"),
+    /** メーカー名 */
+    MAKERKN(52,"MAKERKN","VARCHAR(28)","メーカー名"),
+    /** POP名称 */
+    POPKN(53,"POPKN","VARCHAR(40)","POP名称"),
+    /** 規格名称 */
+    KIKKN(54,"KIKKN","VARCHAR(46)","規格名称"),
+    /** 制限_先着人数 */
+    SEGN_NINZU(55,"SEGN_NINZU","INTEGER","制限_先着人数"),
+    /** 制限_限定表現 */
+    SEGN_GENTEI(56,"SEGN_GENTEI","VARCHAR(20)","制限_限定表現"),
+    /** 制限_一人当たり個数 */
+    SEGN_1KOSU(57,"SEGN_1KOSU","SMALLINT","制限_一人当たり個数"),
+    /** 制限_一人当たり個数単位 */
+    SEGN_1KOSUTNI(58,"SEGN_1KOSUTNI","VARCHAR(10)","制限_一人当たり個数単位"),
+    /** よりどりフラグ */
+    YORIFLG(59,"YORIFLG","SMALLINT","よりどりフラグ"),
+    /** 点数_バンドル1 */
+    BD1_TENSU(60,"BD1_TENSU","SMALLINT","点数_バンドル1"),
+    /** 点数_バンドル2 */
+    BD2_TENSU(61,"BD2_TENSU","SMALLINT","点数_バンドル2"),
+    /** A売価_1個売り */
+    KO_A_BAIKAAN(62,"KO_A_BAIKAAN","INTEGER","A売価_1個売り"),
+    /** A売価_バンドル1 */
+    BD1_A_BAIKAAN(63,"BD1_A_BAIKAAN","INTEGER","A売価_バンドル1"),
+    /** A売価_バンドル2 */
+    BD2_A_BAIKAAN(64,"BD2_A_BAIKAAN","INTEGER","A売価_バンドル2"),
+    /** B売価_1個売り */
+    KO_B_BAIKAAN(65,"KO_B_BAIKAAN","INTEGER","B売価_1個売り"),
+    /** B売価_バンドル1 */
+    BD1_B_BAIKAAN(66,"BD1_B_BAIKAAN","INTEGER","B売価_バンドル1"),
+    /** B売価_バンドル2 */
+    BD2_B_BAIKAAN(67,"BD2_B_BAIKAAN","INTEGER","B売価_バンドル2"),
+    /** C売価_1個売り */
+    KO_C_BAIKAAN(68,"KO_C_BAIKAAN","INTEGER","C売価_1個売り"),
+    /** C売価_バンドル1 */
+    BD1_C_BAIKAAN(69,"BD1_C_BAIKAAN","INTEGER","C売価_バンドル1"),
+    /** C売価_バンドル2 */
+    BD2_C_BAIKAAN(70,"BD2_C_BAIKAAN","INTEGER","C売価_バンドル2"),
+    /** 目玉区分 */
+    MEDAMAKBN(71,"MEDAMAKBN","SMALLINT","目玉区分"),
+    /** POPコード */
+    POPCD(72,"POPCD","INTEGER","POPコード"),
+    /** POPサイズ */
+    POPSZ(73,"POPSZ","VARCHAR(3)","POPサイズ"),
+    /** POP枚数 */
+    POPSU(74,"POPSU","SMALLINT","POP枚数"),
+    /** 商品サイズ */
+    SHNSIZE(75,"SHNSIZE","VARCHAR(40)","商品サイズ"),
+    /** 商品色 */
+    SHNCOLOR(76,"SHNCOLOR","VARCHAR(20)","商品色"),
+    /** その他日替わりコメント */
+    COMMENT_HGW(77,"COMMENT_HGW","VARCHAR(100)","その他日替わりコメント"),
+    /** POPコメント */
+    COMMENT_POP(78,"COMMENT_POP","VARCHAR(100)","POPコメント"),
+    /** 生食加熱区分 */
+    NAMANETUKBN(79,"NAMANETUKBN","SMALLINT","生食加熱区分"),
+    /** 解凍フラグ */
+    KAITOFLG(80,"KAITOFLG","SMALLINT","解凍フラグ"),
+    /** 養殖フラグ */
+    YOSHOKUFLG(81,"YOSHOKUFLG","SMALLINT","養殖フラグ"),
+    /** 事前打出フラグ */
+    JUFLG(82,"JUFLG","SMALLINT","事前打出フラグ"),
+    /** 事前打出日付 */
+    JUHTDT(83,"JUHTDT","INTEGER","事前打出日付"),
+    /** 特売コメント */
+    COMMENT_TB(84,"COMMENT_TB","VARCHAR(60)","特売コメント"),
+    /** カット店展開フラグ */
+    CUTTENFLG(85,"CUTTENFLG","SMALLINT","カット店展開フラグ"),
+    /** 便区分 */
+    BINKBN(86,"BINKBN","SMALLINT","便区分"),
+    /** 別伝区分 */
+    BDENKBN(87,"BDENKBN","SMALLINT","別伝区分"),
+    /** ワッペン区分 */
+    WAPPNKBN(88,"WAPPNKBN","SMALLINT","ワッペン区分"),
+    /** 週次仕入先伝送フラグ */
+    SHUDENFLG(89,"SHUDENFLG","SMALLINT","週次仕入先伝送フラグ"),
+    /** 店ランク配列 */
+    TENRANK_ARR(90,"TENRANK_ARR","VARCHAR(400)","店ランク配列"),
+    /** 月締変更理由 */
+    GTSIMECHGKBN(91,"GTSIMECHGKBN","SMALLINT","月締変更理由"),
+    /** 月締変更許可フラグ */
+    GTSIMEOKFLG(92,"GTSIMEOKFLG","SMALLINT","月締変更許可フラグ"),
+    /** 事前発注リスト出力日 */
+    JLSTCREDT(93,"JLSTCREDT","INTEGER","事前発注リスト出力日"),
+    /** 事前発注数量取込日 */
+    JHTSUINDT(94,"JHTSUINDT","INTEGER","事前発注数量取込日"),
+    /** 週間発注処理日 */
+    WEEKHTDT(95,"WEEKHTDT","INTEGER","週間発注処理日"),
+    /** 催し販売開始日 */
+    MYOSHBSTDT(96,"MYOSHBSTDT","INTEGER","催し販売開始日"),
+    /** 催し販売終了日 */
+    MYOSHBEDDT(97,"MYOSHBEDDT","INTEGER","催し販売終了日"),
+    /** 催し納入開始日 */
+    MYOSNNSTDT(98,"MYOSNNSTDT","INTEGER","催し納入開始日"),
+    /** 催し納入終了日 */
+    MYOSNNEDDT(99,"MYOSNNEDDT","INTEGER","催し納入終了日"),
+    /** 小分類 */
+    SHOBUNCD(105,"SHOBUNCD","SMALLINT","小分類"),
+    /** 更新区分 */
+    UPDKBN(100,"UPDKBN","SMALLINT","更新区分"),
+    /** 送信フラグ */
+    SENDFLG(101,"SENDFLG","SMALLINT","送信フラグ"),
+    /** オペレータ */
+    OPERATOR(102,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(103,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(104,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOKTG_SHNLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 全店特売(アンケート無)_商品レイアウト() */
+  public enum TOKSP_SHNLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 管理番号 */
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
+    /** 枝番 */
+    KANRIENO(6,"KANRIENO","SMALLINT","枝番"),
+    /** 登録種別 */
+    ADDSHUKBN(7,"ADDSHUKBN","SMALLINT","登録種別"),
+    /** BYコード */
+    BYCD(8,"BYCD","INTEGER","BYコード"),
+    /** 商品コード */
+    SHNCD(9,"SHNCD","CHARACTER(14)","商品コード"),
+    /** 親No */
+    PARNO(10,"PARNO","CHARACTER(3)","親No"),
+    /** 子No */
+    CHLDNO(11,"CHLDNO","SMALLINT","子No"),
+    /** 日替フラグ */
+    HIGAWRFLG(12,"HIGAWRFLG","SMALLINT","日替フラグ"),
+    /** 販売期間_開始日 */
+    HBSTDT(13,"HBSTDT","INTEGER","販売期間_開始日"),
+    /** 販売期間_終了日 */
+    HBEDDT(14,"HBEDDT","INTEGER","販売期間_終了日"),
+    /** 納入期間_開始日 */
+    NNSTDT(15,"NNSTDT","INTEGER","納入期間_開始日"),
+    /** 納入期間_終了日 */
+    NNEDDT(16,"NNEDDT","INTEGER","納入期間_終了日"),
+    /** チラシ未掲載 */
+    CHIRASFLG(17,"CHIRASFLG","SMALLINT","チラシ未掲載"),
+    /** 対象店ランク_A売価 */
+    RANKNO_ADD_A(18,"RANKNO_ADD_A","SMALLINT","対象店ランク_A売価"),
+    /** 対象店ランク_B売価 */
+    RANKNO_ADD_B(19,"RANKNO_ADD_B","SMALLINT","対象店ランク_B売価"),
+    /** 対象店ランク_C売価 */
+    RANKNO_ADD_C(20,"RANKNO_ADD_C","SMALLINT","対象店ランク_C売価"),
+    /** 除外店ランク */
+    RANKNO_DEL(21,"RANKNO_DEL","SMALLINT","除外店ランク"),
+    /** 販売予定数 */
+    HBYOTEISU(22,"HBYOTEISU","INTEGER","販売予定数"),
+    /** 原価_特売事前 */
+    GENKAAM_MAE(23,"GENKAAM_MAE","DECIMAL(8,2)","原価_特売事前"),
+    /** 原価_特売追加 */
+    GENKAAM_ATO(24,"GENKAAM_ATO","DECIMAL(8,2)","原価_特売追加"),
+    /** A売価（100ｇ） */
+    A_BAIKAAM(25,"A_BAIKAAM","INTEGER","A売価（100ｇ）"),
+    /** B売価（100ｇ） */
+    B_BAIKAAM(26,"B_BAIKAAM","INTEGER","B売価（100ｇ）"),
+    /** C売価（100ｇ） */
+    C_BAIKAAM(27,"C_BAIKAAM","INTEGER","C売価（100ｇ）"),
+    /** 入数 */
+    IRISU(28,"IRISU","SMALLINT","入数"),
+    /** 発注原売価適用フラグ */
+    HTGENBAIKAFLG(29,"HTGENBAIKAFLG","SMALLINT","発注原売価適用フラグ"),
+    /** A売価_割引率区分 */
+    A_WRITUKBN(30,"A_WRITUKBN","SMALLINT","A売価_割引率区分"),
+    /** B売価_割引率区分 */
+    B_WRITUKBN(31,"B_WRITUKBN","SMALLINT","B売価_割引率区分"),
+    /** C売価_割引率区分 */
+    C_WRITUKBN(32,"C_WRITUKBN","SMALLINT","C売価_割引率区分"),
+    /** 定貫PLU・不定貫区分 */
+    TKANPLUKBN(33,"TKANPLUKBN","SMALLINT","定貫PLU・不定貫区分"),
+    /** A売価_1㎏ */
+    A_GENKAAM_1KG(34,"A_GENKAAM_1KG","INTEGER","A売価_1㎏"),
+    /** B売価_1㎏ */
+    B_GENKAAM_1KG(35,"B_GENKAAM_1KG","INTEGER","B売価_1㎏"),
+    /** C売価_1㎏ */
+    C_GENKAAM_1KG(36,"C_GENKAAM_1KG","INTEGER","C売価_1㎏"),
+    /** パック原価 */
+    GENKAAM_PACK(37,"GENKAAM_PACK","DECIMAL(8,2)","パック原価"),
+    /** A売価_パック */
+    A_BAIKAAM_PACK(38,"A_BAIKAAM_PACK","INTEGER","A売価_パック"),
+    /** B売価_パック */
+    B_BAIKAAM_PACK(39,"B_BAIKAAM_PACK","INTEGER","B売価_パック"),
+    /** C売価_パック */
+    C_BAIKAAM_PACK(40,"C_BAIKAAM_PACK","INTEGER","C売価_パック"),
+    /** A売価_100ｇ相当 */
+    A_BAIKAAM_100G(41,"A_BAIKAAM_100G","INTEGER","A売価_100ｇ相当"),
+    /** B売価_100ｇ相当 */
+    B_BAIKAAM_100G(42,"B_BAIKAAM_100G","INTEGER","B売価_100ｇ相当"),
+    /** C売価_100ｇ相当 */
+    C_BAIKAAM_100G(43,"C_BAIKAAM_100G","INTEGER","C売価_100ｇ相当"),
+    /** 原価_1㎏ */
+    GENKAAM_1KG(44,"GENKAAM_1KG","DECIMAL(8,2)","原価_1㎏"),
+    /** PLU配信フラグ */
+    PLUSNDFLG(45,"PLUSNDFLG","SMALLINT","PLU配信フラグ"),
+    /** 展開方法 */
+    TENKAIKBN(46,"TENKAIKBN","SMALLINT","展開方法"),
+    /** 実績率パタン数値 */
+    JSKPTNSYUKBN(47,"JSKPTNSYUKBN","SMALLINT","実績率パタン数値"),
+    /** 実績率パタン前年同月 */
+    JSKPTNZNENMKBN(48,"JSKPTNZNENMKBN","SMALLINT","実績率パタン前年同月"),
+    /** 実績率パタン前年同週 */
+    JSKPTNZNENWKBN(49,"JSKPTNZNENWKBN","SMALLINT","実績率パタン前年同週"),
+    /** 大分類 */
+    DAICD(50,"DAICD","SMALLINT","大分類"),
+    /** 中分類 */
+    CHUCD(51,"CHUCD","SMALLINT","中分類"),
+    /** 産地 */
+    SANCHIKN(52,"SANCHIKN","VARCHAR(40)","産地"),
+    /** メーカー名 */
+    MAKERKN(53,"MAKERKN","VARCHAR(28)","メーカー名"),
+    /** POP名称 */
+    POPKN(54,"POPKN","VARCHAR(40)","POP名称"),
+    /** 規格名称 */
+    KIKKN(55,"KIKKN","VARCHAR(46)","規格名称"),
+    /** 制限_先着人数 */
+    SEGN_NINZU(56,"SEGN_NINZU","INTEGER","制限_先着人数"),
+    /** 制限_限定表現 */
+    SEGN_GENTEI(57,"SEGN_GENTEI","VARCHAR(20)","制限_限定表現"),
+    /** 制限_一人当たり個数 */
+    SEGN_1KOSU(58,"SEGN_1KOSU","SMALLINT","制限_一人当たり個数"),
+    /** 制限_一人当たり個数単位 */
+    SEGN_1KOSUTNI(59,"SEGN_1KOSUTNI","VARCHAR(10)","制限_一人当たり個数単位"),
+    /** よりどりフラグ */
+    YORIFLG(60,"YORIFLG","SMALLINT","よりどりフラグ"),
+    /** 点数_バンドル1 */
+    BD1_TENSU(61,"BD1_TENSU","SMALLINT","点数_バンドル1"),
+    /** 点数_バンドル2 */
+    BD2_TENSU(62,"BD2_TENSU","SMALLINT","点数_バンドル2"),
+    /** A売価_1個売り */
+    KO_A_BAIKAAN(63,"KO_A_BAIKAAN","INTEGER","A売価_1個売り"),
+    /** A売価_バンドル1 */
+    BD1_A_BAIKAAN(64,"BD1_A_BAIKAAN","INTEGER","A売価_バンドル1"),
+    /** A売価_バンドル2 */
+    BD2_A_BAIKAAN(65,"BD2_A_BAIKAAN","INTEGER","A売価_バンドル2"),
+    /** B売価_1個売り */
+    KO_B_BAIKAAN(66,"KO_B_BAIKAAN","INTEGER","B売価_1個売り"),
+    /** B売価_バンドル1 */
+    BD1_B_BAIKAAN(67,"BD1_B_BAIKAAN","INTEGER","B売価_バンドル1"),
+    /** B売価_バンドル2 */
+    BD2_B_BAIKAAN(68,"BD2_B_BAIKAAN","INTEGER","B売価_バンドル2"),
+    /** C売価_1個売り */
+    KO_C_BAIKAAN(69,"KO_C_BAIKAAN","INTEGER","C売価_1個売り"),
+    /** C売価_バンドル1 */
+    BD1_C_BAIKAAN(70,"BD1_C_BAIKAAN","INTEGER","C売価_バンドル1"),
+    /** C売価_バンドル2 */
+    BD2_C_BAIKAAN(71,"BD2_C_BAIKAAN","INTEGER","C売価_バンドル2"),
+    /** 目玉区分 */
+    MEDAMAKBN(72,"MEDAMAKBN","SMALLINT","目玉区分"),
+    /** POPコード */
+    POPCD(73,"POPCD","INTEGER","POPコード"),
+    /** POPサイズ */
+    POPSZ(74,"POPSZ","VARCHAR(3)","POPサイズ"),
+    /** POP枚数 */
+    POPSU(75,"POPSU","SMALLINT","POP枚数"),
+    /** 商品サイズ */
+    SHNSIZE(76,"SHNSIZE","VARCHAR(40)","商品サイズ"),
+    /** 商品色 */
+    SHNCOLOR(77,"SHNCOLOR","VARCHAR(20)","商品色"),
+    /** その他日替わりコメント */
+    COMMENT_HGW(78,"COMMENT_HGW","VARCHAR(100)","その他日替わりコメント"),
+    /** POPコメント */
+    COMMENT_POP(79,"COMMENT_POP","VARCHAR(100)","POPコメント"),
+    /** 生食加熱区分 */
+    NAMANETUKBN(80,"NAMANETUKBN","SMALLINT","生食加熱区分"),
+    /** 解凍フラグ */
+    KAITOFLG(81,"KAITOFLG","SMALLINT","解凍フラグ"),
+    /** 養殖フラグ */
+    YOSHOKUFLG(82,"YOSHOKUFLG","SMALLINT","養殖フラグ"),
+    /** 事前打出フラグ */
+    JUFLG(83,"JUFLG","SMALLINT","事前打出フラグ"),
+    /** 事前打出日付 */
+    JUHTDT(84,"JUHTDT","INTEGER","事前打出日付"),
+    /** 特売コメント */
+    COMMENT_TB(85,"COMMENT_TB","VARCHAR(60)","特売コメント"),
+    /** カット店展開フラグ */
+    CUTTENFLG(86,"CUTTENFLG","SMALLINT","カット店展開フラグ"),
+    /** 便区分 */
+    BINKBN(87,"BINKBN","SMALLINT","便区分"),
+    /** 別伝区分 */
+    BDENKBN(88,"BDENKBN","SMALLINT","別伝区分"),
+    /** ワッペン区分 */
+    WAPPNKBN(89,"WAPPNKBN","SMALLINT","ワッペン区分"),
+    /** 週次仕入先伝送フラグ */
+    SHUDENFLG(90,"SHUDENFLG","SMALLINT","週次仕入先伝送フラグ"),
+    /** 店ランク配列 */
+    TENRANK_ARR(91,"TENRANK_ARR","VARCHAR(400)","店ランク配列"),
+    /** 事前発注リスト出力日 */
+    JLSTCREDT(92,"JLSTCREDT","INTEGER","事前発注リスト出力日"),
+    /** 事前発注数量取込日 */
+    JHTSUINDT(93,"JHTSUINDT","INTEGER","事前発注数量取込日"),
+    /** 週間発注処理日 */
+    WEEKHTDT(94,"WEEKHTDT","INTEGER","週間発注処理日"),
+    /** 催し販売開始日 */
+    MYOSHBSTDT(95,"MYOSHBSTDT","INTEGER","催し販売開始日"),
+    /** 催し販売終了日 */
+    MYOSHBEDDT(96,"MYOSHBEDDT","INTEGER","催し販売終了日"),
+    /** 催し納入開始日 */
+    MYOSNNSTDT(97,"MYOSNNSTDT","INTEGER","催し納入開始日"),
+    /** 催し納入終了日 */
+    MYOSNNEDDT(98,"MYOSNNEDDT","INTEGER","催し納入終了日"),
+    /** 更新区分 */
+    UPDKBN(99,"UPDKBN","SMALLINT","更新区分"),
+    /** 送信フラグ */
+    SENDFLG(100,"SENDFLG","SMALLINT","送信フラグ"),
+    /** オペレータ */
+    OPERATOR(101,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(102,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(103,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOKSP_SHNLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 全店特売(アンケート有/無)_対象除外店レイアウト() */
+  public enum TOK_CMN_TJTENLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 管理番号 */
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
+    /** 枝番 */
+    KANRIENO(6,"KANRIENO","SMALLINT","枝番"),
+    /** 店コード */
+    TENCD(7,"TENCD","SMALLINT","店コード"),
+    /** 対象除外フラグ */
+    TJFLG(8,"TJFLG","SMALLINT","対象除外フラグ"),
+    /** 店ランク */
+    TENRANK(9,"TENRANK","CHARACTER(1)","店ランク"),
+    /** 送信フラグ */
+    SENDFLG(10,"SENDFLG","SMALLINT","送信フラグ"),
+    /** オペレータ */
+    OPERATOR(11,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(12,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(13,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOK_CMN_TJTENLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 全店特売(アンケート有)_納入日レイアウト() */
+  public enum TOKTG_NNDTLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 管理番号 */
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
+    /** 枝番 */
+    KANRIENO(6,"KANRIENO","SMALLINT","枝番"),
+    /** 納入日 */
+    NNDT(7,"NNDT","INTEGER","納入日"),
+    /** 店発注数配列 */
+    TENHTSU_ARR(8,"TENHTSU_ARR","VARCHAR(2000)","店発注数配列"),
+    /** 店変更フラグ配列 */
+    TENCHGFLG_ARR(9,"TENCHGFLG_ARR","VARCHAR(400)","店変更フラグ配列"),
+    /** 発注総数 */
+    HTASU(10,"HTASU","INTEGER","発注総数"),
+    /** パターン№ */
+    PTNNO(11,"PTNNO","INTEGER","パターン№"),
+    /** 訂正区分 */
+    TSEIKBN(12,"TSEIKBN","SMALLINT","訂正区分"),
+    /** 店舗数 */
+    TPSU(13,"TPSU","SMALLINT","店舗数"),
+    /** 展開数 */
+    TENKAISU(14,"TENKAISU","INTEGER","展開数"),
+    /** 前年実績フラグ */
+    ZJSKFLG(15,"ZJSKFLG","SMALLINT","前年実績フラグ"),
+    /** 週間発注処理日 */
+    WEEKHTDT(16,"WEEKHTDT","INTEGER","週間発注処理日"),
+    /** 送信フラグ */
+    SENDFLG(17,"SENDFLG","SMALLINT","送信フラグ"),
+    /** オペレータ */
+    OPERATOR(18,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(19,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(20,"UPDDT","TIMESTAMP","更新日")
+
+    /** batch用制御フラグ01 */
+    // ,bat_ctlflg01(21,"bat_ctlflg01","SMALLINT","batch用制御フラグ01")
+    ;
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOKTG_NNDTLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 全店特売(アンケート無)_納入日レイアウト() */
+  public enum TOKSP_NNDTLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 管理番号 */
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
+    /** 枝番 */
+    KANRIENO(6,"KANRIENO","SMALLINT","枝番"),
+    /** 納入日 */
+    NNDT(7,"NNDT","INTEGER","納入日"),
+    /** 店発注数配列 */
+    TENHTSU_ARR(8,"TENHTSU_ARR","VARCHAR(2000)","店発注数配列"),
+    /** 発注総数 */
+    HTASU(9,"HTASU","INTEGER","発注総数"),
+    /** パターン№ */
+    PTNNO(10,"PTNNO","INTEGER","パターン№"),
+    /** 訂正区分 */
+    TSEIKBN(11,"TSEIKBN","SMALLINT","訂正区分"),
+    /** 店舗数 */
+    TPSU(12,"TPSU","SMALLINT","店舗数"),
+    /** 展開数 */
+    TENKAISU(13,"TENKAISU","INTEGER","展開数"),
+    /** 前年実績フラグ */
+    ZJSKFLG(14,"ZJSKFLG","SMALLINT","前年実績フラグ"),
+    /** 週間発注処理日 */
+    WEEKHTDT(15,"WEEKHTDT","INTEGER","週間発注処理日"),
+    /** 送信フラグ */
+    SENDFLG(16,"SENDFLG","SMALLINT","送信フラグ"),
+    /** オペレータ */
+    OPERATOR(17,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(18,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(19,"UPDDT","TIMESTAMP","更新日")
+
+    /** batch用制御フラグ01 */
+    // ,bat_ctlflg01(20,"bat_ctlflg01","SMALLINT","batch用制御フラグ01")
+    ;
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOKSP_NNDTLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 全店特売(アンケート無)_販売レイアウト() */
+  public enum TOKSP_HBLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 管理番号 */
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
+    /** 枝番 */
+    KANRIENO(6,"KANRIENO","SMALLINT","枝番"),
+    /** 店扱いフラグ配列 */
+    TENATSUK_ARR(7,"TENATSUK_ARR","VARCHAR(400)","店扱いフラグ配列"),
+    /** 送信フラグ */
+    SENDFLG(8,"SENDFLG","SMALLINT","送信フラグ"),
+    /** オペレータ */
+    OPERATOR(9,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(10,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(11,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOKSP_HBLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+
+  /** 全特/個特_商品販売日レイアウト() */
+  public enum TOK_CMN_SHNHBDTLayout implements MSTLayout {
+    /** 商品コード */
+    SHNCD(1,"SHNCD","CHARACTER(14)","商品コード"),
+    /** 販売日 */
+    HBDT(2,"HBDT","INTEGER","販売日"),
+    /** 催しコード配列 */
+    MOYCD_ARR(3,"MOYCD_ARR","VARCHAR(4000)","催しコード配列"),
+    /** 管理番号配列 */
+    KANRINO_ARR(4,"KANRINO_ARR","VARCHAR(1600)","管理番号配列"),
+    /** オペレータ */
+    OPERATOR(5,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(6,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(7,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOK_CMN_SHNHBDTLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 全特(アンケート無)/個特_商品納入日レイアウト() */
+  public enum TOK_CMN_SHNNNDTLayout implements MSTLayout {
+    /** 商品コード */
+    SHNCD(1,"SHNCD","CHARACTER(14)","商品コード"),
+    /** 便区分 */
+    BINKBN(2,"BINKBN","SMALLINT","便区分"),
+    /** 納入日 */
+    NNDT(3,"NNDT","INTEGER","納入日"),
+    /** 催しコード配列 */
+    MOYCD_ARR(4,"MOYCD_ARR","VARCHAR(4000)","催しコード配列"),
+    /** 管理番号配列 */
+    KANRINO_ARR(5,"KANRINO_ARR","VARCHAR(1600)","管理番号配列"),
+    /** オペレータ */
+    OPERATOR(6,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(7,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(8,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOK_CMN_SHNNNDTLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 催し部門内部管理レイアウト() */
+  public enum SYSMOYBMNLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 付番済管理番号 */
+    SUMI_KANRINO(5,"SUMI_KANRINO","SMALLINT","付番済管理番号"),
+    /** 付番済表示順番 */
+    SUMI_HYOSEQNO(6,"SUMI_HYOSEQNO","SMALLINT","付番済表示順番"),
+    /** オペレータ */
+    OPERATOR(7,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(8,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(9,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private SYSMOYBMNLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 催し管理枝番内部管理レイアウト() */
+  public enum SYSMOYKANRIENOLayout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1,"MOYSKBN","SMALLINT","催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2,"MOYSSTDT","INTEGER","催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3,"MOYSRBAN","SMALLINT","催し連番"),
+    /** 部門 */
+    BMNCD(4,"BMNCD","SMALLINT","部門"),
+    /** 管理番号 */
+    KANRINO(5,"KANRINO","SMALLINT","管理番号"),
+    /** 付番済枝番 */
+    SUMI_KANRIENO(6,"SUMI_KANRIENO","SMALLINT","付番済枝番"),
+    /** オペレータ */
+    OPERATOR(7,"OPERATOR","VARCHAR(20)","オペレータ"),
+    /** 登録日 */
+    ADDDT(8,"ADDDT","TIMESTAMP","登録日"),
+    /** 更新日 */
+    UPDDT(9,"UPDDT","TIMESTAMP","更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private SYSMOYKANRIENOLayout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+
+  /** 全店特売_共通レイアウト() MYSQL_var*/
+  public enum TOK_CMN_MySQL_Layout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2, "MOYSSTDT", "SIGNED", "催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3, "MOYSRBAN", "SIGNED", "催し連番"),
+    /** 部門 */
+    BMNCD(4, "BMNCD", "SIGNED", "部門"),
+
+    /** 管理番号 */
+    KANRINO(5, "KANRINO", "SIGNED", "管理番号"),
+    /** 枝番 */
+    KANRIENO(6, "KANRIENO", "SIGNED", "枝番");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOK_CMN_MySQL_Layout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+  /** 全店特売(アンケート有/無)_部門レイアウト() MYSQL_var*/
+  public enum TOK_CMN_BMN_MySQL_Layout implements MSTLayout {
+    /** 催し区分 */
+    MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
+    /** 催し開始日 */
+    MOYSSTDT(2, "MOYSSTDT", "SIGNED", "催し開始日"),
+    /** 催し連番 */
+    MOYSRBAN(3, "MOYSRBAN", "SIGNED", "催し連番"),
+    /** 部門 */
+    BMNCD(4, "BMNCD", "SIGNED", "部門"),
+    /** 更新区分 */
+    UPDKBN(5, "UPDKBN", "SIGNED", "更新区分"),
+    /** 送信フラグ */
+    SENDFLG(6, "SENDFLG", "SIGNED", "送信フラグ"),
+    /** オペレータ */
+    OPERATOR(7, "OPERATOR", "CHAR(20)", "オペレータ"),
+    /** 登録日 */
+    ADDDT(8, "ADDDT", "TIMESTAMP", "登録日"),
+    /** 更新日 */
+    UPDDT(9, "UPDDT", "TIMESTAMP", "更新日");
+
+    private final Integer no;
+    private final String col;
+    private final String txt;
+    private final String typ;
+
+    /** 初期化 */
+    private TOK_CMN_BMN_MySQL_Layout(Integer no, String col, String typ, String txt) {
+      this.no = no;
+      this.col = col;
+      this.typ = typ;
+      this.txt = txt;
+    }
+
+    /** @return col 列番号 */
+    @Override
+    public Integer getNo() {
+      return no;
+    }
+
+    /** @return tbl 列名 */
+    @Override
+    public String getCol() {
+      return col;
+    }
+
+    /** @return typ 列型 */
+    @Override
+    public String getTyp() {
+      return typ;
+    }
+
+    /** @return txt 論理名 */
+    @Override
+    public String getTxt() {
+      return txt;
+    }
+
+    /** @return col Id */
+    @Override
+    public String getId() {
+      return "F" + Integer.toString(no);
+    }
+
+    /** @return datatype データ型のみ */
+    @Override
+    public DataType getDataType() {
+      if (typ.indexOf("INT") != -1) {
+        return DefineReport.DataType.INTEGER;
+      }
+      if (typ.indexOf("DEC") != -1) {
+        return DefineReport.DataType.DECIMAL;
+      }
+      if (typ.indexOf("DATE") != -1 || typ.indexOf("TIMSTAMP") != -1) {
+        return DefineReport.DataType.DATE;
+      }
+      return DefineReport.DataType.TEXT;
+    }
+
+    /** @return boolean */
+    @Override
+    public boolean isText() {
+      return getDataType() == DefineReport.DataType.TEXT;
+    }
+
+    /** @return digit 桁数 */
+    @Override
+    public int[] getDigit() {
+      int digit1 = 0, digit2 = 0;
+      if (typ.indexOf(",") > 0) {
+        String[] sDigit = typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")).split(",");
+        digit1 = NumberUtils.toInt(sDigit[0]);
+        digit2 = NumberUtils.toInt(sDigit[1]);
+      } else if (typ.indexOf("(") > 0) {
+        digit1 = NumberUtils.toInt(typ.substring(typ.indexOf("(") + 1, typ.indexOf(")")));
+      } else if (StringUtils.equals(typ, JDBCType.SMALLINT.getName())) {
+        digit1 = dbNumericTypeInfo.SMALLINT.getDigit();
+      } else if (StringUtils.equals(typ, JDBCType.INTEGER.getName())) {
+        digit1 = dbNumericTypeInfo.INTEGER.getDigit();
+      }
+      return new int[] {digit1, digit2};
+    }
+  }
+
+
+  /** 全店特売(アンケート有)_商品レイアウト() MYSQL_var*/
+  public enum TOKTG_SHN_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -11291,7 +12972,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOKTG_SHNLayout(Integer no, String col, String typ, String txt) {
+    private TOKTG_SHN_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -11368,8 +13049,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 全店特売(アンケート無)_商品レイアウト() */
-  public enum TOKSP_SHNLayout implements MSTLayout {
+  /** 全店特売(アンケート無)_商品レイアウト() MYSQL_var*/
+  public enum TOKSP_SHN_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -11583,7 +13264,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOKSP_SHNLayout(Integer no, String col, String typ, String txt) {
+    private TOKSP_SHN_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -11660,8 +13341,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 全店特売(アンケート有/無)_対象除外店レイアウト() */
-  public enum TOK_CMN_TJTENLayout implements MSTLayout {
+  /** 全店特売(アンケート有/無)_対象除外店レイアウト() MYSQL_var*/
+  public enum TOK_CMN_TJTEN_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -11695,7 +13376,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOK_CMN_TJTENLayout(Integer no, String col, String typ, String txt) {
+    private TOK_CMN_TJTEN_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -11772,8 +13453,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 全店特売(アンケート有)_納入日レイアウト() */
-  public enum TOKTG_NNDTLayout implements MSTLayout {
+  /** 全店特売(アンケート有)_納入日レイアウト() MYSQL_var*/
+  public enum TOKTG_NNDT_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -11825,7 +13506,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOKTG_NNDTLayout(Integer no, String col, String typ, String txt) {
+    private TOKTG_NNDT_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -11902,8 +13583,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 全店特売(アンケート無)_納入日レイアウト() */
-  public enum TOKSP_NNDTLayout implements MSTLayout {
+  /** 全店特売(アンケート無)_納入日レイアウト() MYSQL_var*/
+  public enum TOKSP_NNDT_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -11953,7 +13634,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOKSP_NNDTLayout(Integer no, String col, String typ, String txt) {
+    private TOKSP_NNDT_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -12030,8 +13711,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 全店特売(アンケート無)_販売レイアウト() */
-  public enum TOKSP_HBLayout implements MSTLayout {
+  /** 全店特売(アンケート無)_販売レイアウト() MYSQL_var*/
+  public enum TOKSP_HB_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -12061,7 +13742,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOKSP_HBLayout(Integer no, String col, String typ, String txt) {
+    private TOKSP_HB_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -12139,8 +13820,8 @@ public class ReportTG016Dao extends ItemDao {
   }
 
 
-  /** 全特/個特_商品販売日レイアウト() */
-  public enum TOK_CMN_SHNHBDTLayout implements MSTLayout {
+  /** 全特/個特_商品販売日レイアウト() MYSQL_var*/
+  public enum TOK_CMN_SHNHBDT_MySQL_Layout implements MSTLayout {
     /** 商品コード */
     SHNCD(1, "SHNCD", "CHAR(14)", "商品コード"),
     /** 販売日 */
@@ -12162,7 +13843,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOK_CMN_SHNHBDTLayout(Integer no, String col, String typ, String txt) {
+    private TOK_CMN_SHNHBDT_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -12239,8 +13920,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 全特(アンケート無)/個特_商品納入日レイアウト() */
-  public enum TOK_CMN_SHNNNDTLayout implements MSTLayout {
+  /** 全特(アンケート無)/個特_商品納入日レイアウト() MYSQL_var*/
+  public enum TOK_CMN_SHNNNDT_MySQL_Layout implements MSTLayout {
     /** 商品コード */
     SHNCD(1, "SHNCD", "CHAR(14)", "商品コード"),
     /** 便区分 */
@@ -12264,7 +13945,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private TOK_CMN_SHNNNDTLayout(Integer no, String col, String typ, String txt) {
+    private TOK_CMN_SHNNNDT_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -12341,8 +14022,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 催し部門内部管理レイアウト() */
-  public enum SYSMOYBMNLayout implements MSTLayout {
+  /** 催し部門内部管理レイアウト() MYSQL_var*/
+  public enum SYSMOYBMN_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -12368,7 +14049,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private SYSMOYBMNLayout(Integer no, String col, String typ, String txt) {
+    private SYSMOYBMN_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -12445,8 +14126,8 @@ public class ReportTG016Dao extends ItemDao {
     }
   }
 
-  /** 催し管理枝番内部管理レイアウト() */
-  public enum SYSMOYKANRIENOLayout implements MSTLayout {
+  /** 催し管理枝番内部管理レイアウト() MYSQL_var*/
+  public enum SYSMOYKANRIENO_MySQL_Layout implements MSTLayout {
     /** 催し区分 */
     MOYSKBN(1, "MOYSKBN", "SIGNED", "催し区分"),
     /** 催し開始日 */
@@ -12472,7 +14153,7 @@ public class ReportTG016Dao extends ItemDao {
     private final String typ;
 
     /** 初期化 */
-    private SYSMOYKANRIENOLayout(Integer no, String col, String typ, String txt) {
+    private SYSMOYKANRIENO_MySQL_Layout(Integer no, String col, String typ, String txt) {
       this.no = no;
       this.col = col;
       this.typ = typ;
@@ -12548,6 +14229,7 @@ public class ReportTG016Dao extends ItemDao {
       return new int[] {digit1, digit2};
     }
   }
+
 
   /**
    *

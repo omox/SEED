@@ -27,13 +27,13 @@ import common.ItemList;
 import common.MessageUtility;
 import common.MessageUtility.Msg;
 import common.MessageUtility.MsgKey;
-import dao.ReportTG016Dao.TOKSP_HBLayout;
-import dao.ReportTG016Dao.TOKSP_NNDTLayout;
-import dao.ReportTG016Dao.TOKSP_SHNLayout;
-import dao.ReportTG016Dao.TOKTG_NNDTLayout;
-import dao.ReportTG016Dao.TOKTG_SHNLayout;
-import dao.ReportTG016Dao.TOK_CMN_SHNNNDTLayout;
-import dao.ReportTG016Dao.TOK_CMN_TJTENLayout;
+import dao.ReportTG016Dao.TOKSP_HB_MySQL_Layout;
+import dao.ReportTG016Dao.TOKSP_NNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOKSP_SHN_MySQL_Layout;
+import dao.ReportTG016Dao.TOKTG_NNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOKTG_SHN_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_SHNNNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_TJTEN_MySQL_Layout;
 import dto.JQEasyModel;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -229,9 +229,9 @@ public class ReportST024Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<>();
     String sqlCommand = "";
     if (checkFlg) {
-      sqlCommand = this.checkSelectCommandMST(dataArray, TOK_CMN_SHNNNDTLayout.values(), prmData);
+      sqlCommand = this.checkSelectCommandMST(dataArray, TOK_CMN_SHNNNDT_MySQL_Layout.values(), prmData);
     } else {
-      sqlCommand = this.setSelectCommandMST(dataArray, TOK_CMN_SHNNNDTLayout.values(), prmData);
+      sqlCommand = this.setSelectCommandMST(dataArray, TOK_CMN_SHNNNDT_MySQL_Layout.values(), prmData);
     }
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sqlCommand);
@@ -246,9 +246,9 @@ public class ReportST024Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<>();
     String sqlCommand = "";
     if (checkFlg) {
-      sqlCommand = this.checkSelectCommandMST(dataArray, TOKTG_SHNLayout.values(), prmData);
+      sqlCommand = this.checkSelectCommandMST(dataArray, TOKTG_SHN_MySQL_Layout.values(), prmData);
     } else {
-      sqlCommand = this.setSelectCommandMST(dataArray, TOKTG_SHNLayout.values(), prmData);
+      sqlCommand = this.setSelectCommandMST(dataArray, TOKTG_SHN_MySQL_Layout.values(), prmData);
     }
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sqlCommand);
@@ -263,9 +263,9 @@ public class ReportST024Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<>();
     String sqlCommand = "";
     if (checkFlg) {
-      sqlCommand = this.checkSelectCommandMST(dataArray, TOKSP_SHNLayout.values(), prmData);
+      sqlCommand = this.checkSelectCommandMST(dataArray, TOKSP_SHN_MySQL_Layout.values(), prmData);
     } else {
-      sqlCommand = this.setSelectCommandMST(dataArray, TOKSP_SHNLayout.values(), prmData);
+      sqlCommand = this.setSelectCommandMST(dataArray, TOKSP_SHN_MySQL_Layout.values(), prmData);
     }
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sqlCommand);
@@ -280,9 +280,9 @@ public class ReportST024Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<>();
     String sqlCommand = "";
     if (checkFlg) {
-      sqlCommand = this.checkSelectCommandMST(dataArray, TOKSP_NNDTLayout.values(), prmData);
+      sqlCommand = this.checkSelectCommandMST(dataArray, TOKSP_NNDT_MySQL_Layout.values(), prmData);
     } else {
-      sqlCommand = this.setSelectCommandMST(dataArray, TOKSP_NNDTLayout.values(), prmData);
+      sqlCommand = this.setSelectCommandMST(dataArray, TOKSP_NNDT_MySQL_Layout.values(), prmData);
     }
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sqlCommand);
@@ -297,9 +297,9 @@ public class ReportST024Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<>();
     String sqlCommand = "";
     if (checkFlg) {
-      sqlCommand = this.checkSelectCommandMST(dataArray, TOKTG_NNDTLayout.values(), prmData);
+      sqlCommand = this.checkSelectCommandMST(dataArray, TOKTG_NNDT_MySQL_Layout.values(), prmData);
     } else {
-      sqlCommand = this.setSelectCommandMST(dataArray, TOKTG_NNDTLayout.values(), prmData);
+      sqlCommand = this.setSelectCommandMST(dataArray, TOKTG_NNDT_MySQL_Layout.values(), prmData);
     }
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sqlCommand);
@@ -314,9 +314,9 @@ public class ReportST024Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<>();
     String sqlCommand = "";
     if (checkFlg) {
-      sqlCommand = this.checkSelectCommandMST(dataArray, TOK_CMN_TJTENLayout.values(), prmData);
+      sqlCommand = this.checkSelectCommandMST(dataArray, TOK_CMN_TJTEN_MySQL_Layout.values(), prmData);
     } else {
-      sqlCommand = this.setSelectCommandMST(dataArray, TOK_CMN_TJTENLayout.values(), prmData);
+      sqlCommand = this.setSelectCommandMST(dataArray, TOK_CMN_TJTEN_MySQL_Layout.values(), prmData);
     }
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sqlCommand);
@@ -331,9 +331,9 @@ public class ReportST024Dao extends ItemDao {
     ArrayList<String> prmData = new ArrayList<>();
     String sqlCommand = "";
     if (checkFlg) {
-      sqlCommand = this.checkSelectCommandMST(dataArray, TOKSP_HBLayout.values(), prmData);
+      sqlCommand = this.checkSelectCommandMST(dataArray, TOKSP_HB_MySQL_Layout.values(), prmData);
     } else {
-      sqlCommand = this.setSelectCommandMST(dataArray, TOKSP_HBLayout.values(), prmData);
+      sqlCommand = this.setSelectCommandMST(dataArray, TOKSP_HB_MySQL_Layout.values(), prmData);
     }
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sqlCommand);
@@ -630,33 +630,33 @@ public class ReportST024Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(dtype, bmncd, digit)) {
             // エラー発生箇所を保存
-            // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "部門は"});
-            // msgList.add(o);
-            // return msgList;
+             JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "部門は"});
+             msgList.add(o);
+             return msgList;
           }
 
           // 登録種別の取得
           // 催し種類情報設定
           dao.setMoycdInfo(moyskbn, moysstdt, moysrban, bmncd);
 
-          oshn.put(TOKSP_SHNLayout.MOYSKBN.getCol(), moyskbn);
-          oshn.put(TOKSP_SHNLayout.MOYSSTDT.getCol(), moysstdt);
-          oshn.put(TOKSP_SHNLayout.MOYSRBAN.getCol(), moysrban);
+          oshn.put(TOKSP_SHN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          oshn.put(TOKSP_SHN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          oshn.put(TOKSP_SHN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
 
-          ohb.put(TOKSP_HBLayout.MOYSKBN.getCol(), moyskbn);
-          ohb.put(TOKSP_HBLayout.MOYSSTDT.getCol(), moysstdt);
-          ohb.put(TOKSP_HBLayout.MOYSRBAN.getCol(), moysrban);
+          ohb.put(TOKSP_HB_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          ohb.put(TOKSP_HB_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          ohb.put(TOKSP_HB_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
 
-          ochk.put(TOKSP_SHNLayout.MOYSKBN.getCol(), moyskbn);
-          ochk.put(TOKSP_SHNLayout.MOYSSTDT.getCol(), moysstdt);
-          ochk.put(TOKSP_SHNLayout.MOYSRBAN.getCol(), moysrban);
+          ochk.put(TOKSP_SHN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          ochk.put(TOKSP_SHN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          ochk.put(TOKSP_SHN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
 
         } else if (itm.getCol().equals(FileLayout3.BMNCD.getCol())) {
           bmncd = val;
 
-          oshn.put(TOKSP_SHNLayout.BMNCD.getCol(), bmncd);
-          ohb.put(TOKSP_HBLayout.BMNCD.getCol(), bmncd);
-          ochk.put(TOKSP_HBLayout.BMNCD.getCol(), bmncd);
+          oshn.put(TOKSP_SHN_MySQL_Layout.BMNCD.getCol(), bmncd);
+          ohb.put(TOKSP_HB_MySQL_Layout.BMNCD.getCol(), bmncd);
+          ochk.put(TOKSP_HB_MySQL_Layout.BMNCD.getCol(), bmncd);
 
         } else if (itm.getCol().equals(FileLayout3.KANRINO.getCol())) {
 
@@ -666,9 +666,9 @@ public class ReportST024Dao extends ItemDao {
             kanrino = !StringUtils.isEmpty(val) && NumberUtils.isNumber(val) ? String.valueOf(Integer.valueOf(val)) : val;
           }
 
-          oshn.put(TOKSP_SHNLayout.KANRINO.getCol(), kanrino);
-          ohb.put(TOKSP_HBLayout.KANRINO.getCol(), kanrino);
-          ochk.put(TOKSP_HBLayout.KANRINO.getCol(), kanrino);
+          oshn.put(TOKSP_SHN_MySQL_Layout.KANRINO.getCol(), kanrino);
+          ohb.put(TOKSP_HB_MySQL_Layout.KANRINO.getCol(), kanrino);
+          ochk.put(TOKSP_HB_MySQL_Layout.KANRINO.getCol(), kanrino);
 
           // 同一のキーはNG
           if (!StringUtils.isEmpty(kanrino)) {
@@ -759,9 +759,9 @@ public class ReportST024Dao extends ItemDao {
               return msgList;
             }
 
-            oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
-            oshn.put(TOKSP_SHNLayout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
-            ochk.put(TOKSP_SHNLayout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
+            oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
+            oshn.put(TOKSP_SHN_MySQL_Layout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
+            ochk.put(TOKSP_SHN_MySQL_Layout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
             dao.setFrmInfo(dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
             tenrank_arr = dbDatas.getJSONObject(0).optString("TENRANK_ARR");
             oldBin = dbDatas.getJSONObject(0).optString("BINKBN");
@@ -774,20 +774,20 @@ public class ReportST024Dao extends ItemDao {
             }
 
             if (bmncd.equals("2") || bmncd.equals("9") || bmncd.equals("15")) {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL3.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL3.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL3.getVal());
             } else if (bmncd.equals("4") || bmncd.equals("6")) {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL4.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL4.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL4.getVal());
             } else if (bmncd.equals("5")) {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL5.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL5.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL5.getVal());
             } else {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL2.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL2.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL2.getVal());
             }
 
-            ochk.put(TOKSP_SHNLayout.KANRIENO.getCol(), "");
+            ochk.put(TOKSP_SHN_MySQL_Layout.KANRIENO.getCol(), "");
           }
           ochk.put(FileLayout3.UPDKBN.getCol(), updkbn);
         } else if (itm.getCol().equals(FileLayout3.SHNCD.getCol())) {
@@ -895,7 +895,7 @@ public class ReportST024Dao extends ItemDao {
             return msgList;
           }
           if (dao.isToktg) {
-            oshn.put(TOKTG_SHNLayout.HBSLIDEFLG.getCol(), val);
+            oshn.put(TOKTG_SHN_MySQL_Layout.HBSLIDEFLG.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.NHSLIDEFLG.getCol())) {
           if (!StringUtils.isEmpty(val) && !val.equals("0") && !val.equals("1")) {
@@ -904,26 +904,26 @@ public class ReportST024Dao extends ItemDao {
             return msgList;
           }
           if (dao.isToktg) {
-            oshn.put(TOKTG_SHNLayout.NHSLIDEFLG.getCol(), val);
+            oshn.put(TOKTG_SHN_MySQL_Layout.NHSLIDEFLG.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.RANKNO_ADD_A.getCol())) {
           if (dao.isToktg) {
-            oshn.put(TOKTG_SHNLayout.RANKNO_ADD.getCol(), val);
+            oshn.put(TOKTG_SHN_MySQL_Layout.RANKNO_ADD.getCol(), val);
           } else {
-            oshn.put(TOKSP_SHNLayout.RANKNO_ADD_A.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_ADD_A.getCol(), val);
           }
           addRank = val;
         } else if (itm.getCol().equals(FileLayout3.RANKNO_ADD_B.getCol())) {
           if (!dao.isToktg) {
-            oshn.put(TOKSP_SHNLayout.RANKNO_ADD_B.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_ADD_B.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.RANKNO_ADD_C.getCol())) {
           if (!dao.isToktg) {
-            oshn.put(TOKSP_SHNLayout.RANKNO_ADD_C.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_ADD_C.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.RANKNO_DEL.getCol())) {
           if (!dao.isToktg) {
-            oshn.put(TOKSP_SHNLayout.RANKNO_DEL.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_DEL.getCol(), val);
             delRank = val;
           }
         } else if (itm.getCol().equals(FileLayout3.TENKAIKBN.getCol())) {
@@ -1081,49 +1081,49 @@ public class ReportST024Dao extends ItemDao {
           }
 
           if (tjflg.equals("1")) {
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), tjflg);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), tjflg);
             addTenArr.add(StringUtils.trim(String.valueOf(data[addten + j])));
             addTenRankArr.add(StringUtils.trim(String.valueOf(data[addtenrank + j])));
           } else if (tjflg.equals("2")) {
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), tjflg);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), tjflg);
             delTenArr.add(StringUtils.trim(String.valueOf(data[delten + j])));
           } else if (tjflg.equals("3")) {
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), "1");
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), "1");
             atjt.add(otjt);
             otjt = new JSONObject();
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), "2");
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), "2");
             addTenArr.add(StringUtils.trim(String.valueOf(data[addten + j])));
             addTenRankArr.add(StringUtils.trim(String.valueOf(data[addtenrank + j])));
             delTenArr.add(StringUtils.trim(String.valueOf(data[delten + j])));
           }
 
-          if (otjt.containsKey(TOK_CMN_TJTENLayout.TENCD.getCol())) {
+          if (otjt.containsKey(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol())) {
             atjt.add(otjt);
             otjt = new JSONObject();
           }
@@ -1150,9 +1150,9 @@ public class ReportST024Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(DefineReport.DataType.SUUJI, val, new int[] {1, 0})) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(DefineReport.DataType.SUUJI, new String[] {reqNo + FileLayout3.ZENWARI.getTxt() + "は"});
-              // msgList.add(o);
-              // return msgList;
+               JSONObject o = mu.getDbMessageObjLen(DefineReport.DataType.SUUJI, new String[] {reqNo + FileLayout3.ZENWARI.getTxt() + "は"});
+               msgList.add(o);
+               return msgList;
             }
 
             if (!val.equals("0") && !val.equals("1")) {
@@ -1163,7 +1163,7 @@ public class ReportST024Dao extends ItemDao {
 
             if (val.length() == 1 && val.equals("1")) {
               dao.setFrmInfo("");
-              oshn.replace(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL1.getVal());
+              oshn.replace(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL1.getVal());
             }
           } else {
             // エラー発生箇所を保存
@@ -1205,9 +1205,9 @@ public class ReportST024Dao extends ItemDao {
       if (!InputChecker.checkDataLen(dtype, chkMoysDt, digit)) {
         System.out.print("dtype: " + dtype + " chkMoysDt:" + chkMoysDt + " digit:" + digit);
         // エラー発生箇所を保存
-        // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "催し日付" + (j + 1) + "は"});
-        // msgList.add(o);
-        // return msgList;
+         JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "催し日付" + (j + 1) + "は"});
+         msgList.add(o);
+         return msgList;
       }
 
       int moysdt = !StringUtils.isEmpty(String.valueOf(data[nndt + j])) ? Integer.valueOf(String.valueOf(data[nndt + j])) : 0;
@@ -1237,9 +1237,9 @@ public class ReportST024Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(DefineReport.DataType.SUUJI, StringUtils.trim(String.valueOf(data[hatasu + j])), new int[] {5, 0})) {
             // エラー発生箇所を保存
-            // JSONObject o = mu.getDbMessageObjLen(DefineReport.DataType.SUUJI, new String[] {reqNo + "発注総数は"});
-            // msgList.add(o);
-            // return msgList;
+             JSONObject o = mu.getDbMessageObjLen(DefineReport.DataType.SUUJI, new String[] {reqNo + "発注総数は"});
+             msgList.add(o);
+             return msgList;
           }
 
           hat = Integer.valueOf(StringUtils.trim(String.valueOf(data[hatasu + j])));
@@ -1247,7 +1247,7 @@ public class ReportST024Dao extends ItemDao {
 
         // パターン№未入力
         if (StringUtils.isEmpty(StringUtils.trim(String.valueOf(data[ptnno + j])))) {
-          JSONObject o = mu.getDbMessageObj("EX1047", new String[] {reqNo + TOKTG_NNDTLayout.PTNNO.getTxt() + (j + 1)});
+          JSONObject o = mu.getDbMessageObj("EX1047", new String[] {reqNo + TOKTG_NNDT_MySQL_Layout.PTNNO.getTxt() + (j + 1)});
           msgList.add(o);
           return msgList;
         } else {
@@ -1255,7 +1255,7 @@ public class ReportST024Dao extends ItemDao {
           // ①データ型による文字種チェック
           if (!InputChecker.checkDataType(DefineReport.DataType.SUUJI, StringUtils.trim(String.valueOf(data[ptnno + j])))) {
             // エラー発生箇所を保存
-            JSONObject o = mu.getDbMessageObjDataTypeErr(DefineReport.DataType.SUUJI, new String[] {reqNo + TOKTG_NNDTLayout.PTNNO.getTxt() + (j + 1) + "は"});
+            JSONObject o = mu.getDbMessageObjDataTypeErr(DefineReport.DataType.SUUJI, new String[] {reqNo + TOKTG_NNDT_MySQL_Layout.PTNNO.getTxt() + (j + 1) + "は"});
             msgList.add(o);
             return msgList;
           }
@@ -1265,9 +1265,9 @@ public class ReportST024Dao extends ItemDao {
           // ②データ桁チェック
           if (!InputChecker.checkDataLen(DefineReport.DataType.SUUJI, StringUtils.trim(String.valueOf(data[ptnno + j])), new int[] {length, 0})) {
             // エラー発生箇所を保存
-            // JSONObject o = mu.getDbMessageObjLen(DefineReport.DataType.SUUJI, new String[] {reqNo + TOKTG_NNDTLayout.PTNNO.getTxt() + (j + 1) + "は"});
-            // msgList.add(o);
-            // return msgList;
+             JSONObject o = mu.getDbMessageObjLen(DefineReport.DataType.SUUJI, new String[] {reqNo + TOKTG_NNDT_MySQL_Layout.PTNNO.getTxt() + (j + 1) + "は"});
+             msgList.add(o);
+             return msgList;
           }
         }
 
@@ -1289,68 +1289,68 @@ public class ReportST024Dao extends ItemDao {
         }
 
         if (dao.isToktg) {
-          onnd.put(TOKTG_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-          onnd.put(TOKTG_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-          onnd.put(TOKTG_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-          onnd.put(TOKTG_NNDTLayout.BMNCD.getCol(), bmncd);
-          onnd.put(TOKTG_NNDTLayout.KANRINO.getCol(), kanrino);
-          onnd.put(TOKTG_NNDTLayout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
+          onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
           // 通常数パターンの場合、発注総数は不要
           if (tenkaiKbn.equals("2")) {
-            onnd.put(TOKTG_NNDTLayout.HTASU.getCol(), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.HTASU.getCol(), "");
           } else {
-            onnd.put(TOKTG_NNDTLayout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
           }
-          onnd.put(TOKTG_NNDTLayout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
-          onnd.put(TOKTG_NNDTLayout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
+          onnd.put(TOKTG_NNDT_MySQL_Layout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
+          onnd.put(TOKTG_NNDT_MySQL_Layout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
 
           // 発注数配列、展開数、店舗数
           if (list.size() != 0) {
-            onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol(), list.get(0));
-            onnd.put(TOKTG_NNDTLayout.TPSU.getCol(), list.get(1));
-            onnd.put(TOKTG_NNDTLayout.TENKAISU.getCol(), list.get(2));
-            ochk.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol() + (j + 1), list.get(0));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), list.get(0));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TPSU.getCol(), list.get(1));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENKAISU.getCol(), list.get(2));
+            ochk.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol() + (j + 1), list.get(0));
           } else {
-            onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol(), "");
-            onnd.put(TOKTG_NNDTLayout.TENKAISU.getCol(), "");
-            onnd.put(TOKTG_NNDTLayout.TPSU.getCol(), "");
-            ochk.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol() + (j + 1), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENKAISU.getCol(), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TPSU.getCol(), "");
+            ochk.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol() + (j + 1), "");
           }
-          onnd.put(TOKTG_NNDTLayout.SENDFLG.getCol(), getnhtaisho);
-          ochk.put(TOKTG_NNDTLayout.SENDFLG.getCol() + (j + 1), getnhtaisho);
-          ochk.put(TOKTG_NNDTLayout.NNDT.getCol() + (j + 1), StringUtils.trim(String.valueOf(data[nndt + j])));
+          onnd.put(TOKTG_NNDT_MySQL_Layout.SENDFLG.getCol(), getnhtaisho);
+          ochk.put(TOKTG_NNDT_MySQL_Layout.SENDFLG.getCol() + (j + 1), getnhtaisho);
+          ochk.put(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + (j + 1), StringUtils.trim(String.valueOf(data[nndt + j])));
         } else {
-          onnd.put(TOKSP_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-          onnd.put(TOKSP_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-          onnd.put(TOKSP_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-          onnd.put(TOKSP_NNDTLayout.BMNCD.getCol(), bmncd);
-          onnd.put(TOKSP_NNDTLayout.KANRINO.getCol(), kanrino);
-          onnd.put(TOKSP_NNDTLayout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
+          onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
           // 通常数パターンの場合、発注総数は不要
           if (tenkaiKbn.equals("2")) {
-            onnd.put(TOKSP_NNDTLayout.HTASU.getCol(), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.HTASU.getCol(), "");
           } else {
-            onnd.put(TOKSP_NNDTLayout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
           }
-          onnd.put(TOKSP_NNDTLayout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
-          onnd.put(TOKSP_NNDTLayout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
+          onnd.put(TOKSP_NNDT_MySQL_Layout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
+          onnd.put(TOKSP_NNDT_MySQL_Layout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
 
           // 発注数配列、展開数、店舗数
           if (list.size() != 0) {
-            onnd.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol(), list.get(0));
-            onnd.put(TOKSP_NNDTLayout.TPSU.getCol(), list.get(1));
-            onnd.put(TOKSP_NNDTLayout.TENKAISU.getCol(), list.get(2));
-            ochk.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol() + (j + 1), list.get(0));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), list.get(0));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TPSU.getCol(), list.get(1));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENKAISU.getCol(), list.get(2));
+            ochk.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol() + (j + 1), list.get(0));
           } else {
-            onnd.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol(), "");
-            onnd.put(TOKSP_NNDTLayout.TENKAISU.getCol(), "");
-            onnd.put(TOKSP_NNDTLayout.TPSU.getCol(), "");
-            ochk.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol() + (j + 1), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENKAISU.getCol(), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TPSU.getCol(), "");
+            ochk.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol() + (j + 1), "");
           }
-          onnd.put(TOKSP_NNDTLayout.SENDFLG.getCol(), getnhtaisho);
-          onnd.put(TOKSP_NNDTLayout.OPERATOR.getCol(), oldBin);
-          ochk.put(TOKSP_NNDTLayout.SENDFLG.getCol() + (j + 1), getnhtaisho);
-          ochk.put(TOKSP_NNDTLayout.NNDT.getCol() + (j + 1), StringUtils.trim(String.valueOf(data[nndt + j])));
+          onnd.put(TOKSP_NNDT_MySQL_Layout.SENDFLG.getCol(), getnhtaisho);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.OPERATOR.getCol(), oldBin);
+          ochk.put(TOKSP_NNDT_MySQL_Layout.SENDFLG.getCol() + (j + 1), getnhtaisho);
+          ochk.put(TOKSP_NNDT_MySQL_Layout.NNDT.getCol() + (j + 1), StringUtils.trim(String.valueOf(data[nndt + j])));
         }
 
         annd.add(onnd);
@@ -1363,19 +1363,19 @@ public class ReportST024Dao extends ItemDao {
     }
 
     if (!nhtaishoChk) {
-      //JSONObject o = mu.getDbMessageObj("E20363", new String[] {reqNo});
-      //msgList.add(o);
-      //return msgList;
+      JSONObject o = mu.getDbMessageObj("E20363", new String[] {reqNo});
+      msgList.add(o);
+      return msgList;
     }
 
     if (tkanplukbn.equals("2")) {
-      oshn.put(TOKTG_SHNLayout.A_BAIKAAM.getCol(), a_baikaam1);
-      oshn.put(TOKTG_SHNLayout.B_BAIKAAM.getCol(), b_baikaam1);
-      oshn.put(TOKTG_SHNLayout.C_BAIKAAM.getCol(), c_baikaam1);
+      oshn.put(TOKTG_SHN_MySQL_Layout.A_BAIKAAM.getCol(), a_baikaam1);
+      oshn.put(TOKTG_SHN_MySQL_Layout.B_BAIKAAM.getCol(), b_baikaam1);
+      oshn.put(TOKTG_SHN_MySQL_Layout.C_BAIKAAM.getCol(), c_baikaam1);
     } else if (tkanplukbn.equals("1") || (!dao.isFrm2 && !dao.isFrm3)) {
-      oshn.put(TOKTG_SHNLayout.A_BAIKAAM.getCol(), a_baikaam2);
-      oshn.put(TOKTG_SHNLayout.B_BAIKAAM.getCol(), b_baikaam2);
-      oshn.put(TOKTG_SHNLayout.C_BAIKAAM.getCol(), c_baikaam2);
+      oshn.put(TOKTG_SHN_MySQL_Layout.A_BAIKAAM.getCol(), a_baikaam2);
+      oshn.put(TOKTG_SHN_MySQL_Layout.B_BAIKAAM.getCol(), b_baikaam2);
+      oshn.put(TOKTG_SHN_MySQL_Layout.C_BAIKAAM.getCol(), c_baikaam2);
     }
 
     if (StringUtils.isEmpty(tenrank_arr)) {
@@ -1383,13 +1383,13 @@ public class ReportST024Dao extends ItemDao {
     }
 
     if (dao.isToktg) {
-      oshn.put(TOKTG_SHNLayout.DAICD.getCol(), daicd);
-      oshn.put(TOKTG_SHNLayout.CHUCD.getCol(), chucd);
-      oshn.put(TOKTG_SHNLayout.TENRANK_ARR.getCol(), tenrank_arr);
+      oshn.put(TOKTG_SHN_MySQL_Layout.DAICD.getCol(), daicd);
+      oshn.put(TOKTG_SHN_MySQL_Layout.CHUCD.getCol(), chucd);
+      oshn.put(TOKTG_SHN_MySQL_Layout.TENRANK_ARR.getCol(), tenrank_arr);
     } else {
-      oshn.put(TOKSP_SHNLayout.DAICD.getCol(), daicd);
-      oshn.put(TOKSP_SHNLayout.CHUCD.getCol(), chucd);
-      oshn.put(TOKSP_SHNLayout.TENRANK_ARR.getCol(), tenrank_arr);
+      oshn.put(TOKSP_SHN_MySQL_Layout.DAICD.getCol(), daicd);
+      oshn.put(TOKSP_SHN_MySQL_Layout.CHUCD.getCol(), chucd);
+      oshn.put(TOKSP_SHN_MySQL_Layout.TENRANK_ARR.getCol(), tenrank_arr);
     }
 
     achk.add(ochk);
@@ -1540,15 +1540,15 @@ public class ReportST024Dao extends ItemDao {
 
     if (dbDatas.size() != 0) {
       if (dao.isToktg) {
-        oshn.put(TOKTG_SHNLayout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
-        oshn.put(TOKTG_SHNLayout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
-        oshn.put(TOKTG_SHNLayout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
-        oshn.put(TOKTG_SHNLayout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
       } else {
-        oshn.put(TOKSP_SHNLayout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
-        oshn.put(TOKSP_SHNLayout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
-        oshn.put(TOKSP_SHNLayout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
-        oshn.put(TOKSP_SHNLayout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
       }
     }
 
@@ -1638,18 +1638,18 @@ public class ReportST024Dao extends ItemDao {
           // 催し種類情報設定
           dao.setMoycdInfo(moyskbn, moysstdt, moysrban, bmncd);
 
-          oshn.put(TOKSP_SHNLayout.MOYSKBN.getCol(), moyskbn);
-          oshn.put(TOKSP_SHNLayout.MOYSSTDT.getCol(), moysstdt);
-          oshn.put(TOKSP_SHNLayout.MOYSRBAN.getCol(), moysrban);
+          oshn.put(TOKSP_SHN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          oshn.put(TOKSP_SHN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          oshn.put(TOKSP_SHN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
 
-          ohb.put(TOKSP_HBLayout.MOYSKBN.getCol(), moyskbn);
-          ohb.put(TOKSP_HBLayout.MOYSSTDT.getCol(), moysstdt);
-          ohb.put(TOKSP_HBLayout.MOYSRBAN.getCol(), moysrban);
+          ohb.put(TOKSP_HB_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          ohb.put(TOKSP_HB_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          ohb.put(TOKSP_HB_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
 
         } else if (itm.getCol().equals(FileLayout3.BMNCD.getCol())) {
           bmncd = val;
-          oshn.put(TOKSP_SHNLayout.BMNCD.getCol(), bmncd);
-          ohb.put(TOKSP_HBLayout.BMNCD.getCol(), bmncd);
+          oshn.put(TOKSP_SHN_MySQL_Layout.BMNCD.getCol(), bmncd);
+          ohb.put(TOKSP_HB_MySQL_Layout.BMNCD.getCol(), bmncd);
 
         } else if (itm.getCol().equals(FileLayout3.KANRINO.getCol())) {
 
@@ -1659,8 +1659,8 @@ public class ReportST024Dao extends ItemDao {
             kanrino = !StringUtils.isEmpty(val) && NumberUtils.isNumber(val) ? String.valueOf(Integer.valueOf(val)) : val;
           }
 
-          oshn.put(TOKSP_SHNLayout.KANRINO.getCol(), kanrino);
-          ohb.put(TOKSP_HBLayout.KANRINO.getCol(), kanrino);
+          oshn.put(TOKSP_SHN_MySQL_Layout.KANRINO.getCol(), kanrino);
+          ohb.put(TOKSP_HB_MySQL_Layout.KANRINO.getCol(), kanrino);
 
           // 変数を初期化
           sbSQL = new StringBuffer();
@@ -1728,22 +1728,22 @@ public class ReportST024Dao extends ItemDao {
           dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
           if (dbDatas.size() != 0) {
-            oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
-            oshn.put(TOKSP_SHNLayout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
+            oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
+            oshn.put(TOKSP_SHN_MySQL_Layout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
             dao.setFrmInfo(dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
             tenrank_arr = dbDatas.getJSONObject(0).optString("TENRANK_ARR");
           } else {
             if (bmncd.equals("2") || bmncd.equals("9") || bmncd.equals("15")) {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL3.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL3.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL3.getVal());
             } else if (bmncd.equals("4") || bmncd.equals("6")) {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL4.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL4.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL4.getVal());
             } else if (bmncd.equals("5")) {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL5.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL5.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL5.getVal());
             } else {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL2.getVal());
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL2.getVal());
               dao.setFrmInfo(DefineReport.ValAddShuKbn.VAL2.getVal());
             }
           }
@@ -1809,7 +1809,7 @@ public class ReportST024Dao extends ItemDao {
             dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
             if (dbDatas.size() != 0) {
-              ohb.put(TOKSP_HBLayout.TENATSUK_ARR.getCol(), dbDatas.getJSONObject(0).optString("TENATSUK_ARR"));
+              ohb.put(TOKSP_HB_MySQL_Layout.TENATSUK_ARR.getCol(), dbDatas.getJSONObject(0).optString("TENATSUK_ARR"));
             }
           }
         } else if (itm.getCol().equals(FileLayout3.SHNCD.getCol())) {
@@ -1884,30 +1884,30 @@ public class ReportST024Dao extends ItemDao {
           }
         } else if (itm.getCol().equals(FileLayout3.HBSLIDEFLG.getCol())) {
           if (dao.isToktg) {
-            oshn.put(TOKTG_SHNLayout.HBSLIDEFLG.getCol(), val);
+            oshn.put(TOKTG_SHN_MySQL_Layout.HBSLIDEFLG.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.NHSLIDEFLG.getCol())) {
           if (dao.isToktg) {
-            oshn.put(TOKTG_SHNLayout.NHSLIDEFLG.getCol(), val);
+            oshn.put(TOKTG_SHN_MySQL_Layout.NHSLIDEFLG.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.RANKNO_ADD_A.getCol())) {
           if (dao.isToktg) {
-            oshn.put(TOKTG_SHNLayout.RANKNO_ADD.getCol(), val);
+            oshn.put(TOKTG_SHN_MySQL_Layout.RANKNO_ADD.getCol(), val);
           } else {
-            oshn.put(TOKSP_SHNLayout.RANKNO_ADD_A.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_ADD_A.getCol(), val);
           }
           addRank = val;
         } else if (itm.getCol().equals(FileLayout3.RANKNO_ADD_B.getCol())) {
           if (!dao.isToktg) {
-            oshn.put(TOKSP_SHNLayout.RANKNO_ADD_B.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_ADD_B.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.RANKNO_ADD_C.getCol())) {
           if (!dao.isToktg) {
-            oshn.put(TOKSP_SHNLayout.RANKNO_ADD_C.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_ADD_C.getCol(), val);
           }
         } else if (itm.getCol().equals(FileLayout3.RANKNO_DEL.getCol())) {
           if (!dao.isToktg) {
-            oshn.put(TOKSP_SHNLayout.RANKNO_DEL.getCol(), val);
+            oshn.put(TOKSP_SHN_MySQL_Layout.RANKNO_DEL.getCol(), val);
             delRank = val;
           }
         } else if (itm.getCol().equals(FileLayout3.TENKAIKBN.getCol())) {
@@ -2018,53 +2018,53 @@ public class ReportST024Dao extends ItemDao {
           }
 
           if (tjflg.equals("1")) {
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), tjflg);
-            otjt.put(TOK_CMN_TJTENLayout.SENDFLG.getCol(), 0);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), tjflg);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getCol(), 0);
             addTenArr.add(StringUtils.trim(String.valueOf(data[addten + j])));
             addTenRankArr.add(StringUtils.trim(String.valueOf(data[addtenrank + j])));
           } else if (tjflg.equals("2")) {
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), tjflg);
-            otjt.put(TOK_CMN_TJTENLayout.SENDFLG.getCol(), 0);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), tjflg);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getCol(), 0);
             delTenArr.add(StringUtils.trim(String.valueOf(data[delten + j])));
           } else if (tjflg.equals("3")) {
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), "1");
-            otjt.put(TOK_CMN_TJTENLayout.SENDFLG.getCol(), 0);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[addten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENRANK.getCol(), StringUtils.trim(String.valueOf(data[addtenrank + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), "1");
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getCol(), 0);
             atjt.add(otjt);
             otjt = new JSONObject();
-            otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-            otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-            otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-            otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
-            otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
-            otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), "2");
-            otjt.put(TOK_CMN_TJTENLayout.SENDFLG.getCol(), 0);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), StringUtils.trim(String.valueOf(data[delten + j])));
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), "2");
+            otjt.put(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getCol(), 0);
             addTenArr.add(StringUtils.trim(String.valueOf(data[addten + j])));
             addTenRankArr.add(StringUtils.trim(String.valueOf(data[addtenrank + j])));
             delTenArr.add(StringUtils.trim(String.valueOf(data[delten + j])));
           }
 
-          if (otjt.containsKey(TOK_CMN_TJTENLayout.TENCD.getCol())) {
+          if (otjt.containsKey(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol())) {
             atjt.add(otjt);
             otjt = new JSONObject();
           }
@@ -2077,7 +2077,7 @@ public class ReportST024Dao extends ItemDao {
           if (!StringUtils.isEmpty(val)) {
             if (val.length() == 1 && val.equals("1")) {
               dao.setFrmInfo("");
-              oshn.replace(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL1.getVal());
+              oshn.replace(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL1.getVal());
             }
           }
         } else if (itm.getCol().equals(FileLayout3.MOYSSLIDEFLG.getCol())) {
@@ -2150,13 +2150,13 @@ public class ReportST024Dao extends ItemDao {
       if (atjt.size() != 0) {
         // 今回物理削除対象のデータが存在するか確認
         String values = "", names = "", rows = "";
-        String[] notTarget = new String[] {TOK_CMN_TJTENLayout.KANRIENO.getId(), TOK_CMN_TJTENLayout.SENDFLG.getId(), TOK_CMN_TJTENLayout.OPERATOR.getId(), TOK_CMN_TJTENLayout.ADDDT.getId(),
-            TOK_CMN_TJTENLayout.UPDDT.getId()};
+        String[] notTarget = new String[] {TOK_CMN_TJTEN_MySQL_Layout.KANRIENO.getId(), TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId(), TOK_CMN_TJTEN_MySQL_Layout.OPERATOR.getId(), TOK_CMN_TJTEN_MySQL_Layout.ADDDT.getId(),
+            TOK_CMN_TJTEN_MySQL_Layout.UPDDT.getId()};
         for (int i = 0; i < atjt.size(); i++) {
           JSONObject getData = atjt.getJSONObject(i);
           values = "";
           names = "";
-          for (TOK_CMN_TJTENLayout itm : TOK_CMN_TJTENLayout.values()) {
+          for (TOK_CMN_TJTEN_MySQL_Layout itm : TOK_CMN_TJTEN_MySQL_Layout.values()) {
             if (ArrayUtils.contains(notTarget, itm.getId())) {
               continue;
             } // パラメータ不要
@@ -2192,21 +2192,21 @@ public class ReportST024Dao extends ItemDao {
 
       if (dbDatas.size() != 0) {
         otjt = new JSONObject();
-        otjt.put(TOK_CMN_TJTENLayout.MOYSKBN.getCol(), moyskbn);
-        otjt.put(TOK_CMN_TJTENLayout.MOYSSTDT.getCol(), moysstdt);
-        otjt.put(TOK_CMN_TJTENLayout.MOYSRBAN.getCol(), moysrban);
-        otjt.put(TOK_CMN_TJTENLayout.BMNCD.getCol(), bmncd);
-        otjt.put(TOK_CMN_TJTENLayout.KANRINO.getCol(), kanrino);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.BMNCD.getCol(), bmncd);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.KANRINO.getCol(), kanrino);
 
         JSONObject getData = dbDatas.getJSONObject(0);
         String tencd = getData.containsKey("TENCD") ? getData.getString("TENCD") : "";
         String tenrank = getData.containsKey("TENRANK") ? getData.getString("TENRANK") : "";
         String tjflg = getData.containsKey("TJFLG") ? getData.getString("TJFLG") : "";
 
-        otjt.put(TOK_CMN_TJTENLayout.TENCD.getCol(), tencd);
-        otjt.put(TOK_CMN_TJTENLayout.TENRANK.getCol(), tenrank);
-        otjt.put(TOK_CMN_TJTENLayout.TJFLG.getCol(), tjflg);
-        otjt.put(TOK_CMN_TJTENLayout.SENDFLG.getCol(), 1);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENCD.getCol(), tencd);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TENRANK.getCol(), tenrank);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.TJFLG.getCol(), tjflg);
+        otjt.put(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getCol(), 1);
         atjt.add(otjt);
       }
     }
@@ -2247,60 +2247,60 @@ public class ReportST024Dao extends ItemDao {
         }
 
         if (dao.isToktg) {
-          onnd.put(TOKTG_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-          onnd.put(TOKTG_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-          onnd.put(TOKTG_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-          onnd.put(TOKTG_NNDTLayout.BMNCD.getCol(), bmncd);
-          onnd.put(TOKTG_NNDTLayout.KANRINO.getCol(), kanrino);
-          onnd.put(TOKTG_NNDTLayout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
+          onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
           // 通常数パターンの場合、発注総数は不要
           if (tenkaiKbn.equals("2")) {
-            onnd.put(TOKTG_NNDTLayout.HTASU.getCol(), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.HTASU.getCol(), "");
           } else {
-            onnd.put(TOKTG_NNDTLayout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
           }
-          onnd.put(TOKTG_NNDTLayout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
-          onnd.put(TOKTG_NNDTLayout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
+          onnd.put(TOKTG_NNDT_MySQL_Layout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
+          onnd.put(TOKTG_NNDT_MySQL_Layout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
 
           // 発注数配列、展開数、店舗数
           if (list.size() != 0) {
-            onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol(), list.get(0));
-            onnd.put(TOKTG_NNDTLayout.TPSU.getCol(), list.get(1));
-            onnd.put(TOKTG_NNDTLayout.TENKAISU.getCol(), list.get(2));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), list.get(0));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TPSU.getCol(), list.get(1));
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENKAISU.getCol(), list.get(2));
           } else {
-            onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol(), "");
-            onnd.put(TOKTG_NNDTLayout.TENKAISU.getCol(), "");
-            onnd.put(TOKTG_NNDTLayout.TPSU.getCol(), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TENKAISU.getCol(), "");
+            onnd.put(TOKTG_NNDT_MySQL_Layout.TPSU.getCol(), "");
           }
-          onnd.put(TOKTG_NNDTLayout.SENDFLG.getCol(), getnhtaisho);
+          onnd.put(TOKTG_NNDT_MySQL_Layout.SENDFLG.getCol(), getnhtaisho);
         } else {
-          onnd.put(TOKSP_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-          onnd.put(TOKSP_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-          onnd.put(TOKSP_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-          onnd.put(TOKSP_NNDTLayout.BMNCD.getCol(), bmncd);
-          onnd.put(TOKSP_NNDTLayout.KANRINO.getCol(), kanrino);
-          onnd.put(TOKSP_NNDTLayout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
+          onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.NNDT.getCol(), StringUtils.trim(String.valueOf(data[nndt + j])));
           // 通常数パターンの場合、発注総数は不要
           if (tenkaiKbn.equals("2")) {
-            onnd.put(TOKSP_NNDTLayout.HTASU.getCol(), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.HTASU.getCol(), "");
           } else {
-            onnd.put(TOKSP_NNDTLayout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.HTASU.getCol(), StringUtils.trim(String.valueOf(data[hatasu + j])));
           }
-          onnd.put(TOKSP_NNDTLayout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
-          onnd.put(TOKSP_NNDTLayout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
+          onnd.put(TOKSP_NNDT_MySQL_Layout.PTNNO.getCol(), StringUtils.trim(String.valueOf(data[ptnno + j])));
+          onnd.put(TOKSP_NNDT_MySQL_Layout.TSEIKBN.getCol(), StringUtils.trim(String.valueOf(data[tskbn + j])));
 
           // 発注数配列、展開数、店舗数
           if (list.size() != 0) {
-            onnd.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol(), list.get(0));
-            onnd.put(TOKSP_NNDTLayout.TPSU.getCol(), list.get(1));
-            onnd.put(TOKSP_NNDTLayout.TENKAISU.getCol(), list.get(2));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), list.get(0));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TPSU.getCol(), list.get(1));
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENKAISU.getCol(), list.get(2));
           } else {
-            onnd.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol(), "");
-            onnd.put(TOKSP_NNDTLayout.TENKAISU.getCol(), "");
-            onnd.put(TOKSP_NNDTLayout.TPSU.getCol(), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TENKAISU.getCol(), "");
+            onnd.put(TOKSP_NNDT_MySQL_Layout.TPSU.getCol(), "");
           }
-          onnd.put(TOKSP_NNDTLayout.SENDFLG.getCol(), getnhtaisho);
-          onnd.put(TOKSP_NNDTLayout.OPERATOR.getCol(), oldBin);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.SENDFLG.getCol(), getnhtaisho);
+          onnd.put(TOKSP_NNDT_MySQL_Layout.OPERATOR.getCol(), oldBin);
         }
 
         annd.add(onnd);
@@ -2310,23 +2310,23 @@ public class ReportST024Dao extends ItemDao {
 
     if (tkanplukbn.equals("2")) {
 
-      if (oshn.containsKey(TOKTG_SHNLayout.A_GENKAAM_1KG.getCol()) && StringUtils.isEmpty(a_baikaam1)) {
+      if (oshn.containsKey(TOKTG_SHN_MySQL_Layout.A_GENKAAM_1KG.getCol()) && StringUtils.isEmpty(a_baikaam1)) {
         // 小数点以下を四捨五入する
         try {
-          a_baikaam1 = String.valueOf(Math.round(oshn.getInt(TOKTG_SHNLayout.A_GENKAAM_1KG.getCol()) / 10.0));
+          a_baikaam1 = String.valueOf(Math.round(oshn.getInt(TOKTG_SHN_MySQL_Layout.A_GENKAAM_1KG.getCol()) / 10.0));
         } catch (NumberFormatException e) {
         }
       }
 
-      oshn.put(TOKTG_SHNLayout.A_BAIKAAM.getCol(), a_baikaam1);
-      oshn.put(TOKTG_SHNLayout.B_BAIKAAM.getCol(), b_baikaam1);
-      oshn.put(TOKTG_SHNLayout.C_BAIKAAM.getCol(), c_baikaam1);
+      oshn.put(TOKTG_SHN_MySQL_Layout.A_BAIKAAM.getCol(), a_baikaam1);
+      oshn.put(TOKTG_SHN_MySQL_Layout.B_BAIKAAM.getCol(), b_baikaam1);
+      oshn.put(TOKTG_SHN_MySQL_Layout.C_BAIKAAM.getCol(), c_baikaam1);
 
 
     } else if (tkanplukbn.equals("1") || (!dao.isFrm4 && !dao.isFrm5)) {
-      oshn.put(TOKTG_SHNLayout.A_BAIKAAM.getCol(), a_baikaam2);
-      oshn.put(TOKTG_SHNLayout.B_BAIKAAM.getCol(), b_baikaam2);
-      oshn.put(TOKTG_SHNLayout.C_BAIKAAM.getCol(), c_baikaam2);
+      oshn.put(TOKTG_SHN_MySQL_Layout.A_BAIKAAM.getCol(), a_baikaam2);
+      oshn.put(TOKTG_SHN_MySQL_Layout.B_BAIKAAM.getCol(), b_baikaam2);
+      oshn.put(TOKTG_SHN_MySQL_Layout.C_BAIKAAM.getCol(), c_baikaam2);
     }
 
     if (StringUtils.isEmpty(tenrank_arr)) {
@@ -2334,14 +2334,14 @@ public class ReportST024Dao extends ItemDao {
     }
 
     if (dao.isToktg) {
-      oshn.put(TOKTG_SHNLayout.DAICD.getCol(), daicd);
-      oshn.put(TOKTG_SHNLayout.CHUCD.getCol(), chucd);
-      oshn.put(TOKTG_SHNLayout.SHOBUNCD.getCol(), shocd);
-      oshn.put(TOKTG_SHNLayout.TENRANK_ARR.getCol(), tenrank_arr);
+      oshn.put(TOKTG_SHN_MySQL_Layout.DAICD.getCol(), daicd);
+      oshn.put(TOKTG_SHN_MySQL_Layout.CHUCD.getCol(), chucd);
+      oshn.put(TOKTG_SHN_MySQL_Layout.SHOBUNCD.getCol(), shocd);
+      oshn.put(TOKTG_SHN_MySQL_Layout.TENRANK_ARR.getCol(), tenrank_arr);
     } else {
-      oshn.put(TOKSP_SHNLayout.DAICD.getCol(), daicd);
-      oshn.put(TOKSP_SHNLayout.CHUCD.getCol(), chucd);
-      oshn.put(TOKSP_SHNLayout.TENRANK_ARR.getCol(), tenrank_arr);
+      oshn.put(TOKSP_SHN_MySQL_Layout.DAICD.getCol(), daicd);
+      oshn.put(TOKSP_SHN_MySQL_Layout.CHUCD.getCol(), chucd);
+      oshn.put(TOKSP_SHN_MySQL_Layout.TENRANK_ARR.getCol(), tenrank_arr);
     }
 
     // 変数を初期化
@@ -2489,15 +2489,15 @@ public class ReportST024Dao extends ItemDao {
 
     if (dbDatas.size() != 0) {
       if (dao.isToktg) {
-        oshn.put(TOKTG_SHNLayout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
-        oshn.put(TOKTG_SHNLayout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
-        oshn.put(TOKTG_SHNLayout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
-        oshn.put(TOKTG_SHNLayout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
+        oshn.put(TOKTG_SHN_MySQL_Layout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
       } else {
-        oshn.put(TOKSP_SHNLayout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
-        oshn.put(TOKSP_SHNLayout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
-        oshn.put(TOKSP_SHNLayout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
-        oshn.put(TOKSP_SHNLayout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSNNSTDT.getCol(), dbDatas.getJSONObject(0).optString("NNSTDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSNNEDDT.getCol(), dbDatas.getJSONObject(0).optString("NNEDDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSHBSTDT.getCol(), dbDatas.getJSONObject(0).optString("HBSTDT"));
+        oshn.put(TOKSP_SHN_MySQL_Layout.MYOSHBEDDT.getCol(), dbDatas.getJSONObject(0).optString("HBEDDT"));
       }
     }
 
@@ -2582,27 +2582,27 @@ public class ReportST024Dao extends ItemDao {
         if (dao.isToktg) {
 
           // 基本情報
-          String shncd = obj.getString(TOKTG_SHNLayout.SHNCD.getCol());
-          String moyskbn = obj.getString(TOKTG_SHNLayout.MOYSKBN.getCol());
-          String moysstdt = obj.getString(TOKTG_SHNLayout.MOYSSTDT.getCol());
-          String moysrban = obj.getString(TOKTG_SHNLayout.MOYSRBAN.getCol());
-          String bmncd = obj.getString(TOKTG_SHNLayout.BMNCD.getCol());
-          String kanrino = obj.getString(TOKTG_SHNLayout.KANRINO.getCol());
-          String kanrieno = obj.getString(TOKTG_SHNLayout.KANRIENO.getCol());
-          String _shncd = _obj.getString(TOKTG_SHNLayout.SHNCD.getCol());
-          String _moyskbn = _obj.getString(TOKTG_SHNLayout.MOYSKBN.getCol());
-          String _moysstdt = _obj.getString(TOKTG_SHNLayout.MOYSSTDT.getCol());
-          String _moysrban = _obj.getString(TOKTG_SHNLayout.MOYSRBAN.getCol());
-          String _bmncd = _obj.getString(TOKTG_SHNLayout.BMNCD.getCol());
-          String _kanrino = _obj.getString(TOKTG_SHNLayout.KANRINO.getCol());
-          String _kanrieno = _obj.getString(TOKTG_SHNLayout.KANRIENO.getCol());
+          String shncd = obj.getString(TOKTG_SHN_MySQL_Layout.SHNCD.getCol());
+          String moyskbn = obj.getString(TOKTG_SHN_MySQL_Layout.MOYSKBN.getCol());
+          String moysstdt = obj.getString(TOKTG_SHN_MySQL_Layout.MOYSSTDT.getCol());
+          String moysrban = obj.getString(TOKTG_SHN_MySQL_Layout.MOYSRBAN.getCol());
+          String bmncd = obj.getString(TOKTG_SHN_MySQL_Layout.BMNCD.getCol());
+          String kanrino = obj.getString(TOKTG_SHN_MySQL_Layout.KANRINO.getCol());
+          String kanrieno = obj.getString(TOKTG_SHN_MySQL_Layout.KANRIENO.getCol());
+          String _shncd = _obj.getString(TOKTG_SHN_MySQL_Layout.SHNCD.getCol());
+          String _moyskbn = _obj.getString(TOKTG_SHN_MySQL_Layout.MOYSKBN.getCol());
+          String _moysstdt = _obj.getString(TOKTG_SHN_MySQL_Layout.MOYSSTDT.getCol());
+          String _moysrban = _obj.getString(TOKTG_SHN_MySQL_Layout.MOYSRBAN.getCol());
+          String _bmncd = _obj.getString(TOKTG_SHN_MySQL_Layout.BMNCD.getCol());
+          String _kanrino = _obj.getString(TOKTG_SHN_MySQL_Layout.KANRINO.getCol());
+          String _kanrieno = _obj.getString(TOKTG_SHN_MySQL_Layout.KANRIENO.getCol());
 
           // 販売情報
-          String chkhbstdt = obj.getString(TOKTG_SHNLayout.HBSTDT.getCol());
-          String chkhbeddt = obj.getString(TOKTG_SHNLayout.HBEDDT.getCol());
-          String _chkhbstdt = _obj.getString(TOKTG_SHNLayout.HBSTDT.getCol());
-          String _chkhbeddt = _obj.getString(TOKTG_SHNLayout.HBEDDT.getCol());
-          String pluSndFlg = obj.getString(TOKTG_SHNLayout.PLUSNDFLG.getCol());
+          String chkhbstdt = obj.getString(TOKTG_SHN_MySQL_Layout.HBSTDT.getCol());
+          String chkhbeddt = obj.getString(TOKTG_SHN_MySQL_Layout.HBEDDT.getCol());
+          String _chkhbstdt = _obj.getString(TOKTG_SHN_MySQL_Layout.HBSTDT.getCol());
+          String _chkhbeddt = _obj.getString(TOKTG_SHN_MySQL_Layout.HBEDDT.getCol());
+          String pluSndFlg = obj.getString(TOKTG_SHN_MySQL_Layout.PLUSNDFLG.getCol());
 
           if ((!StringUtils.isEmpty(chkhbstdt) && !StringUtils.isEmpty(chkhbeddt) && !StringUtils.isEmpty(_chkhbstdt) && !StringUtils.isEmpty(_chkhbeddt))
               && (StringUtils.isEmpty(pluSndFlg) || (!StringUtils.isEmpty(pluSndFlg) && !pluSndFlg.equals("1")))) {
@@ -2610,7 +2610,7 @@ public class ReportST024Dao extends ItemDao {
             int hbeddt = Integer.valueOf(chkhbeddt);
             int _hbstdt = Integer.valueOf(_chkhbstdt);
             int _hbeddt = Integer.valueOf(_chkhbeddt);
-            String _pluSndFlg = _obj.getString(TOKTG_SHNLayout.PLUSNDFLG.getCol());
+            String _pluSndFlg = _obj.getString(TOKTG_SHN_MySQL_Layout.PLUSNDFLG.getCol());
 
             // アン有販売日チェック
             // 同一販売日の重複チェックエラー
@@ -2637,12 +2637,12 @@ public class ReportST024Dao extends ItemDao {
             for (int no = 1; no <= 10; no++) {
 
               // 納入日+noに設定がない場合チェック対象外
-              if (!obj.containsKey(TOKTG_NNDTLayout.NNDT.getCol() + no)) {
+              if (!obj.containsKey(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + no)) {
                 continue;
               }
 
-              String nndt = obj.getString(TOKTG_NNDTLayout.NNDT.getCol() + no);
-              String sendFlg = obj.getString(TOKTG_SHNLayout.SENDFLG.getCol() + no);
+              String nndt = obj.getString(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + no);
+              String sendFlg = obj.getString(TOKTG_SHN_MySQL_Layout.SENDFLG.getCol() + no);
 
               // 納入対象フラグがない場合チェック対象外
               if (StringUtils.isEmpty(sendFlg) || (!StringUtils.isEmpty(sendFlg) && !sendFlg.equals("1"))) {
@@ -2652,12 +2652,12 @@ public class ReportST024Dao extends ItemDao {
               for (int _no = 1; _no <= 10; _no++) {
 
                 // 納入日+_noに設定がない場合チェック対象外
-                if (!_obj.containsKey(TOKTG_NNDTLayout.NNDT.getCol() + _no)) {
+                if (!_obj.containsKey(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + _no)) {
                   continue;
                 }
 
-                String _nndt = _obj.getString(TOKTG_NNDTLayout.NNDT.getCol() + _no);
-                String _sendFlg = _obj.getString(TOKTG_SHNLayout.SENDFLG.getCol() + _no);
+                String _nndt = _obj.getString(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + _no);
+                String _sendFlg = _obj.getString(TOKTG_SHN_MySQL_Layout.SENDFLG.getCol() + _no);
 
                 // 納入対象フラグがない場合チェック対象外
                 if (StringUtils.isEmpty(_sendFlg) || (!StringUtils.isEmpty(_sendFlg) && !_sendFlg.equals("1"))) {
@@ -2677,24 +2677,24 @@ public class ReportST024Dao extends ItemDao {
 
         } else {
           // 基本情報
-          String shncd = obj.getString(TOKSP_SHNLayout.SHNCD.getCol());
-          String moyskbn = obj.getString(TOKSP_SHNLayout.MOYSKBN.getCol());
-          String moysstdt = obj.getString(TOKSP_SHNLayout.MOYSSTDT.getCol());
-          String moysrban = obj.getString(TOKSP_SHNLayout.MOYSRBAN.getCol());
-          String bmncd = obj.getString(TOKSP_SHNLayout.BMNCD.getCol());
-          String kanrino = obj.getString(TOKSP_SHNLayout.KANRINO.getCol());
-          String binkbn = obj.getString(TOKSP_SHNLayout.BINKBN.getCol());
-          String _shncd = _obj.getString(TOKSP_SHNLayout.SHNCD.getCol());
-          String _moyskbn = _obj.getString(TOKSP_SHNLayout.MOYSKBN.getCol());
-          String _kanrino = _obj.getString(TOKSP_SHNLayout.KANRINO.getCol());
-          String _binkbn = _obj.getString(TOKSP_SHNLayout.BINKBN.getCol());
+          String shncd = obj.getString(TOKSP_SHN_MySQL_Layout.SHNCD.getCol());
+          String moyskbn = obj.getString(TOKSP_SHN_MySQL_Layout.MOYSKBN.getCol());
+          String moysstdt = obj.getString(TOKSP_SHN_MySQL_Layout.MOYSSTDT.getCol());
+          String moysrban = obj.getString(TOKSP_SHN_MySQL_Layout.MOYSRBAN.getCol());
+          String bmncd = obj.getString(TOKSP_SHN_MySQL_Layout.BMNCD.getCol());
+          String kanrino = obj.getString(TOKSP_SHN_MySQL_Layout.KANRINO.getCol());
+          String binkbn = obj.getString(TOKSP_SHN_MySQL_Layout.BINKBN.getCol());
+          String _shncd = _obj.getString(TOKSP_SHN_MySQL_Layout.SHNCD.getCol());
+          String _moyskbn = _obj.getString(TOKSP_SHN_MySQL_Layout.MOYSKBN.getCol());
+          String _kanrino = _obj.getString(TOKSP_SHN_MySQL_Layout.KANRINO.getCol());
+          String _binkbn = _obj.getString(TOKSP_SHN_MySQL_Layout.BINKBN.getCol());
 
           // 販売情報
-          String chkhbstdt = obj.getString(TOKSP_SHNLayout.HBSTDT.getCol());
-          String chkhbeddt = obj.getString(TOKSP_SHNLayout.HBEDDT.getCol());
-          String _chkhbstdt = _obj.getString(TOKSP_SHNLayout.HBSTDT.getCol());
-          String _chkhbeddt = _obj.getString(TOKSP_SHNLayout.HBEDDT.getCol());
-          String pluSndFlg = obj.getString(TOKSP_SHNLayout.PLUSNDFLG.getCol());
+          String chkhbstdt = obj.getString(TOKSP_SHN_MySQL_Layout.HBSTDT.getCol());
+          String chkhbeddt = obj.getString(TOKSP_SHN_MySQL_Layout.HBEDDT.getCol());
+          String _chkhbstdt = _obj.getString(TOKSP_SHN_MySQL_Layout.HBSTDT.getCol());
+          String _chkhbeddt = _obj.getString(TOKSP_SHN_MySQL_Layout.HBEDDT.getCol());
+          String pluSndFlg = obj.getString(TOKSP_SHN_MySQL_Layout.PLUSNDFLG.getCol());
 
           if ((!StringUtils.isEmpty(chkhbstdt) && !StringUtils.isEmpty(chkhbeddt) && !StringUtils.isEmpty(_chkhbstdt) && !StringUtils.isEmpty(_chkhbeddt))
               && (StringUtils.isEmpty(pluSndFlg) || (!StringUtils.isEmpty(pluSndFlg) && !pluSndFlg.equals("1")))) {
@@ -2702,7 +2702,7 @@ public class ReportST024Dao extends ItemDao {
             int hbeddt = Integer.valueOf(chkhbeddt);
             int _hbstdt = Integer.valueOf(_chkhbstdt);
             int _hbeddt = Integer.valueOf(_chkhbeddt);
-            String _pluSndFlg = _obj.getString(TOKTG_SHNLayout.PLUSNDFLG.getCol());
+            String _pluSndFlg = _obj.getString(TOKTG_SHN_MySQL_Layout.PLUSNDFLG.getCol());
 
             // 商品コード、管理番号にかぶりがあるかつPLU配信しないチェックがされてないことかつ!(チェック対象行.販売開始日 < その他行.販売終了日 || チェック対象行.販売終了日 <
             // その他行.販売開始日)
@@ -2712,15 +2712,15 @@ public class ReportST024Dao extends ItemDao {
               String errMsg = "";
               int amount = 0;
               String stdt = "";
-              String eddt = StringUtils.isEmpty(obj.getString(TOKSP_SHNLayout.HBEDDT.getCol())) ? ""
-                  : CmnDate.dateFormat(CmnDate.getDayAddedDate(CmnDate.convDate(obj.getString(TOKSP_SHNLayout.HBEDDT.getCol())), amount));
+              String eddt = StringUtils.isEmpty(obj.getString(TOKSP_SHN_MySQL_Layout.HBEDDT.getCol())) ? ""
+                  : CmnDate.dateFormat(CmnDate.getDayAddedDate(CmnDate.convDate(obj.getString(TOKSP_SHN_MySQL_Layout.HBEDDT.getCol())), amount));
 
               String moyscd = moyskbn + moysstdt + String.format("%3s", moysrban);
               int tenSu = 0;
 
               while (!stdt.equals(eddt)) {
-                stdt = StringUtils.isEmpty(obj.getString(TOKSP_SHNLayout.HBSTDT.getCol())) ? ""
-                    : CmnDate.dateFormat(CmnDate.getDayAddedDate(CmnDate.convDate(obj.getString(TOKSP_SHNLayout.HBSTDT.getCol())), amount));
+                stdt = StringUtils.isEmpty(obj.getString(TOKSP_SHN_MySQL_Layout.HBSTDT.getCol())) ? ""
+                    : CmnDate.dateFormat(CmnDate.getDayAddedDate(CmnDate.convDate(obj.getString(TOKSP_SHN_MySQL_Layout.HBSTDT.getCol())), amount));
                 amount++;
 
                 // 商品販売日重複チェック
@@ -2767,12 +2767,12 @@ public class ReportST024Dao extends ItemDao {
             for (int no = 1; no <= 10; no++) {
 
               // 納入日+noに設定がない場合チェック対象外
-              if (!obj.containsKey(TOKTG_NNDTLayout.NNDT.getCol() + no)) {
+              if (!obj.containsKey(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + no)) {
                 continue;
               }
 
-              String nndt = obj.getString(TOKTG_NNDTLayout.NNDT.getCol() + no);
-              String sendFlg = obj.getString(TOKTG_SHNLayout.SENDFLG.getCol() + no);
+              String nndt = obj.getString(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + no);
+              String sendFlg = obj.getString(TOKTG_SHN_MySQL_Layout.SENDFLG.getCol() + no);
 
               // 納入対象フラグがない場合チェック対象外
               if (StringUtils.isEmpty(sendFlg) || (!StringUtils.isEmpty(sendFlg) && !sendFlg.equals("1"))) {
@@ -2790,7 +2790,7 @@ public class ReportST024Dao extends ItemDao {
                 continue;
               }
 
-              String arr = obj.optString(TOKSP_NNDTLayout.TENHTSU_ARR.getCol() + no);
+              String arr = obj.optString(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol() + no);
               HashMap<String, String> mapHtsu = new ReportJU012Dao(JNDIname).getDigitMap(arr, 5, "1");
 
               for (HashMap.Entry<String, String> shnnn : map.entrySet()) {
@@ -2849,10 +2849,10 @@ public class ReportST024Dao extends ItemDao {
         for (int j = 0; j < tokTjt.size(); j++) {
           JSONObject getData = tokTjt.getJSONObject(j);
 
-          if (getData.containsKey(TOK_CMN_TJTENLayout.SENDFLG.getId()) && getData.optString(TOK_CMN_TJTENLayout.SENDFLG.getId()).equals("0")) {
-            getData.element(TOK_CMN_TJTENLayout.SENDFLG.getId(), "A");
-          } else if (getData.containsKey(TOK_CMN_TJTENLayout.SENDFLG.getId()) && getData.optString(TOK_CMN_TJTENLayout.SENDFLG.getId()).equals("1")) {
-            getData.element(TOK_CMN_TJTENLayout.SENDFLG.getId(), "D");
+          if (getData.containsKey(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId()) && getData.optString(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId()).equals("0")) {
+            getData.element(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId(), "A");
+          } else if (getData.containsKey(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId()) && getData.optString(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId()).equals("1")) {
+            getData.element(TOK_CMN_TJTEN_MySQL_Layout.SENDFLG.getId(), "D");
           }
           arr.add(getData);
         }
@@ -2901,8 +2901,8 @@ public class ReportST024Dao extends ItemDao {
     // 販売日の重複チェック
     if (getTblFlg.equals("1")) {
 
-      String hbstdt = obj.getString(TOKSP_SHNLayout.HBSTDT.getCol());
-      String hbeddt = obj.getString(TOKSP_SHNLayout.HBEDDT.getCol());
+      String hbstdt = obj.getString(TOKSP_SHN_MySQL_Layout.HBSTDT.getCol());
+      String hbeddt = obj.getString(TOKSP_SHN_MySQL_Layout.HBEDDT.getCol());
 
       int amount = 0;
       String stdt = "";
@@ -2923,12 +2923,12 @@ public class ReportST024Dao extends ItemDao {
       for (int no = 1; no <= 10; no++) {
 
         // 納入日+noに設定がない場合チェック対象外
-        if (!obj.containsKey(TOKTG_NNDTLayout.NNDT.getCol() + no)) {
+        if (!obj.containsKey(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + no)) {
           continue;
         }
 
-        String nndt = obj.getString(TOKTG_NNDTLayout.NNDT.getCol() + no);
-        String sendFlg = obj.getString(TOKTG_SHNLayout.SENDFLG.getCol() + no);
+        String nndt = obj.getString(TOKTG_NNDT_MySQL_Layout.NNDT.getCol() + no);
+        String sendFlg = obj.getString(TOKTG_SHN_MySQL_Layout.SENDFLG.getCol() + no);
 
         // 納入対象フラグがない場合チェック対象外
         if (StringUtils.isEmpty(sendFlg) || (!StringUtils.isEmpty(sendFlg) && !sendFlg.equals("1"))) {
@@ -2947,11 +2947,11 @@ public class ReportST024Dao extends ItemDao {
       return arrMap;
     }
 
-    String moyskbn = obj.getString(TOKSP_SHNLayout.MOYSKBN.getCol());
-    String moysstdt = obj.getString(TOKSP_SHNLayout.MOYSSTDT.getCol());
-    String moysrban = obj.getString(TOKSP_SHNLayout.MOYSRBAN.getCol());
-    String kanrino = obj.getString(TOKSP_SHNLayout.KANRINO.getCol());
-    String bmncd = obj.getString(TOKSP_SHNLayout.BMNCD.getCol());
+    String moyskbn = obj.getString(TOKSP_SHN_MySQL_Layout.MOYSKBN.getCol());
+    String moysstdt = obj.getString(TOKSP_SHN_MySQL_Layout.MOYSSTDT.getCol());
+    String moysrban = obj.getString(TOKSP_SHN_MySQL_Layout.MOYSRBAN.getCol());
+    String kanrino = obj.getString(TOKSP_SHN_MySQL_Layout.KANRINO.getCol());
+    String bmncd = obj.getString(TOKSP_SHN_MySQL_Layout.BMNCD.getCol());
     String addRank = obj.getString("addRank");
     String delRank = obj.getString("delRank");
     JSONArray addTenArr = obj.getJSONArray("addTenArr");
@@ -3059,9 +3059,9 @@ public class ReportST024Dao extends ItemDao {
               moyskbn = val.substring(0, 1);
             }
 
-            oshn.put(TOKSP_SHNLayout.MOYSKBN.getCol(), moyskbn);
-            oshn.put(TOKSP_SHNLayout.MOYSSTDT.getCol(), moysstdt);
-            oshn.put(TOKSP_SHNLayout.MOYSRBAN.getCol(), moysrban);
+            oshn.put(TOKSP_SHN_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+            oshn.put(TOKSP_SHN_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+            oshn.put(TOKSP_SHN_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
           } else if (itm.getCol().equals(FileLayout2.BMNCD.getCol())) {
             bmncd = val;
 
@@ -3078,9 +3078,9 @@ public class ReportST024Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, bmncd, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "部門は"});
-              // msgList.add(o);
-              // return msgList;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "部門は"});
+               msgList.add(o);
+               return msgList;
             }
 
             // 登録種別の取得
@@ -3097,11 +3097,11 @@ public class ReportST024Dao extends ItemDao {
               }
             }
 
-            oshn.put(TOKSP_SHNLayout.BMNCD.getCol(), bmncd);
+            oshn.put(TOKSP_SHN_MySQL_Layout.BMNCD.getCol(), bmncd);
 
           } else if (itm.getCol().equals(FileLayout2.KANRINO.getCol())) {
             kanrino = !StringUtils.isEmpty(val) && NumberUtils.isNumber(val) ? String.valueOf(Integer.valueOf(val)) : val;
-            oshn.put(TOKSP_SHNLayout.KANRINO.getCol(), kanrino);
+            oshn.put(TOKSP_SHN_MySQL_Layout.KANRINO.getCol(), kanrino);
 
             // keyの生成
             String key = moyskbn + "-" + moysstdt + "-" + moysrban + "-" + bmncd + "-" + kanrino;
@@ -3112,10 +3112,10 @@ public class ReportST024Dao extends ItemDao {
               String kanriEno = addshuMap.get(key).split("-")[0];
 
               if (!StringUtils.isEmpty(addShuKbn)) {
-                oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
+                oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
               }
               if (!StringUtils.isEmpty(kanriEno)) {
-                oshn.put(TOKSP_SHNLayout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
+                oshn.put(TOKSP_SHN_MySQL_Layout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
               }
               continue;
             }
@@ -3185,20 +3185,20 @@ public class ReportST024Dao extends ItemDao {
             dbDatas = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
             if (dbDatas.size() != 0) {
-              oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
-              oshn.put(TOKSP_SHNLayout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
+              oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), dbDatas.getJSONObject(0).optString("ADDSHUKBN"));
+              oshn.put(TOKSP_SHN_MySQL_Layout.KANRIENO.getCol(), dbDatas.getJSONObject(0).optString("KANRIENO"));
               addshuMap.put(key, dbDatas.getJSONObject(0).optString("ADDSHUKBN") + "-" + dbDatas.getJSONObject(0).optString("KANRIENO"));
             } else {
               if (bmncd.equals("2") || bmncd.equals("9") || bmncd.equals("15")) {
-                oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL3.getVal());
+                oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL3.getVal());
               } else if (bmncd.equals("4") || bmncd.equals("6")) {
-                oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL4.getVal());
+                oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL4.getVal());
               } else if (bmncd.equals("5")) {
-                oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL5.getVal());
+                oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL5.getVal());
               } else {
-                oshn.put(TOKSP_SHNLayout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL2.getVal());
+                oshn.put(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol(), DefineReport.ValAddShuKbn.VAL2.getVal());
               }
-              addshuMap.put(key, oshn.getString(TOKSP_SHNLayout.ADDSHUKBN.getCol()) + "-");
+              addshuMap.put(key, oshn.getString(TOKSP_SHN_MySQL_Layout.ADDSHUKBN.getCol()) + "-");
             }
           } else if (itm.getCol().equals(FileLayout2.SHNCD.getCol())) {
 
@@ -3206,51 +3206,51 @@ public class ReportST024Dao extends ItemDao {
             shncd = val;
 
             if (dao.isToktg) {
-              oshn.put(TOKTG_SHNLayout.SHNCD.getCol(), val);
+              oshn.put(TOKTG_SHN_MySQL_Layout.SHNCD.getCol(), val);
             } else {
-              oshn.put(TOKSP_SHNLayout.SHNCD.getCol(), val);
+              oshn.put(TOKSP_SHN_MySQL_Layout.SHNCD.getCol(), val);
             }
           } else if (itm.getCol().equals(FileLayout2.POPKN.getCol())) {
 
             if (dao.isToktg) {
-              oshn.put(TOKTG_SHNLayout.POPKN.getCol(), val);
+              oshn.put(TOKTG_SHN_MySQL_Layout.POPKN.getCol(), val);
             } else {
-              oshn.put(TOKSP_SHNLayout.POPKN.getCol(), val);
+              oshn.put(TOKSP_SHN_MySQL_Layout.POPKN.getCol(), val);
             }
           } else if (itm.getCol().equals(FileLayout2.SANCHIKN.getCol())) {
 
             if (dao.isToktg) {
-              oshn.put(TOKTG_SHNLayout.SANCHIKN.getCol(), val);
+              oshn.put(TOKTG_SHN_MySQL_Layout.SANCHIKN.getCol(), val);
             } else {
-              oshn.put(TOKSP_SHNLayout.SANCHIKN.getCol(), val);
+              oshn.put(TOKSP_SHN_MySQL_Layout.SANCHIKN.getCol(), val);
             }
           } else if (itm.getCol().equals(FileLayout2.MAKERKN.getCol())) {
 
             if (dao.isToktg) {
-              oshn.put(TOKTG_SHNLayout.MAKERKN.getCol(), val);
+              oshn.put(TOKTG_SHN_MySQL_Layout.MAKERKN.getCol(), val);
             } else {
-              oshn.put(TOKSP_SHNLayout.MAKERKN.getCol(), val);
+              oshn.put(TOKSP_SHN_MySQL_Layout.MAKERKN.getCol(), val);
             }
           } else if (itm.getCol().equals(FileLayout2.KIKKN.getCol())) {
 
             if (dao.isToktg) {
-              oshn.put(TOKTG_SHNLayout.KIKKN.getCol(), val);
+              oshn.put(TOKTG_SHN_MySQL_Layout.KIKKN.getCol(), val);
             } else {
-              oshn.put(TOKSP_SHNLayout.KIKKN.getCol(), val);
+              oshn.put(TOKSP_SHN_MySQL_Layout.KIKKN.getCol(), val);
             }
           } else if (itm.getCol().equals(FileLayout2.DAICD.getCol())) {
 
             if (dao.isToktg) {
-              oshn.put(TOKTG_SHNLayout.DAICD.getCol(), val);
+              oshn.put(TOKTG_SHN_MySQL_Layout.DAICD.getCol(), val);
             } else {
-              oshn.put(TOKSP_SHNLayout.DAICD.getCol(), val);
+              oshn.put(TOKSP_SHN_MySQL_Layout.DAICD.getCol(), val);
             }
           } else if (itm.getCol().equals(FileLayout2.CHUCD.getCol())) {
 
             if (dao.isToktg) {
-              oshn.put(TOKTG_SHNLayout.CHUCD.getCol(), val);
+              oshn.put(TOKTG_SHN_MySQL_Layout.CHUCD.getCol(), val);
             } else {
-              oshn.put(TOKSP_SHNLayout.CHUCD.getCol(), val);
+              oshn.put(TOKSP_SHN_MySQL_Layout.CHUCD.getCol(), val);
             }
           } else {
             oshn.put(itm.getCol(), val);
@@ -3286,9 +3286,9 @@ public class ReportST024Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "店番は"});
-              // msgList.add(o);
-              // return msgList;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "店番は"});
+               msgList.add(o);
+               return msgList;
             }
 
             tencd = val;
@@ -3328,9 +3328,9 @@ public class ReportST024Dao extends ItemDao {
             // ②データ桁チェック
             if (!InputChecker.checkDataLen(dtype, val, digit)) {
               // エラー発生箇所を保存
-              // JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "数量は"});
-              // msgList.add(o);
-              // return msgList;
+               JSONObject o = mu.getDbMessageObjLen(dtype, new String[] {reqNo + "数量は"});
+               msgList.add(o);
+               return msgList;
             }
 
             // 納入日テーブル更新用の情報作成
@@ -3430,21 +3430,21 @@ public class ReportST024Dao extends ItemDao {
             }
 
             if (dao.isToktg) {
-              onnd.put(TOKTG_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-              onnd.put(TOKTG_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-              onnd.put(TOKTG_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-              onnd.put(TOKTG_NNDTLayout.KANRINO.getCol(), kanrino);
-              onnd.put(TOKTG_NNDTLayout.BMNCD.getCol(), bmncd);
-              onnd.put(TOKTG_NNDTLayout.NNDT.getCol(), nndt);
-              onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol(), arr + "-" + tencd + "-" + val);
+              onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+              onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+              onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+              onnd.put(TOKTG_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+              onnd.put(TOKTG_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+              onnd.put(TOKTG_NNDT_MySQL_Layout.NNDT.getCol(), nndt);
+              onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), arr + "-" + tencd + "-" + val);
             } else {
-              onnd.put(TOKSP_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-              onnd.put(TOKSP_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-              onnd.put(TOKSP_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-              onnd.put(TOKSP_NNDTLayout.KANRINO.getCol(), kanrino);
-              onnd.put(TOKSP_NNDTLayout.BMNCD.getCol(), bmncd);
-              onnd.put(TOKSP_NNDTLayout.NNDT.getCol(), nndt);
-              onnd.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol(), arr + "-" + tencd + "-" + val);
+              onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+              onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+              onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+              onnd.put(TOKSP_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+              onnd.put(TOKSP_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+              onnd.put(TOKSP_NNDT_MySQL_Layout.NNDT.getCol(), nndt);
+              onnd.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), arr + "-" + tencd + "-" + val);
             }
           }
         } else if (itm.getTbl() == RefTable.OTHER && itm.getCol().equals(FileLayout3.UPDKBN.getCol())) {
@@ -3539,21 +3539,21 @@ public class ReportST024Dao extends ItemDao {
       }
 
       if (dao.isToktg) {
-        onnd.put(TOKTG_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-        onnd.put(TOKTG_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-        onnd.put(TOKTG_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-        onnd.put(TOKTG_NNDTLayout.KANRINO.getCol(), kanrino);
-        onnd.put(TOKTG_NNDTLayout.BMNCD.getCol(), bmncd);
-        onnd.put(TOKTG_NNDTLayout.NNDT.getCol(), nndt);
-        onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR.getCol(), arr);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.NNDT.getCol(), nndt);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), arr);
       } else {
-        onnd.put(TOKSP_NNDTLayout.MOYSKBN.getCol(), moyskbn);
-        onnd.put(TOKSP_NNDTLayout.MOYSSTDT.getCol(), moysstdt);
-        onnd.put(TOKSP_NNDTLayout.MOYSRBAN.getCol(), moysrban);
-        onnd.put(TOKSP_NNDTLayout.KANRINO.getCol(), kanrino);
-        onnd.put(TOKSP_NNDTLayout.BMNCD.getCol(), bmncd);
-        onnd.put(TOKSP_NNDTLayout.NNDT.getCol(), nndt);
-        onnd.put(TOKSP_NNDTLayout.TENHTSU_ARR.getCol(), arr);
+        onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSKBN.getCol(), moyskbn);
+        onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSSTDT.getCol(), moysstdt);
+        onnd.put(TOKSP_NNDT_MySQL_Layout.MOYSRBAN.getCol(), moysrban);
+        onnd.put(TOKSP_NNDT_MySQL_Layout.KANRINO.getCol(), kanrino);
+        onnd.put(TOKSP_NNDT_MySQL_Layout.BMNCD.getCol(), bmncd);
+        onnd.put(TOKSP_NNDT_MySQL_Layout.NNDT.getCol(), nndt);
+        onnd.put(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getCol(), arr);
       }
       annd.add(onnd);
       onnd = new JSONObject();
@@ -3585,9 +3585,9 @@ public class ReportST024Dao extends ItemDao {
       // 商品コード格納
       String shncd = StringUtils.trim(String.valueOf(data[FileLayout.SHNCD.getNo() - 1]));
       shncd = !StringUtils.isEmpty(shncd) && shncd.length() <= 7 && NumberUtils.isNumber(shncd) ? String.format("%08d", Integer.valueOf(shncd)) : shncd;
-      ooth.put(TOK_CMN_SHNNNDTLayout.SHNCD, shncd);
-      ooth.put(TOK_CMN_SHNNNDTLayout.BINKBN, StringUtils.trim(String.valueOf(data[FileLayout.BINKBN.getNo() - 1])));
-      ooth.put(TOK_CMN_SHNNNDTLayout.NNDT, StringUtils.trim(String.valueOf(data[FileLayout.NNDT.getNo() - 1])));
+      ooth.put(TOK_CMN_SHNNNDT_MySQL_Layout.SHNCD, shncd);
+      ooth.put(TOK_CMN_SHNNNDT_MySQL_Layout.BINKBN, StringUtils.trim(String.valueOf(data[FileLayout.BINKBN.getNo() - 1])));
+      ooth.put(TOK_CMN_SHNNNDT_MySQL_Layout.NNDT, StringUtils.trim(String.valueOf(data[FileLayout.NNDT.getNo() - 1])));
 
       aoth.add(ooth);
       ooth = new JSONObject();
@@ -3699,12 +3699,12 @@ public class ReportST024Dao extends ItemDao {
           moyskbn = moyscd.substring(0, 1);
         }
 
-        onnd.put(TOKTG_NNDTLayout.MOYSKBN, moyskbn);
-        onnd.put(TOKTG_NNDTLayout.MOYSSTDT, moysstdt);
-        onnd.put(TOKTG_NNDTLayout.MOYSRBAN, moysrban);
-        onnd.put(TOKTG_NNDTLayout.BMNCD, key.split("-")[1]);
-        onnd.put(TOKTG_NNDTLayout.KANRINO, key.split("-")[2]);
-        onnd.put(TOKTG_NNDTLayout.NNDT, key.split("-")[3]);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSKBN, moyskbn);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSSTDT, moysstdt);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSRBAN, moysrban);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.BMNCD, key.split("-")[1]);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.KANRINO, key.split("-")[2]);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.NNDT, key.split("-")[3]);
 
         String arr = "";
         String suryo = "";
@@ -3723,7 +3723,7 @@ public class ReportST024Dao extends ItemDao {
         if (len != 0) {
           arr += String.format("%" + len + "s", "");
         }
-        onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR, arr + "-" + flg);
+        onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR, arr + "-" + flg);
         annd.add(onnd);
       }
     }
@@ -3854,12 +3854,12 @@ public class ReportST024Dao extends ItemDao {
         moyskbn = moyscd.substring(0, 1);
       }
 
-      onnd.put(TOKTG_NNDTLayout.MOYSKBN, moyskbn);
-      onnd.put(TOKTG_NNDTLayout.MOYSSTDT, moysstdt);
-      onnd.put(TOKTG_NNDTLayout.MOYSRBAN, moysrban);
-      onnd.put(TOKTG_NNDTLayout.BMNCD, key.split("-")[1]);
-      onnd.put(TOKTG_NNDTLayout.KANRINO, key.split("-")[2]);
-      onnd.put(TOKTG_NNDTLayout.NNDT, key.split("-")[3]);
+      onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSKBN, moyskbn);
+      onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSSTDT, moysstdt);
+      onnd.put(TOKTG_NNDT_MySQL_Layout.MOYSRBAN, moysrban);
+      onnd.put(TOKTG_NNDT_MySQL_Layout.BMNCD, key.split("-")[1]);
+      onnd.put(TOKTG_NNDT_MySQL_Layout.KANRINO, key.split("-")[2]);
+      onnd.put(TOKTG_NNDT_MySQL_Layout.NNDT, key.split("-")[3]);
 
       String arr = "";
       String suryo = "";
@@ -3928,7 +3928,7 @@ public class ReportST024Dao extends ItemDao {
         }
       }
 
-      onnd.put(TOKTG_NNDTLayout.TENHTSU_ARR, arr);
+      onnd.put(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR, arr);
       annd.add(onnd);
     }
     return msg;

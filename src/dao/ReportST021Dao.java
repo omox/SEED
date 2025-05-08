@@ -20,10 +20,10 @@ import common.MessageUtility;
 import common.MessageUtility.FieldType;
 import common.MessageUtility.Msg;
 import common.MessageUtility.MsgKey;
-import dao.ReportTG016Dao.TOKSP_NNDTLayout;
-import dao.ReportTG016Dao.TOKTG_NNDTLayout;
-import dao.ReportTG016Dao.TOK_CMNLayout;
-import dao.ReportTG016Dao.TOK_CMN_SHNNNDTLayout;
+import dao.ReportTG016Dao.TOKSP_NNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOKTG_NNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_SHNNNDT_MySQL_Layout;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -233,13 +233,13 @@ public class ReportST021Dao extends ItemDao {
     JSONArray dataArray = JSONArray.fromObject(map.get("DATA"));
 
     // パラメータ確認
-    String szMoyskbn = dataArray.optJSONObject(0).optString(TOKTG_NNDTLayout.MOYSKBN.getId()); // 催し区分
-    String szMoysstdt = dataArray.optJSONObject(0).optString(TOKTG_NNDTLayout.MOYSSTDT.getId()); // 催しコード（催し開始日）
-    String szMoysrban = dataArray.optJSONObject(0).optString(TOKTG_NNDTLayout.MOYSRBAN.getId()); // 催し連番
-    dataArray.optJSONObject(0).optString(TOKTG_NNDTLayout.BMNCD.getId());
-    String szKanrino = dataArray.optJSONObject(0).optString(TOKTG_NNDTLayout.KANRINO.getId()); // 管理No.
-    dataArray.optJSONObject(0).optString(TOKTG_NNDTLayout.KANRIENO.getId());
-    String szNndt = dataArray.optJSONObject(0).optString(TOKTG_NNDTLayout.NNDT.getId()); // 納入日(納入店確認時)
+    String szMoyskbn = dataArray.optJSONObject(0).optString(TOKTG_NNDT_MySQL_Layout.MOYSKBN.getId()); // 催し区分
+    String szMoysstdt = dataArray.optJSONObject(0).optString(TOKTG_NNDT_MySQL_Layout.MOYSSTDT.getId()); // 催しコード（催し開始日）
+    String szMoysrban = dataArray.optJSONObject(0).optString(TOKTG_NNDT_MySQL_Layout.MOYSRBAN.getId()); // 催し連番
+    dataArray.optJSONObject(0).optString(TOKTG_NNDT_MySQL_Layout.BMNCD.getId());
+    String szKanrino = dataArray.optJSONObject(0).optString(TOKTG_NNDT_MySQL_Layout.KANRINO.getId()); // 管理No.
+    dataArray.optJSONObject(0).optString(TOKTG_NNDT_MySQL_Layout.KANRIENO.getId());
+    String szNndt = dataArray.optJSONObject(0).optString(TOKTG_NNDT_MySQL_Layout.NNDT.getId()); // 納入日(納入店確認時)
 
     ReportTG016Dao dao = new ReportTG016Dao(super.JNDIname);
     ReportJU012Dao daoJu = new ReportJU012Dao(JNDIname);
@@ -253,13 +253,13 @@ public class ReportST021Dao extends ItemDao {
     String[] target;
     String[] notTarget;
     if (isTOKTG) {
-      layouts = TOKTG_NNDTLayout.values();
-      target = new String[] {TOKTG_NNDTLayout.TENHTSU_ARR.getId(), TOKTG_NNDTLayout.TENCHGFLG_ARR.getId()};
-      notTarget = new String[] {TOKTG_NNDTLayout.SENDFLG.getId(), TOKTG_NNDTLayout.OPERATOR.getId(), TOKTG_NNDTLayout.ADDDT.getId(), TOKTG_NNDTLayout.UPDDT.getId()};
+      layouts = TOKTG_NNDT_MySQL_Layout.values();
+      target = new String[] {TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getId(), TOKTG_NNDT_MySQL_Layout.TENCHGFLG_ARR.getId()};
+      notTarget = new String[] {TOKTG_NNDT_MySQL_Layout.SENDFLG.getId(), TOKTG_NNDT_MySQL_Layout.OPERATOR.getId(), TOKTG_NNDT_MySQL_Layout.ADDDT.getId(), TOKTG_NNDT_MySQL_Layout.UPDDT.getId()};
     } else {
-      layouts = TOKSP_NNDTLayout.values();
-      target = new String[] {TOKSP_NNDTLayout.TENHTSU_ARR.getId()};
-      notTarget = new String[] {TOKSP_NNDTLayout.SENDFLG.getId(), TOKSP_NNDTLayout.OPERATOR.getId(), TOKSP_NNDTLayout.ADDDT.getId(), TOKSP_NNDTLayout.UPDDT.getId()};
+      layouts = TOKSP_NNDT_MySQL_Layout.values();
+      target = new String[] {TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getId()};
+      notTarget = new String[] {TOKSP_NNDT_MySQL_Layout.SENDFLG.getId(), TOKSP_NNDT_MySQL_Layout.OPERATOR.getId(), TOKSP_NNDT_MySQL_Layout.ADDDT.getId(), TOKSP_NNDT_MySQL_Layout.UPDDT.getId()};
     }
 
     // 基本データチェック:入力値がテーブル定義と矛盾してないか確認、
@@ -306,7 +306,7 @@ public class ReportST021Dao extends ItemDao {
         String moyscd = szMoyskbn + szMoysstdt + String.format("%3s", szMoysrban);
         int tenSu = 0;
 
-        String arr = jo.optString(TOKSP_NNDTLayout.TENHTSU_ARR.getId());
+        String arr = jo.optString(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getId());
         shnCd = jo.optString("F20");
         String binKbn = jo.optString("F21");
 
@@ -418,13 +418,13 @@ public class ReportST021Dao extends ItemDao {
 
     // 基本登録情報
     JSONObject data = dataArrayNNDT.getJSONObject(0);
-    String szMoyskbn = data.optString(TOKTG_NNDTLayout.MOYSKBN.getId()); // 催し区分
-    String szMoysstdt = data.optString(TOKTG_NNDTLayout.MOYSSTDT.getId()); // 催しコード（催し開始日）
-    String szMoysrban = data.optString(TOKTG_NNDTLayout.MOYSRBAN.getId()); // 催し連番
-    String szBmncd = data.optString(TOKTG_NNDTLayout.BMNCD.getId()); // 部門コード
-    String szKanrino = data.optString(TOKTG_NNDTLayout.KANRINO.getId()); // 管理No.
-    String szKanrieno = data.optString(TOKTG_NNDTLayout.KANRIENO.getId()); // 管理No.枝番
-    String szNndt = data.optString(TOKTG_NNDTLayout.NNDT.getId()); // 納入日(納入店確認時)
+    String szMoyskbn = data.optString(TOKTG_NNDT_MySQL_Layout.MOYSKBN.getId()); // 催し区分
+    String szMoysstdt = data.optString(TOKTG_NNDT_MySQL_Layout.MOYSSTDT.getId()); // 催しコード（催し開始日）
+    String szMoysrban = data.optString(TOKTG_NNDT_MySQL_Layout.MOYSRBAN.getId()); // 催し連番
+    String szBmncd = data.optString(TOKTG_NNDT_MySQL_Layout.BMNCD.getId()); // 部門コード
+    String szKanrino = data.optString(TOKTG_NNDT_MySQL_Layout.KANRINO.getId()); // 管理No.
+    String szKanrieno = data.optString(TOKTG_NNDT_MySQL_Layout.KANRIENO.getId()); // 管理No.枝番
+    String szNndt = data.optString(TOKTG_NNDT_MySQL_Layout.NNDT.getId()); // 納入日(納入店確認時)
     JSONArray updKeys = new JSONArray();
 
     // 全店特売アンケート有/無
@@ -477,7 +477,7 @@ public class ReportST021Dao extends ItemDao {
           }
         }
 
-        String arr = dataN.optString(TOKSP_NNDTLayout.TENHTSU_ARR.getId());
+        String arr = dataN.optString(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getId());
         HashMap<String, String> mapHtsu = daoJu.getDigitMap(arr, 5, "1");
 
         for (HashMap.Entry<String, String> htsu : mapHtsu.entrySet()) {
@@ -497,11 +497,11 @@ public class ReportST021Dao extends ItemDao {
         String moysArr = daoJu.createArr(map2, "1");
         String kanriArr = daoJu.createArr(mapKanri, "2");
 
-        obj.put(TOK_CMN_SHNNNDTLayout.SHNCD.getId(), shnCd);
-        obj.put(TOK_CMN_SHNNNDTLayout.BINKBN.getId(), binKbn);
-        obj.put(TOK_CMN_SHNNNDTLayout.NNDT.getId(), szNndt);
-        obj.put(TOK_CMN_SHNNNDTLayout.MOYCD_ARR.getId(), moysArr);
-        obj.put(TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getId(), kanriArr);
+        obj.put(TOK_CMN_SHNNNDT_MySQL_Layout.SHNCD.getId(), shnCd);
+        obj.put(TOK_CMN_SHNNNDT_MySQL_Layout.BINKBN.getId(), binKbn);
+        obj.put(TOK_CMN_SHNNNDT_MySQL_Layout.NNDT.getId(), szNndt);
+        obj.put(TOK_CMN_SHNNNDT_MySQL_Layout.MOYCD_ARR.getId(), moysArr);
+        obj.put(TOK_CMN_SHNNNDT_MySQL_Layout.KANRINO_ARR.getId(), kanriArr);
         array.add(obj);
         obj = new JSONObject();
       }
@@ -527,7 +527,7 @@ public class ReportST021Dao extends ItemDao {
     // 排他チェック実行
     String targetTable = isTOKTG ? "INATK.TOKTG_NNDT" : "INATK.TOKSP_NNDT";
     String targetWhere = " MOYSKBN = ? and MOYSSTDT= ? and MOYSRBAN = ? and BMNCD = ? and KANRINO = ? and KANRIENO = ? and NNDT = ?";
-    String targetValue = isTOKTG ? data.optString(TOKTG_NNDTLayout.UPDDT.getId()) : data.optString(TOKSP_NNDTLayout.UPDDT.getId());
+    String targetValue = isTOKTG ? data.optString(TOKTG_NNDT_MySQL_Layout.UPDDT.getId()) : data.optString(TOKSP_NNDT_MySQL_Layout.UPDDT.getId());
     ArrayList<String> targetParam = new ArrayList<String>();
     targetParam.add(szMoyskbn);
     targetParam.add(szMoysstdt);
@@ -582,12 +582,12 @@ public class ReportST021Dao extends ItemDao {
     String[] target;
     String table = "";
     if (isTOKTG) {
-      layouts = TOKTG_NNDTLayout.values();
-      target = new String[] {TOKTG_NNDTLayout.NNDT.getId(), TOKTG_NNDTLayout.TENHTSU_ARR.getId(), TOKTG_NNDTLayout.TENCHGFLG_ARR.getId()};
+      layouts = TOKTG_NNDT_MySQL_Layout.values();
+      target = new String[] {TOKTG_NNDT_MySQL_Layout.NNDT.getId(), TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getId(), TOKTG_NNDT_MySQL_Layout.TENCHGFLG_ARR.getId()};
       table = "INATK.TOKTG_NNDT";
     } else {
-      layouts = TOKSP_NNDTLayout.values();
-      target = new String[] {TOKSP_NNDTLayout.NNDT.getId(), TOKSP_NNDTLayout.TENHTSU_ARR.getId()};
+      layouts = TOKSP_NNDT_MySQL_Layout.values();
+      target = new String[] {TOKSP_NNDT_MySQL_Layout.NNDT.getId(), TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getId()};
       table = "INATK.TOKSP_NNDT";
     }
 
@@ -602,7 +602,7 @@ public class ReportST021Dao extends ItemDao {
     sbSQL.append(" ,BMNCD ,KANRINO ,KANRIENO ");
     sbSQL.append(" ,NNDT ,TENHTSU_ARR,SENDFLG,OPERATOR ,ADDDT,UPDDT ");
     sbSQL.append(") SELECT ");
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -674,13 +674,13 @@ public class ReportST021Dao extends ItemDao {
   protected JSONObject createSqlTOKSP_SHNNNDT2(String userId, JSONArray dataArray, JSONObject data, SqlType sql, String table, ReportTG016Dao dao) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOK_CMN_SHNNNDTLayout.OPERATOR.getId(), TOK_CMN_SHNNNDTLayout.ADDDT.getId(), TOK_CMN_SHNNNDTLayout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOK_CMN_SHNNNDT_MySQL_Layout.OPERATOR.getId(), TOK_CMN_SHNNNDT_MySQL_Layout.ADDDT.getId(), TOK_CMN_SHNNNDT_MySQL_Layout.UPDDT.getId()};
 
     // 更新情報
     ArrayList<String> prmData = new ArrayList<String>();
     String values = "", names = "", rows = "";
 
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       String value = StringUtils.strip(data.optString(itm.getId()));
       prmData.add(value);
     }
@@ -688,14 +688,14 @@ public class ReportST021Dao extends ItemDao {
     for (int j = 0; j < dataArray.size(); j++) {
       values = "";
       names = "";
-      for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+      for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
         if (ArrayUtils.contains(notTarget, itm.getId())) {
           continue;
         } // パラメータ不要
 
         String col = itm.getCol();
         String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
-        if (itm.getId().equals(TOK_CMN_SHNNNDTLayout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNNNDTLayout.KANRINO_ARR.getId())) {
+        if (itm.getId().equals(TOK_CMN_SHNNNDT_MySQL_Layout.MOYCD_ARR.getId()) || itm.getId().equals(TOK_CMN_SHNNNDT_MySQL_Layout.KANRINO_ARR.getId())) {
           val = dataArray.optJSONObject(j).optString(itm.getId());
         }
         if (StringUtils.isEmpty(val)) {
@@ -716,14 +716,14 @@ public class ReportST021Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO " + table);
     sbSQL.append(" ( ");
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
       sbSQL.append(itm.getCol());
     }
     sbSQL.append(") SELECT ");
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -731,7 +731,7 @@ public class ReportST021Dao extends ItemDao {
     }
     sbSQL.append(" FROM ( SELECT ");
 
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -742,7 +742,7 @@ public class ReportST021Dao extends ItemDao {
         sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
       }
     }
-    for (TOK_CMN_SHNNNDTLayout itm : TOK_CMN_SHNNNDTLayout.values()) {
+    for (TOK_CMN_SHNNNDT_MySQL_Layout itm : TOK_CMN_SHNNNDT_MySQL_Layout.values()) {
       if (ArrayUtils.contains(notTarget, itm.getId())) {
         continue;
       } // パラメータ不要

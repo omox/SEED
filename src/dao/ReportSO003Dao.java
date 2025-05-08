@@ -21,7 +21,7 @@ import common.MessageUtility;
 import common.MessageUtility.FieldType;
 import common.MessageUtility.Msg;
 import common.MessageUtility.MsgKey;
-import dao.ReportTG016Dao.TOK_CMNLayout;
+import dao.ReportTG016Dao.TOK_CMN_MySQL_Layout;
 import dao.ReportTM002Dao.TOKMOYCDCMNLayout;
 import dao.Reportx002Dao.MSTSHNLayout;
 import net.sf.json.JSONArray;
@@ -1752,12 +1752,12 @@ public class ReportSO003Dao extends ItemDao {
     sbSQL.append("( ");
     // sbSQL.append("SELECT ( ");
     // キー情報はロックのため後で追加する
-    for (TOK_CMNLayout itm : TOK_CMNLayout.values()) {
-      if (itm.getNo() > 1 && itm.getCol() != TOK_CMNLayout.KANRIENO.getCol()) {
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
+      if (itm.getNo() > 1 && itm.getCol() != TOK_CMN_MySQL_Layout.KANRIENO.getCol()) {
         sbSQL.append(",");
       }
 
-      if (itm.getCol() == TOK_CMNLayout.KANRIENO.getCol()) {
+      if (itm.getCol() == TOK_CMN_MySQL_Layout.KANRIENO.getCol()) {
         // 枝番の設定は行わない
         ;
       } else {
