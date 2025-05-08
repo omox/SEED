@@ -1913,7 +1913,7 @@ public class DefineReport {
     /** 陳列形式コード */
     CHINRETUCD("txt_chinretucd", "陳列形式コード", DataType.SUUJI, 1, 0),
     /** 段積み形式コード */
-    DANTUMICD("txt_dantumicd", "段積み形式コード", DataType.SUUJI, 2, 0),
+    DANTUMICD("txt_dantumicd", "段積み形式コード", DataType.LPADZERO, 2, 0),
     /** 重なりコード */
     KASANARICD("txt_kasanaricd", "重なりコード", DataType.SUUJI, 1, 0),
     /** 重なりサイズ */

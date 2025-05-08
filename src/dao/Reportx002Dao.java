@@ -4666,7 +4666,162 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ,CSV_UPDKBN"); // F7 : CSV登録区分
       sbSQL.append(" ,KETAKBN"); // F8 : 桁指定
     }
-    sbSQL.append(" ) SELECT * FROM( VALUES ROW (" + values + ") ) ");
+    sbSQL.append(" ) SELECT ");
+    sbSQL.append("  SHNCD"); // F1 : 商品コード
+    sbSQL.append(" ,YOYAKUDT"); // F2 : マスタ変更予定日
+    sbSQL.append(" ,TENBAIKADT"); // F3 : 店売価実施日
+    sbSQL.append(" ,YOT_BMNCD"); // F4 : 用途分類コード_部門
+    sbSQL.append(" ,YOT_DAICD"); // F5 : 用途分類コード_大
+    sbSQL.append(" ,YOT_CHUCD"); // F6 : 用途分類コード_中
+    sbSQL.append(" ,YOT_SHOCD"); // F7 : 用途分類コード_小
+    sbSQL.append(" ,URI_BMNCD"); // F8 : 売場分類コード_部門
+    sbSQL.append(" ,URI_DAICD"); // F9 : 売場分類コード_大
+    sbSQL.append(" ,URI_CHUCD"); // F10: 売場分類コード_中
+    sbSQL.append(" ,URI_SHOCD"); // F11: 売場分類コード_小
+    sbSQL.append(" ,BMNCD"); // F12: 標準分類コード_部門
+    sbSQL.append(" ,DAICD"); // F13: 標準分類コード_大
+    sbSQL.append(" ,CHUCD"); // F14: 標準分類コード_中
+    sbSQL.append(" ,SHOCD"); // F15: 標準分類コード_小
+    sbSQL.append(" ,SSHOCD"); // F16: 標準分類コード_小小
+    sbSQL.append(" ,ATSUK_STDT"); // F17: 取扱期間_開始日
+    sbSQL.append(" ,ATSUK_EDDT"); // F18: 取扱期間_終了日
+    sbSQL.append(" ,TEISHIKBN"); // F19: 取扱停止
+    if (TblType.JNL.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SHOHINAN"); // F20: 商品名（カナ）
+      sbSQL.append(" ,SHOHINKN"); // F21: 商品名（漢字）
+    } else {
+      sbSQL.append(" ,SHNAN"); // F20: 商品名（カナ）
+      sbSQL.append(" ,SHNKN"); // F21: 商品名（漢字）
+    }
+    sbSQL.append(" ,PCARDKN"); // F22: プライスカード商品名称（漢字）
+    sbSQL.append(" ,POPKN"); // F23: POP名称
+    sbSQL.append(" ,RECEIPTAN"); // F24: レシート名（カナ）
+    sbSQL.append(" ,RECEIPTKN"); // F25: レシート名（漢字）
+    sbSQL.append(" ,PCKBN"); // F26: PC区分
+    sbSQL.append(" ,KAKOKBN"); // F27: 加工区分
+    sbSQL.append(" ,ICHIBAKBN"); // F28: 市場区分
+    sbSQL.append(" ,SHNKBN"); // F29: 商品種類
+    sbSQL.append(" ,SANCHIKN"); // F30: 産地
+    sbSQL.append(" ,SSIRCD"); // F31: 標準仕入先コード
+    sbSQL.append(" ,HSPTN"); // F32: 配送パターン
+    sbSQL.append(" ,RG_ATSUKFLG"); // F33: レギュラー情報_取扱フラグ
+    sbSQL.append(" ,RG_GENKAAM"); // F34: レギュラー情報_原価
+    sbSQL.append(" ,RG_BAIKAAM"); // F35: レギュラー情報_売価
+    sbSQL.append(" ,RG_IRISU"); // F36: レギュラー情報_店入数
+    sbSQL.append(" ,RG_IDENFLG"); // F37: レギュラー情報_一括伝票フラグ
+    sbSQL.append(" ,RG_WAPNFLG"); // F38: レギュラー情報_ワッペン
+    sbSQL.append(" ,HS_ATSUKFLG"); // F39: 販促情報_取扱フラグ
+    sbSQL.append(" ,HS_GENKAAM"); // F40: 販促情報_原価
+    sbSQL.append(" ,HS_BAIKAAM"); // F41: 販促情報_売価
+    sbSQL.append(" ,HS_IRISU"); // F42: 販促情報_店入数
+    sbSQL.append(" ,HS_WAPNFLG"); // F43: 販促情報_ワッペン
+    sbSQL.append(" ,HS_SPOTMINSU"); // F44: 販促情報_スポット最低発注数
+    sbSQL.append(" ,HP_SWAPNFLG"); // F45: 販促情報_特売ワッペン
+    sbSQL.append(" ,KIKKN"); // F46: 規格名称
+    sbSQL.append(" ,UP_YORYOSU"); // F47: ユニットプライス_容量
+    sbSQL.append(" ,UP_TYORYOSU"); // F48: ユニットプライス_単位容量
+    sbSQL.append(" ,UP_TANIKBN"); // F49: ユニットプライス_ユニット単位
+    if (TblType.JNL.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SHN_YOKOSZ"); // F50: 商品サイズ_横
+      sbSQL.append(" ,SHN_TATESZ"); // F51: 商品サイズ_縦
+      sbSQL.append(" ,SHN_OKUSZ"); // F52: 商品サイズ_奥行
+      sbSQL.append(" ,SHN_JRYOSZ"); // F53: 商品サイズ_重量
+    } else {
+      sbSQL.append(" ,SHNYOKOSZ"); // F50: 商品サイズ_横
+      sbSQL.append(" ,SHNTATESZ"); // F51: 商品サイズ_縦
+      sbSQL.append(" ,SHNOKUSZ"); // F52: 商品サイズ_奥行
+      sbSQL.append(" ,SHNJRYOSZ"); // F53: 商品サイズ_重量
+    }
+    sbSQL.append(" ,PBKBN"); // F54: PB区分
+    sbSQL.append(" ,KOMONOKBM"); // F55: 小物区分
+    sbSQL.append(" ,TANAOROKBN"); // F56: 棚卸区分
+    sbSQL.append(" ,TEIKEIKBN"); // F57: 定計区分
+    sbSQL.append(" ,ODS_HARUSU"); // F58: ODS_賞味期限_春
+    sbSQL.append(" ,ODS_NATSUSU"); // F59: ODS_賞味期限_夏
+    sbSQL.append(" ,ODS_AKISU"); // F60: ODS_賞味期限_秋
+    sbSQL.append(" ,ODS_FUYUSU"); // F61: ODS_賞味期限_冬
+    sbSQL.append(" ,ODS_NYUKASU"); // F62: ODS_入荷期限
+    sbSQL.append(" ,ODS_NEBIKISU"); // F63: ODS_値引期限
+    sbSQL.append(" ,PCARD_SHUKBN"); // F64: プライスカード_種類
+    sbSQL.append(" ,PCARD_IROKBN"); // F65: プライスカード_色
+    sbSQL.append(" ,ZEIKBN"); // F66: 税区分
+    sbSQL.append(" ,ZEIRTKBN"); // F67: 税率区分
+    sbSQL.append(" ,ZEIRTKBN_OLD"); // F68: 旧税率区分
+    sbSQL.append(" ,ZEIRTHENKODT"); // F69: 税率変更日
+    sbSQL.append(" ,SEIZOGENNISU"); // F70: 製造限度日数
+    sbSQL.append(" ,TEIKANKBN"); // F71: 定貫不定貫区分
+    sbSQL.append(" ,MAKERCD"); // F72: メーカーコード
+    sbSQL.append(" ,IMPORTKBN"); // F73: 輸入区分
+    sbSQL.append(" ,SIWAKEKBN"); // F74: 仕分区分
+    sbSQL.append(" ,HENPIN_KBN"); // F75: 返品区分
+    sbSQL.append(" ,TAISHONENSU"); // F76: 対象年齢
+    sbSQL.append(" ,CALORIESU"); // F77: カロリー表示
+    sbSQL.append(" ,ELPFLG"); // F78: フラグ情報_ELP
+    sbSQL.append(" ,BELLMARKFLG"); // F79: フラグ情報_ベルマーク
+    sbSQL.append(" ,RECYCLEFLG"); // F80: フラグ情報_リサイクル
+    sbSQL.append(" ,ECOFLG"); // F81: フラグ情報_エコマーク
+    sbSQL.append(" ,HZI_YOTO"); // F82: 包材用途
+    sbSQL.append(" ,HZI_ZAISHITU"); // F83: 包材材質
+    sbSQL.append(" ,HZI_RECYCLE"); // F84: 包材リサイクル対象
+    sbSQL.append(" ,KIKANKBN"); // F85: 期間
+    sbSQL.append(" ,SHUKYUKBN"); // F86: 酒級
+    sbSQL.append(" ,DOSU"); // F87: 度数
+    sbSQL.append(" ,CHINRETUCD"); // F88: 陳列形式コード
+    sbSQL.append(" ,LPAD(DANTUMICD,2,0)"); // F89: 段積み形式コード
+    sbSQL.append(" ,KASANARICD"); // F90: 重なりコード
+    sbSQL.append(" ,KASANARISZ"); // F91: 重なりサイズ
+    sbSQL.append(" ,ASSHUKURT"); // F92: 圧縮率
+    sbSQL.append(" ,SHUBETUCD"); // F93: 種別コード
+    sbSQL.append(" ,URICD"); // F94: 販売コード
+    sbSQL.append(" ,SALESCOMKN"); // F95: 商品コピー・セールスコメント
+    sbSQL.append(" ,URABARIKBN"); // F96: 裏貼
+    sbSQL.append(" ,PCARD_OPFLG"); // F97: プライスカード出力有無
+    sbSQL.append(" ,PARENTCD"); // F98: 親商品コード
+    sbSQL.append(" ,BINKBN"); // F99: 便区分
+    sbSQL.append(" ,HAT_MONKBN"); // F100: 発注曜日_月
+    sbSQL.append(" ,HAT_TUEKBN"); // F101: 発注曜日_火
+    sbSQL.append(" ,HAT_WEDKBN"); // F102: 発注曜日_水
+    sbSQL.append(" ,HAT_THUKBN"); // F103: 発注曜日_木
+    sbSQL.append(" ,HAT_FRIKBN"); // F104: 発注曜日_金
+    sbSQL.append(" ,HAT_SATKBN"); // F105: 発注曜日_土
+    sbSQL.append(" ,HAT_SUNKBN"); // F106: 発注曜日_日
+    sbSQL.append(" ,READTMPTN"); // F107: リードタイムパターン
+    sbSQL.append(" ,SIMEKAISU"); // F108: 締め回数
+    sbSQL.append(" ,IRYOREFLG"); // F109: 衣料使い回しフラグ
+    sbSQL.append(" ,TOROKUMOTO"); // F110: 登録元
+    sbSQL.append(" ,UPDKBN"); // F111: 更新区分
+    if (TblType.CSV.getVal() != tbl.getVal()) {
+      sbSQL.append(" ,SENDFLG"); // F112: 送信フラグ
+    }
+    sbSQL.append(" ,OPERATOR"); // F113: オペレータ
+    if (TblType.CSV.getVal() != tbl.getVal()) {
+      sbSQL.append(" ,ADDDT"); // F114: 登録日
+    }
+    sbSQL.append(" ,UPDDT"); // F115: 更新日
+    sbSQL.append(" ,K_HONKB"); // F116: 保温区分
+    sbSQL.append(" ,K_WAPNFLG_R"); // F117: デリカワッペン区分_レギュラー
+    sbSQL.append(" ,K_WAPNFLG_H"); // F118: デリカワッペン区分_販促
+    sbSQL.append(" ,K_TORIKB"); // F119: 取扱区分
+    sbSQL.append(" ,ITFCD"); // F120: ITFコード
+    sbSQL.append(" ,CENTER_IRISU"); // F121: センター入数
+    if (TblType.JNL.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SEQ"); // SEQ
+      sbSQL.append(" ,INF_DATE"); // 更新情報_更新日時
+      sbSQL.append(" ,INF_OPERATOR"); // 更新情報_オペレータ
+      sbSQL.append(" ,INF_TABLEKBN"); // 更新情報_テーブル区分 TODO
+      sbSQL.append(" ,INF_TRANKBN"); // 更新情報_処理区分 TODO
+    }
+    if (TblType.CSV.getVal() == tbl.getVal()) {
+      sbSQL.append(" ,SEQ"); // F1 : SEQ
+      sbSQL.append(" ,INPUTNO"); // F2 : 入力番号
+      sbSQL.append(" ,ERRCD"); // F3 : エラーコード
+      sbSQL.append(" ,ERRFLD"); // F4 : エラー箇所
+      sbSQL.append(" ,ERRVL"); // F5 : エラー値
+      sbSQL.append(" ,ERRTBLNM"); // F6 : エラーテーブル名
+      sbSQL.append(" ,CSV_UPDKBN"); // F7 : CSV登録区分
+      sbSQL.append(" ,KETAKBN"); // F8 : 桁指定
+    }
+    sbSQL.append(" FROM( VALUES ROW (" + values + ") ) ");
     sbSQL.append("AS TMP( ");
     sbSQL.append("  SHNCD"); // F1 : 商品コード
     sbSQL.append(" ,YOYAKUDT"); // F2 : マスタ変更予定日

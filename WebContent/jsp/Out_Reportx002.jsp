@@ -928,7 +928,8 @@
 						</tr>
 						<tr>
 							<td class="col_tit">段積み形式コード</td>
-							<td class="col_txt"><input class="easyui-textbox_" tabindex="341" col="F89" id="<%=DefineReport.InpText.DANTUMICD.getObj()%>" check='<%=DefineReport.InpText.DANTUMICD.getMaxlenTag()%>' style="width:100%;"></td>
+							<td class="inp_box"><input class="easyui-numberbox" tabindex="341" col="F89" id="<%=DefineReport.InpText.DANTUMICD.getObj()%>" check='<%=DefineReport.InpText.DANTUMICD.getMaxlenTag()%>' style="width:100%;"></td>
+						  
 						</tr>
 						<tr>
 							<td class="col_tit">重なりコード</td>

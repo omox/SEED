@@ -1498,6 +1498,9 @@
 				$.setInputboxValue($('#'+$.id_inp.txt_yot_chucd),'');
 				$.setInputboxValue($('#'+$.id_inp.txt_yot_shocd),'');
 			}
+			if($.isEmptyVal(inpdata["F89"])){
+				$.setInputboxValue($('#'+$.id_inp.txt_dantumicd),'');
+			}
 			param = {};
 			param["KEY"] =  "SEL";
 			param["BMNCD"] = inpdata["F8"];
