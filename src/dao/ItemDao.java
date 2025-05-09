@@ -1220,7 +1220,7 @@ public class ItemDao implements ItemInterface {
     JSONArray array = iL.selectJSONArray(sqlcommand, targetParam, Defines.STR_JNDI_DS);
     if (array.size() > 0) {
       for (int i = 0; i < array.size(); i++) {
-        String colNmae = array.getJSONObject(i).optString("NAME");
+        String colNmae = array.getJSONObject(i).optString("COLUMN_NAME");
         if (StringUtils.equals("UPDDT", colNmae)) {
           return true;
         }

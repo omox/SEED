@@ -508,7 +508,7 @@ public class ReportTG015Dao extends ItemDao {
     // 基本INSERT/UPDATE文
     StringBuffer sbSQL = new StringBuffer();;
 
-    sbSQL.append("REPLACE INTO INATK.TOKTG_QATEN ( ");
+    sbSQL.append("INSERT INTO INATK.TOKTG_QATEN ( ");
     sbSQL.append("  MOYSKBN"); // 催し区分：
     sbSQL.append(", MOYSSTDT"); // 催し開始日：
     sbSQL.append(", MOYSRBAN"); // 催し連番：
@@ -523,6 +523,20 @@ public class ReportTG015Dao extends ItemDao {
     sbSQL.append(", UPDDT "); // 更新日：
     sbSQL.append(") VALUES ");
     sbSQL.append(updateRows);
+    sbSQL.append(" AS NEW ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
+    sbSQL.append("MOYSKBN = NEW.MOYSKBN ");
+    sbSQL.append(", MOYSSTDT = NEW.MOYSSTDT ");
+    sbSQL.append(", MOYSRBAN = NEW.MOYSRBAN ");
+    sbSQL.append(", TENCD = NEW.TENCD ");
+    sbSQL.append(", MBSYFLG = NEW.MBSYFLG ");
+    sbSQL.append(", HBSTRTFLG = NEW.HBSTRTFLG ");
+    sbSQL.append(", MBANSFLG = NEW.MBANSFLG ");
+    sbSQL.append(", KYOSEIFLG = NEW.KYOSEIFLG ");
+    sbSQL.append(", SENDFLG = NEW.SENDFLG ");
+    sbSQL.append(", OPERATOR = NEW.OPERATOR ");
+    sbSQL.append(", UPDDT = NEW.UPDDT ");
+
     if (msg.size() > 0) {
       // 重複チェック_エラー時
       msgObj.put(MsgKey.E.getKey(), msg);
