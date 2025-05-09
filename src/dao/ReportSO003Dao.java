@@ -1238,73 +1238,98 @@ public class ReportSO003Dao extends ItemDao {
    * @param map
    * @param userInfo
    */
-  public String createSqlTOKSO(JSONObject data, HashMap<String, String> map, User userInfo) {
+  public String createSqlTOKSO(JSONObject data, HashMap<String, String> map, User userInfo){
 
-    StringBuffer sbSQL = new StringBuffer();
-    JSONArray dataArrayT = JSONArray.fromObject(map.get("DATA_SHN")); // 更新情報(予約発注_納品日)
-    JSONArray dataArrayDel = JSONArray.fromObject(map.get("DATA_SHN_DEL")); // 対象情報（主要な更新情報）
+      StringBuffer sbSQL      = new StringBuffer();
+      JSONArray dataArrayT    = JSONArray.fromObject(map.get("DATA_SHN"));        // 更新情報(予約発注_納品日)
+      JSONArray dataArrayDel  = JSONArray.fromObject(map.get("DATA_SHN_DEL"));    // 対象情報（主要な更新情報）
 
-    // ログインユーザー情報取得
-    String userId = userInfo.getId(); // ログインユーザー
-    String kanriNo = ""; // 管理No
-    String dispType = map.get("DISPTYPE"); // 画面状態
-    map.get("SENDBTNID");
 
-    ArrayList<String> prmData = new ArrayList<>();
-    Object[] valueData = new Object[] {};
-    String values = "";
+      // ログインユーザー情報取得
+      String userId   = userInfo.getId();                         // ログインユーザー
+      String kanriNo  = "";                                       // 管理No
+      String dispType = map.get("DISPTYPE");                      // 画面状態
 
-    int maxField = 5; // Fxxの最大値
-    for (int k = 1; k <= maxField; k++) {
-      String key = "F" + String.valueOf(k);
+      ArrayList<String> prmData = new ArrayList<String>();
+      Object[] valueData = new Object[]{};
+      String values = "";
 
-      if (!ArrayUtils.contains(new String[] {"F5"}, key)) {
-        String val = data.optString(key);
-        if (StringUtils.isEmpty(val)) {
-          values += "null ,";
-        } else {
-          values += "? , ";
-          prmData.add(val);
-        }
+      int maxField = 5;       // Fxxの最大値
+      for (int k = 1; k <= maxField; k++) {
+          String key = "F" + String.valueOf(k);
+
+          if(k == 1){
+              values += String.valueOf(0 + 1);
+
+          }
+
+          if(! ArrayUtils.contains(new String[]{"F5"}, key)){
+              String val = data.optString(key);
+              if(StringUtils.isEmpty(val)){
+                  values += ", null";
+              }else{
+                  values += ", ?";
+                  prmData.add(val);
+              }
+          }
+
+          if(k == maxField){
+              valueData = ArrayUtils.add(valueData, "ROW("+values+")");
+              values = "";
+          }
       }
 
-      if (k == maxField) {
-        values += " " + DefineReport.ValUpdkbn.NML.getVal() + " ";
-        values += ", 0";
-        values += ", '" + userId + "' "; // オペレーター：
-        values += ", (SELECT ADDDT FROM (SELECT ADDDT FROM INATK.TOKSO_BMN WHERE MOYSKBN = " + prmData.get(0) + " AND MOYSSTDT = " + prmData.get(1) + " AND MOYSRBAN = " + prmData.get(2)
-            + " AND BMNCD = " + prmData.get(3) + ")T15)";
-        values += ", CURRENT_TIMESTAMP";
-        valueData = ArrayUtils.add(valueData, "(" + values + ")");
-        values = "";
-      }
-    }
+      // 生活応援_部門の登録・更新
+      sbSQL = new StringBuffer();
+      sbSQL.append(" INSERT INTO INATK.TOKSO_BMN ( ");
+      sbSQL.append(" MOYSKBN");
+      sbSQL.append(", MOYSSTDT");
+      sbSQL.append(", MOYSRBAN");
+      sbSQL.append(", BMNCD");
+      sbSQL.append(", UPDKBN");
+      sbSQL.append(", SENDFLG");
+      sbSQL.append(", OPERATOR");
+      sbSQL.append(", ADDDT");
+      sbSQL.append(", UPDDT");
+      sbSQL.append(") SELECT ");
+      sbSQL.append(" MOYSKBN");
+      sbSQL.append(", MOYSSTDT");
+      sbSQL.append(", MOYSRBAN");
+      sbSQL.append(", BMNCD");
+      sbSQL.append(", UPDKBN");
+      sbSQL.append(", SENDFLG");
+      sbSQL.append(", OPERATOR");
+      sbSQL.append(", ADDDT");
+      sbSQL.append(", UPDDT");
+      sbSQL.append(" FROM ( ");
+      sbSQL.append("SELECT ");
+      sbSQL.append(" TMP.MOYSKBN");                                                   // 催し区分
+      sbSQL.append(", TMP.MOYSSTDT");                                                 // 催し開始日
+      sbSQL.append(", TMP.MOYSRBAN");                                                 // 催し連番
+      sbSQL.append(", TMP.BMNCD");                                                    // 部門
+      sbSQL.append(", "+DefineReport.ValUpdkbn.NML.getVal()+" AS UPDKBN");        // 更新区分：
+      sbSQL.append(", 0 as SENDFLG");                                             // 送信フラグ
+      sbSQL.append(", '"+userId+"' AS OPERATOR ");                                // オペレーター：
+      sbSQL.append(", CURRENT_TIMESTAMP AS ADDDT ");                              // 登録日：
+      sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT ");                              // 更新日：
+      sbSQL.append("FROM ( VALUES " + StringUtils.join(valueData, ",") + ") ");
+      sbSQL.append("AS TMP(NUM, MOYSKBN, MOYSSTDT, MOYSRBAN, BMNCD)");
+      sbSQL.append(") AS T1 ");
+      sbSQL.append("ON DUPLICATE KEY UPDATE ");
+      sbSQL.append(" MOYSKBN = VALUES(MOYSKBN) ");
+      sbSQL.append(", MOYSSTDT = VALUES(MOYSSTDT) ");
+      sbSQL.append(", MOYSRBAN = VALUES(MOYSRBAN) ");
+      sbSQL.append(", BMNCD = VALUES(BMNCD) ");
+      sbSQL.append(", UPDKBN = VALUES(UPDKBN) ");
+      sbSQL.append(", SENDFLG = VALUES(SENDFLG) ");
+      sbSQL.append(", OPERATOR = VALUES(OPERATOR) ");
+      sbSQL.append(", UPDDT = VALUES(UPDDT) ");
+     
+      if (DefineReport.ID_DEBUG_MODE) System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
-
-    // 生活応援_部門の登録・更新
-
-    sbSQL = new StringBuffer();
-    sbSQL.append(" REPLACE into INATK.TOKSO_BMN  (");
-    sbSQL.append(" MOYSKBN"); // 催し区分
-    sbSQL.append(", MOYSSTDT"); // 催し開始日
-    sbSQL.append(", MOYSRBAN"); // 催し連番
-    sbSQL.append(", BMNCD"); // 部門
-    sbSQL.append(", UPDKBN");
-    sbSQL.append(", SENDFLG");
-    sbSQL.append(", OPERATOR");
-    sbSQL.append(", ADDDT");
-    sbSQL.append(", UPDDT");
-    sbSQL.append(") VALUES");
-    sbSQL.append(" " + StringUtils.join(valueData, ",") + " ");
-
-
-
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println("/*" + this.getClass().getName() + "[SQL]*/" + sbSQL.toString());
-
-    sqlList.add(sbSQL.toString());
-    prmList.add(prmData);
-    lblList.add("生活応援_部門");
+      sqlList.add(sbSQL.toString());
+      prmList.add(prmData);
+      lblList.add("生活応援_部門");
 
     // クリア
     prmData = new ArrayList<>();
