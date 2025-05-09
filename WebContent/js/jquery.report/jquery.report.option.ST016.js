@@ -143,7 +143,7 @@
 						val = $.id.value_off;
 					}
 					for (var i=0; i<rows.length; i++){
-						rows[i].USEF = val;
+						rows[i].USE = val;
 						$($.id.gridholder).datagrid('refreshRow', i);
 					}
 					that.isAllChecked = !that.isAllChecked;
@@ -622,7 +622,7 @@
 			var columns = [];
 			var columnBottom=[];
 			columnBottom.push({field:'SEL',	title:'選択',				width: 35,halign:'center',align:'center',	formatter:cformatter,	editor:{type:'checkbox'},	styler:cstyler2});
-			columnBottom.push({field:'USEF',	title:'CSV対象',			width: 35,halign:'center',align:'center',	formatter:cformatter,	editor:{type:'checkbox'},	styler:cstyler});
+			columnBottom.push({field:'USE',	title:'CSV対象',			width: 35,halign:'center',align:'center',	formatter:cformatter,	editor:{type:'checkbox'},	styler:cstyler});
 			columnBottom.push({field:'F3',	title:'月締後変更',			width: 35,halign:'center',align:'center',	formatter:cformatter,	styler:cstyler2});
 			columnBottom.push({field:'F1',	title:'G№',				width: 40,halign:'center',align:'center',	styler:bcstyler});
 			columnBottom.push({field:'F2',	title:'子№',				width: 40,halign:'center',align:'center',	styler:bcstyler});
@@ -1117,7 +1117,7 @@
 			var row = $('#'+target).datagrid('getRows')
 
 			for (var i=0; i<row.length; i++){
-				if(row[i]["USEF"] && row[i]["USEF"] == '1'){
+				if(row[i]["USE"] && row[i]["USE"] == '1'){
 					targetdata.push(row[i]["F14"] + row[i]["F15"]);		// 部門コード + 管理番号
 				}
 			}
