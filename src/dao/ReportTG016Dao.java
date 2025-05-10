@@ -9827,7 +9827,9 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
 
     sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
-    sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(") AS T1 ");
+    sbSQL.append("WHERE PTNNO IS NOT NULL ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
     for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
