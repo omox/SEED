@@ -23,15 +23,37 @@ import authentication.bean.User;
 import authentication.defines.Consts;
 import common.CmnDate;
 import common.DefineReport;
-import common.DefineReport.DataType;
 import common.Defines;
 import common.InputChecker;
 import common.ItemList;
 import common.JsonArrayData;
 import common.MessageUtility;
+import common.DefineReport.DataType;
 import common.MessageUtility.FieldType;
 import common.MessageUtility.Msg;
 import common.MessageUtility.MsgKey;
+import dao.ReportTG016Dao.SYSMOYBMN_MySQL_Layout;
+import dao.ReportTG016Dao.SYSMOYKANRIENO_MySQL_Layout;
+import dao.ReportTG016Dao.TOKSP_HBLayout;
+import dao.ReportTG016Dao.TOKSP_HB_MySQL_Layout;
+import dao.ReportTG016Dao.TOKSP_NNDTLayout;
+import dao.ReportTG016Dao.TOKSP_NNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOKSP_SHNLayout;
+import dao.ReportTG016Dao.TOKSP_SHN_MySQL_Layout;
+import dao.ReportTG016Dao.TOKTG_NNDTLayout;
+import dao.ReportTG016Dao.TOKTG_NNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOKTG_SHNLayout;
+import dao.ReportTG016Dao.TOKTG_SHN_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMNLayout;
+import dao.ReportTG016Dao.TOK_CMNLayout2;
+import dao.ReportTG016Dao.TOK_CMN_BMN_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_SHNHBDTLayout;
+import dao.ReportTG016Dao.TOK_CMN_SHNHBDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_SHNNNDTLayout;
+import dao.ReportTG016Dao.TOK_CMN_SHNNNDT_MySQL_Layout;
+import dao.ReportTG016Dao.TOK_CMN_TJTENLayout;
+import dao.ReportTG016Dao.TOK_CMN_TJTENLayout2;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -9704,7 +9726,9 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
 
     sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
-    sbSQL.append(" ) as T1 ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(") AS T1 ");
+    sbSQL.append("WHERE PTNNO IS NOT NULL ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
 
     for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
