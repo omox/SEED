@@ -9734,7 +9734,7 @@ public class ReportTG016Dao extends ItemDao {
   protected JSONObject createSqlTOKSP_NNDT(String userId, JSONArray dataArray, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOKSP_NNDT_MySQL_Layout.OPERATOR.getId(), TOKSP_NNDT_MySQL_Layout.ADDDT.getId(), TOKSP_NNDT_MySQL_Layout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOKSP_NNDT_MySQL_Layout.SENDFLG.getId(),TOKSP_NNDT_MySQL_Layout.OPERATOR.getId(), TOKSP_NNDT_MySQL_Layout.ADDDT.getId(), TOKSP_NNDT_MySQL_Layout.UPDDT.getId()};
     String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
 
     // 更新情報
@@ -9821,7 +9821,7 @@ public class ReportTG016Dao extends ItemDao {
       } // 上記で実施
       sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + " ) as " + itm.getCol());
     }
-    // sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG "); // 送信フラグ
     sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
     sbSQL.append(" ,current_timestamp AS ADDDT "); // 登録日
     sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
