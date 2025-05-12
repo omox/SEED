@@ -4404,6 +4404,14 @@ public class Reportx002Dao extends ItemDao {
     StringBuffer sbSQL;
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO " + szTable + " ( ");
+    if (TblType.CSV.getVal() == tbl.getVal()) {
+      sbSQL.append("SEQ ");
+      sbSQL.append(",INPUTNO ");
+      sbSQL.append(",TOROKUMOTO ");
+      sbSQL.append(",UPDKBN ");
+      sbSQL.append(",OPERATOR ");
+      sbSQL.append(",UPDDT ");
+    }else {
     sbSQL.append("SHNCD ");
     if (tbl.getVal() == 2) {
       sbSQL.append(",YOYAKUDT ");
@@ -4418,14 +4426,35 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ,ADDDT "); // F114: 登録日
     }
     sbSQL.append(",UPDDT ");
-    sbSQL.append(")SELECT * FROM( VALUES ROW( ");
+    }
+    if (TblType.CSV.getVal() == tbl.getVal()) {
+      sbSQL.append(")SELECT ");
+      sbSQL.append("SEQ ");
+      sbSQL.append(",INPUTNO ");
+      sbSQL.append(",TOROKUMOTO ");
+      sbSQL.append(",UPDKBN ");
+      sbSQL.append(",OPERATOR ");
+      sbSQL.append(",UPDDT ");
+      sbSQL.append("FROM( VALUES ROW( ");
+    }else {
+      sbSQL.append(")SELECT * FROM( VALUES ROW( ");
+    }
     sbSQL.append(" " + values + " ");
     if (TblType.CSV.getVal() != tbl.getVal() && DefineReport.Button.CSV_IMPORT_YYK.getObj().equals(btnId)) {
-      sbSQL.append(" ,CURRENT_TIMESTAMP"); // F114: 登録日
+    sbSQL.append(" ,CURRENT_TIMESTAMP"); // F114: 登録日
     }
     sbSQL.append(" ,CURRENT_TIMESTAMP "); // 更新日
     sbSQL.append(")) AS NEW ");
     sbSQL.append("( ");
+    if (TblType.CSV.getVal() == tbl.getVal()) {
+      sbSQL.append("SEQ ");
+      sbSQL.append(",INPUTNO ");
+      sbSQL.append(",TOROKUMOTO ");
+      sbSQL.append(",UPDKBN ");
+      sbSQL.append(",SENDFLG ");
+      sbSQL.append(",OPERATOR ");
+      sbSQL.append(",UPDDT ");
+    }else {
     sbSQL.append("SHNCD ");
     if (tbl.getVal() == 2) {
       sbSQL.append(",YOYAKUDT ");
@@ -4440,9 +4469,14 @@ public class Reportx002Dao extends ItemDao {
       sbSQL.append(" ,ADDDT "); // F114: 登録日
     }
     sbSQL.append(",UPDDT ");
+    }
     sbSQL.append(") ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
-
+    if (TblType.CSV.getVal() == tbl.getVal()) {
+      sbSQL.append("UPDKBN = VALUES(UPDKBN)");
+      sbSQL.append(",OPERATOR = VALUES(OPERATOR) ");
+      sbSQL.append(",UPDDT = VALUES(UPDDT) ");
+    }else {
     sbSQL.append("SHNCD = VALUES(SHNCD)  ");
     if (tbl.getVal() == 2) {
       sbSQL.append(",YOYAKUDT = VALUES(YOYAKUDT) ");
@@ -4459,7 +4493,7 @@ public class Reportx002Dao extends ItemDao {
     }
 
     sbSQL.append(",UPDDT = VALUES(UPDDT) ");
-
+    }
 
     if (DefineReport.ID_DEBUG_MODE)
       System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
