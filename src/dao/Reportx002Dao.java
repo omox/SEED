@@ -5524,16 +5524,13 @@ public class Reportx002Dao extends ItemDao {
       }
       if (TblType.CSV.getVal() == tbl.getVal()) {
         for (CSVCMNLayout itm : CSVCMNLayout.values()) {
-          if (itm.getNo() > 1) {
-            sbSQL.append(" ,");
-          }
           sbSQL.append(" ," + itm.getId2(baseCnt) + " as " + itm.getCol());
         }
       }
     }
     szROW = " ROW "+ values.replaceAll("\\)\\s*,\\s*\\(", "), ROW (");
     sbSQL.append(" from (values " + szROW + ") as T1(" + names + ") )AS T1 ");
-
+    
     return sbSQL.toString();
   }
 
