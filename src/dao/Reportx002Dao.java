@@ -5514,7 +5514,13 @@ public class Reportx002Dao extends ItemDao {
         if (itm.getNo() > 1) {
           sbSQL.append(" ,");
         }
+        if (itm.getId().equals(MSTBAIKACTLLayout.ADDDT.getId())) {
+          sbSQL.append("CURRENT_TIMESTAMP as ADDDT");
+        }else if (itm.getId().equals(MSTBAIKACTLLayout.UPDDT.getId())) {
+          sbSQL.append("CURRENT_TIMESTAMP as UPDDT");
+        }else {
         sbSQL.append(itm.getId() + " as " + itm.getCol());
+        }
       }
       if (TblType.JNL.getVal() == tbl.getVal()) {
         for (JNLCMNLayout itm : JNLCMNLayout.values()) {
