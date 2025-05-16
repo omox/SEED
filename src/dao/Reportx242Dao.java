@@ -643,7 +643,7 @@ public class Reportx242Dao extends ItemDao {
    */
   public String getCSVTOK_SEQ() {
     new ItemList();
-    String sqlColCommand = "SELECT KEYSYS.nextval('KEYSYS.SEQ_USER') AS \"1\"";
+    String sqlColCommand = "SELECT KEYSYS.nextval('SEQ_USER') AS \"1\"";
     @SuppressWarnings("static-access")
     JSONArray array = ItemList.selectJSONArray(sqlColCommand, null, Defines.STR_JNDI_DS);
     String value = "";
