@@ -366,6 +366,11 @@ public class Reportx242Dao extends ItemDao {
     sbSQL.append(" INSERT into KEYSYS.SYS_USERS  (");
     sbSQL.append(" CD_USER"); // ユーザーコード
     sbSQL.append(", PASSWORDS"); // パスワード
+    sbSQL.append(", PASSWORDS_1");//パスワード1
+    sbSQL.append(", PASSWORDS_2");//パスワード2
+    sbSQL.append(", PASSWORDS_3");//パスワード3
+    sbSQL.append(", PASSWORDS_4");//パスワード4
+    sbSQL.append(", PASSWORDS_5");//パスワード5
     sbSQL.append(", YOBI_6"); // 予備6
     sbSQL.append(", YOBI_7"); // 予備7
     sbSQL.append(", YOBI_8"); // 予備8
@@ -376,13 +381,18 @@ public class Reportx242Dao extends ItemDao {
     sbSQL.append(", NM_UPDATE "); // オペレーター
     sbSQL.append(", DT_UPDATE "); // 更新日
     sbSQL.append(" )select ");
-    sbSQL.append(" CD_USER"); // ユーザーコード
-    sbSQL.append(", PASSWORDS"); // パスワード
-    sbSQL.append(", YOBI_6"); // 予備6
-    sbSQL.append(", YOBI_7"); // 予備7
-    sbSQL.append(", YOBI_8"); // 予備8
-    sbSQL.append(", YOBI_9"); // 予備9
-    sbSQL.append(", DT_PW_TERM "); // 有効期限
+    sbSQL.append(" T1.CD_USER"); // ユーザーコード
+    sbSQL.append(", T1.PASSWORDS"); // パスワード
+    sbSQL.append(", USERS.PASSWORDS AS PASSWORDS_1 ");//パスワード1
+    sbSQL.append(", USERS.PASSWORDS_1 AS PASSWORDS_2 ");//パスワード2
+    sbSQL.append(", USERS.PASSWORDS_2 AS PASSWORDS_3 ");//パスワード3
+    sbSQL.append(", USERS.PASSWORDS_3 AS PASSWORDS_4 ");//パスワード4
+    sbSQL.append(", USERS.PASSWORDS_4 AS PASSWORDS_5 ");//パスワード5
+    sbSQL.append(", T1.YOBI_6"); // 予備6
+    sbSQL.append(", T1.YOBI_7"); // 予備7
+    sbSQL.append(", T1.YOBI_8"); // 予備8
+    sbSQL.append(", T1.YOBI_9"); // 予備9
+    sbSQL.append(", T1.DT_PW_TERM "); // 有効期限
     sbSQL.append(", '" + userId + "' AS  NM_CREATE ");
     sbSQL.append(", CURRENT_TIMESTAMP AS DT_CREATE ");
     sbSQL.append(", '" + userId + "' AS NM_UPDATE "); // オペレーター
@@ -395,15 +405,17 @@ public class Reportx242Dao extends ItemDao {
     sbSQL.append(", YOBI_7");
     sbSQL.append(", YOBI_8");
     sbSQL.append(", YOBI_9");
-    sbSQL.append(", DT_PW_TERM)");
-    sbSQL.append(" ON DUPLICATE KEY UPDATE ");
+    sbSQL.append(", DT_PW_TERM) ");
+    sbSQL.append("LEFT OUTER JOIN KEYSYS.SYS_USERS AS USERS ");
+    sbSQL.append("ON T1.CD_USER = USERS.CD_USER ");
+    sbSQL.append("ON DUPLICATE KEY UPDATE ");
     sbSQL.append("  PASSWORDS=VALUES(PASSWORDS)");
     if (passChg) {
-      sbSQL.append(" ,PASSWORDS_1=VALUES(PASSWORDS)");
-      sbSQL.append(" ,PASSWORDS_2=VALUES(PASSWORDS_1)");
-      sbSQL.append(" ,PASSWORDS_3=VALUES(PASSWORDS_2)");
-      sbSQL.append(" ,PASSWORDS_4=VALUES(PASSWORDS_3)");
-      sbSQL.append(" ,PASSWORDS_5=VALUES(PASSWORDS_4)");
+      sbSQL.append(" ,PASSWORDS_1=VALUES(PASSWORDS_1)");
+      sbSQL.append(" ,PASSWORDS_2=VALUES(PASSWORDS_2)");
+      sbSQL.append(" ,PASSWORDS_3=VALUES(PASSWORDS_3)");
+      sbSQL.append(" ,PASSWORDS_4=VALUES(PASSWORDS_4)");
+      sbSQL.append(" ,PASSWORDS_5=VALUES(PASSWORDS_5)");
       sbSQL.append(" ,DT_PW_TERM=VALUES(DT_PW_TERM)");
     }
     sbSQL.append(", YOBI_6=VALUES(YOBI_6)");
