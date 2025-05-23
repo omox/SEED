@@ -718,7 +718,7 @@ public class ReportBT002Dao extends ItemDao {
       sbSQL.append(",OPERATOR "); // オペレーター
       sbSQL.append(",ADDDT "); // 登録日
       sbSQL.append(",UPDDT "); // 更新日
-      sbSQL.append(" FROM (values " + values + ") as T1(");
+      sbSQL.append(" FROM (values ROW" + values + ") as T1(");
       sbSQL.append(" KKKNO"); // 企画No
       sbSQL.append(",TENCD"); // 店コード
       sbSQL.append(",ADDDELFLG"); // 対象除外フラグ
