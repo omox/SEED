@@ -607,9 +607,9 @@ public class ReportBT002Dao extends ItemDao {
     sbSQL.append(", BMNCD");
     sbSQL.append(", DAICD");
     sbSQL.append(", CHUCD");
-    sbSQL.append(", WARIRT");
-    sbSQL.append(", WARIGK");
     sbSQL.append(", ICHIRTGK");
+    sbSQL.append(", WARIGK");
+    sbSQL.append(", WARIRT");
     sbSQL.append(", RANKNO_ADD");
     sbSQL.append(", RANKNO_DEL");
     sbSQL.append(", TENATSUK_ARR");
@@ -683,7 +683,7 @@ public class ReportBT002Dao extends ItemDao {
         if (!values.equals("")) {
           values += ",";
         }
-        values += "(?,?,1,0,'" + userId + "',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)";
+        values += "ROW(?,?,1,0,'" + userId + "',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)";
         prmData.add(kkkno);
         prmData.add(tenCdAdds.getString(i));
       }
@@ -691,7 +691,7 @@ public class ReportBT002Dao extends ItemDao {
         if (!values.equals("")) {
           values += ",";
         }
-        values += "(?,?,0,0,'" + userId + "',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)";
+        values += "ROW(?,?,0,0,'" + userId + "',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)";
         prmData.add(kkkno);
         prmData.add(tenCdDels.getString(i));
 
@@ -718,7 +718,7 @@ public class ReportBT002Dao extends ItemDao {
       sbSQL.append(",OPERATOR "); // オペレーター
       sbSQL.append(",ADDDT "); // 登録日
       sbSQL.append(",UPDDT "); // 更新日
-      sbSQL.append(" FROM (values ROW" + values + ") as T1(");
+      sbSQL.append(" FROM (values " + values + ") as T1(");
       sbSQL.append(" KKKNO"); // 企画No
       sbSQL.append(",TENCD"); // 店コード
       sbSQL.append(",ADDDELFLG"); // 対象除外フラグ
