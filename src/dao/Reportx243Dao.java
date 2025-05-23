@@ -2,9 +2,7 @@ package dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-
 import authentication.bean.User;
 import common.CmnDate;
 import common.DefineReport;
@@ -82,22 +80,22 @@ public class Reportx243Dao extends ItemDao {
 		sbSQL.append(" T1.USER_ID ");
 		sbSQL.append(" , LPAD('',LENGTH(T1.PASSWORDS),'*') AS PASSWORDS ");
 		sbSQL.append(" , T1.NM_FAMILY || T1.NM_NAME AS USERNM ");
-		sbSQL.append(" , TO_CHAR( ");
-		sbSQL.append(" TO_DATE(T1.DT_PW_TERM, 'YYYYMMDD') ");
-		sbSQL.append(" , 'YYYY/MM/DD' ");
+		sbSQL.append(" , DATE_FORMAT( ");
+		sbSQL.append(" DATE_FORMAT(T1.DT_PW_TERM, '%Y%m%d') ");
+		sbSQL.append(" , '%Y/%m/%d' ");
 		sbSQL.append(" ) as DT_PW_TERM ");
 		sbSQL.append(" , case ");
 		sbSQL.append(" when T1.YOBI_2 is null ");
 		sbSQL.append(" or T1.YOBI_2 = '' ");
 		sbSQL.append(" then null ");
-		sbSQL.append(" else cast(T1.YOBI_2 as INTEGER) ");
+		sbSQL.append(" else cast(T1.YOBI_2 as SIGNED) ");
 		sbSQL.append(" end YOBI_2 ");
 		sbSQL.append(" , T1.YOBI_6 ");
 		sbSQL.append(" , T1.YOBI_7 ");
 		sbSQL.append(" , T1.YOBI_8 ");
 		sbSQL.append(" , T1.NM_UPDATE || '　' || T2.NM_FAMILY || T2.NM_NAME AS UPDUSER ");
-		sbSQL.append(" , TO_CHAR(T1.DT_UPDATE ,'YYYY/MM/DD HH24:MI') AS DT_UPDATE ");
-		sbSQL.append(" , TO_CHAR(T1.DT_UPDATE ,'YYYYMMDD') AS DT_UPDATE_CK ");
+		sbSQL.append(" , DATE_FORMAT(T1.DT_UPDATE ,'%Y/%m/%d %d:%i') AS DT_UPDATE ");
+		sbSQL.append(" , DATE_FORMAT(T1.DT_UPDATE ,'%Y%m%d') AS DT_UPDATE_CK ");
 		sbSQL.append(" , T1.CD_USER ");
 		sbSQL.append(" , T1.INF_TABLEKBN ");
 		sbSQL.append(" from KEYSYS.SYS_USERS_JNL T1 ");
