@@ -3,13 +3,10 @@ package dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-
 import authentication.bean.User;
 import authentication.defines.Consts;
 import common.DefineReport;
@@ -138,7 +135,7 @@ public class Reportx241Dao extends ItemDao {
 		JSONArray			dbDatas 	= new JSONArray();
 		// 格納用変数
 		StringBuffer	sbSQL	= new StringBuffer();
-		sbSQL.append(" SELECT MAX(TO_CHAR(DT_UPDATE, 'YYYYMMDDHH24MISSNNNNNN')) as HDN_UPDDT,CD_USER FROM KEYSYS.SYS_USERS WHERE CD_USER IN (");
+		sbSQL.append(" SELECT MAX(DATE_FORMAT(DT_UPDATE, '%Y%m%d%H%i%s%f')) as HDN_UPDDT,CD_USER FROM KEYSYS.SYS_USERS WHERE CD_USER IN (");
 		for (int i = 0; i < dataArray.size(); i++) {
 
 			JSONObject data = dataArray.getJSONObject(i);
@@ -241,7 +238,7 @@ public class Reportx241Dao extends ItemDao {
 			sbSQL.append(" SELECT");
 			sbSQL.append(" ? AS SEQ");
 			paramData.add(jnlSeq);
-			sbSQL.append(" , current timestamp AS INF_DATE");
+			sbSQL.append(" , current_timestamp AS INF_DATE");
 			sbSQL.append(" , ? AS INF_OPERATOR");
 			paramData.add(userId);
 			sbSQL.append(" ,'1' AS INF_TABLEKBN");
@@ -343,21 +340,21 @@ public class Reportx241Dao extends ItemDao {
 		sbSQL.append(" T1.USER_ID ");
 		sbSQL.append(" , LPAD('',LENGTH(T1.PASSWORDS),'*') AS PASSWORDS ");
 		sbSQL.append(" , T1.NM_FAMILY || T1.NM_NAME AS USERNM ");
-		sbSQL.append(" , TO_CHAR( ");
-		sbSQL.append(" TO_DATE(T1.DT_PW_TERM, 'YYYYMMDD') ");
-		sbSQL.append(" , 'YYYY/MM/DD' ");
+		sbSQL.append(" , DATE_FORMAT( ");
+		sbSQL.append(" DATE_FORMAT(T1.DT_PW_TERM, '%Y%m%d') ");
+		sbSQL.append(" , '%Y/%m/%d' ");
 		sbSQL.append(" ) as DT_PW_TERM ");
 		sbSQL.append(" , case ");
 		sbSQL.append(" when T1.YOBI_2 is null ");
 		sbSQL.append(" or T1.YOBI_2 = '' ");
 		sbSQL.append(" then null ");
-		sbSQL.append(" else cast(T1.YOBI_2 as INTEGER) ");
+		sbSQL.append(" else cast(T1.YOBI_2 as SIGNED) ");
 		sbSQL.append(" end YOBI_2 ");
 		sbSQL.append(" , T1.YOBI_6 ");
 		sbSQL.append(" , T1.YOBI_7 ");
 		sbSQL.append(" , T1.YOBI_8 ");
 		sbSQL.append(" , T1.NM_UPDATE || '　' || T2.NM_FAMILY || T2.NM_NAME AS UPDUSER ");
-		sbSQL.append(" , TO_CHAR(T1.DT_UPDATE ,'YYYY/MM/DD HH24:MI') AS DT_UPDATE ");
+		sbSQL.append(" , DATE_FORMAT(T1.DT_UPDATE ,'%Y/%m/%d %H:%i') AS DT_UPDATE ");
 		sbSQL.append(" , T1.CD_USER ");
 		sbSQL.append(" from KEYSYS.SYS_USERS T1 ");
 		sbSQL.append(" left join KEYSYS.SYS_USERS T2 ");
@@ -506,10 +503,10 @@ public class Reportx241Dao extends ItemDao {
 		sbSQL.append(" right (YYYY, 2) || right ('00' || (case when WEEK_NO in (2, 3) then SHUNO else SHUNO + 1 end), 2) as SHUNO");
 		sbSQL.append(" from (select");
 		sbSQL.append(" SHORIDT as value");
-		sbSQL.append(", TO_CHAR(TO_DATE(SHORIDT, 'YYYYMMDD'), 'YYYY') as YYYY");
-		sbSQL.append(", WEEK_ISO(TO_DATE(SHORIDT, 'YYYYMMDD')) as SHUNO");
-		sbSQL.append(", DAYOFWEEK(TO_DATE(SHORIDT, 'YYYYMMDD')) as WEEK_NO");
-		sbSQL.append(" from INAAD.SYSSHORIDT where NVL(UPDKBN, 0) <> 1");
+		sbSQL.append(", DATE_FORMAT(DATE_FORMAT(SHORIDT, '%Y%m%d'), '%Y') as YYYY");
+		sbSQL.append(", WEEK_ISO(DATE_FORMAT(SHORIDT, '%Y%m%d')) as SHUNO");
+		sbSQL.append(", DAYOFWEEK(DATE_FORMAT(SHORIDT, '%Y%m%d')) as WEEK_NO");
+		sbSQL.append(" from INAAD.SYSSHORIDT where COALESCE(UPDKBN, 0) <> 1");
 		sbSQL.append(" order by ID desc fetch first 1 rows only))");
 		sbSQL.append(" select *");
 		sbSQL.append(" from (select");
@@ -583,7 +580,7 @@ public class Reportx241Dao extends ItemDao {
 			sbSQL.append(", TK.SHUNO");
 			sbSQL.append(", TK.SHNCD");
 			sbSQL.append(", TK.TENCD");
-			sbSQL.append(", TO_CHAR(TK.UPDDT, 'YYYYMMDDHH24MISSNNNNNN') as UPDDT");
+			sbSQL.append(", DATE_FORMAT(TK.UPDDT, '%Y%m%d%H%i%s%f') as UPDDT");
 			sbSQL.append(" from INATK.HATTR_CSV TK");
 			sbSQL.append(" where TK.UPDKBN = 0))");
 			sbSQL.append(" where UPDDT = ?");
