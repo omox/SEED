@@ -417,21 +417,21 @@ public class GetSqlCommandInit {
 
     // 権限
     if (StringUtils.startsWith(outobj, DefineReport.Select.AUTH.getObj())) {
-      String values = "('1','参照不可')";
-      values += ",('2','登録・削除可')";
+      String values = "row('1','参照不可')";
+      values += ",row('2','登録・削除可')";
       if (outobj.equals(DefineReport.Select.AUTH.getObj() + "_ms")) {
-        values += ",('3','登録可')";
+        values += ",row('3','登録可')";
       }
       if (!outobj.equals(DefineReport.Select.AUTH.getObj() + "_tn")) {
-        values += ",('4','参照可')";
+        values += ",row('4','参照可')";
       }
       sqlcommand = "select VALUE, TEXT from (values " + values + ") as X(value, TEXT) ORDER BY VALUE";
     }
 
     // 表示する・しない
     if (outobj.equals(DefineReport.Select.DISPLAY.getObj())) {
-      String values = "('0','表示しない')";
-      values += ",('1','表示する')";
+      String values = "row('0','表示しない')";
+      values += ",row('1','表示する')";
       sqlcommand = "select VALUE, TEXT from (values " + values + ") as X(value, TEXT) ORDER BY VALUE";
     }
 
