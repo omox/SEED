@@ -23,39 +23,18 @@ import authentication.bean.User;
 import authentication.defines.Consts;
 import common.CmnDate;
 import common.DefineReport;
+import common.DefineReport.DataType;
 import common.Defines;
 import common.InputChecker;
 import common.ItemList;
 import common.JsonArrayData;
 import common.MessageUtility;
-import common.DefineReport.DataType;
 import common.MessageUtility.FieldType;
 import common.MessageUtility.Msg;
 import common.MessageUtility.MsgKey;
-import dao.ReportTG016Dao.SYSMOYBMN_MySQL_Layout;
-import dao.ReportTG016Dao.SYSMOYKANRIENO_MySQL_Layout;
-import dao.ReportTG016Dao.TOKSP_HBLayout;
-import dao.ReportTG016Dao.TOKSP_HB_MySQL_Layout;
-import dao.ReportTG016Dao.TOKSP_NNDTLayout;
-import dao.ReportTG016Dao.TOKSP_NNDT_MySQL_Layout;
-import dao.ReportTG016Dao.TOKSP_SHNLayout;
-import dao.ReportTG016Dao.TOKSP_SHN_MySQL_Layout;
-import dao.ReportTG016Dao.TOKTG_NNDTLayout;
-import dao.ReportTG016Dao.TOKTG_NNDT_MySQL_Layout;
-import dao.ReportTG016Dao.TOKTG_SHNLayout;
-import dao.ReportTG016Dao.TOKTG_SHN_MySQL_Layout;
-import dao.ReportTG016Dao.TOK_CMNLayout;
-import dao.ReportTG016Dao.TOK_CMNLayout2;
-import dao.ReportTG016Dao.TOK_CMN_BMN_MySQL_Layout;
-import dao.ReportTG016Dao.TOK_CMN_MySQL_Layout;
-import dao.ReportTG016Dao.TOK_CMN_SHNHBDTLayout;
-import dao.ReportTG016Dao.TOK_CMN_SHNHBDT_MySQL_Layout;
-import dao.ReportTG016Dao.TOK_CMN_SHNNNDTLayout;
-import dao.ReportTG016Dao.TOK_CMN_SHNNNDT_MySQL_Layout;
-import dao.ReportTG016Dao.TOK_CMN_TJTENLayout;
-import dao.ReportTG016Dao.TOK_CMN_TJTENLayout2;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 
 /**
  *
@@ -2045,6 +2024,7 @@ public class ReportTG016Dao extends ItemDao {
         // 全店特売（アンケート有）_納入日（店変更フラグ配列に400店分1:更新をセット）
         if (dataArrayNNDT.size() > 0) {
           this.createSqlTOKTG_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
+          this.deleteSqlTOKTG_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
         }
         // 注意：全店特売（アンケート有）_販売は、アンケート有では登録しない。
 
@@ -2061,6 +2041,7 @@ public class ReportTG016Dao extends ItemDao {
         // 全店特売（アンケート無）_納入日
         if (dataArrayNNDT.size() > 0) {
           this.createSqlTOKSP_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
+          this.deleteSqlTOKSP_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
         }
         // 全店特売（アンケート無）_販売
         if (dataArrayHB.size() > 0) {
@@ -2234,6 +2215,7 @@ public class ReportTG016Dao extends ItemDao {
         // 全店特売（アンケート有）_納入日（店変更フラグ配列に400店分1:更新をセット）
         if (dataArrayNNDT.size() > 0) {
           this.createSqlTOKTG_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
+          this.deleteSqlTOKTG_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
         }
         // 注意：全店特売（アンケート有）_販売は、アンケート有では登録しない。
         // 重複チェックテーブルを用いない為、管理テーブルの処理はない。
@@ -2250,6 +2232,7 @@ public class ReportTG016Dao extends ItemDao {
         // 全店特売（アンケート無）_納入日
         if (dataArrayNNDT.size() > 0) {
           this.createSqlTOKSP_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
+          this.deleteSqlTOKSP_NNDT(userId, dataArrayNNDT, data, SqlType.MRG);
         }
         // 全店特売（アンケート無）_販売
         if (dataArrayHB.size() > 0) {
@@ -9717,22 +9700,29 @@ public class ReportTG016Dao extends ItemDao {
       // パラメータ不要
       if (ArrayUtils.contains(notUse, itm.getId()) || ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
-      } // 上記で実施
+      } 
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+        continue;
+      }// 上記で実施
       sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal()); // 送信フラグ
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG "); // 送信フラグ
     sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
     sbSQL.append(" ,current_timestamp AS ADDDT "); // 登録日
     sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
 
     sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
+    sbSQL.append(" WHERE T1.SENDFLG = 1 ");
     sbSQL.append(") AS T1 ");
-    sbSQL.append("WHERE PTNNO IS NOT NULL ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
 
     for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
+      }
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+        sbSQL.append(itm.getCol() + " = 0 ");
+        continue;
       }
       sbSQL.append(itm.getCol() + "=VALUES(" + itm.getCol() + ") ");
     }
@@ -9742,6 +9732,135 @@ public class ReportTG016Dao extends ItemDao {
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
     lblList.add("全店特売(アンケート有)_納入日");
+    return result;
+  }
+  
+  /**
+   * 全店特売(アンケート有)_納入日_delete SQL作成処理
+   *
+   * @param userId
+   * @param data
+   *
+   * @throws Exception
+   */
+  protected JSONObject deleteSqlTOKTG_NNDT(String userId, JSONArray dataArray, JSONObject data, SqlType sql) {
+    JSONObject result = new JSONObject();
+
+    // まったく使用しない項目
+    String[] notUse = new String[] {}; // new String[]{TOKTG_NNDTLayout.bat_ctlflg01.getId()};
+    // 直接値設定する項目
+    String[] notTarget = new String[] {TOKTG_NNDT_MySQL_Layout.OPERATOR.getId(), TOKTG_NNDT_MySQL_Layout.ADDDT.getId(), TOKTG_NNDT_MySQL_Layout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
+
+    // 更新情報
+    ArrayList<String> prmData = new ArrayList<>();
+    String values = "", names = "", rows = "";
+
+    for (int j = 0; j < dataArray.size(); j++) {
+
+      String arr = "";
+      String tenkaisu = "";
+      String tenchg = "";
+
+      values = "";
+      names = "";
+      for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
+        // 不要
+        // パラメータ不要
+        if (ArrayUtils.contains(notUse, itm.getId()) || ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
+          continue;
+        } // 共通で実施
+
+        String col = itm.getCol();
+        String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
+
+        if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getId())) {
+          val = getHtsuArr(dataArray.optJSONObject(j), data, true);
+
+          if (!StringUtils.isEmpty(val)) {
+            for (int jj = 0; jj < val.split(":").length; jj++) {
+              if (jj == 0) {
+                tenkaisu = val.split(":")[jj];
+              } else if (jj == 1 && !StringUtils.isEmpty(val.split(":")[jj])) {
+                arr = val.split(":")[jj];
+              } else if (jj == 2 && !StringUtils.isEmpty(val.split(":")[jj])) {
+                tenchg = val.split(":")[jj];
+              }
+            }
+          }
+          val = arr;
+        } else if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.TENKAISU.getId())) {
+          val = tenkaisu;
+        } else if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.TENCHGFLG_ARR.getId())) {
+          val = tenchg;
+        }
+
+        if (StringUtils.isEmpty(val)) {
+          values += ", null";
+        } else {
+          prmData.add(val);
+          values += ", cast(? as char(" + MessageUtility.getDefByteLen(val) + "))";
+        }
+        names += ", " + col;
+      }
+      rows += ",ROW(" + StringUtils.removeStart(values, ",") + ")";
+    }
+    rows = StringUtils.removeStart(rows, ",");
+    names = StringUtils.removeStart(names, ",");
+    // 基本Merge文
+    StringBuffer sbSQL;
+    sbSQL = new StringBuffer();
+    sbSQL.append("WITH T1 AS ( ");
+    sbSQL.append("SELECT ");
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+    }
+
+    sbSQL.append(" FROM ( SELECT ");
+    // キー情報はロックのため後で追加する
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+    }
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+      // パラメータ不要
+      if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
+        continue;
+      } // 上記で実施
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+        continue;
+      }
+      sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + " ) as " + itm.getCol());
+    }
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG "); // 送信フラグ
+    sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
+    sbSQL.append(" ,current_timestamp AS ADDDT "); // 登録日
+    sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
+
+    sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
+    sbSQL.append(" WHERE T1.SENDFLG = 0 ");
+    sbSQL.append(") AS T1 ");
+    sbSQL.append(") ");
+    sbSQL.append("DELETE FROM INATK.TOKTG_NNDT AS T2 ");
+    sbSQL.append("WHERE T2.MOYSKBN IN (SELECT MOYSKBN FROM T1) ");
+    sbSQL.append("AND T2.MOYSSTDT IN (SELECT MOYSSTDT FROM T1) ");
+    sbSQL.append("AND T2.MOYSRBAN IN (SELECT MOYSRBAN FROM T1) ");
+    sbSQL.append("AND T2.BMNCD IN (SELECT BMNCD FROM T1) ");
+    sbSQL.append("AND T2.KANRINO IN (SELECT KANRINO FROM T1) ");
+    sbSQL.append("AND T2.KANRIENO IN (SELECT KANRIENO FROM T1) ");
+    sbSQL.append("AND T2.NNDT IN (SELECT NNDT FROM T1) ");
+    
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
+    sqlList.add(sbSQL.toString());
+    prmList.add(prmData);
+    lblList.add("全店特売(アンケート有)_納入日_削除");
     return result;
   }
 
@@ -9758,7 +9877,7 @@ public class ReportTG016Dao extends ItemDao {
   protected JSONObject createSqlTOKSP_NNDT(String userId, JSONArray dataArray, JSONObject data, SqlType sql) {
     JSONObject result = new JSONObject();
 
-    String[] notTarget = new String[] {TOKSP_NNDT_MySQL_Layout.SENDFLG.getId(),TOKSP_NNDT_MySQL_Layout.OPERATOR.getId(), TOKSP_NNDT_MySQL_Layout.ADDDT.getId(), TOKSP_NNDT_MySQL_Layout.UPDDT.getId()};
+    String[] notTarget = new String[] {TOKSP_NNDT_MySQL_Layout.OPERATOR.getId(), TOKSP_NNDT_MySQL_Layout.ADDDT.getId(), TOKSP_NNDT_MySQL_Layout.UPDDT.getId()};
     String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
 
     // 更新情報
@@ -9843,6 +9962,9 @@ public class ReportTG016Dao extends ItemDao {
       if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } // 上記で実施
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+        continue;
+      }
       sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + " ) as " + itm.getCol());
     }
     sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG "); // 送信フラグ
@@ -9851,12 +9973,19 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
 
     sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
+    sbSQL.append(" WHERE T1.SENDFLG = 1 ");
     sbSQL.append(") AS T1 ");
-    sbSQL.append("WHERE PTNNO IS NOT NULL ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
     for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.ADDDT.getId())) {
+        continue;
+      }
       if (itm.getNo() > 1) {
         sbSQL.append(",");
+      }
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+        sbSQL.append(itm.getCol() + " = 0 ");
+        continue;
       }
       sbSQL.append(itm.getCol() + "=VALUES(" + itm.getCol() + ") ");
     }
@@ -9869,6 +9998,127 @@ public class ReportTG016Dao extends ItemDao {
     return result;
   }
 
+  /**
+   * 全店特売(アンケート無)_納入日_delete SQL作成処理
+   *
+   * @param userId
+   * @param data
+   *
+   * @throws Exception
+   */
+  protected JSONObject deleteSqlTOKSP_NNDT(String userId, JSONArray dataArray, JSONObject data, SqlType sql) {
+    JSONObject result = new JSONObject();
+
+    String[] notTarget = new String[] {TOKSP_NNDT_MySQL_Layout.OPERATOR.getId(), TOKSP_NNDT_MySQL_Layout.ADDDT.getId(), TOKSP_NNDT_MySQL_Layout.UPDDT.getId()};
+    String[] keys = this.getIds(TOK_CMN_MySQL_Layout.values());
+
+    // 更新情報
+    ArrayList<String> prmData = new ArrayList<>();
+    String values = "", names = "", rows = "";
+
+    for (int j = 0; j < dataArray.size(); j++) {
+
+      String arr = "";
+      String tenkaisu = "";
+
+      values = "";
+      names = "";
+      for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+        // パラメータ不要
+        if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
+          continue;
+        } // 共通で実施
+
+        String col = itm.getCol();
+        String val = StringUtils.trim(dataArray.optJSONObject(j).optString(itm.getId()));
+
+        if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getId())) {
+          val = getHtsuArr(dataArray.optJSONObject(j), data, true);
+
+          if (!StringUtils.isEmpty(val)) {
+            for (int jj = 0; jj < val.split(":").length; jj++) {
+              if (jj == 0) {
+                tenkaisu = val.split(":")[jj];
+              } else if (jj == 1 && !StringUtils.isEmpty(val.split(":")[jj])) {
+                arr = val.split(":")[jj];
+              }
+            }
+          }
+          val = arr;
+        } else if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.TENKAISU.getId())) {
+          val = tenkaisu;
+        }
+
+        if (StringUtils.isEmpty(val)) {
+          values += ", null";
+        } else {
+          prmData.add(val);
+          values += ", cast(? as CHAR(" + MessageUtility.getDefByteLen(val) + "))";
+        }
+        names += ", " + col;
+      }
+      rows += ",ROW(" + StringUtils.removeStart(values, ",") + ")";
+    }
+    rows = StringUtils.removeStart(rows, ",");
+    names = StringUtils.removeStart(names, ",");
+
+    // 基本Merge文
+    StringBuffer sbSQL;
+    sbSQL = new StringBuffer();
+    sbSQL.append("WITH T1 AS ( ");
+    sbSQL.append("SELECT ");
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append(itm.getCol());
+    }
+
+    sbSQL.append(" FROM ( SELECT ");
+    // キー情報はロックのため後で追加する
+    for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
+      if (itm.getNo() > 1) {
+        sbSQL.append(",");
+      }
+      sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
+    }
+    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+      // パラメータ不要
+      if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
+        continue;
+      } // 上記で実施
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+        continue;
+      }
+      sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + " ) as " + itm.getCol());
+    }
+    sbSQL.append(" ," + DefineReport.Values.SENDFLG_UN.getVal() + " AS SENDFLG "); // 送信フラグ
+    sbSQL.append(" ,'" + userId + "' AS OPERATOR "); // オペレータ
+    sbSQL.append(" ,current_timestamp AS ADDDT "); // 登録日
+    sbSQL.append(" ,current_timestamp AS UPDDT "); // 更新日
+
+    sbSQL.append("  FROM (values " + rows + ") as T1(" + names + ")");
+    sbSQL.append(" WHERE T1.SENDFLG = 0 ");
+    sbSQL.append(") AS T1 ");
+    sbSQL.append(") ");
+    sbSQL.append("DELETE FROM INATK.TOKSP_NNDT AS T2 ");
+    sbSQL.append("WHERE T2.MOYSKBN IN (SELECT MOYSKBN FROM T1) ");
+    sbSQL.append("AND T2.MOYSSTDT IN (SELECT MOYSSTDT FROM T1) ");
+    sbSQL.append("AND T2.MOYSRBAN IN (SELECT MOYSRBAN FROM T1) ");
+    sbSQL.append("AND T2.BMNCD IN (SELECT BMNCD FROM T1) ");
+    sbSQL.append("AND T2.KANRINO IN (SELECT KANRINO FROM T1) ");
+    sbSQL.append("AND T2.KANRIENO IN (SELECT KANRIENO FROM T1) ");
+    sbSQL.append("AND T2.NNDT IN (SELECT NNDT FROM T1) ");
+    
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println("/* " + this.getClass().getName() + "*/ " + sbSQL.toString());
+    }
+    sqlList.add(sbSQL.toString());
+    prmList.add(prmData);
+    lblList.add("全店特売(アンケート無)_納入日_削除");
+    return result;
+  }
+  
   public HashMap<Integer, String> getTencds(String bmnCd, String moysKbn, String moysStDt, String moysRban, String rankNoAdd, String rankNoDel, String rankNoAddB, String rankNoAddC,
       JSONArray tenCdAdds, JSONArray tenCdDels, String tenAtsukArr, String tenRankArr) {
 
@@ -10119,7 +10369,6 @@ public class ReportTG016Dao extends ItemDao {
         values += ",null";
       } else {
         values += ",cast( ? as SIGNED) as " + itm.getCol();
-        prmData.add(val);
       }
     }
     rows = StringUtils.removeStart(values, ",");
