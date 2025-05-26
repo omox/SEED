@@ -32,6 +32,7 @@ public class Reportx244Dao extends ItemDao {
      *
      * @return
      */
+    @Override
     public boolean selectBy() {
 
         // 検索コマンド生成
@@ -143,7 +144,7 @@ public class Reportx244Dao extends ItemDao {
                 szWhereCmd = " CAST(SUBSTR(T1.SHNCD,1,2) AS SIGNED) IN ("+StringUtils.removeEnd(StringUtils.replace(StringUtils.replace(bumonAllArray.join(","),"\"0","\""),"\"",""),",")+")";
                 szWhereCmd += " and T1.BMNCD IN ("+StringUtils.removeEnd(StringUtils.replace(StringUtils.replace(bumonAllArray.join(","),"\"0","\""),"\"",""),",")+")";
             }else{
-                szWhereCmd = " CAST(SUBSTR(T1.SHNCD,1,2)) = "+StringUtils.removeEnd(StringUtils.replace(StringUtils.replace(bumonArray.join(","),"\"0","\""),"\"",""),",");
+                szWhereCmd = " CAST(SUBSTR(T1.SHNCD,1,2) AS SIGNED) = "+StringUtils.removeEnd(StringUtils.replace(StringUtils.replace(bumonArray.join(","),"\"0","\""),"\"",""),",");
                 szWhereCmd += " and T1.BMNCD = "+StringUtils.removeEnd(StringUtils.replace(StringUtils.replace(bumonArray.join(","),"\"0","\""),"\"",""),",");
             }
         }
