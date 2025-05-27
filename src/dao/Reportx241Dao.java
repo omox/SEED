@@ -287,7 +287,7 @@ public class Reportx241Dao extends ItemDao {
 			// ユーザーマスタ物理削除
 			sbSQL = new StringBuffer();
 			paramData = new ArrayList<String>();
-			sbSQL.append("DELETE ");
+			sbSQL.append("DELETE FROM ");
 			sbSQL.append("KEYSYS.SYS_USERS ");
 			sbSQL.append("WHERE CD_USER = ? ");
 			paramData.add(userCd);

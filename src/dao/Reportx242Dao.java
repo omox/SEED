@@ -117,23 +117,23 @@ public class Reportx242Dao extends ItemDao {
     sbSQL.append(" , T1.PASSWORDS");
     sbSQL.append(" , T1.NM_FAMILY");
     sbSQL.append(" , T1.NM_NAME");
-    sbSQL.append(" , TO_CHAR( ");
-    sbSQL.append(" TO_DATE(T1.DT_PW_TERM, 'YYYYMMDD')");
-    sbSQL.append(" , 'YYYY/MM/DD'");
+    sbSQL.append(" , DATE_FORMAT( ");
+    sbSQL.append(" DATE_FORMAT(T1.DT_PW_TERM, '%Y%m%d')");
+    sbSQL.append(" , '%Y/%m/%d'");
     sbSQL.append(" ) as DT_PW_TERM");
     sbSQL.append(" , case ");
     sbSQL.append(" when T1.YOBI_2 is null ");
     sbSQL.append(" or T1.YOBI_2 = '' ");
     sbSQL.append(" then null ");
-    sbSQL.append(" else cast(T1.YOBI_2 as INTEGER) ");
+    sbSQL.append(" else cast(T1.YOBI_2 as SIGNED) ");
     sbSQL.append(" end YOBI_2");
     sbSQL.append(" , T1.YOBI_6");
     sbSQL.append(" , T1.YOBI_7");
     sbSQL.append(" , T1.YOBI_8");
     sbSQL.append(" , T1.YOBI_9");
     sbSQL.append(" , T1.NM_UPDATE || '　' || T2.NM_FAMILY || T2.NM_NAME AS UPDUSER");
-    sbSQL.append(" , TO_CHAR(T1.DT_UPDATE, 'YYYY/MM/DD HH24:MI') AS DT_UPDATE");
-    sbSQL.append(" , TO_CHAR(T1.DT_UPDATE, 'YYYYMMDDHH24MISSNNNNNN') as HDN_UPDDT ");
+    sbSQL.append(" , DATE_FORMAT(T1.DT_UPDATE, '%Y/%m/%d %H:%i') AS DT_UPDATE");
+    sbSQL.append(" , DATE_FORMAT(T1.DT_UPDATE, '%Y%m%d%H%i%S%f') as HDN_UPDDT ");
     sbSQL.append(" , T1.CD_USER ");
     sbSQL.append(" from KEYSYS.SYS_USERS T1 ");
     sbSQL.append(" left join KEYSYS.SYS_USERS T2 ");
@@ -569,7 +569,7 @@ public class Reportx242Dao extends ItemDao {
       sbSQL.append(" ,? AS NM_UPDATE");
       prmData.add(userId);
       sbSQL.append(" , CURRENT_TIMESTAMP AS DT_UPDATE");
-      sbSQL.append(" FROM SYSIBM.SYSDUMMY1");
+      sbSQL.append(" FROM (SELECT 1 AS DUMMY) DUMMY ");
 
       if (DefineReport.ID_DEBUG_MODE)
         System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
