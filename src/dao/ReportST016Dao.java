@@ -705,9 +705,9 @@ public class ReportST016Dao extends ItemDao {
       sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) end as F8");
       sbSQL.append(
           "  ,case when T1.NNSTDT=T1.NNEDDT then DATE_FORMAT(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'))) else ");
-      sbSQL.append("  DATE_FORMAT(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNSTDT, '%Y%m%d')))");
+      sbSQL.append("  DATE_FORMAT(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNSTDT, '%Y%m%d')))");
       sbSQL.append("   ||'～'||");
-      sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.NNEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNEDDT, '%Y%m%d'))) end as F9");
+      sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.NNEDDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNEDDT, '%Y%m%d'))) end as F9");
       sbSQL.append("  ,case when T1.BD1_TENSU is not null then '" + DefineReport.Values.ON.getVal() + "' end as F10");
       sbSQL.append("  ,case when T1.ADDSHUKBN = " + DefineReport.ValAddShuKbn.VAL1.getVal());
       if (isTOKTG) {
@@ -808,9 +808,9 @@ public class ReportST016Dao extends ItemDao {
     sbSQL.append(" , T1.MOYKN as F2");
     sbSQL.append(
         " , case when T1.HBSTDT=T1.HBEDDT then DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'))) else ");
-    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
+    sbSQL.append(" DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
     sbSQL.append("   ||'～'||");
-    sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) end as F3");
+    sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) end as F3");
     sbSQL.append(" , T1.SHUNO as F4");
     sbSQL.append(" , DATE_FORMAT(DATE_FORMAT(T2.GTSIMEDT,'%Y%m%d'),'%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T2.GTSIMEDT, '%Y%m%d'))) as F5 ");
     sbSQL.append("  ,T2.GTSIMEFLG as F6"); // 月締フラグ

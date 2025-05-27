@@ -121,7 +121,7 @@ public class ReportTG017Dao extends ItemDao {
         "  ,case when T1.HBSTDT = T1.HBEDDT then DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y/%m/%d') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'))) ELSE ");
     sbSQL.append("  DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y/%m/%d') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
     sbSQL.append("   ||'～'||");
-    sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%Y%m%d') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) END as F4");
+    sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%y/%m/%d') || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) END as F4");
     sbSQL.append("  ,DATE_FORMAT(DATE_FORMAT(T2.GTSIMEDT, '%Y%m%d'), '%m/%d')  || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T2.GTSIMEDT, '%Y%m%d'))) as F5");
     sbSQL.append("  ,case when T1.KBN = 1 then T2.GTSIMEFLG end as F6");
     sbSQL.append("  ,DATE_FORMAT(DATE_FORMAT(T2.LSIMEDT, '%Y%m%d'), '%m/%d')   || (select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T2.LSIMEDT, '%Y%m%d'))) as F7");
