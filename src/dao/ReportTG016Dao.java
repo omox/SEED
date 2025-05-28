@@ -9701,7 +9701,7 @@ public class ReportTG016Dao extends ItemDao {
       if (ArrayUtils.contains(notUse, itm.getId()) || ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } 
-      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+      if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.SENDFLG.getId())) {
         continue;
       }// 上記で実施
       sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + ") as " + itm.getCol());
@@ -9716,11 +9716,11 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append(") AS T1 ");
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
 
-    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+    for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
-      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+      if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.SENDFLG.getId())) {
         sbSQL.append(itm.getCol() + " = 0 ");
         continue;
       }
@@ -9812,7 +9812,7 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("WITH T1 AS ( ");
     sbSQL.append("SELECT ");
-    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+    for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
@@ -9827,12 +9827,12 @@ public class ReportTG016Dao extends ItemDao {
       }
       sbSQL.append("cast(? as " + itm.getTyp() + ") as " + itm.getCol());
     }
-    for (TOKSP_NNDT_MySQL_Layout itm : TOKSP_NNDT_MySQL_Layout.values()) {
+    for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
       // パラメータ不要
       if (ArrayUtils.contains(notTarget, itm.getId()) || ArrayUtils.contains(keys, itm.getId())) {
         continue;
       } // 上記で実施
-      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.SENDFLG.getId())) {
+      if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.SENDFLG.getId())) {
         continue;
       }
       sbSQL.append(",cast(T1." + itm.getCol() + " as " + itm.getTyp() + " ) as " + itm.getCol());
