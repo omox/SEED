@@ -598,9 +598,15 @@ public class ReportST021Dao extends ItemDao {
     sbSQL = new StringBuffer();
     sbSQL.append("INSERT INTO " + table);
     sbSQL.append(" ( ");
+    if (isTOKTG) {
+      sbSQL.append(" MOYSKBN ,MOYSSTDT ,MOYSRBAN ");
+      sbSQL.append(" ,BMNCD ,KANRINO ,KANRIENO ");
+      sbSQL.append(" ,NNDT ,TENHTSU_ARR,TENCHGFLG_ARR,SENDFLG,OPERATOR ,ADDDT,UPDDT ");
+    }else {
     sbSQL.append(" MOYSKBN ,MOYSSTDT ,MOYSRBAN ");
     sbSQL.append(" ,BMNCD ,KANRINO ,KANRIENO ");
     sbSQL.append(" ,NNDT ,TENHTSU_ARR,SENDFLG,OPERATOR ,ADDDT,UPDDT ");
+    }
     sbSQL.append(") SELECT ");
     for (TOK_CMN_MySQL_Layout itm : TOK_CMN_MySQL_Layout.values()) {
       if (itm.getNo() > 1) {
