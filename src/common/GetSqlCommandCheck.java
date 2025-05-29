@@ -3,6 +3,7 @@
  */
 package common;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -976,13 +977,15 @@ public class GetSqlCommandCheck {
       ArrayList<String> dummy = new ArrayList<>();
 
       for (int i = 0; i < len; i++) {
+        boolean result ;
+        result = checkString(value.substring(i, (i + 1)));
+        System.out.println(result);
         sqlcommand = "select * from (values ROW('" + value.substring(i, (i + 1)) + "')) as T1(" + DefineReport.VAL + ")";
         try {
           new EasyToJSONServlet();
           json = EasyToJSONServlet.selectJSON(sqlcommand, dummy, jndiName, datatype);
           String selValue = JSONArray.fromObject(JSONObject.fromObject(json).get("rows").toString()).getJSONObject(0).get("VALUE").toString();
-
-          if (!StringUtils.isEmpty(selValue) && selValue.equals(value.substring(i, (i + 1)))) {
+          if (result && !StringUtils.isEmpty(selValue) && selValue.equals(value.substring(i, (i + 1)))) {
             newValue += selValue;
           }
         } catch (Exception e) {
@@ -990,7 +993,7 @@ public class GetSqlCommandCheck {
       }
       sqlcommand = "select * from (values ROW('" + newValue + "')) as T1(" + DefineReport.VAL + ")";
       paramData.clear();
-    }
+    }    
 
     // SQL構文の実行（コマンド指定あり）
     if (!"".equals(sqlcommand)) {
@@ -1002,5 +1005,16 @@ public class GetSqlCommandCheck {
       }
     }
     return json;
+  }
+  private static boolean checkString(String text) {
+    String change = text;
+    try {
+      byte[] bytes = text.getBytes("SJIS");
+      change = new String(bytes, "SJIS");
+      System.out.println("checkString: " + text + " = " + change);
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
+    return text.equals(change);
   }
 }
