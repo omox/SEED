@@ -1009,8 +1009,8 @@ public class GetSqlCommandCheck {
   private static boolean checkString(String text) {
     String change = text;
     try {
-      byte[] bytes = text.getBytes("SJIS");
-      change = new String(bytes, "SJIS");
+      byte[] bytes = text.getBytes("MS932");
+      change = new String(bytes, "MS932");
       System.out.println("checkString: " + text + " = " + change);
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
