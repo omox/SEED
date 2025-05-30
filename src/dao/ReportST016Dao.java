@@ -79,7 +79,7 @@ public class ReportST016Dao extends ItemDao {
     }
 
     // DB検索用パラメータ
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     String szBumon = getMap().get("BMNCD"); // 部門
     String szMoyskbn = getMap().get("MOYSKBN"); // 催し区分
@@ -667,7 +667,7 @@ public class ReportST016Dao extends ItemDao {
     boolean isTOKTG = super.isTOKTG(szMoyskbn, szMoysrban);
 
     // タイトル情報(任意)設定
-    List<String> titleList = new ArrayList<String>();
+    List<String> titleList = new ArrayList<>();
 
     // 基本情報取得
     JSONArray array = getTOKMOYCDData(getMap());
@@ -699,12 +699,12 @@ public class ReportST016Dao extends ItemDao {
       sbSQL.append("  ,T1.BINKBN as F6");
       sbSQL.append("  ,case when M1.SHNKBN = 1 then '" + DefineReport.Values.ON.getVal() + "' end as F7");
       sbSQL.append(
-          "  ,case when T1.HBSTDT=T1.HBEDDT then DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'))) else ");
-      sbSQL.append("  DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
+          "  ,case when T1.HBSTDT=T1.HBEDDT then DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'))) else ");
+      sbSQL.append("  DATE_FORMAT(DATE_FORMAT(T1.HBSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBSTDT, '%Y%m%d')))");
       sbSQL.append("   ||'～'||");
-      sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) end as F8");
+      sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.HBEDDT, '%Y%m%d'))) end as F8");
       sbSQL.append(
-          "  ,case when T1.NNSTDT=T1.NNEDDT then DATE_FORMAT(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'), '%y%m%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'))) else ");
+          "  ,case when T1.NNSTDT=T1.NNEDDT then DATE_FORMAT(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'))) else ");
       sbSQL.append("  DATE_FORMAT(DATE_FORMAT(T1.NNSTDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNSTDT, '%Y%m%d')))");
       sbSQL.append("   ||'～'||");
       sbSQL.append("   DATE_FORMAT(DATE_FORMAT(T1.NNEDDT, '%Y%m%d'), '%y/%m/%d')||(select JWEEK from WEEK where CWEEK = DAYOFWEEK(DATE_FORMAT(T1.NNEDDT, '%Y%m%d'))) end as F9");
@@ -791,7 +791,7 @@ public class ReportST016Dao extends ItemDao {
     String szMoysstdt = map.get("MOYSSTDT"); // 催しコード（催し開始日）
     String szMoysrban = map.get("MOYSRBAN"); // 催し連番
 
-    ArrayList<String> paramData = new ArrayList<String>();
+    ArrayList<String> paramData = new ArrayList<>();
 
     StringBuffer sbSQL = new StringBuffer();
     sbSQL.append(DefineReport.ID_SQL_CMN_WEEK);
@@ -819,7 +819,7 @@ public class ReportST016Dao extends ItemDao {
 
     ItemList iL = new ItemList();
     @SuppressWarnings("static-access")
-    JSONArray array = iL.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
+    JSONArray array = ItemList.selectJSONArray(sbSQL.toString(), paramData, Defines.STR_JNDI_DS);
 
     return array;
   }
