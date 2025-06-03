@@ -2321,10 +2321,10 @@
 				var txt_makercd_src = "";									// ソースコードから取得したメーカーコード
 				if(value.length > 0 && kbn.length > 0 && kbn !== -1){
 					var param = {};
-					param["1"] = value;
-					param["2"] = txt_bmncd;			// 部門
-					param["3"] = kbn.split("-")[0];
-					param["4"] =  "MD03112501";
+					param["value"] = value;
+					param["BMNCD"] = txt_bmncd;			// 部門
+					param["KBN"] = kbn.split("-")[0];
+					param["KEY"] =  "MD03112501";
 					txt_makercd_src = $.getInputboxData(that.name, $.id.action_change,  $.id_inp.txt_makercd, [param]);
 				}
 				console.log(txt_makercd_src);
