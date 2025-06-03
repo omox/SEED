@@ -1947,8 +1947,9 @@ public class ReportBM006Dao extends ItemDao {
       // 付番済BM番号
       paramData.add(bmno);
 
-      if (DefineReport.ID_DEBUG_MODE)
-        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(paramData);
@@ -2199,8 +2200,9 @@ public class ReportBM006Dao extends ItemDao {
     sbSQL.append(" " + StringUtils.join(valueData, ",") + " ");
 
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
@@ -2248,8 +2250,9 @@ public class ReportBM006Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -2301,8 +2304,9 @@ public class ReportBM006Dao extends ItemDao {
       sbSQL.append(",UPDDT");
       sbSQL.append(")VALUES" + values + " ");
 
-      if (DefineReport.ID_DEBUG_MODE)
-        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(prmData);
@@ -2420,8 +2424,13 @@ public class ReportBM006Dao extends ItemDao {
             if (k == maxField) {
               values += " " + DefineReport.Values.SENDFLG_UN.getVal() + " ";// 送信区分：
               values += ", '" + userId + "'  "; // オペレーター：
-              values += ",  (SELECT * FROM (SELECT CASE WHEN COUNT(*) = 0  THEN CURRENT_TIMESTAMP ELSE ADDDT END AS ADDDT FROM INATK.TOKBM_SHN WHERE MOYSKBN = " + moyskbn + " AND MOYSSTDT = "
+              /*values += ",  (SELECT * FROM (SELECT CASE WHEN COUNT(*) = 0  THEN CURRENT_TIMESTAMP ELSE ADDDT END AS ADDDT FROM INATK.TOKBM_SHN WHERE MOYSKBN = " + moyskbn + " AND MOYSSTDT = "
                   + moysstdt + " AND MOYSRBAN = " + moysrban + " AND BMNNO = " + bmno + " AND KANRINO = " + prmData.get(((i + 1) * 7) - 1) + " LIMIT 1 ) T" + i + "    ) "; // 登録日：
+              */
+              values += ", ( SELECT * FROM ( SELECT CASE WHEN COUNT(*) = 0 THEN CURRENT_TIMESTAMP ELSE ADDDT END AS ADDDT ";
+              values +=
+                  "FROM INATK.TOKBM_SHN WHERE MOYSKBN = " + prmData.get(0) + " AND MOYSSTDT = " + prmData.get(1) + " AND MOYSRBAN = " + prmData.get(2) + " AND SHNCD = " + prmData.get(3) + " LIMIT 1 ) T2 ) ";
+              
               values += ", CURRENT_TIMESTAMP  "; // 更新日：
               valueData = ArrayUtils.add(valueData, "(" + values + ")");
               values = "";
@@ -2760,9 +2769,10 @@ public class ReportBM006Dao extends ItemDao {
                 sbSQL.append("WHERE ");
                 sbSQL.append(sqlWhere);
 
-                if (DefineReport.ID_DEBUG_MODE)
-                  System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
-
+                if (DefineReport.ID_DEBUG_MODE) {
+                  System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+                }
+                  
                 sqlList.add(sbSQL.toString());
                 prmList.add(paramData);
                 lblList.add("BM商品販売日");
@@ -2790,9 +2800,10 @@ public class ReportBM006Dao extends ItemDao {
 
 
 
-          if (DefineReport.ID_DEBUG_MODE)
-            System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
-
+          if (DefineReport.ID_DEBUG_MODE) {
+            System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+          }
+            
           sqlList.add(sbSQL.toString());
           prmList.add(prmData);
           lblList.add("BM催し送信_商品");
@@ -2825,8 +2836,9 @@ public class ReportBM006Dao extends ItemDao {
           sbSQL.append("  " + StringUtils.join(valueDataHb, ",") + " ");
 
 
-          if (DefineReport.ID_DEBUG_MODE)
-            System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+          if (DefineReport.ID_DEBUG_MODE) {
+            System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+          }
 
           sqlList.add(sbSQL.toString());
           prmList.add(prmDataHb);
@@ -2897,8 +2909,9 @@ public class ReportBM006Dao extends ItemDao {
         sbSQL.append("WHERE ");
         sbSQL.append(sqlWhere);
 
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        if (DefineReport.ID_DEBUG_MODE) {
+          System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(paramData);
@@ -3034,8 +3047,9 @@ public class ReportBM006Dao extends ItemDao {
           sbSQL.append("WHERE ");
           sbSQL.append(sqlWhere);
 
-          if (DefineReport.ID_DEBUG_MODE)
-            System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+          if (DefineReport.ID_DEBUG_MODE) {
+            System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+          }
 
           sqlList.add(sbSQL.toString());
           prmList.add(paramData);
@@ -3092,8 +3106,9 @@ public class ReportBM006Dao extends ItemDao {
       sbSQL.append(" WHERE ");
       sbSQL.append(sqlWhere);
 
-      if (DefineReport.ID_DEBUG_MODE)
-        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(paramData);
@@ -3134,8 +3149,9 @@ public class ReportBM006Dao extends ItemDao {
       // 付番済管理番号
       paramData.add(String.valueOf(kanrino));
 
-      if (DefineReport.ID_DEBUG_MODE)
-        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(paramData);
@@ -3271,8 +3287,9 @@ public class ReportBM006Dao extends ItemDao {
     // 付番済BM番号
     paramData.add(bmno);
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -3444,8 +3461,9 @@ public class ReportBM006Dao extends ItemDao {
     sbSQL.append(StringUtils.join(valueData, ",") + " ");
 
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(prmData);
@@ -3493,8 +3511,9 @@ public class ReportBM006Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -3547,8 +3566,9 @@ public class ReportBM006Dao extends ItemDao {
       sbSQL.append(")VALUES" + values + " ");
 
 
-      if (DefineReport.ID_DEBUG_MODE)
-        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(prmData);
@@ -3777,8 +3797,9 @@ public class ReportBM006Dao extends ItemDao {
         sbSQL.append(" " + StringUtils.join(valueData, ",") + " ");
 
 
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        if (DefineReport.ID_DEBUG_MODE) {
+          System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmData);
@@ -3813,8 +3834,9 @@ public class ReportBM006Dao extends ItemDao {
         sbSQL.append("  " + StringUtils.join(valueDataHb, ",") + " ");
 
 
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        if (DefineReport.ID_DEBUG_MODE) {
+          System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
         sqlList.add(sbSQL.toString());
         prmList.add(prmDataHb);
@@ -3874,8 +3896,9 @@ public class ReportBM006Dao extends ItemDao {
       sbSQL.append(" WHERE ");
       sbSQL.append(sqlWhere);
 
-      if (DefineReport.ID_DEBUG_MODE)
-        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(paramData);
@@ -3916,8 +3939,9 @@ public class ReportBM006Dao extends ItemDao {
       // 付番済管理番号
       paramData.add(String.valueOf(kanrino));
 
-      if (DefineReport.ID_DEBUG_MODE)
-        System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+      if (DefineReport.ID_DEBUG_MODE) {
+        System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+      }
 
       sqlList.add(sbSQL.toString());
       prmList.add(paramData);
@@ -3998,8 +4022,9 @@ public class ReportBM006Dao extends ItemDao {
     sbSQL.append("WHERE ");
     sbSQL.append(sqlWhere);
 
-    if (DefineReport.ID_DEBUG_MODE)
-      System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+    if (DefineReport.ID_DEBUG_MODE) {
+      System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+    }
 
     sqlList.add(sbSQL.toString());
     prmList.add(paramData);
@@ -4164,8 +4189,9 @@ public class ReportBM006Dao extends ItemDao {
         sbSQL.append("WHERE ");
         sbSQL.append(sqlWhere);
 
-        if (DefineReport.ID_DEBUG_MODE)
-          System.out.println(this.getClass().getName() + ":" + sbSQL.toString());
+        if (DefineReport.ID_DEBUG_MODE) {
+          System.out.println(getClass().getSimpleName() + "[sql]" + sbSQL.toString());
+        }
 
         sqlList.add(sbSQL.toString());
         prmList.add(paramData);
