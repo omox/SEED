@@ -128,7 +128,7 @@ public class ReportTU002Dao extends ItemDao {
     sbSQL.append(", DATE_FORMAT(TASS.UPDDT, '%Y%m%d%H%i%s%f') as HDN_UPDDT");
     sbSQL.append(" from INATK.TOKQJU_MOY TASM");
     sbSQL.append(
-        " inner join INATK.TOKQJU_SHN TASS on TASM.MOYSKBN = TASS.MOYSKBN and TASM.MOYSSTDT = TASS.MOYSSTDT and TASM.MOYSRBAN = TASS.MOYSRBAN and SUBSTRING(TASS.TENHTSU_ARR, 1 + (? - 1) * 5, 5) <> ' ' and COALESCE(TASS.UPDKBN, 0) <> 1");
+        " inner join INATK.TOKQJU_SHN TASS on TASM.MOYSKBN = TASS.MOYSKBN and TASM.MOYSSTDT = TASS.MOYSSTDT and TASM.MOYSRBAN = TASS.MOYSRBAN and SUBSTRING(TASS.TENHTSU_ARR, 1 + (? - 1) * 5, 5) <> '     ' and COALESCE(TASS.UPDKBN, 0) <> 1");
     paramData.add(tencd);
     sbSQL.append(" inner join INATK.TOKMOYCD MYCD on MYCD.MOYSKBN = TASM.MOYSKBN and MYCD.MOYSSTDT = TASM.MOYSSTDT and MYCD.MOYSRBAN = TASM.MOYSRBAN and COALESCE(MYCD.UPDKBN, 0) <> 1");
     sbSQL.append(" inner join INAMS.MSTSHN SHN on TASS.SHNCD = SHN.SHNCD and COALESCE(SHN.UPDKBN, 0) <> 1");
