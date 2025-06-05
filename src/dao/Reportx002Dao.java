@@ -5230,8 +5230,9 @@ public class Reportx002Dao extends ItemDao {
         if (i != 1) {
           values += " ,";
           names += " ,";
-        }
-        if ((i == 1) && StringUtils.isEmpty(val)) {
+        }if (TblType.CSV.getVal() == tbl.getVal() && (i == 1) && StringUtils.isEmpty(val)) {
+          values += " null";
+        }else if ((i == 1) && StringUtils.isEmpty(val)) {
           values += " " + SHCD + " ";
         } else if ((i == 2) && (StringUtils.isEmpty(val) || val.equals("0"))) {
           set = "1";
