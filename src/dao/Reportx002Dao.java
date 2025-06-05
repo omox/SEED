@@ -5639,7 +5639,9 @@ public class Reportx002Dao extends ItemDao {
           values += " ,";
           names += " ,";
         }
-        if ((i == 1) && StringUtils.isEmpty(val)) {
+        if (TblType.CSV.getVal() == tbl.getVal() && (i == 1) && StringUtils.isEmpty(val)) {
+          values += " null";
+        }else if ((i == 1) && StringUtils.isEmpty(val)) {
           values += " " + SHCD + " ";
         } else if ((i == 2) && StringUtils.isEmpty(val)) {
           set = "1";
