@@ -129,35 +129,35 @@ public class ReportST016Dao extends ItemDao {
       sbSQL.append(", KANRINO");
       sbSQL.append(", KANRIENO");
       sbSQL.append(", (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d'), '%Y%m%d')) as DT1");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 , '%Y%m%d') as DT2");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 , '%Y%m%d') as DT3");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 , '%Y%m%d') as DT4");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 , '%Y%m%d') as DT5");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 , '%Y%m%d') as DT6");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 , '%Y%m%d') as DT7");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 , '%Y%m%d') as DT8");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 , '%Y%m%d') as DT9");
-      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 , '%Y%m%d') as DT10");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 1 DAY, '%Y%m%d') as DT2");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 2 DAY, '%Y%m%d') as DT3");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 3 DAY, '%Y%m%d') as DT4");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 4 DAY, '%Y%m%d') as DT5");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 5 DAY, '%Y%m%d') as DT6");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 6 DAY, '%Y%m%d') as DT7");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 7 DAY, '%Y%m%d') as DT8");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 8 DAY, '%Y%m%d') as DT9");
+      sbSQL.append(", DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 9 DAY, '%Y%m%d') as DT10");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 0 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 0 , '%Y%m%d')) end as NDT1");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 0 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 0 DAY, '%Y%m%d')) end as NDT1");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 1 , '%Y%m%d')) end as NDT2");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 1 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 1 DAY, '%Y%m%d')) end as NDT2");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 2 , '%Y%m%d')) end as NDT3");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 2 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 2 DAY, '%Y%m%d')) end as NDT3");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 3 , '%Y%m%d')) end as NDT4");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 3 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 3 DAY, '%Y%m%d')) end as NDT4");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 4 , '%Y%m%d')) end as NDT5");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 4 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 4 DAY, '%Y%m%d')) end as NDT5");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 5 , '%Y%m%d')) end as NDT6");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 5 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 5 DAY, '%Y%m%d')) end as NDT6");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 6 , '%Y%m%d')) end as NDT7");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 6 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 6 DAY, '%Y%m%d')) end as NDT7");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 7 , '%Y%m%d')) end as NDT8");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 7 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 7 DAY, '%Y%m%d')) end as NDT8");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 8 , '%Y%m%d')) end as NDT9");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 8 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 8 DAY, '%Y%m%d')) end as NDT9");
       sbSQL.append(
-          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 , '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + 9 , '%Y%m%d')) end as NDT10");
+          ", case when CAST(DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 9 DAY, '%Y%m%d') AS signed) between NNSTDT and NNEDDT then (DATE_FORMAT(DATE_FORMAT(MYOSNNSTDT, '%Y%m%d') + INTERVAL 9 DAY, '%Y%m%d')) end as NDT10");
       sbSQL.append(" from " + szTableSHN);
       sbSQL.append(" where MOYSKBN = " + szMoyskbn);
       sbSQL.append(" and MOYSSTDT = " + szMoysstdt);

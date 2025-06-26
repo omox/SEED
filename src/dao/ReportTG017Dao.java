@@ -380,10 +380,10 @@ public class ReportTG017Dao extends ItemDao {
     sbSQL.append(", T3.KANRIENO");
     for (int i = 2; i <= 10; i++) {
       sbSQL.append(", case");
-      sbSQL.append("  when int (DATE_FORMAT(DATE_FORMAT(T3.NNSTDT, '%Y%m%d') + " + (i - 1) + " , '%Y%m%d')) <= COALESCE(");
+      sbSQL.append("  when int (DATE_FORMAT(DATE_FORMAT(T3.NNSTDT, '%Y%m%d') + INTERVAL " + (i - 1) + " DAY , '%Y%m%d')) <= COALESCE(");
       sbSQL.append("   case");
       sbSQL.append("   when T3.HBEDDT > T3.NNEDDT then T3.HBEDDT else T3.NNEDDT end");
-      sbSQL.append(" , 0) then DATE_FORMAT(DATE_FORMAT(T3.NNSTDT, '%Y%m%d') + " + (i - 1) + " , '%Y%m%d') end as DT" + i);
+      sbSQL.append(" , 0) then DATE_FORMAT(DATE_FORMAT(T3.NNSTDT, '%Y%m%d') + INTERVAL " + (i - 1) + " DAY , '%Y%m%d') end as DT" + i);
     }
     sbSQL.append(" from " + szTableSHN + " T3");
     sbSQL.append(")");
