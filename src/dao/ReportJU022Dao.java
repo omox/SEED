@@ -909,7 +909,7 @@ public class ReportJU022Dao extends ItemDao {
       // 一覧表情報
       sbSQL = new StringBuffer();
       sbSQL.append("SELECT ");
-      sbSQL.append("DATE_FORMAT(DATE_FORMAT(NNSTDT,'%Y%m%d') - 2 ,'%Y%m%d') AS NNSTDT ");
+      sbSQL.append("DATE_FORMAT(DATE_FORMAT(NNSTDT,'%Y%m%d') - INTERVAL 2 DAY ,'%Y%m%d') AS NNSTDT ");
       sbSQL.append("FROM INATK.TOKMOYCD ");
       sbSQL.append("WHERE ");
       sbSQL.append(sqlWhere);
