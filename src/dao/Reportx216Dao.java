@@ -525,14 +525,9 @@ public class Reportx216Dao extends ItemDao {
           if (k == maxField) {
             values += (", '" + userId + "' "); // オペレーター
             values += (", CURRENT_TIMESTAMP ");
-            values += (", CURRENT_TIMESTAMP "); // 更新日
-            if (i > 1) {
-              valueData = ArrayUtils.add(valueData, ", ROW(" + values + ")");
-              values = "";
-            } else {
+            values += (", CURRENT_TIMESTAMP "); // 更新日           
               valueData = ArrayUtils.add(valueData, "ROW(" + values + ")");
               values = "";
-            }
           }
         }
       }

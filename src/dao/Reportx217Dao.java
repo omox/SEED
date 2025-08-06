@@ -514,13 +514,8 @@ public class Reportx217Dao extends ItemDao {
             values += (", '" + userId + "' "); // オペレーター
             values += (", CURRENT_TIMESTAMP ");
             values += (", CURRENT_TIMESTAMP "); // 更新日
-            if (i > 1) {
-              valueData = ArrayUtils.add(valueData, ", ROW(" + values + ")");
-              values = "";
-            } else {
-              valueData = ArrayUtils.add(valueData, "ROW(" + values + ")");
-              values = "";
-            }
+            valueData = ArrayUtils.add(valueData, "ROW(" + values + ")");
+            values = "";
           }
         }
       }
