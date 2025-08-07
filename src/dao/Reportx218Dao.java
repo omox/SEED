@@ -438,6 +438,7 @@ public class Reportx218Dao extends ItemDao {
     int maxField = 4; // Fxxの最大値
     int len = dataArrayG.size();
     int delcnt = 0;
+    int tuika = 0;
     for (int i = 0; i < len; i++) {
       JSONObject dataG = dataArrayG.getJSONObject(i);
       if (!dataG.isEmpty()) {
@@ -475,8 +476,8 @@ public class Reportx218Dao extends ItemDao {
           if (!ArrayUtils.contains(new String[] {"F1", "F3"}, key)) {
             if (StringUtils.isEmpty(val)) {
               if (key.equals("F4")) {
-                values += ", ?";
-                paramData.add(String.valueOf(i + 1));
+                tuika++;
+                values += ", (SELECT COUNT(*) FROM INAMS.TRNPCARDSU WHERE INPUTNO =" + input_seq + ") +" + tuika;
               } else {
                 values += ", null";
               }

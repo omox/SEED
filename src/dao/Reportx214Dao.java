@@ -442,6 +442,7 @@ public class Reportx214Dao extends ItemDao {
     int maxField = 4; // Fxxの最大値
     int len = dataArrayG.size();
     int delcnt = 0;
+    int tuika = 0;
     for (int i = 0; i < len; i++) {
       JSONObject dataG = dataArrayG.getJSONObject(i);
       if (!dataG.isEmpty()) {
@@ -479,8 +480,8 @@ public class Reportx214Dao extends ItemDao {
           if (!ArrayUtils.contains(new String[] {"F1", "F3"}, key)) {
             if (StringUtils.isEmpty(val)) {
               if (key.equals("F4")) {
-                values += ", ?";
-                paramData.add(String.valueOf(i + 1));
+                tuika++;
+                values += ", (SELECT COUNT(*) FROM INAMS.TRNPCARDSU WHERE INPUTNO =" + input_seq + ") +" + tuika;
               } else {
                 values += ", null";
               }
@@ -494,7 +495,7 @@ public class Reportx214Dao extends ItemDao {
             values += (", '" + userId + "' "); // オペレーター
             values += (", CURRENT_TIMESTAMP ");
             values += (", CURRENT_TIMESTAMP "); // 更新日
-            valueData = ArrayUtils.add(valueData, "(" + values + ")");
+            valueData = ArrayUtils.add(valueData, "ROW(" + values + ")");
             values = "";
           }
         }
@@ -502,7 +503,7 @@ public class Reportx214Dao extends ItemDao {
 
       if (valueData.length >= 100 || (i + 1 == len && valueData.length > 0)) {
         sbSQL = new StringBuffer();
-        sbSQL.append("REPLACE INTO INAMS.TRNPCARDSU ( ");
+        sbSQL.append("INSERT INTO INAMS.TRNPCARDSU ( ");
         sbSQL.append("  INPUTNO"); // 入力No：
         sbSQL.append(", UPDKBN"); // 更新区分：
         sbSQL.append(", SENDFLG"); // 送信区分：
@@ -511,9 +512,37 @@ public class Reportx214Dao extends ItemDao {
         sbSQL.append(", OPERATOR "); // オペレーター：
         sbSQL.append(", ADDDT "); // 登録日：
         sbSQL.append(", UPDDT "); // 更新日：
-        sbSQL.append(") VALUES ");
+        sbSQL.append(") SELECT * FROM ( ");
+        sbSQL.append("SELECT ");
+        sbSQL.append("  INPUTNO"); // 入力No：
+        sbSQL.append(", UPDKBN"); // 更新区分：
+        sbSQL.append(", SENDFLG"); // 送信区分：
+        sbSQL.append(", SHNCD"); // 商品コード：
+        sbSQL.append(", SEQ"); // SEQ：
+        sbSQL.append(", OPERATOR "); // オペレーター：
+        sbSQL.append(", ADDDT "); // 登録日：
+        sbSQL.append(", UPDDT "); // 更新日：
+        sbSQL.append("FROM ( ");
+        sbSQL.append(" VALUES ");
         sbSQL.append(" " + StringUtils.join(valueData, ",") + " ");
-
+        sbSQL.append(") AS T1 ( ");
+        sbSQL.append("  INPUTNO"); // 入力No：
+        sbSQL.append(", UPDKBN"); // 更新区分：
+        sbSQL.append(", SENDFLG"); // 送信区分：
+        sbSQL.append(", SHNCD"); // 商品コード：
+        sbSQL.append(", SEQ"); // SEQ：
+        sbSQL.append(", OPERATOR "); // オペレーター：
+        sbSQL.append(", ADDDT "); // 登録日：
+        sbSQL.append(", UPDDT "); // 更新日：
+        sbSQL.append(") ) AS T1 ");
+        sbSQL.append("ON DUPLICATE KEY UPDATE ");
+        sbSQL.append("  INPUTNO = VALUES(INPUTNO) "); // 入力No：
+        sbSQL.append(", UPDKBN = VALUES(UPDKBN) "); // 更新区分：
+        sbSQL.append(", SENDFLG = VALUES(SENDFLG) "); // 送信区分：
+        sbSQL.append(", SHNCD = VALUES(SHNCD) "); // 商品コード：
+        sbSQL.append(", SEQ = VALUES(SEQ) "); // SEQ：
+        sbSQL.append(", OPERATOR = VALUES(OPERATOR) "); // オペレーター：
+        sbSQL.append(", UPDDT = VALUES(UPDDT) "); // 更新日：
 
         if (DefineReport.ID_DEBUG_MODE)
           System.out.println("/* " + this.getClass().getName() + "[sql]*/" + sbSQL.toString());
