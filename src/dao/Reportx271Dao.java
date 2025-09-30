@@ -177,33 +177,28 @@ public class Reportx271Dao extends ItemDao {
 		valueData = ArrayUtils.add(valueData, "("+values+")");
 
 		// 商品登録限度数管理テーブルの登録・更新
-		sbSQL.append("merge into INAAD.SYSSHNGENDOSU as T using (select");
-		sbSQL.append("  ID");														// ID：
-		sbSQL.append(", DE_MAXSU");													// デフォルト_登録限度数：
-		sbSQL.append(", MAXSU");													// 登録限度数：
-		sbSQL.append(", current timestamp as UPDDT ");								// 更新日：
-		sbSQL.append(" from (values "+StringUtils.join(valueData, ",")+") as T1(ID");
-		sbSQL.append(", DE_MAXSU");													// F1	: デフォルト_登録限度数
-		sbSQL.append(", MAXSU");													// F2	: 登録限度数
+		sbSQL.append("INSERT INTO INAAD.SYSSHNGENDOSU ( ");
+		sbSQL.append("  ID"); // ID：
+		sbSQL.append(", DE_MAXSU"); // デフォルト_登録限度数：
+		sbSQL.append(", MAXSU"); // 登録限度数：
 		sbSQL.append(", UPDDT");
-		sbSQL.append(")) as RE on (");
-		sbSQL.append("T.ID = RE.ID");
-		sbSQL.append(") when matched then update set");
-		sbSQL.append(" ID = RE.ID");
-		sbSQL.append(", DE_MAXSU = RE.DE_MAXSU");
-		sbSQL.append(", MAXSU = RE.MAXSU");
-		sbSQL.append(", UPDDT = RE.UPDDT");
-		sbSQL.append(" when not matched then insert(");
-		sbSQL.append("ID");
-		sbSQL.append(", MAXSU");
-		sbSQL.append(", DE_MAXSU");
-		sbSQL.append(", UPDDT");
-		sbSQL.append(") values (");
-		sbSQL.append("RE.ID");
-		sbSQL.append(", RE.MAXSU");
-		sbSQL.append(", RE.DE_MAXSU");
-		sbSQL.append(", RE.UPDDT");
-		sbSQL.append(")");
+		sbSQL.append(" ) ");
+		sbSQL.append("SELECT ");
+		sbSQL.append("  ID"); 
+		sbSQL.append(", DE_MAXSU"); // F1   : デフォルト_登録限度数
+        sbSQL.append(", MAXSU"); // F2   : 登録限度数
+        sbSQL.append(", CURRENT_TIMESTAMP as UPDDT "); // 更新日：
+		sbSQL.append(" from (values ROW"+StringUtils.join(valueData, ",")+") as T1( ");
+		sbSQL.append("  ID");
+        sbSQL.append(", DE_MAXSU");
+        sbSQL.append(", MAXSU"); 
+        sbSQL.append(", UPDDT");
+        sbSQL.append(" ) ");
+		sbSQL.append(" ON DUPLICATE KEY UPDATE");
+		sbSQL.append("  ID = T1.ID ");
+        sbSQL.append(", DE_MAXSU = T1.DE_MAXSU ");
+        sbSQL.append(", MAXSU = T1.MAXSU ");
+        sbSQL.append(", UPDDT = CURRENT_TIMESTAMP ");
 
 		if (DefineReport.ID_DEBUG_MODE)	System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
