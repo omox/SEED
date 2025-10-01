@@ -177,28 +177,26 @@ public class Reportx271Dao extends ItemDao {
 		valueData = ArrayUtils.add(valueData, "("+values+")");
 
 		// 商品登録限度数管理テーブルの登録・更新
-		sbSQL.append("INSERT INTO INAAD.SYSSHNGENDOSU ( ");
-		sbSQL.append("  ID"); // ID：
-		sbSQL.append(", DE_MAXSU"); // デフォルト_登録限度数：
-		sbSQL.append(", MAXSU"); // 登録限度数：
-		sbSQL.append(", UPDDT");
-		sbSQL.append(" ) ");
+		sbSQL.append("UPDATE INAAD.SYSSHNGENDOSU T1 ");
+		sbSQL.append(", ( ");
 		sbSQL.append("SELECT ");
-		sbSQL.append("  ID"); 
-		sbSQL.append(", DE_MAXSU"); // F1   : デフォルト_登録限度数
-        sbSQL.append(", MAXSU"); // F2   : 登録限度数
-        sbSQL.append(", CURRENT_TIMESTAMP as UPDDT "); // 更新日：
-		sbSQL.append(" from (values ROW"+StringUtils.join(valueData, ",")+") as T1( ");
+		sbSQL.append("  ID"); // ID：
+        sbSQL.append(", DE_MAXSU"); // デフォルト_登録限度数：
+        sbSQL.append(", MAXSU"); // 登録限度数：
+        sbSQL.append(", CURRENT_TIMESTAMP AS UPDDT ");
+		sbSQL.append(" from (values ROW"+StringUtils.join(valueData, ",")+") as T3( ");
 		sbSQL.append("  ID");
-        sbSQL.append(", DE_MAXSU");
-        sbSQL.append(", MAXSU"); 
+        sbSQL.append(", DE_MAXSU"); // F1   : デフォルト_登録限度数
+        sbSQL.append(", MAXSU"); // F2   : 登録限度数
         sbSQL.append(", UPDDT");
-        sbSQL.append(" ) ");
-		sbSQL.append(" ON DUPLICATE KEY UPDATE");
-		sbSQL.append("  ID = T1.ID ");
-        sbSQL.append(", DE_MAXSU = T1.DE_MAXSU ");
-        sbSQL.append(", MAXSU = T1.MAXSU ");
-        sbSQL.append(", UPDDT = CURRENT_TIMESTAMP ");
+        sbSQL.append(" )) AS RE  ");
+		sbSQL.append("SET ");
+		sbSQL.append("  T1.ID = RE.ID ");
+        sbSQL.append(", T1.DE_MAXSU = RE.DE_MAXSU ");
+        sbSQL.append(", T1.MAXSU = RE.MAXSU ");
+        sbSQL.append(", T1.UPDDT = RE.UPDDT ");
+		sbSQL.append("WHERE ");
+		sbSQL.append(" T1.ID = 0 ");
 
 		if (DefineReport.ID_DEBUG_MODE)	System.out.println(this.getClass().getName()+ ":" + sbSQL.toString());
 
