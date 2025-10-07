@@ -9988,6 +9988,9 @@ public class ReportTG016Dao extends ItemDao {
       if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.ADDDT.getId())) {
         continue;
       }
+      if (itm.getId().equals(TOKSP_NNDT_MySQL_Layout.TENHTSU_ARR.getId())) {
+        continue;
+      }
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
