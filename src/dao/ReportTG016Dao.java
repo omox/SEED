@@ -9729,6 +9729,9 @@ public class ReportTG016Dao extends ItemDao {
     sbSQL.append("ON DUPLICATE KEY UPDATE ");
 
     for (TOKTG_NNDT_MySQL_Layout itm : TOKTG_NNDT_MySQL_Layout.values()) {
+      if (itm.getId().equals(TOKTG_NNDT_MySQL_Layout.TENHTSU_ARR.getId())) {
+        continue;
+      }
       if (itm.getNo() > 1) {
         sbSQL.append(",");
       }
